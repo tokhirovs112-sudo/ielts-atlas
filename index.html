@@ -1,0 +1,462 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IELTS Atlas — Prepare with Purpose</title>
+  <style>
+    :root {
+      --green: #21734c;
+      --light: #e8f5ec;
+      --bg: #f7f9f6;
+      --text: #1c2c22;
+      --muted: #65756a;
+      --white: #ffffff;
+      --border: #dce6dd;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { color: var(--green); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding: 20px 7%;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: bold;
+      color: var(--green);
+    }
+
+    nav { display: flex; gap: 20px; flex-wrap: wrap; }
+
+    nav a { color: var(--text); font-size: 14px; }
+
+    .container { max-width: 1100px; margin: auto; padding: 0 22px; }
+
+    .hero {
+      padding: 75px 0 55px;
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 35px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    h1 {
+      font-size: clamp(38px, 5vw, 60px);
+      line-height: 1.1;
+      margin: 15px 0;
+    }
+
+    h1 span { color: var(--green); }
+
+    .hero p { color: var(--muted); max-width: 550px; }
+
+    .button {
+      display: inline-block;
+      background: var(--green);
+      color: white;
+      padding: 12px 18px;
+      border-radius: 9px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 8px 8px 0 0;
+    }
+
+    .button:hover { opacity: 0.9; text-decoration: none; }
+
+    .button.secondary {
+      background: var(--white);
+      color: var(--green);
+      border: 1px solid var(--border);
+    }
+
+    .dashboard, .skill, .panel {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+    }
+
+    .dashboard h3 { margin-top: 0; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .stat {
+      padding: 15px;
+      background: var(--light);
+      border-radius: 10px;
+    }
+
+    .stat strong { display: block; font-size: 24px; }
+    .stat small { color: var(--muted); }
+
+    section { padding: 30px 0; }
+
+    .section-title { margin-bottom: 22px; }
+    .section-title h2 { margin: 5px 0; font-size: 28px; }
+    .section-title p { color: var(--muted); margin: 0; }
+
+    .search {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .search input {
+      flex: 1;
+      min-width: 0;
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      font-size: 15px;
+    }
+
+    .skills {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    .skill { transition: transform 0.2s; }
+    .skill:hover { transform: translateY(-4px); }
+
+    .skill-icon {
+      background: var(--light);
+      width: 45px;
+      height: 45px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      font-size: 23px;
+    }
+
+    .skill h3 { margin-bottom: 5px; }
+    .skill p { color: var(--muted); font-size: 14px; }
+    .skill a { font-weight: bold; font-size: 14px; }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .resource {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .resource:last-child { border-bottom: none; }
+    .resource strong { display: block; }
+    .resource p { margin: 4px 0; color: var(--muted); font-size: 13px; }
+
+    .passage {
+      background: var(--light);
+      padding: 16px;
+      border-radius: 12px;
+    }
+
+    .option {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+    }
+
+    .option:hover { border-color: var(--green); }
+    .option.correct { background: #d8f4df; border-color: #27934f; }
+    .option.wrong { background: #ffebe6; border-color: #cc6047; }
+
+    #feedback { font-size: 14px; min-height: 24px; }
+
+    .note { font-size: 12px; color: var(--muted); }
+
+    footer {
+      margin-top: 40px;
+      padding: 25px 7%;
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 800px) {
+      .hero, .content-grid { grid-template-columns: 1fr; }
+      .skills { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 480px) {
+      header { padding: 18px; }
+      nav { gap: 12px; }
+      .container { padding: 0 16px; }
+      .skills { grid-template-columns: 1fr; }
+      .hero { padding-top: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="#home" class="brand">IELTS ATLAS</a>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#skills">Practice</a>
+    <a href="#resources">Resources</a>
+    <a href="#about">About</a>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="hero" id="home">
+    <div>
+      <div class="eyebrow">Your IELTS journey starts here</div>
+      <h1>Real English.<br><span>Real exam practice.</span></h1>
+      <p>
+        Discover trusted IELTS preparation materials, practise all four
+        skills, and build a study routine that works for you.
+      </p>
+      <a class="button" href="#skills">Start practising →</a>
+      <a class="button secondary" href="#resources">Explore resources</a>
+    </div>
+
+    <div class="dashboard">
+      <h3>📚 Your study dashboard</h3>
+      <p>Every expert was once a beginner. Start with one question today.</p>
+      <div class="stats">
+        <div class="stat">
+          <strong id="attempts">0</strong>
+          <small>Questions attempted</small>
+        </div>
+        <div class="stat">
+          <strong>4</strong>
+          <small>IELTS skills</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="section-title">
+      <div class="eyebrow">The four skills</div>
+      <h2>What do you want to practise?</h2>
+      <p>Choose a skill and explore relevant learning materials.</p>
+    </div>
+
+    <div class="search">
+      <input id="search" type="text" placeholder="Search skills or resources...">
+      <button class="button" id="clear">Clear</button>
+    </div>
+
+    <div class="skills" id="skillGrid">
+      <article class="skill searchable" data-search="reading passages vocabulary skimming scanning">
+        <div class="skill-icon">📖</div>
+        <h3>Reading</h3>
+        <p>Practise reading passages, finding information, and understanding vocabulary.</p>
+        <a href="https://ielts.org/take-a-test/preparation-resources/sample-test-questions" target="_blank" rel="noopener">Find practice →</a>
+      </article>
+
+      <article class="skill searchable" data-search="writing essays task 1 task 2 grammar">
+        <div class="skill-icon">✍️</div>
+        <h3>Writing</h3>
+        <p>Explore essay questions, Task 1 prompts, planning, and writing strategies.</p>
+        <a href="https://takeielts.britishcouncil.org/take-ielts/prepare/free-ielts-practice-tests" target="_blank" rel="noopener">Find practice →</a>
+      </article>
+
+      <article class="skill searchable" data-search="listening audio notes multiple choice">
+        <div class="skill-icon">🎧</div>
+        <h3>Listening</h3>
+        <p>Improve listening comprehension with audio activities and practice tests.</p>
+        <a href="https://takeielts.britishcouncil.org/take-ielts/prepare/free-ielts-practice-tests" target="_blank" rel="noopener">Find practice →</a>
+      </article>
+
+      <article class="skill searchable" data-search="speaking fluency pronunciation cue cards">
+        <div class="skill-icon">💬</div>
+        <h3>Speaking</h3>
+        <p>Prepare for all three speaking parts and practise expressing your ideas.</p>
+        <a href="https://ielts.idp.com/prepare" target="_blank" rel="noopener">Find practice →</a>
+      </article>
+    </div>
+    <p id="empty" hidden>No matching skills found. Try another search.</p>
+  </section>
+
+  <section id="resources">
+    <div class="section-title">
+      <div class="eyebrow">Trusted starting points</div>
+      <h2>Learn from reliable sources</h2>
+      <p>Explore resources from established IELTS organisations.</p>
+    </div>
+
+    <div class="content-grid">
+      <div class="panel">
+        <h3>Official IELTS resources</h3>
+
+        <div class="resource searchable" data-search="ielts official sample questions">
+          <strong>IELTS.org</strong>
+          <p>Official information and sample test questions.</p>
+          <a href="https://ielts.org/take-a-test/preparation-resources/sample-test-questions" target="_blank" rel="noopener">Visit website →</a>
+        </div>
+
+        <div class="resource searchable" data-search="british council free tests">
+          <strong>British Council</strong>
+          <p>Free practice for all four IELTS skills.</p>
+          <a href="https://takeielts.britishcouncil.org/take-ielts/prepare/free-ielts-practice-tests" target="_blank" rel="noopener">Visit website →</a>
+        </div>
+
+        <div class="resource searchable" data-search="idp preparation">
+          <strong>IDP IELTS</strong>
+          <p>Preparation advice and practice materials.</p>
+          <a href="https://ielts.idp.com/prepare" target="_blank" rel="noopener">Visit website →</a>
+        </div>
+
+        <div class="resource searchable" data-search="bbc learning english vocabulary listening">
+          <strong>BBC Learning English</strong>
+          <p>Improve your English with listening and vocabulary activities.</p>
+          <a href="https://www.bbc.co.uk/learningenglish" target="_blank" rel="noopener">Visit website →</a>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Quick reading practice</h3>
+        <p>Read this original short passage and answer the question.</p>
+
+        <div class="passage">
+          Some cities have introduced bike-sharing schemes to reduce
+          traffic and make short journeys more convenient. Their success
+          often depends on safe cycling routes and the availability of
+          bikes where people need them.
+        </div>
+
+        <p><strong>Question: What can help bike-sharing schemes succeed?</strong></p>
+
+        <div id="quiz">
+          <button class="option" data-correct="false">Making every journey longer</button>
+          <button class="option" data-correct="true">Providing safe routes and accessible bikes</button>
+          <button class="option" data-correct="false">Replacing all public transport</button>
+        </div>
+
+        <p id="feedback" aria-live="polite">Choose your answer.</p>
+        <p class="note">This is original practice content, not an official IELTS question.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="panel">
+      <div class="eyebrow">About IELTS Atlas</div>
+      <h2>Study with direction, not guesswork.</h2>
+      <p>
+        IELTS Atlas is an independent learning project designed to help
+        students discover useful resources, practise consistently, and
+        prepare for the four IELTS skills in one place.
+      </p>
+      <p class="note">
+        IELTS Atlas is not affiliated with IELTS, the British Council,
+        IDP, or Cambridge English. External resources belong to their
+        respective publishers.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  © 2026 IELTS Atlas · An independent student project
+</footer>
+
+<script>
+  const search = document.getElementById("search");
+  const items = document.querySelectorAll(".searchable");
+  const empty = document.getElementById("empty");
+
+  function filterItems() {
+    const query = search.value.trim().toLowerCase();
+    let visibleSkills = 0;
+
+    items.forEach(item => {
+      const text = (
+        item.innerText + " " + (item.dataset.search || "")
+      ).toLowerCase();
+
+      const matches = text.includes(query);
+      item.style.display = matches ? "" : "none";
+
+      if (item.classList.contains("skill") && matches) {
+        visibleSkills++;
+      }
+    });
+
+    empty.hidden = visibleSkills !== 0;
+  }
+
+  search.addEventListener("input", filterItems);
+
+  document.getElementById("clear").addEventListener("click", () => {
+    search.value = "";
+    filterItems();
+    search.focus();
+  });
+
+  let attempted = false;
+
+  document.querySelectorAll(".option").forEach(button => {
+    button.addEventListener("click", () => {
+      document.querySelectorAll(".option").forEach(option => {
+        option.classList.remove("correct", "wrong");
+      });
+
+      const correct = button.dataset.correct === "true";
+      button.classList.add(correct ? "correct" : "wrong");
+
+      document.getElementById("feedback").textContent = correct
+        ? "Correct! Safe routes and available bikes help these schemes succeed."
+        : "Not quite. Look at the passage again for the two factors mentioned.";
+
+      if (!attempted) {
+        attempted = true;
+        document.getElementById("attempts").textContent = "1";
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,4 +1,11 @@
 
+/* =========================================================
+   IELTS ATLAS — READING
+   Adjustable passage/question panels
+   Independent scrolling and font-size controls
+   Saved preferences, answer checking and explanations
+   ========================================================= */
+
 const readingTests = [
   {
     id: "palladio-exhibition",
@@ -35,7 +42,7 @@ const readingTests = [
         prompt: "Palazzo Barbaran da Porto typically represents Palladio's design.",
         options: ["TRUE", "FALSE", "NOT GIVEN"],
         answer: "TRUE",
-        explanation: "The passage describes Palladian trademarks in the building, including its columns, pediments and harmonious proportions."
+        explanation: "The passage describes Palladian features in the building, including its columns, pediments and harmonious proportions."
       },
       {
         number: 3,
@@ -62,7 +69,7 @@ const readingTests = [
         prompt: "Palladio's alternative design for the Ducal Palace in Venice was based on an English building.",
         options: ["TRUE", "FALSE", "NOT GIVEN"],
         answer: "FALSE",
-        explanation: "The passage says Palladio's design resembled the Banqueting House. It identifies Inigo Jones, Palladio's disciple, as the designer of that English building. Resemblance does not mean Palladio based his design on it."
+        explanation: "The passage says Palladio's design resembled the Banqueting House. Resemblance does not establish that he based his design on that building."
       },
       {
         number: 6,
@@ -89,7 +96,7 @@ const readingTests = [
         prompt: "What job was Palladio training for before he became an architect?",
         answers: ["a stonemason", "stonemason", "a skilled stonemason", "skilled stonemason"],
         answer: "a stonemason",
-        explanation: "The passage says Andrea was apprenticed to a skilled stonemason. The required job is stonemason."
+        explanation: "The passage says Andrea was apprenticed to a skilled stonemason."
       },
       {
         number: 9,
@@ -107,16 +114,16 @@ const readingTests = [
         prompt: "Who was the first non-Italian architect influenced by Palladio?",
         answers: ["Inigo Jones"],
         answer: "Inigo Jones",
-        explanation: "The passage calls Inigo Jones Palladio's first foreign disciple. 'Foreign' matches the question's idea of non-Italian."
+        explanation: "The passage calls Inigo Jones Palladio's first foreign disciple."
       },
       {
         number: 11,
         type: "text",
         group: "SENTENCE COMPLETION",
-        prompt: "What type of Ancient Roman buildings most heavily influenced Palladio's work?",
+        prompt: "What type of architecture heavily influenced Palladio's work?",
         answers: ["temple architecture"],
         answer: "temple architecture",
-        explanation: "The passage explicitly says the major theme of Palladio's rural and urban buildings was temple architecture."
+        explanation: "The passage explicitly identifies temple architecture as a major theme of Palladio's rural and urban buildings."
       },
       {
         number: 12,
@@ -134,13 +141,13 @@ const readingTests = [
         prompt: "In the writer's opinion, what feeling will visitors to the exhibition experience?",
         answers: ["benevolent calm"],
         answer: "benevolent calm",
-        explanation: "The final description says the exhibition's harmonious lines and proportions impart a feeling of benevolent calm."
+        explanation: "The passage says the exhibition's harmonious lines and proportions impart a feeling of benevolent calm."
       }
     ]
   }
 ];
 
-const $ = (selector) => document.querySelector(selector);
+const $ = (selector, root = document) => root.querySelector(selector);
 
 const library = $("#library");
 const testScreen = $("#test-screen");
@@ -158,7 +165,35 @@ let activeTest = null;
 let startedAt = 0;
 let timerInterval = null;
 let checked = false;
-let savedAnswers = {};
+
+const FONT_DEFAULTS = {
+  passage: 15,
+  questions: 13
+};
+
+const FONT_MIN = 11;
+const FONT_MAX = 24;
+
+const FONT_KEYS = {
+  passage: "ieltsAtlasPassageFontSize",
+  questions: "ieltsAtlasQuestionsFontSize"
+};
+
+function storageGet(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function storageSet(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // The page remains usable if browser storage is unavailable.
+  }
+}
 
 function normaliseAnswer(value) {
   return String(value || "")
@@ -171,7 +206,7 @@ function normaliseAnswer(value) {
 }
 
 function escapeHTML(value) {
-  return String(value).replace(/[&<>"']/g, (character) => ({
+  return String(value).replace(/[&<>"']/g, character => ({
     "&": "&amp;",
     "<": "&lt;",
     ">": "&gt;",
@@ -180,18 +215,481 @@ function escapeHTML(value) {
   })[character]);
 }
 
+/* =========================================================
+   ADJUSTABLE WORKSPACE
+   ========================================================= */
+
+function addWorkspaceStyles() {
+  if ($("#reading-workspace-styles")) return;
+
+  const style = document.createElement("style");
+  style.id = "reading-workspace-styles";
+
+  style.textContent = `
+    .reading-workspace-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 16px 0;
+      padding: 12px 15px;
+      border: 1px solid #e0e7e1;
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .workspace-control-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .workspace-label {
+      margin-right: 4px;
+      color: #536258;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .reading-workspace-controls button {
+      min-width: 36px;
+      min-height: 34px;
+      padding: 6px 10px;
+      border: 1px solid #dce5de;
+      border-radius: 8px;
+      background: #f7faf7;
+      color: #246c40;
+      cursor: pointer;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .reading-workspace-controls button:hover {
+      border-color: #8ab99a;
+      background: #edf7ef;
+    }
+
+    .reading-workspace-controls button:focus-visible {
+      outline: 2px solid #368653;
+      outline-offset: 2px;
+    }
+
+    #reset-reading-layout {
+      margin-left: auto;
+      color: #536258;
+    }
+
+    .test-layout {
+      --passage-width: 60%;
+      display: grid !important;
+      grid-template-columns:
+        minmax(0, var(--passage-width))
+        10px
+        minmax(0, calc(100% - var(--passage-width) - 10px)) !important;
+      align-items: stretch !important;
+      gap: 0 !important;
+    }
+
+    .test-layout > .passage-panel,
+    .test-layout > .questions-panel {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .test-layout > .passage-panel {
+      position: relative;
+      top: auto;
+      height: calc(100vh - 220px);
+      min-height: 400px;
+      max-height: 850px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+      scrollbar-color: #c7d8cb transparent;
+    }
+
+    .test-layout > .questions-panel {
+      position: relative;
+      top: auto;
+      height: calc(100vh - 220px);
+      min-height: 400px;
+      max-height: 850px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+      scrollbar-color: #c7d8cb transparent;
+    }
+
+    .test-layout > .passage-panel .passage-header {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    .reading-resizer {
+      position: relative;
+      z-index: 5;
+      width: 10px;
+      min-width: 10px;
+      align-self: stretch;
+      cursor: col-resize;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .reading-resizer::after {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 4px;
+      width: 2px;
+      border-radius: 4px;
+      background: #dce5de;
+      content: "";
+      transition: background .15s, width .15s, left .15s;
+    }
+
+    .reading-resizer:hover::after,
+    .reading-resizer:focus-visible::after,
+    .reading-resizer.is-dragging::after {
+      left: 2px;
+      width: 5px;
+      background: #368653;
+    }
+
+    .reading-resizer:focus-visible {
+      outline: 2px solid #368653;
+      outline-offset: -2px;
+    }
+
+    body.resizing-reading-panels {
+      cursor: col-resize !important;
+      user-select: none !important;
+    }
+
+    body.resizing-reading-panels * {
+      cursor: col-resize !important;
+      user-select: none !important;
+    }
+
+    .passage-content p {
+      font-size: var(--reading-passage-font-size, 15px) !important;
+    }
+
+    .questions-panel .question-card legend,
+    .questions-panel .question-prompt,
+    .questions-panel .short-answer-label,
+    .questions-panel .answer-option,
+    .questions-panel .short-answer-input {
+      font-size: var(--reading-question-font-size, 13px) !important;
+    }
+
+    .questions-panel .question-group-heading h3 {
+      font-size: calc(var(--reading-question-font-size, 13px) + 3px);
+    }
+
+    .questions-panel .question-group-heading p {
+      font-size: calc(var(--reading-question-font-size, 13px) - 1px);
+    }
+
+    .questions-panel .question-feedback {
+      font-size: calc(var(--reading-question-font-size, 13px) - 1px);
+    }
+
+    @media (max-width: 760px) {
+      .test-layout {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 16px !important;
+      }
+
+      .reading-resizer {
+        display: none;
+      }
+
+      .test-layout > .passage-panel,
+      .test-layout > .questions-panel {
+        height: auto;
+        min-height: 0;
+        max-height: none;
+        overflow: visible;
+      }
+
+      .reading-workspace-controls {
+        justify-content: flex-start;
+      }
+
+      #reset-reading-layout {
+        margin-left: 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .workspace-control-group {
+        flex-wrap: wrap;
+      }
+
+      .workspace-label {
+        font-size: 11px;
+      }
+
+      .reading-workspace-controls {
+        padding: 10px;
+        gap: 9px;
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
+}
+
+function getSavedFontSize(type) {
+  const saved = Number(storageGet(FONT_KEYS[type]));
+
+  if (!Number.isFinite(saved) || saved < FONT_MIN || saved > FONT_MAX) {
+    return FONT_DEFAULTS[type];
+  }
+
+  return saved;
+}
+
+function applyReadingFontSizes() {
+  document.documentElement.style.setProperty(
+    "--reading-passage-font-size",
+    `${getSavedFontSize("passage")}px`
+  );
+
+  document.documentElement.style.setProperty(
+    "--reading-question-font-size",
+    `${getSavedFontSize("questions")}px`
+  );
+
+  const passageValue = $("#passage-font-value");
+  const questionValue = $("#question-font-value");
+
+  if (passageValue) {
+    passageValue.textContent = `${getSavedFontSize("passage")} px`;
+  }
+
+  if (questionValue) {
+    questionValue.textContent = `${getSavedFontSize("questions")} px`;
+  }
+}
+
+function applyPassageWidth(value, save = false) {
+  const layout = $(".test-layout");
+  if (!layout) return;
+
+  const width = Math.max(25, Math.min(75, Number(value) || 60));
+
+  layout.style.setProperty("--passage-width", `${width}%`);
+
+  const label = $("#passage-width-value");
+  if (label) {
+    label.textContent = `${Math.round(width)}%`;
+  }
+
+  if (save) {
+    storageSet("ieltsAtlasPassageWidth", String(width));
+  }
+}
+
+function changeFontSize(type, change) {
+  const current = getSavedFontSize(type);
+  const next = Math.max(FONT_MIN, Math.min(FONT_MAX, current + change));
+
+  storageSet(FONT_KEYS[type], String(next));
+  applyReadingFontSizes();
+}
+
+function createWorkspaceControls(layout) {
+  let controls = $(".reading-workspace-controls");
+
+  if (!controls) {
+    controls = document.createElement("div");
+    controls.className = "reading-workspace-controls";
+
+    controls.innerHTML = `
+      <div class="workspace-control-group">
+        <span class="workspace-label">Passage</span>
+        <button type="button" data-font="passage" data-step="-1" aria-label="Decrease passage text size">A−</button>
+        <button type="button" data-font="passage" data-step="1" aria-label="Increase passage text size">A+</button>
+        <span id="passage-font-value" class="workspace-label"></span>
+      </div>
+
+      <div class="workspace-control-group">
+        <span class="workspace-label">Questions</span>
+        <button type="button" data-font="questions" data-step="-1" aria-label="Decrease question text size">A−</button>
+        <button type="button" data-font="questions" data-step="1" aria-label="Increase question text size">A+</button>
+        <span id="question-font-value" class="workspace-label"></span>
+      </div>
+
+      <div class="workspace-control-group">
+        <span class="workspace-label">Passage width</span>
+        <span id="passage-width-value" class="workspace-label">60%</span>
+      </div>
+
+      <button type="button" id="reset-reading-layout">Reset layout</button>
+    `;
+
+    layout.parentNode.insertBefore(controls, layout);
+
+    controls.querySelectorAll("[data-font]").forEach(button => {
+      button.addEventListener("click", () => {
+        changeFontSize(
+          button.dataset.font,
+          Number(button.dataset.step)
+        );
+      });
+    });
+
+    $("#reset-reading-layout", controls).addEventListener("click", () => {
+      storageSet("ieltsAtlasPassageWidth", "60");
+
+      Object.values(FONT_KEYS).forEach(key => {
+        try {
+          localStorage.removeItem(key);
+        } catch {
+          // Ignore unavailable storage.
+        }
+      });
+
+      applyPassageWidth(60, true);
+      applyReadingFontSizes();
+    });
+  }
+}
+
+function createReadingDivider(layout) {
+  let divider = $(".reading-resizer", layout);
+
+  if (divider) return divider;
+
+  divider = document.createElement("div");
+  divider.className = "reading-resizer";
+  divider.setAttribute("role", "separator");
+  divider.setAttribute("aria-label", "Resize passage and question panels");
+  divider.setAttribute("aria-orientation", "vertical");
+  divider.setAttribute("aria-valuemin", "25");
+  divider.setAttribute("aria-valuemax", "75");
+  divider.setAttribute("aria-valuenow", "60");
+  divider.setAttribute("tabindex", "0");
+  divider.title = "Drag to resize, or use the left and right arrow keys";
+
+  const passagePanel = $(".passage-panel", layout);
+  const questionsPanel = $(".questions-panel", layout);
+
+  if (!passagePanel || !questionsPanel) return null;
+
+  // Place the divider between the two existing panels.
+  layout.insertBefore(divider, questionsPanel);
+
+  let dragging = false;
+
+  divider.addEventListener("pointerdown", event => {
+    if (window.innerWidth <= 760) return;
+
+    dragging = true;
+    divider.classList.add("is-dragging");
+    document.body.classList.add("resizing-reading-panels");
+
+    try {
+      divider.setPointerCapture(event.pointerId);
+    } catch {
+      // Pointer capture may be unavailable in some browsers.
+    }
+
+    event.preventDefault();
+  });
+
+  divider.addEventListener("pointermove", event => {
+    if (!dragging) return;
+
+    const rect = layout.getBoundingClientRect();
+    if (!rect.width) return;
+
+    const percent = ((event.clientX - rect.left) / rect.width) * 100;
+    const width = Math.max(25, Math.min(75, percent));
+
+    applyPassageWidth(width);
+    divider.setAttribute("aria-valuenow", String(Math.round(width)));
+  });
+
+  function stopDragging() {
+    if (!dragging) return;
+
+    dragging = false;
+    divider.classList.remove("is-dragging");
+    document.body.classList.remove("resizing-reading-panels");
+
+    const current = parseFloat(
+      getComputedStyle(layout).getPropertyValue("--passage-width")
+    ) || 60;
+
+    applyPassageWidth(current, true);
+  }
+
+  divider.addEventListener("pointerup", stopDragging);
+  divider.addEventListener("pointercancel", stopDragging);
+  divider.addEventListener("lostpointercapture", stopDragging);
+
+  divider.addEventListener("keydown", event => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+
+    event.preventDefault();
+
+    const current = parseFloat(
+      getComputedStyle(layout).getPropertyValue("--passage-width")
+    ) || 60;
+
+    const change = event.key === "ArrowRight" ? 5 : -5;
+    const next = Math.max(25, Math.min(75, current + change));
+
+    applyPassageWidth(next, true);
+    divider.setAttribute("aria-valuenow", String(Math.round(next)));
+  });
+
+  return divider;
+}
+
+function setupReadingWorkspace() {
+  addWorkspaceStyles();
+
+  const layout = $(".test-layout");
+  if (!layout) return;
+
+  createWorkspaceControls(layout);
+  createReadingDivider(layout);
+
+  const savedWidth = Number(storageGet("ieltsAtlasPassageWidth"));
+  applyPassageWidth(
+    Number.isFinite(savedWidth) && savedWidth >= 25 && savedWidth <= 75
+      ? savedWidth
+      : 60
+  );
+
+  applyReadingFontSizes();
+}
+
+/* =========================================================
+   TEST LIBRARY
+   ========================================================= */
+
 function renderLibrary() {
   const searchTerm = searchInput.value.trim().toLowerCase();
 
-  const filtered = readingTests.filter((test) => {
-    const matchesFilter = activeFilter === "All" ||
-      test.category === activeFilter;
+  const filtered = readingTests.filter(test => {
+    const matchesFilter =
+      activeFilter === "All" || test.category === activeFilter;
 
-    const matchesSearch =
-      test.title.toLowerCase().includes(searchTerm) ||
-      test.passage.join(" ").toLowerCase().includes(searchTerm);
+    const searchableText = [
+      test.title,
+      ...test.passage,
+      ...test.questions.map(question => question.prompt)
+    ].join(" ").toLowerCase();
 
-    return matchesFilter && matchesSearch;
+    return matchesFilter && searchableText.includes(searchTerm);
   });
 
   testCount.textContent =
@@ -208,21 +706,22 @@ function renderLibrary() {
     return;
   }
 
-  filtered.forEach((test) => {
+  filtered.forEach(test => {
     const card = document.createElement("article");
     card.className = "reading-test-card";
+
     card.innerHTML = `
       <div class="test-card-top">
         <span class="test-tag">${escapeHTML(test.category)}</span>
         <span class="test-level">${escapeHTML(test.level)}</span>
       </div>
       <h3>${escapeHTML(test.title)}</h3>
-      <p>${test.questions.length} questions · Authentic reading practice</p>
+      <p>${test.questions.length} questions · Reading practice</p>
       <button class="button button-primary open-test" type="button">
         Start practice <span aria-hidden="true">→</span>
       </button>`;
 
-    card.querySelector(".open-test").addEventListener("click", () => {
+    $(".open-test", card).addEventListener("click", () => {
       openTest(test.id);
     });
 
@@ -230,12 +729,15 @@ function renderLibrary() {
   });
 }
 
+/* =========================================================
+   OPEN AND RENDER A TEST
+   ========================================================= */
+
 function openTest(testId) {
-  activeTest = readingTests.find((test) => test.id === testId);
+  activeTest = readingTests.find(test => test.id === testId);
   if (!activeTest) return;
 
   checked = false;
-  savedAnswers = {};
   clearInterval(timerInterval);
 
   library.hidden = true;
@@ -262,11 +764,14 @@ function openTest(testId) {
   resultMessage.className = "result-message";
   explanationsBox.innerHTML = "";
   explanationsBox.hidden = true;
+
   showExplanationsButton.hidden = true;
   showExplanationsButton.textContent = "Show explanations";
 
   $("#check-answers").disabled = false;
   $("#check-answers").textContent = "Check answers";
+
+  setupReadingWorkspace();
 
   startedAt = Date.now();
   updateTimer();
@@ -280,16 +785,16 @@ function renderQuestions() {
     {
       title: "Questions 1–7",
       subtitle: "Do the statements agree with the passage?",
-      questions: activeTest.questions.filter((q) => q.type === "choice")
+      questions: activeTest.questions.filter(q => q.type === "choice")
     },
     {
       title: "Questions 8–13",
       subtitle: "Choose NO MORE THAN THREE WORDS from the passage.",
-      questions: activeTest.questions.filter((q) => q.type === "text")
+      questions: activeTest.questions.filter(q => q.type === "text")
     }
   ];
 
-  questionForm.innerHTML = groups.map((group) => {
+  questionForm.innerHTML = groups.map(group => {
     if (!group.questions.length) return "";
 
     return `
@@ -302,22 +807,9 @@ function renderQuestions() {
       </div>`;
   }).join("");
 
-  questionForm.querySelectorAll("input").forEach((input) => {
-    input.addEventListener("input", () => {
-      if (checked) return;
-      savedAnswers[input.name] = input.type === "radio"
-        ? questionForm.querySelector(`input[name="${input.name}"]:checked`)?.value || ""
-        : input.value;
-      updateAnsweredCount();
-    });
-
-    input.addEventListener("change", () => {
-      if (checked) return;
-      savedAnswers[input.name] = input.type === "radio"
-        ? questionForm.querySelector(`input[name="${input.name}"]:checked`)?.value || ""
-        : input.value;
-      updateAnsweredCount();
-    });
+  questionForm.querySelectorAll("input").forEach(input => {
+    input.addEventListener("input", updateAnsweredCount);
+    input.addEventListener("change", updateAnsweredCount);
   });
 
   updateAnsweredCount();
@@ -334,10 +826,10 @@ function renderQuestion(question) {
           <span class="question-prompt">${escapeHTML(question.prompt)}</span>
         </legend>
         <div class="answer-options">
-          ${question.options.map((option) => `
+          ${question.options.map(option => `
             <label class="answer-option">
-              <input type="radio" name="q${number}" value="${option}">
-              <span>${option}</span>
+              <input type="radio" name="q${number}" value="${escapeHTML(option)}">
+              <span>${escapeHTML(option)}</span>
             </label>
           `).join("")}
         </div>
@@ -368,18 +860,12 @@ function renderQuestion(question) {
 function updateAnsweredCount() {
   if (checked || !activeTest) return;
 
-  const answered = activeTest.questions.filter((question) => {
-    const field = questionForm.elements[`q${question.number}`];
-    return field && String(field.value || "").trim() !== "";
+  const answered = activeTest.questions.filter(question => {
+    return getUserAnswer(question).trim() !== "";
   }).length;
 
-  const countLabel = $("#test-instructions");
-  if (countLabel) {
-    countLabel.dataset.progress =
-      `${answered} of ${activeTest.questions.length} answered`;
-  }
-
   let progress = $("#reading-progress-label");
+
   if (!progress) {
     progress = document.createElement("p");
     progress.id = "reading-progress-label";
@@ -387,7 +873,8 @@ function updateAnsweredCount() {
     $("#test-instructions").insertAdjacentElement("afterend", progress);
   }
 
-  progress.textContent = `${answered} of ${activeTest.questions.length} questions answered`;
+  progress.textContent =
+    `${answered} of ${activeTest.questions.length} questions answered`;
 }
 
 function updateTimer() {
@@ -396,19 +883,22 @@ function updateTimer() {
   const seconds = Math.floor((Date.now() - startedAt) / 1000);
   const minutes = String(Math.floor(seconds / 60)).padStart(2, "0");
   const remainingSeconds = String(seconds % 60).padStart(2, "0");
+
   $("#timer").textContent = `${minutes}:${remainingSeconds}`;
 }
 
-function getUserAnswer(question) {
-  const field = questionForm.elements[`q${question.number}`];
+/* =========================================================
+   ANSWER CHECKING AND RESULTS
+   ========================================================= */
 
+function getUserAnswer(question) {
   if (question.type === "choice") {
     return questionForm.querySelector(
       `input[name="q${question.number}"]:checked`
     )?.value || "";
   }
 
-  return field?.value?.trim() || "";
+  return questionForm.elements[`q${question.number}`]?.value?.trim() || "";
 }
 
 function isCorrect(question, userAnswer) {
@@ -418,7 +908,7 @@ function isCorrect(question, userAnswer) {
     return actual === normaliseAnswer(question.answer);
   }
 
-  return question.answers.some((answer) =>
+  return question.answers.some(answer =>
     normaliseAnswer(answer) === actual
   );
 }
@@ -430,8 +920,10 @@ function checkAnswers() {
   clearInterval(timerInterval);
 
   const questions = activeTest.questions;
-  const outcomes = questions.map((question) => {
+
+  const outcomes = questions.map(question => {
     const userAnswer = getUserAnswer(question);
+
     return {
       question,
       userAnswer,
@@ -439,19 +931,23 @@ function checkAnswers() {
     };
   });
 
-  const correctCount = outcomes.filter((item) => item.correct).length;
-  const unansweredCount = outcomes.filter((item) => !item.userAnswer).length;
-  const percentage = Math.round((correctCount / questions.length) * 100);
+  const correctCount = outcomes.filter(item => item.correct).length;
+  const unansweredCount =
+    outcomes.filter(item => !item.userAnswer).length;
+  const percentage =
+    Math.round((correctCount / questions.length) * 100);
 
   outcomes.forEach(({ question, userAnswer, correct }) => {
     const card = $(`#question-${question.number}`);
-    const feedback = card.querySelector(".question-feedback");
+    const feedback = $(".question-feedback", card);
 
     card.classList.remove("is-correct", "is-incorrect");
     card.classList.add(correct ? "is-correct" : "is-incorrect");
 
     feedback.hidden = false;
-    feedback.className = `question-feedback ${correct ? "feedback-correct" : "feedback-incorrect"}`;
+    feedback.className =
+      `question-feedback ${correct ? "feedback-correct" : "feedback-incorrect"}`;
+
     feedback.innerHTML = correct
       ? `<span class="feedback-icon">✓</span> Correct`
       : `<span class="feedback-icon">✕</span> ${
@@ -461,7 +957,7 @@ function checkAnswers() {
         }`;
   });
 
-  questionForm.querySelectorAll("input").forEach((input) => {
+  questionForm.querySelectorAll("input").forEach(input => {
     input.disabled = true;
   });
 
@@ -469,83 +965,130 @@ function checkAnswers() {
   $("#check-answers").textContent = "Answers checked";
   showExplanationsButton.hidden = false;
 
-  const choiceOutcomes = outcomes.filter((item) => item.question.type === "choice");
-  const textOutcomes = outcomes.filter((item) => item.question.type === "text");
+  const choiceOutcomes =
+    outcomes.filter(item => item.question.type === "choice");
+  const textOutcomes =
+    outcomes.filter(item => item.question.type === "text");
 
-  const choiceCorrect = choiceOutcomes.filter((item) => item.correct).length;
-  const textCorrect = textOutcomes.filter((item) => item.correct).length;
+  const choiceCorrect =
+    choiceOutcomes.filter(item => item.correct).length;
+  const textCorrect =
+    textOutcomes.filter(item => item.correct).length;
 
   const strengths = [];
   const improvements = [];
 
   if (choiceCorrect >= 5) {
-    strengths.push("You handled most TRUE / FALSE / NOT GIVEN statements well.");
+    strengths.push(
+      "You handled most TRUE / FALSE / NOT GIVEN statements well."
+    );
   } else if (choiceCorrect >= 3) {
     strengths.push("You identified some statement answers correctly.");
-    improvements.push("Practise separating information that contradicts the passage from information the passage never mentions.");
+    improvements.push(
+      "Practise distinguishing contradictions from information that the passage never mentions."
+    );
   } else {
-    improvements.push("Focus on TRUE / FALSE / NOT GIVEN: TRUE matches the text, FALSE contradicts it, and NOT GIVEN is not established by the text.");
+    improvements.push(
+      "TRUE matches the text, FALSE contradicts it, and NOT GIVEN is not established by the text."
+    );
   }
 
   if (textCorrect >= 4) {
-    strengths.push("Your sentence-completion answers were mostly accurate.");
+    strengths.push(
+      "Your sentence-completion answers were mostly accurate."
+    );
   } else {
-    improvements.push("For sentence completion, find the relevant sentence in the passage and copy only the words needed. Check the three-word limit.");
+    improvements.push(
+      "Locate the relevant sentence and copy only the necessary words. Check the three-word limit."
+    );
   }
 
   if (unansweredCount > 0) {
-    improvements.push(`You left ${unansweredCount} question${unansweredCount === 1 ? "" : "s"} blank. Try to answer every question, even when you're unsure.`);
+    improvements.push(
+      `You left ${unansweredCount} question${unansweredCount === 1 ? "" : "s"} blank. Try to answer every question.`
+    );
   }
 
   if (correctCount === questions.length) {
-    strengths.push("Excellent accuracy: you answered every question correctly.");
+    strengths.push("Excellent accuracy: every answer was correct.");
   }
 
   if (!improvements.length) {
-    improvements.push("Review the explanations anyway and practise another passage to make sure you can repeat this result.");
+    improvements.push(
+      "Review the explanations and practise another passage to check that you can repeat this result."
+    );
   }
 
   resultMessage.className = "result-message result-visible";
+
   resultMessage.innerHTML = `
     <div class="results-card">
       <div class="results-topline">
         <span class="eyebrow">YOUR RESULTS</span>
         <span class="results-complete">Practice completed</span>
       </div>
+
       <div class="results-score-row">
         <div>
-          <div class="results-score">${correctCount}<span>/${questions.length}</span></div>
+          <div class="results-score">
+            ${correctCount}<span>/${questions.length}</span>
+          </div>
           <p class="results-score-caption">answers correct</p>
         </div>
+
         <div class="results-percentage">
           <strong>${percentage}%</strong>
           <span>accuracy</span>
         </div>
       </div>
+
       <div class="results-track">
         <span style="width: ${percentage}%"></span>
       </div>
+
       <div class="results-breakdown">
-        <div><span>TRUE / FALSE / NOT GIVEN</span><strong>${choiceCorrect}/7</strong></div>
-        <div><span>Sentence completion</span><strong>${textCorrect}/6</strong></div>
-        <div><span>Time spent</span><strong>${$("#timer").textContent}</strong></div>
+        <div>
+          <span>TRUE / FALSE / NOT GIVEN</span>
+          <strong>${choiceCorrect}/${choiceOutcomes.length}</strong>
+        </div>
+        <div>
+          <span>Sentence completion</span>
+          <strong>${textCorrect}/${textOutcomes.length}</strong>
+        </div>
+        <div>
+          <span>Time spent</span>
+          <strong>${$("#timer").textContent}</strong>
+        </div>
       </div>
+
       <div class="results-feedback-grid">
         <section>
           <h3><span class="feedback-icon">✓</span> What went well</h3>
-          <ul>${strengths.map((item) => `<li>${escapeHTML(item)}</li>`).join("")}</ul>
+          <ul>${strengths.map(item =>
+            `<li>${escapeHTML(item)}</li>`
+          ).join("")}</ul>
         </section>
+
         <section>
           <h3><span class="feedback-icon">↗</span> How to improve</h3>
-          <ul>${improvements.map((item) => `<li>${escapeHTML(item)}</li>`).join("")}</ul>
+          <ul>${improvements.map(item =>
+            `<li>${escapeHTML(item)}</li>`
+          ).join("")}</ul>
         </section>
       </div>
-      <p class="results-note">This is feedback for this 13-question practice, not an official IELTS band score.</p>
+
+      <p class="results-note">
+        This is feedback for a ${questions.length}-question practice, not an official IELTS band score.
+      </p>
     </div>`;
 
   saveReadingResult(correctCount, questions.length, percentage);
   renderExplanations(outcomes);
-  resultMessage.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  resultMessage.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
 }
 
 function renderExplanations(outcomes) {
@@ -553,23 +1096,39 @@ function renderExplanations(outcomes) {
     <div class="explanations-heading">
       <span class="eyebrow">LEARN FROM YOUR ANSWERS</span>
       <h2>Answer explanations</h2>
-      <p>Review the evidence in the passage and understand why each answer is correct.</p>
+      <p>Review each answer and understand why it is correct.</p>
     </div>
+
     ${outcomes.map(({ question, userAnswer, correct }) => `
       <article class="explanation-card ${correct ? "explanation-correct" : "explanation-incorrect"}">
         <div class="explanation-card-top">
           <span class="question-number">${question.number}</span>
-          <span class="explanation-status">${correct ? "Correct" : "Review this answer"}</span>
+          <span class="explanation-status">
+            ${correct ? "Correct" : "Review this answer"}
+          </span>
         </div>
+
         <h3>${escapeHTML(question.prompt)}</h3>
-        <p class="explanation-your-answer">Your answer: <strong>${escapeHTML(userAnswer || "Not answered")}</strong></p>
-        <p class="explanation-correct-answer">Correct answer: <strong>${escapeHTML(question.answer)}</strong></p>
+
+        <p class="explanation-your-answer">
+          Your answer: <strong>${escapeHTML(userAnswer || "Not answered")}</strong>
+        </p>
+
+        <p class="explanation-correct-answer">
+          Correct answer: <strong>${escapeHTML(question.answer)}</strong>
+        </p>
+
         <p>${escapeHTML(question.explanation)}</p>
       </article>
     `).join("")}
-    <button id="try-again" class="button button-primary" type="button">Try this passage again</button>`;
 
-  $("#try-again").addEventListener("click", () => openTest(activeTest.id));
+    <button id="try-again" class="button button-primary" type="button">
+      Try this passage again
+    </button>`;
+
+  $("#try-again").addEventListener("click", () => {
+    openTest(activeTest.id);
+  });
 }
 
 function saveReadingResult(score, total, percentage) {
@@ -579,7 +1138,8 @@ function saveReadingResult(score, total, percentage) {
 
     const next = {
       ...previous,
-      completedSessions: (Number(previous.completedSessions) || 0) + 1,
+      completedSessions:
+        (Number(previous.completedSessions) || 0) + 1,
       lastReadingScore: score,
       lastReadingTotal: total,
       lastReadingPercentage: percentage
@@ -587,38 +1147,55 @@ function saveReadingResult(score, total, percentage) {
 
     localStorage.setItem(key, JSON.stringify(next));
   } catch (error) {
-    console.warn("Reading progress could not be saved in this browser.", error);
+    console.warn(
+      "Reading progress could not be saved in this browser.",
+      error
+    );
   }
 }
+
+/* =========================================================
+   EVENT LISTENERS
+   ========================================================= */
 
 $("#check-answers").addEventListener("click", checkAnswers);
 
 showExplanationsButton.addEventListener("click", () => {
   const willShow = explanationsBox.hidden;
+
   explanationsBox.hidden = !willShow;
+
   showExplanationsButton.textContent = willShow
     ? "Hide explanations"
     : "Show explanations";
 
   if (willShow) {
-    explanationsBox.scrollIntoView({ behavior: "smooth", block: "start" });
+    explanationsBox.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
   }
 });
 
 $("#back-to-library").addEventListener("click", () => {
   clearInterval(timerInterval);
+
   testScreen.hidden = true;
   library.hidden = false;
-  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
 });
 
 searchInput.addEventListener("input", renderLibrary);
 
-document.querySelectorAll(".filter-button").forEach((button) => {
+document.querySelectorAll(".filter-button").forEach(button => {
   button.addEventListener("click", () => {
     activeFilter = button.dataset.filter;
 
-    document.querySelectorAll(".filter-button").forEach((item) => {
+    document.querySelectorAll(".filter-button").forEach(item => {
       item.classList.toggle("active", item === button);
     });
 
@@ -626,4 +1203,6 @@ document.querySelectorAll(".filter-button").forEach((button) => {
   });
 });
 
+/* Initialise the library and workspace styling. */
+addWorkspaceStyles();
 renderLibrary();

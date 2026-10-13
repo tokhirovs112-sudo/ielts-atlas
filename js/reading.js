@@ -1316,3 +1316,827 @@ renderLibrary = function () {
  * Your original Palladio practice remains available as before.
  */
 renderLibrary();
+
+
+/* =========================================================
+   IELTS ATLAS — COMPLETE READING MODES
+   Passage 1 / Passage 2 / Passage 3 / Full Reading
+   ========================================================= */
+
+let isFullReadingMode = false;
+let fullReadingDuration = 60 * 60;
+let currentPassageTab = 1;
+
+const passageOne = readingTests.find(
+  test => test.id === "palladio-exhibition"
+);
+const passageTwo = readingTests.find(
+  test => test.id === "artists-liars"
+);
+const passageThree = readingTests.find(
+  test => test.id === "amateur-naturalists"
+);
+
+if (!passageOne || !passageTwo || !passageThree) {
+  console.error("IELTS Atlas: One or more reading passages are missing.");
+}
+
+/* Correct the four choose-two questions so each numbered
+   question is answered and marked independently. */
+const confabulationOptions = {
+  A: "They have lost cognitive abilities.",
+  B: "They do not deliberately tell a lie.",
+  C: "They are normally aware of their condition.",
+  D: "They do not have the impetus to explain what they do not understand.",
+  E: "They try to make up stories."
+};
+
+const fictionOptions = {
+  A: "They give more meaning to the stories.",
+  B: "They tell lies for the benefit of themselves.",
+  C: "They have nothing to do with the truth out there.",
+  D: "We can be misled by them if not careful.",
+  E: "We know there are lies in the content."
+};
+
+if (passageTwo) {
+  passageTwo.questions.forEach(question => {
+    if (question.number === 20) {
+      question.type = "choice";
+      question.answer = "B";
+      question.options = ["A", "B", "C", "D", "E"];
+      question.optionLabels = confabulationOptions;
+    }
+
+    if (question.number === 21) {
+      question.type = "choice";
+      question.answer = "E";
+      question.options = ["A", "B", "C", "D", "E"];
+      question.optionLabels = confabulationOptions;
+    }
+
+    if (question.number === 22) {
+      question.type = "choice";
+      question.answer = "A";
+      question.options = ["A", "B", "C", "D", "E"];
+      question.optionLabels = fictionOptions;
+    }
+
+    if (question.number === 23) {
+      question.type = "choice";
+      question.answer = "E";
+      question.options = ["A", "B", "C", "D", "E"];
+      question.optionLabels = fictionOptions;
+    }
+  });
+}
+
+/* Add the full option text for Passage 3 multiple-choice questions. */
+const passageThreeOptionLabels = {
+  37: {
+    A: "Scientific methods were not used in data collection.",
+    B: "Amateur observers are not careful in recording their data.",
+    C: "Amateur data is not reliable.",
+    D: "Amateur data is produced by wrong candidates."
+  },
+  38: {
+    A: "Amateur records can't be used.",
+    B: "Amateur records are always unsystematic.",
+    C: "The colour change of leaves is hard to observe.",
+    D: "Valuable information is often precise."
+  },
+  39: {
+    A: "Using improved methods.",
+    B: "Being more careful in observation.",
+    C: "Using raw materials.",
+    D: "Applying statistical techniques in data collection."
+  },
+  40: {
+    A: "It empowers the public.",
+    B: "It promotes public relations.",
+    C: "It warns people of animal infestation.",
+    D: "It raises awareness about climate change in the public."
+  }
+};
+
+if (passageThree) {
+  passageThree.questions.forEach(question => {
+    if (passageThreeOptionLabels[question.number]) {
+      question.optionLabels = passageThreeOptionLabels[question.number];
+    }
+  });
+}
+
+/* Ensure the questions can be joined without changing their original numbers. */
+const allReadingPassages = [passageOne, passageTwo, passageThree].filter(Boolean);
+
+const fullReadingTest = {
+  id: "full-reading",
+  title: "Full IELTS Reading Test",
+  category: "Full Reading",
+  level: "Academic",
+  instructions:
+    "Complete all three passages and Questions 1–40 in 60 minutes. Use the tabs at the bottom to navigate between passages.",
+  questions: allReadingPassages.flatMap((test, index) =>
+    test.questions.map(question => ({
+      ...question,
+      passageNumber: index + 1
+    }))
+  )
+};
+
+/* Styling for the bottom navigation and passage sections. */
+(function addFullReadingStyles() {
+  if ($("#full-reading-extension-styles")) return;
+
+  const style = document.createElement("style");
+  style.id = "full-reading-extension-styles";
+  style.textContent = `
+    .passage-tabs {
+      position: sticky;
+      bottom: 0;
+      z-index: 20;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px;
+      margin: 16px 0;
+      border: 1px solid #dce5de;
+      border-radius: 14px;
+      background: rgba(255,255,255,.97);
+      box-shadow: 0 -4px 16px rgba(20,50,30,.08);
+    }
+
+    .passage-tabs button {
+      border: 1px solid #dce5de;
+      border-radius: 9px;
+      padding: 10px 15px;
+      background: #f7faf7;
+      color: #246c40;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .passage-tabs button.active {
+      background: #246c40;
+      border-color: #246c40;
+      color: white;
+    }
+
+    .passage-tabs button:focus-visible {
+      outline: 2px solid #368653;
+      outline-offset: 3px;
+    }
+
+    .full-passage-section,
+    .full-question-section {
+      scroll-margin-top: 12px;
+    }
+
+    .full-passage-section + .full-passage-section {
+      margin-top: 26px;
+      padding-top: 20px;
+      border-top: 2px solid #e4ebe5;
+    }
+
+    .full-section-title {
+      margin: 8px 0 14px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .heading-bank {
+      margin: 12px 0 18px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #f5f8f5;
+      line-height: 1.7;
+    }
+
+    .heading-bank p {
+      margin: 3px 0;
+    }
+
+    .question-option-description {
+      display: block;
+      margin: 2px 0 2px 25px;
+      color: #526057;
+      line-height: 1.45;
+    }
+
+    .full-reading-timer {
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+    }
+
+    @media (max-width: 760px) {
+      .passage-tabs {
+        position: sticky;
+        bottom: 0;
+      }
+
+      .passage-tabs button {
+        flex: 1 1 40%;
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
+})();
+
+/* Keep the library cards for the three individual passages and add
+   a working Full Reading card. */
+renderLibrary = function () {
+  originalRenderLibrary();
+
+  const searchTerm = searchInput.value.trim().toLowerCase();
+
+  if (searchTerm || activeFilter !== "All") return;
+
+  const fullCard = document.createElement("article");
+  fullCard.className = "reading-test-card";
+  fullCard.innerHTML = `
+    <div class="test-card-top">
+      <span class="test-tag">FULL READING</span>
+      <span class="test-level">Academic</span>
+    </div>
+    <h3>Full IELTS Reading Test</h3>
+    <p>3 passages · Questions 1–40 · 60 minutes</p>
+    <button class="button button-primary" type="button">
+      Start full test <span aria-hidden="true">→</span>
+    </button>
+  `;
+
+  fullCard.querySelector("button").addEventListener("click", () => {
+    openTest("full-reading");
+  });
+
+  testList.prepend(fullCard);
+};
+
+/* Render passage text with paragraph labels.
+   Passage 1 uses numbered paragraphs; Passages 2 and 3 use letters. */
+function renderPassageHTML(test, passageNumber, fullMode = false) {
+  const paragraphs = test.passage.map((paragraph, index) => {
+    const marker = passageNumber === 1
+      ? String(index + 1)
+      : String.fromCharCode(65 + index);
+
+    return `
+      <p>
+        <span class="paragraph-number">${marker}</span>
+        ${escapeHTML(paragraph)}
+      </p>
+    `;
+  }).join("");
+
+  const sectionTitle = fullMode
+    ? `<h3 class="full-section-title">Passage ${passageNumber}: ${escapeHTML(test.title)}</h3>`
+    : "";
+
+  return `
+    <section
+      class="${fullMode ? "full-passage-section" : ""}"
+      id="passage-section-${passageNumber}"
+    >
+      ${sectionTitle}
+      <div class="passage-header">
+        <span class="eyebrow">READING PASSAGE ${passageNumber}</span>
+        <span class="passage-question-count">${test.questions.length} questions</span>
+      </div>
+      <div class="passage-content">${paragraphs}</div>
+    </section>
+  `;
+}
+
+function renderHeadingBank(test) {
+  if (!test.headings) return "";
+
+  return `
+    <div class="heading-bank">
+      <strong>List of Headings</strong>
+      ${test.headings.map(heading =>
+        `<p>${escapeHTML(heading)}</p>`
+      ).join("")}
+    </div>
+  `;
+}
+
+function getQuestionOptionLabel(question, option) {
+  return question.optionLabels?.[option]
+    ? `${option}. ${question.optionLabels[option]}`
+    : option;
+}
+
+function renderQuestion(question) {
+  const number = question.number;
+
+  if (question.type === "text") {
+    return `
+      <div class="question-card short-answer-card" id="question-${number}">
+        <label class="short-answer-label" for="q${number}">
+          <span class="question-number">${number}</span>
+          <span class="question-prompt">${escapeHTML(question.prompt)}</span>
+        </label>
+        <input
+          class="short-answer-input"
+          id="q${number}"
+          name="q${number}"
+          type="text"
+          maxlength="100"
+          placeholder="Type your answer..."
+          autocomplete="off"
+          spellcheck="false"
+        >
+        <div class="question-feedback" hidden></div>
+      </div>
+    `;
+  }
+
+  return `
+    <fieldset class="question-card" id="question-${number}">
+      <legend>
+        <span class="question-number">${number}</span>
+        <span class="question-prompt">${escapeHTML(question.prompt)}</span>
+      </legend>
+      <div class="answer-options">
+        ${question.options.map(option => `
+          <label class="answer-option">
+            <input type="radio" name="q${number}" value="${escapeHTML(option)}">
+            <span>
+              ${escapeHTML(option)}
+              ${question.optionLabels?.[option]
+                ? `<span class="question-option-description">${escapeHTML(question.optionLabels[option])}</span>`
+                : ""}
+            </span>
+          </label>
+        `).join("")}
+      </div>
+      <div class="question-feedback" hidden></div>
+    </fieldset>
+  `;
+}
+
+function renderQuestionGroups(questions, passageNumber) {
+  const groups = [];
+  questions.forEach(question => {
+    const lastGroup = groups[groups.length - 1];
+
+    if (!lastGroup || lastGroup.title !== question.group) {
+      groups.push({
+        title: question.group || `Questions ${question.number}`,
+        questions: [question]
+      });
+    } else {
+      lastGroup.questions.push(question);
+    }
+  });
+
+  const passage = allReadingPassages[passageNumber - 1];
+
+  return groups.map(group => {
+    const numbers = group.questions.map(q => q.number);
+    const range = numbers.length > 1
+      ? `${numbers[0]}–${numbers[numbers.length - 1]}`
+      : `${numbers[0]}`;
+
+    const headingBank =
+      passageNumber === 2 && group.title === "MATCHING HEADINGS"
+        ? renderHeadingBank(passage)
+        : "";
+
+    return `
+      <section class="question-group">
+        <div class="question-group-heading">
+          <h3>Questions ${range}: ${escapeHTML(group.title)}</h3>
+        </div>
+        ${headingBank}
+        ${group.questions.map(renderQuestion).join("")}
+      </section>
+    `;
+  }).join("");
+}
+
+function renderQuestions() {
+  if (isFullReadingMode) {
+    questionForm.innerHTML = allReadingPassages.map((test, index) => {
+      const passageNumber = index + 1;
+      const questions = fullReadingTest.questions.filter(
+        question => question.passageNumber === passageNumber
+      );
+
+      return `
+        <section
+          class="full-question-section"
+          id="questions-passage-${passageNumber}"
+        >
+          <h3 class="full-section-title">Passage ${passageNumber} Questions</h3>
+          ${renderQuestionGroups(questions, passageNumber)}
+        </section>
+      `;
+    }).join("");
+  } else {
+    const passageNumber = allReadingPassages.findIndex(
+      test => test.id === activeTest.id
+    ) + 1;
+
+    questionForm.innerHTML = renderQuestionGroups(
+      activeTest.questions,
+      passageNumber
+    );
+  }
+
+  questionForm.querySelectorAll("input").forEach(input => {
+    input.addEventListener("input", updateAnsweredCount);
+    input.addEventListener("change", updateAnsweredCount);
+  });
+
+  updateAnsweredCount();
+}
+
+function renderPassageTabs() {
+  document.querySelector(".passage-tabs")?.remove();
+
+  if (!isFullReadingMode) return;
+
+  const tabs = document.createElement("nav");
+  tabs.className = "passage-tabs";
+  tabs.setAttribute("aria-label", "Navigate reading passages");
+  tabs.innerHTML = `
+    <button type="button" data-passage="1" class="active">Passage 1</button>
+    <button type="button" data-passage="2">Passage 2</button>
+    <button type="button" data-passage="3">Passage 3</button>
+    <button type="button" data-passage="all">All passages</button>
+  `;
+
+  const layout = $(".test-layout");
+  if (layout) {
+    layout.insertAdjacentElement("afterend", tabs);
+  } else {
+    testScreen.appendChild(tabs);
+  }
+
+  tabs.querySelectorAll("button").forEach(button => {
+    button.addEventListener("click", () => {
+      tabs.querySelectorAll("button").forEach(item => {
+        item.classList.toggle("active", item === button);
+      });
+
+      const selected = button.dataset.passage;
+
+      if (selected === "all") {
+        passageText.scrollTo({ top: 0, behavior: "smooth" });
+        questionForm.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+
+      const number = Number(selected);
+      currentPassageTab = number;
+
+      document.getElementById(`passage-section-${number}`)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+      document.getElementById(`questions-passage-${number}`)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+}
+
+/* Open individual passages or the combined 40-question test. */
+openTest = function (testId) {
+  isFullReadingMode = testId === "full-reading";
+  activeTest = isFullReadingMode
+    ? fullReadingTest
+    : readingTests.find(test => test.id === testId);
+
+  if (!activeTest) return;
+
+  checked = false;
+  clearInterval(timerInterval);
+  currentPassageTab = 1;
+
+  library.hidden = true;
+  testScreen.hidden = false;
+
+  $("#test-category").textContent = activeTest.category.toUpperCase();
+  $("#test-title").textContent = activeTest.title;
+  $("#test-instructions").textContent = activeTest.instructions;
+
+  if (isFullReadingMode) {
+    passageText.innerHTML = allReadingPassages.map((test, index) =>
+      renderPassageHTML(test, index + 1, true)
+    ).join("");
+  } else {
+    const passageNumber = allReadingPassages.findIndex(
+      test => test.id === activeTest.id
+    ) + 1;
+
+    passageText.innerHTML = renderPassageHTML(
+      activeTest,
+      passageNumber,
+      false
+    );
+  }
+
+  renderQuestions();
+  renderPassageTabs();
+
+  resultMessage.innerHTML = "";
+  resultMessage.className = "result-message";
+  explanationsBox.innerHTML = "";
+  explanationsBox.hidden = true;
+
+  showExplanationsButton.hidden = true;
+  showExplanationsButton.textContent = "Show explanations";
+
+  $("#check-answers").disabled = false;
+  $("#check-answers").textContent = "Check answers";
+
+  const progress = $("#reading-progress-label");
+  if (progress) progress.remove();
+
+  setupReadingWorkspace();
+
+  startedAt = Date.now();
+  updateTimer();
+  timerInterval = setInterval(updateTimer, 1000);
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
+/* Answer retrieval and scoring. */
+getUserAnswer = function (question) {
+  if (question.type === "choice") {
+    return questionForm.querySelector(
+      `input[name="q${question.number}"]:checked`
+    )?.value || "";
+  }
+
+  return questionForm.elements[`q${question.number}`]?.value?.trim() || "";
+};
+
+isCorrect = function (question, userAnswer) {
+  const actual = normaliseAnswer(userAnswer);
+
+  if (question.type === "choice") {
+    return actual === normaliseAnswer(question.answer);
+  }
+
+  return (question.answers || [question.answer]).some(answer =>
+    normaliseAnswer(answer) === actual
+  );
+};
+
+updateAnsweredCount = function () {
+  if (checked || !activeTest) return;
+
+  const questions = isFullReadingMode
+    ? fullReadingTest.questions
+    : activeTest.questions;
+
+  const answered = questions.filter(question =>
+    getUserAnswer(question).trim() !== ""
+  ).length;
+
+  let progress = $("#reading-progress-label");
+
+  if (!progress) {
+    progress = document.createElement("p");
+    progress.id = "reading-progress-label";
+    progress.className = "reading-progress-label";
+    $("#test-instructions").insertAdjacentElement("afterend", progress);
+  }
+
+  progress.textContent =
+    `${answered} of ${questions.length} questions answered`;
+};
+
+/* Full test counts down from 60:00; individual practice counts up. */
+updateTimer = function () {
+  if (!startedAt) return;
+
+  const elapsed = Math.floor((Date.now() - startedAt) / 1000);
+  let seconds;
+
+  if (isFullReadingMode) {
+    seconds = Math.max(0, fullReadingDuration - elapsed);
+  } else {
+    seconds = elapsed;
+  }
+
+  const minutes = String(Math.floor(seconds / 60)).padStart(2, "0");
+  const remainingSeconds = String(seconds % 60).padStart(2, "0");
+  const timer = $("#timer");
+
+  if (timer) {
+    timer.textContent = `${minutes}:${remainingSeconds}`;
+    timer.classList.toggle(
+      "full-reading-timer",
+      isFullReadingMode
+    );
+    timer.setAttribute(
+      "aria-label",
+      isFullReadingMode ? "Time remaining" : "Time elapsed"
+    );
+  }
+
+  if (isFullReadingMode && seconds === 0 && !checked) {
+    clearInterval(timerInterval);
+    checkAnswers();
+  }
+};
+
+checkAnswers = function () {
+  if (!activeTest || checked) return;
+
+  checked = true;
+  clearInterval(timerInterval);
+
+  const questions = isFullReadingMode
+    ? fullReadingTest.questions
+    : activeTest.questions;
+
+  const outcomes = questions.map(question => {
+    const userAnswer = getUserAnswer(question);
+
+    return {
+      question,
+      userAnswer,
+      correct: isCorrect(question, userAnswer)
+    };
+  });
+
+  const correctCount = outcomes.filter(item => item.correct).length;
+  const unansweredCount = outcomes.filter(
+    item => !item.userAnswer
+  ).length;
+
+  const percentage = Math.round(
+    (correctCount / questions.length) * 100
+  );
+
+  outcomes.forEach(({ question, userAnswer, correct }) => {
+    const card = $(`#question-${question.number}`);
+    if (!card) return;
+
+    const feedback = $(".question-feedback", card);
+
+    card.classList.remove("is-correct", "is-incorrect");
+    card.classList.add(correct ? "is-correct" : "is-incorrect");
+
+    if (feedback) {
+      feedback.hidden = false;
+      feedback.className =
+        `question-feedback ${correct ? "feedback-correct" : "feedback-incorrect"}`;
+
+      feedback.innerHTML = correct
+        ? `<span class="feedback-icon">✓</span> Correct`
+        : `<span class="feedback-icon">✕</span> ${
+            userAnswer
+              ? `Your answer: <strong>${escapeHTML(userAnswer)}</strong>`
+              : "Not answered"
+          }`;
+    }
+  });
+
+  questionForm.querySelectorAll("input").forEach(input => {
+    input.disabled = true;
+  });
+
+  $("#check-answers").disabled = true;
+  $("#check-answers").textContent = "Answers checked";
+  showExplanationsButton.hidden = false;
+
+  const passageResults = allReadingPassages.map((test, index) => {
+    const passageNumber = index + 1;
+    const passageOutcomes = outcomes.filter(item =>
+      isFullReadingMode
+        ? item.question.passageNumber === passageNumber
+        : test.id === activeTest.id
+    );
+
+    if (!passageOutcomes.length) return "";
+
+    const score = passageOutcomes.filter(item => item.correct).length;
+
+    return `
+      <div>
+        <span>Passage ${passageNumber}</span>
+        <strong>${score}/${passageOutcomes.length}</strong>
+      </div>
+    `;
+  }).join("");
+
+  const elapsed = Math.floor((Date.now() - startedAt) / 1000);
+  const timeTaken = isFullReadingMode
+    ? Math.min(elapsed, fullReadingDuration)
+    : elapsed;
+
+  const timeTakenText =
+    `${String(Math.floor(timeTaken / 60)).padStart(2, "0")}:` +
+    `${String(timeTaken % 60).padStart(2, "0")}`;
+
+  resultMessage.className = "result-message result-visible";
+  resultMessage.innerHTML = `
+    <div class="results-card">
+      <div class="results-topline">
+        <span class="eyebrow">YOUR RESULTS</span>
+        <span class="results-complete">Practice completed</span>
+      </div>
+
+      <div class="results-score-row">
+        <div>
+          <div class="results-score">
+            ${correctCount}<span>/${questions.length}</span>
+          </div>
+          <p class="results-score-caption">answers correct</p>
+        </div>
+        <div class="results-percentage">
+          <strong>${percentage}%</strong>
+          <span>accuracy</span>
+        </div>
+      </div>
+
+      <div class="results-track">
+        <span style="width:${percentage}%"></span>
+      </div>
+
+      <div class="results-breakdown">
+        ${passageResults}
+        <div>
+          <span>Time taken</span>
+          <strong>${timeTakenText}</strong>
+        </div>
+        <div>
+          <span>Unanswered</span>
+          <strong>${unansweredCount}</strong>
+        </div>
+      </div>
+
+      <p class="results-note">
+        This is practice feedback, not an official IELTS band score.
+      </p>
+    </div>
+  `;
+
+  saveReadingResult(correctCount, questions.length, percentage);
+  renderExplanations(outcomes);
+
+  resultMessage.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+};
+
+renderExplanations = function (outcomes) {
+  explanationsBox.innerHTML = `
+    <div class="explanations-heading">
+      <span class="eyebrow">LEARN FROM YOUR ANSWERS</span>
+      <h2>Answer explanations</h2>
+      <p>Review the correct answers and the reasoning behind them.</p>
+    </div>
+
+    ${outcomes.map(({ question, userAnswer, correct }) => `
+      <article class="explanation-card ${
+        correct ? "explanation-correct" : "explanation-incorrect"
+      }">
+        <div class="explanation-card-top">
+          <span class="question-number">${question.number}</span>
+          <span class="explanation-status">
+            ${correct ? "Correct" : "Review this answer"}
+          </span>
+        </div>
+
+        <h3>${escapeHTML(question.prompt)}</h3>
+
+        <p class="explanation-your-answer">
+          Your answer: <strong>${escapeHTML(userAnswer || "Not answered")}</strong>
+        </p>
+
+        <p class="explanation-correct-answer">
+          Correct answer: <strong>${escapeHTML(
+            Array.isArray(question.answer)
+              ? question.answer.join(", ")
+              : question.answer
+          )}</strong>
+        </p>
+
+        <p>${escapeHTML(question.explanation || "Review the relevant passage to confirm the answer.")}</p>
+      </article>
+    `).join("")}
+
+    <button id="try-again" class="button button-primary" type="button">
+      Try this test again
+    </button>
+  `;
+
+  $("#try-again").addEventListener("click", () => {
+    openTest(activeTest.id);
+  });
+};
+
+/* Re-render the library after replacing its renderer. */
+renderLibrary();
+

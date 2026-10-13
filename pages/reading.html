@@ -1,1 +1,118 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reading Practice — IELTS Atlas</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/reading.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark">A</span>
+      <span>IELTS Atlas</span>
+    </a>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="../index.html">Home</a>
+      <a class="active" href="reading.html">Reading</a>
+      <a href="listening.html">Listening</a>
+      <a href="writing.html">Writing</a>
+      <a href="speaking.html">Speaking</a>
+    </nav>
+  </header>
+
+  <main class="reading-main">
+    <section class="reading-heading">
+      <span class="eyebrow">IELTS ACADEMIC</span>
+      <h1>Reading practice</h1>
+      <p>Choose a passage, practise at your own pace, and learn from your mistakes.</p>
+    </section>
+
+    <section id="library">
+      <div class="reading-search">
+        <label for="search-tests">Find a practice test</label>
+        <input
+          id="search-tests"
+          type="search"
+          placeholder="Search by title or keyword..."
+        >
+      </div>
+
+      <div class="reading-filters" aria-label="Filter reading tests">
+        <button class="filter-button active" data-filter="All">All tests</button>
+        <button class="filter-button" data-filter="Passage 1">Passage 1</button>
+        <button class="filter-button" data-filter="Passage 2">Passage 2</button>
+        <button class="filter-button" data-filter="Passage 3">Passage 3</button>
+        <button class="filter-button" data-filter="Full Reading">Full Reading</button>
+      </div>
+
+      <div class="library-summary">
+        <h2>Practice library</h2>
+        <span id="test-count">Loading tests...</span>
+      </div>
+
+      <div id="test-list" class="reading-test-list"></div>
+    </section>
+
+    <section id="test-screen" hidden>
+      <button id="back-to-library" class="text-button">
+        ← Back to library
+      </button>
+
+      <div class="test-toolbar">
+        <div>
+          <span class="eyebrow" id="test-category">PASSAGE 1</span>
+          <h1 id="test-title"></h1>
+        </div>
+
+        <div class="timer-box">
+          <span>TIME SPENT</span>
+          <strong id="timer">00:00</strong>
+        </div>
+      </div>
+
+      <p id="test-instructions" class="test-instructions"></p>
+
+      <div class="test-layout">
+        <article id="passage-text" class="passage-panel"></article>
+
+        <section class="questions-panel">
+          <h2>Questions</h2>
+          <p class="muted">Choose one answer for each question.</p>
+
+          <form id="question-form"></form>
+
+          <button id="check-answers" class="button button-primary" type="button">
+            Check answers
+          </button>
+
+          <p id="result-message" class="result-message" aria-live="polite"></p>
+
+          <button
+            id="show-explanations"
+            class="button button-secondary"
+            type="button"
+            hidden
+          >
+            Show explanations
+          </button>
+
+          <div id="explanations" class="explanations" hidden></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="brand footer-brand" href="../index.html">
+      <span class="brand-mark">A</span>
+      <span>IELTS Atlas</span>
+    </a>
+    <p>Independent IELTS practice project.</p>
+    <p>Not affiliated with or endorsed by IELTS.</p>
+  </footer>
+</body>
+</html>

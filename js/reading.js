@@ -1206,3 +1206,113 @@ document.querySelectorAll(".filter-button").forEach(button => {
 /* Initialise the library and workspace styling. */
 addWorkspaceStyles();
 renderLibrary();
+/* =========================================================
+   IELTS ATLAS — ADDITIONAL READING PASSAGES
+   Passages 2 & 3 + Full Reading mode
+   ========================================================= */
+
+const extraReadingTests = [
+  {
+    id: "artists-liars",
+    title: "Are Artists Liars?",
+    category: "Passage 2",
+    level: "Academic",
+    passage: [
+      `Shortly before his death, Marlon Brando was working on a series of instructional videos about acting, to be called "Lying for a Living". On the surviving footage, Brando can be seen dispensing advice on his craft to a group of Hollywood stars, including Leonardo Di Caprio and Sean Penn. Brando also recruited random people from the Los Angeles street and persuaded them to improvise. "If you can lie, you can act," Brando told Jod Kaftan, a writer for Rolling Stone. "Are you good at lying?" asked Kaftan. "Jesus," said Brando, "I'm fabulous at it."`,
+      `Brando was not the first person to note that the line between an artist and a liar is a fine one. If art is a kind of lying, then lying is a form of art, albeit of a lower order. Lying and artistic storytelling spring from a common neurological root, exposed in psychiatric patients who suffer from a particular kind of impairment. Both liars and artists refuse to accept the tyranny of reality. Both carefully craft stories worthy of belief, a skill requiring intellectual sophistication, emotional sensitivity and physical self-control. Such parallels are hardly coincidental.`,
+      `A case study published in 1985 by neurologist Antonio Damasio tells the story of a middle-aged woman with brain damage caused by strokes. She retained cognitive abilities, including coherent speech, but what she said was unpredictable. In psychiatry, she was "confabulating". Chronic confabulation is a rare type of memory problem. It is defined as the production of fabricated, distorted or misinterpreted memories without the conscious intention to deceive. Amnesiacs make errors of omission, but confabulators make errors of commission: they make things up. They are nearly always unaware of their condition and may earnestly give absurd explanations. Confabulators are not trying to deceive. They engage in what one neuropsychologist calls "honest lying". Uncertain and distressed by their uncertainty, they feel a compulsion to narrate: a need to shape, order and explain what they do not understand. They can be highly inventive verbally, but unlike writers, they have little or no control over their material.`,
+      `The wider significance of this condition is what it tells us about ourselves. There is a river of verbal creativity in the normal human mind, from which artistic invention and lying are drawn. We are born storytellers, spinning narratives out of experience and imagination. This gives us the ability to conceive of alternative futures and different worlds and to understand our lives through the stories of others. But it can lead us into trouble when we try to persuade others that our inventions are real. Most of the time, we control which stories we tell and to whom. Yet people lie for all sorts of reasons, including the fact that confabulating can be dangerously fun.`,
+      `During a famous libel case in 1996, Jonathan Aitken, a former cabinet minister, recounted a tale about the horrors he endured after a national newspaper tainted his name. The case involved claims made by the Guardian about Aitken's relationships with Saudi arms dealers, including meetings he allegedly held on a trip to Paris while a government minister. What amazed many in hindsight was the superfluity of the lies Aitken told during his testimony. His case collapsed in June 1997, when the defence found indisputable evidence about his Paris trip. Until then, his charm, fluency and theatrical sincerity looked as if they might bring him victory. The evidence showed that his daughter was not with him that day and that he had simply got into his car and driven off, with no vehicle in pursuit.`,
+      `Unlike Aitken, actors, playwrights and novelists are not literally attempting to deceive us, because the rules are laid out in advance: come to the theatre, or open this book, and we will lie to you. Art provides a safe space into which our lies can be channelled into something socially useful. Given the universal compulsion to tell stories, art is a way to refine and enjoy insightful ones. But artistic lies differ from normal lies and from the "honest lying" of confabulators: they have meaning beyond their creator. The liar lies on behalf of himself; the artist tells lies on behalf of everyone. Novels express a curious truth disguised as something else. Art is a lie whose secret ingredient is truth.`
+    ],
+    questions: [
+      {number:14,type:"choice",group:"MATCHING HEADINGS",prompt:"Paragraph A",options:["i","ii","iii","iv","v","vi","vii","viii"],answer:"vi",explanation:"Paragraph A introduces the fine line between acting and lying through Marlon Brando's advice."},
+      {number:15,type:"choice",group:"MATCHING HEADINGS",prompt:"Paragraph B",options:["i","ii","iii","iv","v","vi","vii","viii"],answer:"ii",explanation:"Paragraph B explains the neurological similarities between liars and artists."},
+      {number:16,type:"choice",group:"MATCHING HEADINGS",prompt:"Paragraph C",options:["i","ii","iii","iv","v","vi","vii","viii"],answer:"iv",explanation:"Paragraph C describes confabulation and gives examples of people who experience it."},
+      {number:17,type:"choice",group:"MATCHING HEADINGS",prompt:"Paragraph D",options:["i","ii","iii","iv","v","vi","vii","viii"],answer:"viii",explanation:"Paragraph D discusses the creativity involved in storytelling and lying."},
+      {number:18,type:"choice",group:"MATCHING HEADINGS",prompt:"Paragraph E",options:["i","ii","iii","iv","v","vi","vii","viii"],answer:"i",explanation:"Paragraph E illustrates unsuccessful deceit through Jonathan Aitken's failed case."},
+      {number:19,type:"choice",group:"MATCHING HEADINGS",prompt:"Paragraph F",options:["i","ii","iii","iv","v","vi","vii","viii"],answer:"v",explanation:"Paragraph F explains how artists' stories differ from ordinary lies."},
+      {number:20,type:"multi",group:"CHOOSE TWO LETTERS",prompt:"Which TWO statements about people suffering from confabulation are true?",options:["A","B","C","D","E"],answer:["B","E"],explanation:"They do not deliberately intend to deceive, and they invent stories to fill gaps in their understanding."},
+      {number:21,type:"multi",group:"CHOOSE TWO LETTERS",prompt:"Which TWO statements about people suffering from confabulation are true?",options:["A","B","C","D","E"],answer:["B","E"],explanation:"They do not deliberately intend to deceive, and they invent stories to fill gaps in their understanding."},
+      {number:22,type:"multi",group:"CHOOSE TWO LETTERS",prompt:"Which TWO statements about playwrights and novelists are true?",options:["A","B","C","D","E"],answer:["A","E"],explanation:"Art gives stories meaning beyond the creator, and audiences know that the stories are fictional."},
+      {number:23,type:"multi",group:"CHOOSE TWO LETTERS",prompt:"Which TWO statements about playwrights and novelists are true?",options:["A","B","C","D","E"],answer:["A","E"],explanation:"Art gives stories meaning beyond the creator, and audiences know that the stories are fictional."},
+      {number:24,type:"text",group:"SUMMARY COMPLETION",prompt:"A ______ accused Jonathan Aitken, a former cabinet minister, who was involved with Saudi arms dealers.",answers:["national newspaper"],answer:"national newspaper",explanation:"The passage refers to a national newspaper that reported on Aitken."},
+      {number:25,type:"text",group:"SUMMARY COMPLETION",prompt:"The claims concerned Aitken's relationships with Saudi ______.",answers:["arms dealers"],answer:"arms dealers",explanation:"The passage explicitly mentions Saudi arms dealers."},
+      {number:26,type:"text",group:"SUMMARY COMPLETION",prompt:"His charm and theatrical sincerity seemed likely to bring him ______.",answers:["victory"],answer:"victory",explanation:"The passage says his behaviour looked as if it might bring him victory."}
+    ],
+    headings: [
+      "i — Unsuccessful deceit",
+      "ii — Biological basis between liars and artists",
+      "iii — How to lie in an artistic way",
+      "iv — Confabulations and the exemplifiers",
+      "v — The distinction between artists and common liars",
+      "vi — The fine line between liars and artists",
+      "vii — The definition of confabulation",
+      "viii — Creativity when people lie"
+    ]
+  },
+  {
+    id: "amateur-naturalists",
+    title: "Amateur Naturalists",
+    category: "Passage 3",
+    level: "Academic",
+    passage: [
+      `Tim Sparks examines old notebooks containing bee-keeping notes made between 1941 and 1969 by Walter Coates of Kilworth, Leicestershire. He adds the notes to a growing pile of local journals, birdwatchers' lists and gardening diaries. Around two centuries earlier, Robert Marsham began recording the life cycles of plants and animals on his estate. Successive generations of the Marsham family continued these observations for 211 years.`,
+      `Today, such records are being used in ways their authors could not have expected. These data sets are valuable to ecologists studying the timing of biological events, or phenology. Combining historical records with climate data helps researchers discover how temperature changes affect the arrival of spring and improve predictions about climate change. Researchers are examining hundreds of years of observations made by amateur naturalists, and systematic projects have attracted considerable interest.`,
+      `Sparks first discovered the many amateur observers when a retiring colleague gave him the Marsham records. He now follows leads from one historical data set to another. As news of his research spreads, people tell him about other records and more amateur observers come forward. One man from Kent sent him 30 years of kitchen calendars recording when his neighbour's magnolia tree flowered.`,
+      `Other researchers have found data from unusual sources. Ecologist Rafe Sagarin studied records of a betting contest in Alaska in which participants guess the exact time a wooden tripod will fall through the surface of a thawing river. The competition has taken place annually on the Tenana River since 1917. Analysis showed that the thaw now arrives five days earlier than when the contest began.`,
+      `These records show that many natural events now occur earlier across much of the northern hemisphere, including the opening of leaves, returning migratory birds and emerging butterflies. The data can also help predict future changes. Birdwatchers' counts combined with climate models suggest that increased droughts could halve breeding populations at ponds in the American Midwest. Researchers predict that North American waterfowl numbers could fall significantly as global warming increases.`,
+      `Not all professionals are happy to use amateur data. Some scientists believe it contains too many problems because observers may define events differently. Researchers need precise information about what was observed and how carefully and systematically the observations were made. Measuring the beginning of autumn can be especially difficult because deciding when leaves change colour is subjective.`,
+      `Most phenologists believe amateurs can make a valuable contribution, but professional researchers stress the need for quality control. Researchers assess the quality of records and use statistical techniques to account for uncertainty. Scientists are also developing standardised recording schemes. Well-designed studies could produce enough observations to reduce the effect of individual differences. Amateur records are relatively cheap to collect and provide broad geographical coverage over long periods and across many species.`,
+      `Phenology can also help communicate the effects of climate change. The public understand these records and are more likely to accept them. The observations can illustrate consequences such as more rat infestations being reported in warmer years. Involving the public is also good for public relations and empowers people by showing them that their hobby can contribute to scientific research.`
+    ],
+    questions: [
+      {number:27,type:"choice",group:"MATCHING INFORMATION",prompt:"The definition of phenology",options:["A","B","C","D","E","F","G","H"],answer:"B",explanation:"Paragraph B defines phenology as the study of the timing of biological events."},
+      {number:28,type:"choice",group:"MATCHING INFORMATION",prompt:"How Sparks first became aware of amateur records",options:["A","B","C","D","E","F","G","H"],answer:"C",explanation:"Paragraph C explains that a retiring colleague gave Sparks the Marsham records."},
+      {number:29,type:"choice",group:"MATCHING INFORMATION",prompt:"How people reacted to their involvement in data collection",options:["A","B","C","D","E","F","G","H"],answer:"H",explanation:"Paragraph H says people are thrilled that their hobby can contribute to science."},
+      {number:30,type:"choice",group:"MATCHING INFORMATION",prompt:"The necessity to encourage amateur data collection",options:["A","B","C","D","E","F","G","H"],answer:"G",explanation:"Paragraph G explains why large numbers of observers and standardised recording schemes are needed."},
+      {number:31,type:"choice",group:"MATCHING INFORMATION",prompt:"A description of using amateur records to make predictions",options:["A","B","C","D","E","F","G","H"],answer:"E",explanation:"Paragraph E uses historical observations and climate models to predict future effects."},
+      {number:32,type:"choice",group:"MATCHING INFORMATION",prompt:"Records of a competition providing clues to climate change",options:["A","B","C","D","E","F","G","H"],answer:"D",explanation:"Paragraph D describes the Alaskan river-thaw betting contest."},
+      {number:33,type:"choice",group:"MATCHING INFORMATION",prompt:"A very old record compiled by generations of amateur naturalists",options:["A","B","C","D","E","F","G","H"],answer:"A",explanation:"Paragraph A describes the Marsham family records maintained for 211 years."},
+      {number:34,type:"text",group:"SENTENCE COMPLETION",prompt:"Walter Coates's records largely contain information about ______.",answers:["bee-keeping","beekeeping","bee keeping"],answer:"bee-keeping",explanation:"The notebooks contain bee-keeping notes."},
+      {number:35,type:"text",group:"SENTENCE COMPLETION",prompt:"Robert Marsham is famous for recording the ______ of animals and plants on his land.",answers:["life cycles"],answer:"life cycles",explanation:"The passage states that Marsham recorded the life cycles of plants and animals."},
+      {number:36,type:"text",group:"SENTENCE COMPLETION",prompt:"Global warming may cause North American waterfowl numbers to drop significantly due to increased ______.",answers:["droughts"],answer:"droughts",explanation:"The climate models predict increased droughts that could reduce breeding populations."},
+      {number:37,type:"choice",group:"MULTIPLE CHOICE",prompt:"Why do many scientists discredit data collected by amateurs?",options:["A","B","C","D"],answer:"C",explanation:"Some scientists regard amateur data as unreliable because observations may not be systematic."},
+      {number:38,type:"choice",group:"MULTIPLE CHOICE",prompt:"Mark Schwartz used the example of leaves to illustrate that",options:["A","B","C","D"],answer:"D",explanation:"Researchers need precise information about what observers actually recorded."},
+      {number:39,type:"choice",group:"MULTIPLE CHOICE",prompt:"How do scientists suggest amateur data should be used?",options:["A","B","C","D"],answer:"A",explanation:"Researchers propose improved, standardised recording methods and statistical techniques."},
+      {number:40,type:"choice",group:"MULTIPLE CHOICE",prompt:"What is the implication of phenology for ordinary people?",options:["A","B","C","D"],answer:"D",explanation:"Phenology helps the public understand and accept information about climate change."}
+    ]
+  }
+];
+
+readingTests.push(...extraReadingTests);
+
+/* Add a Full Reading card and individual passage cards. */
+const originalRenderLibrary = renderLibrary;
+
+renderLibrary = function () {
+  originalRenderLibrary();
+
+  const searchTerm = searchInput.value.trim().toLowerCase();
+  if (searchTerm) return;
+
+  const fullCard = document.createElement("article");
+  fullCard.className = "reading-test-card";
+  fullCard.innerHTML = `
+    <div class="test-card-top">
+      <span class="test-tag">FULL READING</span>
+      <span class="test-level">Academic</span>
+    </div>
+    <h3>Full IELTS Reading Test</h3>
+    <p>3 passages · Questions 1–40 · 60 minutes</p>
+    <button class="button button-primary" type="button">Start full test →</button>
+  `;
+  $(".button", fullCard).addEventListener("click", () => openTest("full-reading"));
+  testList.prepend(fullCard);
+};
+
+/*
+ * This extension provides the additional passages and their answer keys.
+ * Your original Palladio practice remains available as before.
+ */
+renderLibrary();

@@ -4,111 +4,84 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Practise IELTS Reading, Listening, Writing and Speaking with IELTS Atlas.">
-  <title>IELTS Atlas — Prepare with purpose</title>
+  <meta name="description" content="English Atlas: organised IELTS practice, English articles and podcasts for every level.">
+  <title>English Atlas — Learn with direction</title>
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/resources.js" defer></script>
   <script src="js/app.js" defer></script>
 </head>
 <body>
-  <header class="site-header">
+  <header class="topbar">
     <a class="brand" href="index.html">
-      <span class="brand-mark">A</span>
-      <span>IELTS Atlas</span>
+      <span class="logo">E</span>
+      <span>English Atlas<small>LEARN WITH DIRECTION</small></span>
     </a>
-
-    <nav class="main-nav" aria-label="Main navigation">
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+    <nav class="nav" id="navigation">
       <a class="active" href="index.html">Home</a>
       <a href="pages/reading.html">Reading</a>
       <a href="pages/listening.html">Listening</a>
       <a href="pages/writing.html">Writing</a>
       <a href="pages/speaking.html">Speaking</a>
+      <a href="pages/articles.html">Articles</a>
+      <a href="pages/podcasts.html">Podcasts</a>
     </nav>
   </header>
 
-  <main>
+  <main class="container">
     <section class="hero">
-      <span class="eyebrow">YOUR IELTS PRACTICE SPACE</span>
-      <h1>Prepare smarter.<br><span>Progress with purpose.</span></h1>
-      <p class="hero-description">
-        Practise all four IELTS skills, understand your mistakes,
-        and build confidence one session at a time.
-      </p>
+      <span class="eyebrow">YOUR ENGLISH JOURNEY</span>
+      <h1>Learn English.<br>Find your direction.</h1>
+      <p>One organised space for IELTS preparation, interesting articles, useful podcasts and steady progress.</p>
       <div class="hero-actions">
-        <a class="button button-primary" href="pages/reading.html">
-          Start practising <span aria-hidden="true">→</span>
-        </a>
-        <a class="button button-secondary" href="#skills">Explore skills</a>
+        <a class="button primary" href="pages/reading.html">Start practising →</a>
+        <a class="button secondary" href="pages/articles.html">Explore articles</a>
       </div>
-      <div class="hero-note">
-        <span class="status-dot"></span>
-        Your practice progress is saved in this browser.
+      <div class="stats">
+        <div><strong>04</strong><span>IELTS skills</span></div>
+        <div><strong>03</strong><span>English levels</span></div>
+        <div><strong>∞</strong><span>Room to grow</span></div>
       </div>
     </section>
 
-    <section class="section" id="skills">
+    <section class="section">
       <div class="section-heading">
-        <div>
-          <span class="eyebrow">YOUR WORKSPACE</span>
-          <h2>Choose your skill</h2>
-          <p>Choose a section and practise at your own pace.</p>
-        </div>
+        <div><span class="eyebrow">YOUR WORKSPACE</span><h2>Choose your practice</h2></div>
+        <p>Every skill has its own space.</p>
       </div>
-
-      <div class="skills-grid">
-        <a class="skill-card" href="pages/reading.html">
-          <div class="skill-icon">↗</div>
-          <span class="skill-label">01 / READING</span>
-          <h3>Read with focus</h3>
-          <p>Explore passages, answer questions and review explanations.</p>
-          <span class="card-link">Explore Reading →</span>
-        </a>
-
-        <a class="skill-card" href="pages/listening.html">
-          <div class="skill-icon">♫</div>
-          <span class="skill-label">02 / LISTENING</span>
-          <h3>Train your ears</h3>
-          <p>Choose exam-style tests or flexible listening practice.</p>
-          <span class="card-link">Explore Listening →</span>
-        </a>
-
-        <a class="skill-card" href="pages/writing.html">
-          <div class="skill-icon">✎</div>
-          <span class="skill-label">03 / WRITING</span>
-          <h3>Develop your ideas</h3>
-          <p>Practise tasks and save your writing drafts.</p>
-          <span class="card-link">Explore Writing →</span>
-        </a>
-
-        <a class="skill-card" href="pages/speaking.html">
-          <div class="skill-icon">◖</div>
-          <span class="skill-label">04 / SPEAKING</span>
-          <h3>Speak with confidence</h3>
-          <p>Explore topics and record your speaking practice.</p>
-          <span class="card-link">Explore Speaking →</span>
-        </a>
+      <div class="card-grid">
+        <a class="feature-card" href="pages/reading.html"><span class="icon">▤</span><span class="tag">IELTS</span><h3>Reading</h3><p>Passages, question types and reading practice.</p><span class="card-link">Explore reading →</span></a>
+        <a class="feature-card" href="pages/listening.html"><span class="icon">♫</span><span class="tag">IELTS</span><h3>Listening</h3><p>Audio resources, practice and listening strategies.</p><span class="card-link">Explore listening →</span></a>
+        <a class="feature-card" href="pages/writing.html"><span class="icon">✎</span><span class="tag">IELTS</span><h3>Writing</h3><p>Task 1, essays, planning and writing prompts.</p><span class="card-link">Open writing studio →</span></a>
+        <a class="feature-card" href="pages/speaking.html"><span class="icon">◉</span><span class="tag">IELTS</span><h3>Speaking</h3><p>Questions, cue cards and speaking practice.</p><span class="card-link">Enter speaking room →</span></a>
       </div>
     </section>
 
-    <section class="progress-panel">
-      <div>
-        <span class="eyebrow">YOUR JOURNEY</span>
-        <h2>Every session counts.</h2>
-        <p>Your completed practice sessions will appear here as we build your progress tracker.</p>
+    <section class="section">
+      <div class="section-heading"><div><span class="eyebrow">DISCOVER</span><h2>Learn beyond IELTS</h2></div></div>
+      <div class="card-grid two">
+        <a class="feature-card" href="pages/articles.html"><span class="icon">▧</span><h3>Article library</h3><p>Explore science, technology, culture and more. Choose your English level.</p><span class="card-link">Read articles →</span></a>
+        <a class="feature-card" href="pages/podcasts.html"><span class="icon">♫</span><h3>Podcast library</h3><p>Find listening links by topic and difficulty, from beginner to advanced.</p><span class="card-link">Listen and learn →</span></a>
       </div>
-      <div class="progress-number">
-        <strong id="completed-count">0</strong>
-        <span>Sessions completed</span>
+    </section>
+
+    <section class="section">
+      <div class="section-heading"><div><span class="eyebrow">START AT YOUR LEVEL</span><h2>Choose your level</h2></div></div>
+      <div class="level-picker" id="homeLevels">
+        <button class="level-button active" data-level="All levels">All levels</button>
+        <button class="level-button" data-level="A1–A2">A1–A2 · Beginner</button>
+        <button class="level-button" data-level="B1–B2">B1–B2 · Intermediate</button>
+        <button class="level-button" data-level="C1–C2">C1–C2 · Advanced</button>
       </div>
+      <p class="helper" id="homeLevelMessage">Choose a level to personalise the resources you explore.</p>
+    </section>
+
+    <section class="section">
+      <div class="section-heading"><div><span class="eyebrow">FRESH CONTENT</span><h2>Recently added</h2></div><a class="card-link" href="pages/articles.html">View all →</a></div>
+      <div class="resource-grid" id="recentResources"></div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <a class="brand footer-brand" href="index.html">
-      <span class="brand-mark">A</span>
-      <span>IELTS Atlas</span>
-    </a>
-    <p>An independent IELTS practice project.</p>
-    <p>Not affiliated with or endorsed by IELTS.</p>
-  </footer>
+  <footer class="footer"><strong>English Atlas</strong><span>Learn at your level. Grow at your pace.</span></footer>
 </body>
 </html>

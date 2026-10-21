@@ -58,7 +58,7 @@ window.ATLAS_RESOURCES = [
     topic: "Personal development",
     date: "2026-10-21",
     description: "Practical ideas for understanding motivation and building better habits.",
-    url: "../articles/what-you-should-do-when-you-have-zero-motivation.html"
+    url: "../articles/motivation.html"
 },
   {
     id: 6,

@@ -51,6 +51,14 @@ window.ATLAS_RESOURCES = [
     url: "https://www.youtube.com/watch?v=k2AQfG-ziP8"
   },
   {
+    id:7,
+    type: "article",
+    title: "What you should do when you have zero motivation",
+    level: "B1-B2",
+    date: "2026-10-21",
+    url: "articles/what-you-should-do-when-you-have-zero-motivation.html"
+},
+  {
     id: 6,
     type: "podcast",
     title: "Advanced English Listening",

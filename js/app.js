@@ -69,17 +69,22 @@
   }
 
   function initLevels() {
-    document.querySelectorAll("[data-level]").forEach(button => {
-      button.addEventListener("click", () => {
-        setLevel(button.dataset.level);
-        document.querySelectorAll("[data-level]").forEach(item =>
-          item.classList.toggle("active", item.dataset.level === getLevel()));
-        const message = document.getElementById("homeLevelMessage");
-        if (message) message.textContent = `Selected level: ${getLevel()}. Your preference is saved in this browser.`;
-        renderRecent();
-        renderLibrary();
+      const buttons = document.querySelectorAll("[data-level]");
+
+      buttons.forEach(button => {
+          button.addEventListener("click", () => {
+              const level = button.dataset.level;
+
+              localStorage.setItem("atlasLevel", level);
+
+              buttons.forEach(item => {
+                  item.classList.toggle("active", item === button);
+              });
+
+              renderRecent();
+              renderLibrary();
+          });
       });
-    });
   }
 
   function initMenu() {

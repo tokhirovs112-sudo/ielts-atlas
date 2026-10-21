@@ -8,7 +8,7 @@ window.ATLAS_RESOURCES = [
     topic: "Technology",
     date: "2026-10-21",
     description: "Explore why AI can sound certain while giving an incorrect answer.",
-    url: "#"
+    url: "articles/wrongAI.html"
   },
   {
     id: 2,

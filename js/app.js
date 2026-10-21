@@ -147,12 +147,18 @@
     });
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
     initLevels();
     initMenu();
     initWriting();
     initSpeaking();
     renderRecent();
     renderLibrary();
+
+    document.querySelectorAll("#resourceSearch, #resourceSort").forEach(control => {
+        control.addEventListener("input", renderLibrary);
+        control.addEventListener("change", renderLibrary);
+    });
+});
   });
 })();

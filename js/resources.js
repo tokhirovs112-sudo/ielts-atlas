@@ -51,24 +51,23 @@ window.ATLAS_RESOURCES = [
     url: "https://www.youtube.com/watch?v=k2AQfG-ziP8"
   },
   {
-    id: 7,
-    type: "article",
-    title: "What You Should Do When You Have Zero Motivation",
-    level: "B1–B2",
-    topic: "Personal development",
-    date: "2026-10-21",
-    description: "Practical ideas for understanding motivation and building better habits.",
-    url: "articles/motivation.html"
-},
-  {
     id: 6,
     type: "podcast",
     title: "Advanced English Listening",
     level: "C1–C2",
     topic: "Culture",
     date: "2026-10-12",
-    description: "A placeholder for advanced listening resources.",
+    description: "Practise advanced listening and explore cultural topics.",
     url: "#"
+  },
+  {
+    id: 7,
+    type: "article",
+    title: "What You Should Do When You Have Zero Motivation",
+    level: "B1–B2",
+    topic: "Personal Development",
+    date: "2026-10-21",
+    description: "Practical ideas for understanding motivation and building better habits.",
+    url: "articles/motivation.html"
   }
 ];
-

@@ -1,73 +1,271 @@
 
-window.ATLAS_RESOURCES = [
-  {
-    id: 1,
-    type: "article",
-    title: "Why Can AI Be So Confident and Still Be Wrong?",
-    level: "B1–B2",
-    topic: "Technology",
-    date: "2026-10-21",
-    description: "Explore why AI can sound certain while giving an incorrect answer.",
-    url: "articles/wrongAI.html"
-  },
-  {
-    id: 2,
-    type: "article",
-    title: "Why Do We Need Sleep?",
-    level: "A1–A2",
-    topic: "Science",
-    date: "2026-10-18",
-    description: "Discover why sleep matters and learn useful everyday vocabulary.",
-    url: "#"
-  },
-  {
-    id: 3,
-    type: "article",
-    title: "The Future of Green Cities",
-    level: "C1–C2",
-    topic: "Environment",
-    date: "2026-10-15",
-    description: "Explore sustainable cities, public transport and urban design.",
-    url: "#"
-  },
-  {
-    id: 4,
-    type: "podcast",
-    title: "Everyday English Conversations",
-    level: "A1–A2",
-    topic: "Daily life",
-    date: "2026-10-20",
-    description: "Practise listening to useful phrases for everyday situations.",
-    url: "https://www.youtube.com/watch?v=s2EYIDY8wSM"
-  },
-  {
-    id: 5,
-    type: "podcast",
-    title: "Ideas, Work and Technology",
-    level: "B1–B2",
-    topic: "Technology",
-    date: "2026-10-17",
-    description: "Practise understanding longer conversations and new vocabulary.",
-    url: "https://www.youtube.com/watch?v=k2AQfG-ziP8"
-  },
-  {
-    id: 6,
-    type: "podcast",
-    title: "Advanced English Listening",
-    level: "C1–C2",
-    topic: "Culture",
-    date: "2026-10-12",
-    description: "Practise advanced listening and explore cultural topics.",
-    url: "#"
-  },
-  {
-    id: 7,
-    type: "article",
-    title: "What You Should Do When You Have Zero Motivation",
-    level: "B1–B2",
-    topic: "Personal Development",
-    date: "2026-10-21",
-    description: "Practical ideas for understanding motivation and building better habits.",
-    url: "articles/motivation.html"
-  }
-];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Improve your IELTS skills with reading, listening, writing, speaking, articles and podcasts on IELTS Atlas.">
+  <title>IELTS Atlas | Improve Your English</title>
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .home-hero {
+      padding: 65px 24px;
+      text-align: center;
+    }
+
+    .home-hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1.2;
+      margin-bottom: 18px;
+    }
+
+    .home-hero p {
+      max-width: 680px;
+      margin: 0 auto 24px;
+      line-height: 1.8;
+    }
+
+    .home-button {
+      display: inline-block;
+      margin: 6px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      background: #287d5a;
+      color: white;
+    }
+
+    .home-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 30px 24px;
+    }
+
+    .skill-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .skill-card {
+      display: block;
+      padding: 22px;
+      border: 1px solid #e3e3e3;
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .skill-card h3 {
+      margin-top: 0;
+    }
+
+    .skill-card p {
+      line-height: 1.6;
+      color: #777;
+    }
+
+    .level-picker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .level-button {
+      padding: 9px 15px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      background: transparent;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .level-button.active {
+      background: #287d5a;
+      color: white;
+      border-color: #287d5a;
+    }
+
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .resource-card {
+      padding: 20px;
+      border: 1px solid #e3e3e3;
+      border-radius: 12px;
+    }
+
+    .resource-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: #777;
+      font-size: 0.85rem;
+    }
+
+    .tag {
+      padding: 4px 9px;
+      border-radius: 12px;
+      background: #e8f4ed;
+      color: #287d5a;
+    }
+
+    .resource-card h3 {
+      line-height: 1.4;
+      margin: 16px 0 10px;
+    }
+
+    .resource-card p {
+      line-height: 1.6;
+    }
+
+    .resource-actions {
+      margin-top: 18px;
+    }
+
+    .small-button {
+      display: inline-block;
+      padding: 9px 13px;
+      border-radius: 7px;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .small-button.primary {
+      background: #287d5a;
+      color: white;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .section-heading a {
+      color: #287d5a;
+    }
+
+    .empty {
+      color: #777;
+      padding: 20px 0;
+    }
+
+    @media (max-width: 600px) {
+      .home-hero {
+        padding: 40px 18px;
+      }
+
+      .home-section {
+        padding: 24px 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container nav-container">
+      <a class="brand" href="index.html">IELTS Atlas</a>
+
+      <button id="menuToggle" type="button" aria-label="Toggle navigation">☰</button>
+
+      <nav id="navigation">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="pages/reading.html">Reading</a>
+        <a href="pages/listening.html">Listening</a>
+        <a href="pages/writing.html">Writing</a>
+        <a href="pages/speaking.html">Speaking</a>
+        <a href="pages/articles.html">Articles</a>
+        <a href="pages/podcasts.html">Podcasts</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="home-hero">
+      <h1>Welcome to IELTS Atlas</h1>
+
+      <p>
+        Your space to practise English, prepare for IELTS, discover interesting
+        articles, and improve your listening and reading skills at your own pace.
+      </p>
+
+      <a class="home-button" href="pages/reading.html">Practise Reading</a>
+      <a class="home-button" href="pages/listening.html">Practise Listening</a>
+    </section>
+
+    <section class="home-section">
+      <h2>Explore your skills</h2>
+
+      <div class="skill-grid">
+        <a class="skill-card" href="pages/reading.html">
+          <h3>Reading</h3>
+          <p>Practise comprehension and develop your reading skills.</p>
+        </a>
+
+        <a class="skill-card" href="pages/listening.html">
+          <h3>Listening</h3>
+          <p>Improve your listening through audio practice.</p>
+        </a>
+
+        <a class="skill-card" href="pages/writing.html">
+          <h3>Writing</h3>
+          <p>Practise expressing your ideas and save your drafts.</p>
+        </a>
+
+        <a class="skill-card" href="pages/speaking.html">
+          <h3>Speaking</h3>
+          <p>Explore speaking practice and IELTS-style questions.</p>
+        </a>
+
+        <a class="skill-card" href="pages/articles.html">
+          <h3>Articles</h3>
+          <p>Read about technology, science, personal development and more.</p>
+        </a>
+
+        <a class="skill-card" href="pages/podcasts.html">
+          <h3>Podcasts</h3>
+          <p>Discover listening resources for different English levels.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="home-section">
+      <h2>Choose your English level</h2>
+
+      <div class="level-picker">
+        <button class="level-button" data-level="All levels" type="button">All levels</button>
+        <button class="level-button" data-level="A1–A2" type="button">A1–A2</button>
+        <button class="level-button" data-level="B1–B2" type="button">B1–B2</button>
+        <button class="level-button" data-level="C1–C2" type="button">C1–C2</button>
+      </div>
+
+      <div class="section-heading">
+        <h2>Recently added resources</h2>
+        <a href="pages/articles.html">Explore articles →</a>
+      </div>
+
+      <div id="recentResources" class="resource-grid">
+        <p>Loading resources...</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container">
+    <p>IELTS Atlas · Learn English at your own pace.</p>
+  </footer>
+
+  <script src="js/resources.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

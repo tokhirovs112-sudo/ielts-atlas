@@ -2,23 +2,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Article Library — IELTS Atlas</title>
-<link rel="stylesheet" href="../css/style.css">
-<script src="../js/resources.js" defer></script><script src="../js/app.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore English learning articles for different levels on IELTS Atlas.">
+  <title>Articles | IELTS Atlas</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .page-container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 24px;
+    }
+
+    .page-heading {
+      margin-bottom: 12px;
+    }
+
+    .page-description {
+      color: #777;
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+
+    .library-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .library-controls input,
+    .library-controls select {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font: inherit;
+      background: white;
+      color: #222;
+    }
+
+    .library-controls input {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .level-picker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .level-button {
+      padding: 9px 15px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      background: transparent;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .level-button.active {
+      background: #287d5a;
+      color: white;
+      border-color: #287d5a;
+    }
+
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .resource-card {
+      border: 1px solid #e3e3e3;
+      border-radius: 12px;
+      padding: 20px;
+      background: white;
+    }
+
+    .resource-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      color: #777;
+      font-size: 0.85rem;
+    }
+
+    .tag {
+      background: #e8f4ed;
+      color: #287d5a;
+      padding: 4px 9px;
+      border-radius: 12px;
+    }
+
+    .resource-card h3 {
+      margin: 16px 0 10px;
+      line-height: 1.4;
+    }
+
+    .resource-card p {
+      line-height: 1.6;
+    }
+
+    .resource-actions {
+      margin-top: 18px;
+    }
+
+    .small-button {
+      display: inline-block;
+      padding: 9px 13px;
+      border-radius: 7px;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .small-button.primary {
+      background: #287d5a;
+      color: white;
+    }
+
+    .empty {
+      padding: 24px 0;
+      color: #777;
+    }
+
+    @media (max-width: 600px) {
+      .page-container {
+        margin: 20px auto;
+        padding: 16px;
+      }
+    }
+  </style>
 </head>
+
 <body data-resource-type="article">
-<header class="topbar"><a class="brand" href="../index.html"><span class="logo">E</span><span>English Atlas<small>ARTICLE LIBRARY</small></span></a><button class="menu-toggle" id="menuToggle">☰</button><nav class="nav" id="navigation"><a href="../index.html">Home</a><a href="reading.html">Reading</a><a href="listening.html">Listening</a><a href="writing.html">Writing</a><a href="speaking.html">Speaking</a><a class="active" href="articles.html">Articles</a><a href="podcasts.html">Podcasts</a></nav></header>
-<main class="container">
-<div class="page-header"><div class="breadcrumb">Discover / Articles</div><h1>Article library</h1><p>Explore interesting ideas, expand your vocabulary and find reading material at your level.</p></div>
-<section class="panel"><h2>Filter by English level</h2><div class="level-picker">
-<button class="level-button active" data-level="All levels">All levels</button><button class="level-button" data-level="A1–A2">A1–A2</button><button class="level-button" data-level="B1–B2">B1–B2</button><button class="level-button" data-level="C1–C2">C1–C2</button>
-</div></section>
-<div class="toolbar"><input id="resourceSearch" type="search" placeholder="Search articles by title or topic"><select id="resourceSort" aria-label="Sort articles"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="title">Title A–Z</option></select></div>
-<div id="libraryResources" class="resource-grid"></div>
-</main><footer class="footer"><strong>English Atlas</strong><a href="../index.html">Back home ↑</a></footer>
-<script>
-document.getElementById("resourceSearch").addEventListener("input",()=>document.dispatchEvent(new Event("atlas-filter")));
-document.getElementById("resourceSort").addEventListener("change",()=>document.dispatchEvent(new Event("atlas-filter")));
-</script>
-</body></html>
+  <header class="topbar">
+    <div class="container nav-container">
+      <a class="brand" href="../index.html">IELTS Atlas</a>
+
+      <button id="menuToggle" type="button" aria-label="Toggle navigation">☰</button>
+
+      <nav id="navigation">
+        <a href="../index.html">Home</a>
+        <a href="reading.html">Reading</a>
+        <a href="listening.html">Listening</a>
+        <a href="writing.html">Writing</a>
+        <a href="speaking.html">Speaking</a>
+        <a href="articles.html" aria-current="page">Articles</a>
+        <a href="podcasts.html">Podcasts</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-container">
+    <h1 class="page-heading">English Articles</h1>
+
+    <p class="page-description">
+      Explore interesting topics, improve your reading comprehension,
+      and build your English vocabulary. Choose your level and find an article.
+    </p>
+
+    <h2>Choose your level</h2>
+
+    <div class="level-picker">
+      <button class="level-button" data-level="All levels" type="button">All levels</button>
+      <button class="level-button" data-level="A1–A2" type="button">A1–A2</button>
+      <button class="level-button" data-level="B1–B2" type="button">B1–B2</button>
+      <button class="level-button" data-level="C1–C2" type="button">C1–C2</button>
+    </div>
+
+    <div class="library-controls">
+      <input
+        type="search"
+        id="resourceSearch"
+        placeholder="Search articles..."
+        aria-label="Search articles"
+      >
+
+      <select id="resourceSort" aria-label="Sort articles">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="title">Title A–Z</option>
+      </select>
+    </div>
+
+    <section aria-label="Article library">
+      <div id="libraryResources" class="resource-grid">
+        <p>Loading articles...</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container">
+    <p>IELTS Atlas · Learn English at your own pace.</p>
+  </footer>
+
+  <script src="../js/resources.js"></script>
+  <script src="../js/app.js"></script>
+</body>
+</html>

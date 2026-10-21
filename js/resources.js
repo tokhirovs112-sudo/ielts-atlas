@@ -51,12 +51,14 @@ window.ATLAS_RESOURCES = [
     url: "https://www.youtube.com/watch?v=k2AQfG-ziP8"
   },
   {
-    id:7,
+    id: 7,
     type: "article",
-    title: "What you should do when you have zero motivation",
+    title: "What You Should Do When You Have Zero Motivation",
     level: "B1–B2",
+    topic: "Personal development",
     date: "2026-10-21",
-    url: "articles/what-you-should-do-when-you-have-zero-motivation.html"
+    description: "Practical ideas for understanding motivation and building better habits.",
+    url: "../articles/what-you-should-do-when-you-have-zero-motivation.html"
 },
   {
     id: 6,

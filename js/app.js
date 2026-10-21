@@ -1,6 +1,7 @@
 
 (() => {
   const resources = window.ATLAS_RESOURCES || [];
+
   const LEVELS = ["All levels", "A1–A2", "B1–B2", "C1–C2"];
 
   const escapeHTML = value =>
@@ -16,31 +17,42 @@
     return localStorage.getItem("atlas-level") || "All levels";
   }
 
-  function levelButtons() {
-    return `<div class="level-picker">
-      ${LEVELS.map(level => `
-        <button
-          class="level-button ${getLevel() === level ? "active" : ""}"
-          data-level="${level}"
-          type="button"
-        >${level}</button>
-      `).join("")}
-    </div>`;
+  function setLevel(level) {
+    localStorage.setItem("atlas-level", level);
+  }
+
+  // Makes article links work from both the homepage and pages/ folder.
+  function getResourceURL(url) {
+    if (!url || url === "#") return "#";
+
+    if (/^https?:\/\//i.test(url)) {
+      return url;
+    }
+
+    const cleanURL = url.replace(/^(\.\.\/)+/, "");
+
+    const siteRoot = window.location.pathname.includes("/pages/")
+      ? new URL("../", window.location.href)
+      : new URL("./", window.location.href);
+
+    return new URL(cleanURL, siteRoot).href;
   }
 
   function resourceCard(resource) {
     const safeTitle = escapeHTML(resource.title);
-    const safeTopic = escapeHTML(resource.topic);
-    const safeDescription = escapeHTML(resource.description);
-    const safeLevel = escapeHTML(resource.level);
-    const safeDate = escapeHTML(resource.date);
+    const safeTopic = escapeHTML(resource.topic || "General");
+    const safeDescription = escapeHTML(resource.description || "");
+    const safeLevel = escapeHTML(resource.level || "All levels");
+    const safeDate = escapeHTML(resource.date || "");
+    const safeURL = escapeHTML(getResourceURL(resource.url));
 
-    const action = !resource.url || resource.url === "#"
-      ? `<span class="small-button">Content coming soon</span>`
-      : `<a class="small-button primary"
-           href="${escapeHTML(resource.url)}"
-           target="_blank"
-           rel="noopener noreferrer">Open resource ↗</a>`;
+    const action = resource.url && resource.url !== "#"
+      ? `<a class="small-button primary"
+            href="${safeURL}"
+            ${/^https?:\/\//i.test(resource.url) ? 'target="_blank" rel="noopener noreferrer"' : ""}>
+            Open resource ↗
+         </a>`
+      : `<span class="small-button">Content coming soon</span>`;
 
     return `
       <article class="resource-card">
@@ -66,7 +78,9 @@
       .filter(item =>
         selected === "All levels" || item.level === selected
       )
-      .sort((a, b) => b.date.localeCompare(a.date))
+      .sort((a, b) =>
+        (b.date || "").localeCompare(a.date || "")
+      )
       .slice(0, 4);
 
     target.innerHTML = list.length
@@ -94,17 +108,23 @@
         selected === "All levels" || item.level === selected
       )
       .filter(item =>
-        `${item.title} ${item.topic} ${item.description}`
+        `${item.title || ""} ${item.topic || ""} ${item.description || ""}`
           .toLowerCase()
           .includes(search)
       );
 
     if (sort === "oldest") {
-      list.sort((a, b) => a.date.localeCompare(b.date));
+      list.sort((a, b) =>
+        (a.date || "").localeCompare(b.date || "")
+      );
     } else if (sort === "title") {
-      list.sort((a, b) => a.title.localeCompare(b.title));
+      list.sort((a, b) =>
+        (a.title || "").localeCompare(b.title || "")
+      );
     } else {
-      list.sort((a, b) => b.date.localeCompare(a.date));
+      list.sort((a, b) =>
+        (b.date || "").localeCompare(a.date || "")
+      );
     }
 
     target.innerHTML = list.length
@@ -119,17 +139,27 @@
       button.addEventListener("click", () => {
         const level = button.dataset.level;
 
-        // Use the same key as getLevel().
-        localStorage.setItem("atlas-level", level);
+        setLevel(level);
 
-        // Update every level button on this page.
-        buttons.forEach(item => {
-          item.classList.toggle("active", item.dataset.level === level);
+        document.querySelectorAll("[data-level]").forEach(item => {
+          item.classList.toggle(
+            "active",
+            item.dataset.level === level
+          );
         });
 
         renderRecent();
         renderLibrary();
       });
+    });
+
+    const savedLevel = getLevel();
+
+    buttons.forEach(button => {
+      button.classList.toggle(
+        "active",
+        button.dataset.level === savedLevel
+      );
     });
   }
 
@@ -190,14 +220,14 @@
     initWriting();
     initReadingPassages();
 
-    document.querySelectorAll(
-      "#resourceSearch, #resourceSort"
-    ).forEach(control => {
-      control.addEventListener("input", renderLibrary);
-      control.addEventListener("change", renderLibrary);
-    });
-
     renderRecent();
     renderLibrary();
+
+    document
+      .querySelectorAll("#resourceSearch, #resourceSort")
+      .forEach(control => {
+        control.addEventListener("input", renderLibrary);
+        control.addEventListener("change", renderLibrary);
+      });
   });
 })();

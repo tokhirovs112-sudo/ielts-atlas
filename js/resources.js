@@ -65,7 +65,7 @@ window.ATLAS_RESOURCES = [
     type: "article",
     title: "Climate change",
     level: "B1–B2",
-    topic: "Technology",
+    topic: "Climate",
     date: "2026-10-22",
     description: "Are we entering a dangerous climate phase?",
     url: "articles/climatechange.html"

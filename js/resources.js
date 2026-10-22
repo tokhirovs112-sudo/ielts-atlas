@@ -61,6 +61,16 @@ window.ATLAS_RESOURCES = [
     url: "#"
   },
   {
+    id: 8,
+    type: "article",
+    title: "Climate change",
+    level: "B1–B2",
+    topic: "Technology",
+    date: "2026-10-22",
+    description: "Are we entering a dangerous climate phase?",
+    url: "articles/climatechange.html"
+  },
+  {
     id: 7,
     type: "article",
     title: "What You Should Do When You Have Zero Motivation",
@@ -71,3 +81,4 @@ window.ATLAS_RESOURCES = [
     url: "articles/motivation.html"
   }
 ];
+

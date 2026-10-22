@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Examining whether extreme weather events and breaching the 1.5°C warming limit signal a dangerous new phase of climate change.">
+  <title>Are we entering a dangerous new phase of climate change? | IELTS Atlas</title>
+  <link rel="stylesheet" href="../css/style.css">
+
+  <style>
+    .article-container {
+      max-width: 820px;
+      margin: 40px auto;
+      padding: 24px;
+    }
+
+    .article-label {
+      color: #287d5a;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+    }
+
+    .article-container h1 {
+      line-height: 1.25;
+      margin: 14px 0;
+    }
+
+    .article-info {
+      color: #777;
+      margin-bottom: 32px;
+    }
+
+    .article-body {
+      font-size: 1.05rem;
+      line-height: 1.9;
+      overflow-wrap: anywhere;
+    }
+
+    .article-body h2 {
+      margin-top: 36px;
+      line-height: 1.4;
+    }
+
+    .article-body p {
+      margin: 18px 0;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 600px) {
+      .article-container {
+        margin: 20px auto;
+        padding: 18px;
+      }
+
+      .article-body {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container nav-container">
+      <a class="brand" href="../index.html">IELTS Atlas</a>
+
+      <button id="menuToggle" type="button" aria-label="Toggle navigation">☰</button>
+
+      <nav id="navigation">
+        <a href="../index.html">Home</a>
+        <a href="../pages/reading.html">Reading</a>
+        <a href="../pages/listening.html">Listening</a>
+        <a href="../pages/writing.html">Writing</a>
+        <a href="../pages/speaking.html">Speaking</a>
+        <a href="../pages/articles.html">Articles</a>
+        <a href="../pages/podcasts.html">Podcasts</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-container">
+    <a class="back-link" href="../pages/articles.html">← Back to Articles</a>
+
+    <div class="article-label">B2–C1 · ENVIRONMENT &amp; CLIMATE</div>
+
+    <h1>Are we entering a dangerous new phase of climate change?</h1>
+
+    <p class="article-info">Published January 15, 2025 · 4-minute read</p>
+
+    <article class="article-body">
+      <p>If ever there were a wake-up call, this is it. The fire alarm is ringing – hell, the fire alarm is on fire. The latest data confirms that 2024 was the first year in which the average global temperature was 1.5°C higher than pre-industrial levels, breaking a totemic limit set by the Paris Agreement.</p>
+
+      <p>That this was completely expected makes it no less shocking. In January 2023, we reported that early modelling already suggested 2024 would be the first year to pass this threshold. What is unexpected, though, is just how much we may have breached 1.5°C by, with some datasets indicating the planet has actually shot straight through to 1.6°C.</p>
+
+      <p>It is time to accept the truth: we have broken the climate. From the drought and wind driving California’s unprecedented January wildfires to the flailing and unpredictable jet stream, climate systems are no longer behaving as expected, and the only thing we can say with certainty is that we should expect extreme weather events to become more frequent, stronger and longer-lasting.</p>
+
+      <h2>1.5°C itself doesn’t matter – what counts is every fraction of a degree of warming we can stop</h2>
+
+      <p>The fact that confirmation of the 1.5°C breach comes in the same month that Donald Trump once more takes the mantle of US president is a double whammy. Under Trump, we can expect the US to roll back climate action, encourage fossil fuel development and, in some cases, ban renewable energy.</p>
+
+      <p>Is there any hope to be had? There are silver linings, albeit tarnished ones. Although a year above 1.5°C is a complete and utter global failure, it isn’t a full violation of the Paris Agreement, which looks at temperatures on decade-long timescales. It is also true that, in some sense, the 1.5°C target itself doesn’t matter – what counts is every tiny fraction of a degree we can prevent temperatures rising, not any specific limit.</p>
+
+      <p>And finally, we can find some hope in the fact that the world will eventually take change seriously – the only question is how many fires, floods and deaths it will take for us to get there.</p>
+    </article>
+
+    <p><a class="back-link" href="../pages/articles.html">← Explore more articles</a></p>
+  </main>
+
+  <script src="../js/app.js"></script>
+</body>
+</html>

@@ -21,6 +21,30 @@
     localStorage.setItem("atlas-level", level);
   }
 
+  // Convert an individual level into its standard format.
+  function normalizeLevel(level) {
+    return String(level || "").trim().toUpperCase();
+  }
+
+  // Check whether a resource belongs to the selected level group.
+  function matchesLevel(resourceLevel, selectedLevel) {
+    if (selectedLevel === "All levels") return true;
+
+    const levelGroups = {
+      "A1–A2": ["A1", "A2"],
+      "B1–B2": ["B1", "B2"],
+      "C1–C2": ["C1", "C2"]
+    };
+
+    const allowedLevels = levelGroups[selectedLevel];
+
+    if (!allowedLevels) {
+      return normalizeLevel(resourceLevel) === normalizeLevel(selectedLevel);
+    }
+
+    return allowedLevels.includes(normalizeLevel(resourceLevel));
+  }
+
   // Makes article links work from both the homepage and pages/ folder.
   function getResourceURL(url) {
     if (!url || url === "#") return "#";
@@ -75,9 +99,7 @@
     const selected = getLevel();
 
     const list = resources
-      .filter(item =>
-        selected === "All levels" || item.level === selected
-      )
+      .filter(item => matchesLevel(item.level, selected))
       .sort((a, b) =>
         (b.date || "").localeCompare(a.date || "")
       )
@@ -93,9 +115,10 @@
     if (!target) return;
 
     const type = document.body.dataset.resourceType;
+
     const search = (
       document.getElementById("resourceSearch")?.value || ""
-    ).toLowerCase();
+    ).toLowerCase().trim();
 
     const sort =
       document.getElementById("resourceSort")?.value || "newest";
@@ -104,9 +127,7 @@
 
     let list = resources
       .filter(item => item.type === type)
-      .filter(item =>
-        selected === "All levels" || item.level === selected
-      )
+      .filter(item => matchesLevel(item.level, selected))
       .filter(item =>
         `${item.title || ""} ${item.topic || ""} ${item.description || ""}`
           .toLowerCase()

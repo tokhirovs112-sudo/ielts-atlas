@@ -71,6 +71,16 @@ window.ATLAS_RESOURCES = [
     url: "articles/climate.html"
   },
   {
+    id: 9,
+    type: "article",
+    title: "Social media and health",
+    level: "C1–C2",
+    topic: "Health",
+    date: "2026-10-23",
+    description: "Why rising young cancer rates need real answers.",
+    url: "articles/cancer.html"
+  },
+  {
     id: 7,
     type: "article",
     title: "What You Should Do When You Have Zero Motivation",

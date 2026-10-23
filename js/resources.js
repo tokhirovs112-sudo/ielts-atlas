@@ -18,7 +18,7 @@ window.ATLAS_RESOURCES = [
     topic: "Science",
     date: "2026-10-18",
     description: "Discover why sleep matters and learn useful everyday vocabulary.",
-    url: "#"
+    url: "articles/sleep.html"
   },
   {
     id: 3,
@@ -80,6 +80,7 @@ window.ATLAS_RESOURCES = [
     description: "Why rising young cancer rates need real answers.",
     url: "articles/cancer.html"
   },
+  
   {
     id: 7,
     type: "article",

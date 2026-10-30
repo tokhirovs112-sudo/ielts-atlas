@@ -5,187 +5,478 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta name="description" content="Improve your IELTS skills with reading, listening, writing, speaking, articles and podcasts on IELTS Atlas.">
+  <meta name="description" content="Improve your English with Englisity. Practise IELTS reading, listening, writing and speaking, and explore articles and podcasts.">
 
+  <meta name="theme-color" content="#f5f7fc">
   <title>Englisity | Improve Your English</title>
+
   <link rel="stylesheet" href="css/style.css">
 
   <style>
+    :root {
+      --home-navy: #14213d;
+      --home-blue: #3767e8;
+      --home-muted: #718096;
+      --home-border: #e5eaf2;
+      --home-bg: #f5f7fc;
+    }
+
+    body {
+      background: var(--home-bg);
+    }
+
+    .home-main {
+      padding-bottom: 60px;
+    }
+
+    /* HERO */
+
     .home-hero {
-      padding: 65px 24px;
-      text-align: center;
-    }
-
-    .home-hero h1 {
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      line-height: 1.2;
-      margin-bottom: 18px;
-    }
-
-    .home-hero p {
-      max-width: 680px;
-      margin: 0 auto 24px;
-      line-height: 1.8;
-    }
-
-    .home-button {
-      display: inline-block;
-      margin: 6px;
-      padding: 12px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      background: #287d5a;
+      position: relative;
+      overflow: hidden;
+      max-width: 1160px;
+      margin: 38px auto 65px;
+      padding: 75px 65px;
+      border-radius: 28px;
+      background: linear-gradient(120deg, #14213d, #233f72);
       color: white;
     }
 
-    .home-section {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 30px 24px;
+    .home-hero::before,
+    .home-hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
     }
+
+    .home-hero::before {
+      width: 340px;
+      height: 340px;
+      background: rgba(91, 139, 255, 0.13);
+      right: -90px;
+      top: -120px;
+    }
+
+    .home-hero::after {
+      width: 220px;
+      height: 220px;
+      background: rgba(91, 139, 255, 0.09);
+      right: 180px;
+      bottom: -150px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+    }
+
+    .hero-eyebrow {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #a9c2ff;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .home-hero h1 {
+      max-width: 680px;
+      margin: 0 0 20px;
+      color: white;
+      font-size: clamp(2.5rem, 5.5vw, 4.2rem);
+      line-height: 1.1;
+      letter-spacing: -2px;
+    }
+
+    .home-hero p {
+      max-width: 590px;
+      margin: 0 0 30px;
+      color: #d4def1;
+      font-size: 1.08rem;
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .home-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 49px;
+      padding: 12px 21px;
+      border: 1px solid transparent;
+      border-radius: 11px;
+      background: var(--home-blue);
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .home-button:hover {
+      background: #2855ce;
+      transform: translateY(-2px);
+    }
+
+    .home-button.secondary {
+      border-color: rgba(255, 255, 255, 0.35);
+      background: transparent;
+      color: white;
+    }
+
+    .home-button.secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* GENERAL SECTIONS */
+
+    .home-section {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 24px 65px;
+    }
+
+    .home-section-heading {
+      margin-bottom: 25px;
+    }
+
+    .home-section-heading span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--home-blue);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 1.7px;
+      text-transform: uppercase;
+    }
+
+    .home-section-heading h2 {
+      margin: 0 0 9px;
+      color: var(--home-navy);
+      font-size: clamp(1.55rem, 3vw, 2rem);
+      letter-spacing: -0.5px;
+    }
+
+    .home-section-heading p {
+      max-width: 620px;
+      margin: 0;
+      color: var(--home-muted);
+      line-height: 1.7;
+    }
+
+    /* SKILL CARDS */
 
     .skill-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 18px;
-      margin-top: 24px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 19px;
     }
 
     .skill-card {
-      display: block;
-      padding: 22px;
-      border: 1px solid #e3e3e3;
-      border-radius: 12px;
-      text-decoration: none;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 205px;
+      padding: 25px;
+      border: 1px solid var(--home-border);
+      border-radius: 18px;
+      background: white;
       color: inherit;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 28px rgba(25, 42, 70, 0.08);
+    }
+
+    .skill-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 47px;
+      height: 47px;
+      margin-bottom: 20px;
+      border-radius: 13px;
+      background: #edf2ff;
+      color: var(--home-blue);
+      font-size: 1.35rem;
+      font-weight: 800;
     }
 
     .skill-card h3 {
-      margin-top: 0;
+      margin: 0 0 9px;
+      color: var(--home-navy);
+      font-size: 1.12rem;
     }
 
     .skill-card p {
-      line-height: 1.6;
-      color: #777;
+      margin: 0;
+      color: var(--home-muted);
+      font-size: 0.93rem;
+      line-height: 1.65;
+    }
+
+    .skill-arrow {
+      position: absolute;
+      right: 23px;
+      top: 27px;
+      color: #9aa9c0;
+      font-size: 1.2rem;
+      transition: 0.2s ease;
+    }
+
+    .skill-card:hover .skill-arrow {
+      color: var(--home-blue);
+      transform: translate(3px, -3px);
+    }
+
+    /* LEVEL SELECTOR */
+
+    .level-section {
+      padding: 35px;
+      border: 1px solid var(--home-border);
+      border-radius: 22px;
+      background: white;
     }
 
     .level-picker {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin: 20px 0;
+      margin: 22px 0 38px;
     }
 
     .level-button {
-      padding: 9px 15px;
-      border: 1px solid #ccc;
-      border-radius: 20px;
-      background: transparent;
-      cursor: pointer;
+      padding: 10px 18px;
+      border: 1px solid var(--home-border);
+      border-radius: 30px;
+      background: white;
+      color: #536176;
       font: inherit;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .level-button:hover {
+      border-color: var(--home-blue);
+      color: var(--home-blue);
     }
 
     .level-button.active {
-      background: #287d5a;
+      border-color: var(--home-blue);
+      background: var(--home-blue);
       color: white;
-      border-color: #287d5a;
+      box-shadow: 0 5px 14px rgba(55, 103, 232, 0.18);
+    }
+
+    /* RECENT RESOURCES */
+
+    .recent-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .recent-heading h2 {
+      margin: 0;
+      color: var(--home-navy);
+      font-size: 1.5rem;
+    }
+
+    .recent-heading a {
+      color: var(--home-blue);
+      font-size: 0.92rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .recent-heading a:hover {
+      text-decoration: underline;
     }
 
     .resource-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
+      gap: 18px;
+      margin-top: 18px;
     }
 
     .resource-card {
-      padding: 20px;
-      border: 1px solid #e3e3e3;
-      border-radius: 12px;
+      padding: 23px;
+      border: 1px solid var(--home-border);
+      border-radius: 17px;
+      background: white;
+      transition: 0.2s ease;
+    }
+
+    .resource-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(25, 42, 70, 0.07);
     }
 
     .resource-meta {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      color: #777;
-      font-size: 0.85rem;
+      align-items: center;
+      color: var(--home-muted);
+      font-size: 0.83rem;
     }
 
     .tag {
-      padding: 4px 9px;
-      border-radius: 12px;
-      background: #e8f4ed;
-      color: #287d5a;
+      padding: 5px 10px;
+      border-radius: 20px;
+      background: #edf2ff;
+      color: var(--home-blue);
+      font-size: 0.78rem;
+      font-weight: 700;
     }
 
     .resource-card h3 {
-      line-height: 1.4;
-      margin: 16px 0 10px;
+      margin: 15px 0 10px;
+      color: var(--home-navy);
+      line-height: 1.45;
     }
 
     .resource-card p {
-      line-height: 1.6;
+      color: var(--home-muted);
+      font-size: 0.93rem;
+      line-height: 1.65;
     }
 
     .resource-actions {
-      margin-top: 18px;
+      margin-top: 17px;
     }
 
     .small-button {
       display: inline-block;
-      padding: 9px 13px;
-      border-radius: 7px;
+      padding: 10px 15px;
+      border-radius: 9px;
       text-decoration: none;
       font-size: 0.9rem;
+      font-weight: 700;
     }
 
     .small-button.primary {
-      background: #287d5a;
+      background: var(--home-blue);
       color: white;
     }
 
-    .section-heading {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .section-heading a {
-      color: #287d5a;
+    .small-button.primary:hover {
+      background: #2855ce;
     }
 
     .empty {
-      color: #777;
-      padding: 20px 0;
+      grid-column: 1 / -1;
+      padding: 25px;
+      border: 1px dashed #cbd5e1;
+      border-radius: 14px;
+      color: var(--home-muted);
+      text-align: center;
+    }
+
+    /* FOOTER */
+
+    .home-footer {
+      padding: 28px 20px;
+      border-top: 1px solid var(--home-border);
+      color: var(--home-muted);
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 900px) {
+      .home-hero {
+        margin: 25px 18px 50px;
+        padding: 55px 40px;
+      }
+
+      .skill-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
 
     @media (max-width: 600px) {
       .home-hero {
-        padding: 40px 18px;
+        margin: 18px 12px 42px;
+        padding: 42px 24px;
+        border-radius: 21px;
+      }
+
+      .home-hero h1 {
+        letter-spacing: -1px;
+      }
+
+      .home-hero p {
+        font-size: 1rem;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .home-button {
+        width: 100%;
       }
 
       .home-section {
-        padding: 24px 18px;
+        padding: 0 17px 45px;
+      }
+
+      .skill-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .skill-card {
+        min-height: 175px;
+      }
+
+      .level-section {
+        padding: 22px 17px;
+      }
+
+      .level-picker {
+        margin-bottom: 28px;
+      }
+
+      .resource-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 
 <body>
+
   <header class="topbar">
     <div class="container nav-container">
       <a class="brand" href="index.html">Englisity</a>
 
       <button
         id="menuToggle"
+        class="menu-toggle"
         type="button"
         aria-label="Toggle navigation"
-      >☰</button>
+        aria-expanded="false"
+      >
+        ☰
+      </button>
 
-      <nav id="navigation">
+      <nav id="navigation" class="nav">
         <a href="index.html" aria-current="page">Home</a>
         <a href="pages/reading.html">Reading</a>
         <a href="pages/listening.html">Listening</a>
@@ -197,98 +488,143 @@
     </div>
   </header>
 
-  <main>
+  <main class="home-main">
+
+    <!-- HERO -->
+
     <section class="home-hero">
-      <h1>Welcome to Englisity</h1>
+      <div class="hero-content">
+        <span class="hero-eyebrow">YOUR ENGLISH LEARNING SPACE</span>
 
-      <p>
-        Your space to practise English, prepare for IELTS, discover
-        interesting articles, and improve your listening and reading
-        skills at your own pace.
-      </p>
+        <h1>Build your English. One step at a time.</h1>
 
-      <a class="home-button" href="pages/reading.html">
-        Practise Reading
-      </a>
+        <p>
+          Practise your skills, prepare for IELTS, discover interesting
+          articles, and explore listening resources — all in one place.
+        </p>
 
-      <a class="home-button" href="pages/listening.html">
-        Practise Listening
-      </a>
+        <div class="hero-actions">
+          <a class="home-button" href="pages/reading.html">
+            Start practising
+          </a>
+
+          <a class="home-button secondary" href="pages/articles.html">
+            Explore articles
+          </a>
+        </div>
+      </div>
     </section>
 
+    <!-- SKILLS -->
+
     <section class="home-section">
-      <h2>Explore your skills</h2>
+      <div class="home-section-heading">
+        <span>LEARN YOUR WAY</span>
+        <h2>Everything you need to improve</h2>
+        <p>
+          Develop each English skill with dedicated practice areas
+          and learning resources.
+        </p>
+      </div>
 
       <div class="skill-grid">
+
         <a class="skill-card" href="pages/reading.html">
+          <span class="skill-icon">R</span>
+          <span class="skill-arrow">↗</span>
           <h3>Reading</h3>
-          <p>Practise comprehension and develop your reading skills.</p>
+          <p>Improve comprehension, expand vocabulary, and practise IELTS-style reading.</p>
         </a>
 
         <a class="skill-card" href="pages/listening.html">
+          <span class="skill-icon">L</span>
+          <span class="skill-arrow">↗</span>
           <h3>Listening</h3>
-          <p>Improve your listening through audio practice.</p>
+          <p>Train your listening skills with audio exercises and practice materials.</p>
         </a>
 
         <a class="skill-card" href="pages/writing.html">
+          <span class="skill-icon">W</span>
+          <span class="skill-arrow">↗</span>
           <h3>Writing</h3>
-          <p>Practise expressing your ideas and save your drafts.</p>
+          <p>Practise organizing your ideas and developing clear written answers.</p>
         </a>
 
         <a class="skill-card" href="pages/speaking.html">
+          <span class="skill-icon">S</span>
+          <span class="skill-arrow">↗</span>
           <h3>Speaking</h3>
-          <p>Explore speaking practice and IELTS-style questions.</p>
+          <p>Explore IELTS speaking questions and practise recording your answers.</p>
         </a>
 
         <a class="skill-card" href="pages/articles.html">
+          <span class="skill-icon">A</span>
+          <span class="skill-arrow">↗</span>
           <h3>Articles</h3>
-          <p>Read about technology, science, personal development and more.</p>
+          <p>Explore ideas about science, technology, society, and everyday life.</p>
         </a>
 
         <a class="skill-card" href="pages/podcasts.html">
+          <span class="skill-icon">P</span>
+          <span class="skill-arrow">↗</span>
           <h3>Podcasts</h3>
-          <p>Discover listening resources for different English levels.</p>
+          <p>Discover listening materials for different English proficiency levels.</p>
         </a>
+
       </div>
     </section>
+
+    <!-- RESOURCES -->
 
     <section class="home-section">
-      <h2>Choose your English level</h2>
+      <div class="level-section">
 
-      <div class="level-picker">
-        <button class="level-button" data-level="All levels" type="button">
-          All levels
-        </button>
+        <div class="home-section-heading">
+          <span>FIND YOUR NEXT RESOURCE</span>
+          <h2>Learn at your own level</h2>
+          <p>
+            Choose your English level to explore suitable learning materials.
+          </p>
+        </div>
 
-        <button class="level-button" data-level="A1–A2" type="button">
-          A1–A2
-        </button>
+        <div class="level-picker">
+          <button class="level-button active" data-level="All levels" type="button">
+            All levels
+          </button>
 
-        <button class="level-button" data-level="B1–B2" type="button">
-          B1–B2
-        </button>
+          <button class="level-button" data-level="A1–A2" type="button">
+            A1–A2
+          </button>
 
-        <button class="level-button" data-level="C1–C2" type="button">
-          C1–C2
-        </button>
-      </div>
+          <button class="level-button" data-level="B1–B2" type="button">
+            B1–B2
+          </button>
 
-      <div class="section-heading">
-        <h2>Recently added resources</h2>
-        <a href="pages/articles.html">Explore articles →</a>
-      </div>
+          <button class="level-button" data-level="C1–C2" type="button">
+            C1–C2
+          </button>
+        </div>
 
-      <div id="recentResources" class="resource-grid">
-        <p>Loading resources...</p>
+        <div class="recent-heading">
+          <h2>Recently added resources</h2>
+          <a href="pages/articles.html">Explore all articles →</a>
+        </div>
+
+        <div id="recentResources" class="resource-grid">
+          <p class="empty">Loading resources...</p>
+        </div>
+
       </div>
     </section>
+
   </main>
 
-  <footer class="container">
+  <footer class="home-footer">
     <p>Englisity · Learn English at your own pace.</p>
   </footer>
 
   <script src="js/resources.js"></script>
   <script src="js/app.js"></script>
+
 </body>
 </html>

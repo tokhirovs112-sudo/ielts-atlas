@@ -4,14 +4,413 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Practise IELTS Speaking and record your answers on Englisity.">
+  <meta name="description" content="Practise IELTS Speaking questions, record your answers and improve your fluency with Englisity.">
   <title>Speaking Practice | Englisity</title>
   <link rel="stylesheet" href="../css/style.css">
   <script src="../js/resources.js" defer></script>
   <script src="../js/app.js" defer></script>
-</head>
-<body>
 
+  <style>
+    .page-hero {
+      background: linear-gradient(125deg, #101f3d, #244d83);
+      color: white;
+      padding: 48px 42px;
+      border-radius: 22px;
+      margin: 28px 0;
+    }
+
+    .page-hero .eyebrow {
+      color: #a9cbff;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      margin-bottom: 14px;
+    }
+
+    .page-hero h1 {
+      font-size: clamp(30px, 5vw, 44px);
+      line-height: 1.15;
+      margin: 0 0 15px;
+      color: white;
+    }
+
+    .page-hero p {
+      color: #d9e6f7;
+      max-width: 650px;
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .breadcrumb {
+      color: #b9d3f7;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .part-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .part-card {
+      text-align: left;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 23px;
+      background: white;
+      cursor: pointer;
+      transition: transform .2s, border-color .2s, box-shadow .2s;
+      color: #172b4d;
+      font: inherit;
+    }
+
+    .part-card:hover {
+      transform: translateY(-3px);
+      border-color: #8bb5e9;
+      box-shadow: 0 8px 24px rgba(20, 50, 90, .08);
+    }
+
+    .part-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: #eaf2ff;
+      color: #245a9b;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .part-card h3 {
+      margin: 0 0 9px;
+      font-size: 19px;
+    }
+
+    .part-card p {
+      color: #64748b;
+      line-height: 1.6;
+      font-size: 14px;
+      margin: 0 0 15px;
+    }
+
+    .part-card .card-link {
+      color: #2863a8;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .practice-section[hidden],
+    .topic-section[hidden],
+    .question-section[hidden] {
+      display: none !important;
+    }
+
+    .back-button {
+      border: 0;
+      background: #edf3fb;
+      color: #245a9b;
+      padding: 10px 15px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .back-button:hover {
+      background: #dceaff;
+    }
+
+    .section-heading {
+      margin-bottom: 18px;
+    }
+
+    .section-heading h2 {
+      margin-bottom: 7px;
+    }
+
+    .section-heading p {
+      color: #64748b;
+      margin: 0;
+    }
+
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 13px;
+      margin-top: 20px;
+    }
+
+    .topic-button {
+      background: white;
+      border: 1px solid #e2e8f0;
+      padding: 17px;
+      border-radius: 13px;
+      text-align: left;
+      cursor: pointer;
+      color: #172b4d;
+      font: inherit;
+      transition: border-color .2s, background .2s;
+    }
+
+    .topic-button:hover {
+      border-color: #8bb5e9;
+      background: #f7faff;
+    }
+
+    .topic-button strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .topic-button span {
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .topic-meta {
+      color: #64748b;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    .question-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .question-item {
+      border: 1px solid #e2e8f0;
+      padding: 17px;
+      border-radius: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+      background: white;
+    }
+
+    .question-number {
+      background: #eaf2ff;
+      color: #245a9b;
+      font-weight: 800;
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+
+    .question-text {
+      flex: 1;
+      line-height: 1.55;
+      color: #24364d;
+    }
+
+    .practise-question {
+      border: 0;
+      background: #edf3fb;
+      color: #245a9b;
+      padding: 8px 11px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .practise-question:hover {
+      background: #dceaff;
+    }
+
+    .cue-card {
+      background: #f4f7fc;
+      border: 1px solid #dce6f3;
+      border-radius: 15px;
+      padding: 23px;
+      margin: 18px 0;
+    }
+
+    .cue-card h3 {
+      margin-top: 0;
+    }
+
+    .cue-card ul {
+      padding-left: 21px;
+      line-height: 1.9;
+    }
+
+    .selected-question {
+      background: #edf5ff;
+      border: 1px solid #c7dcf7;
+      padding: 18px;
+      border-radius: 12px;
+      margin: 18px 0;
+    }
+
+    .selected-question small {
+      color: #52749d;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .selected-question strong {
+      color: #17365d;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    .recorder-display {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f3f6fa;
+      padding: 14px;
+      border-radius: 11px;
+      margin: 20px 0;
+    }
+
+    .record-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #9ca3af;
+      flex-shrink: 0;
+    }
+
+    .record-dot.recording {
+      background: #dc4545;
+      animation: pulse 1.2s infinite;
+    }
+
+    @keyframes pulse {
+      50% { opacity: .35; }
+    }
+
+    .record-status {
+      font-size: 14px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .record-time {
+      margin-left: auto;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .recorder-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .recorder-button {
+      border: 1px solid #d5deea;
+      background: white;
+      color: #24466f;
+      padding: 11px 16px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .recorder-button.primary {
+      background: #245a9b;
+      border-color: #245a9b;
+      color: white;
+    }
+
+    .recorder-button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .recording-playback {
+      margin-top: 22px;
+      padding: 17px;
+      border-radius: 12px;
+      background: #f4f7fc;
+    }
+
+    .recording-playback audio {
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    .download-recording {
+      display: inline-block;
+      color: #245a9b;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .helper {
+      color: #64748b;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-top: 15px;
+    }
+
+    .date-label {
+      display: inline-block;
+      color: #245a9b;
+      background: #eaf2ff;
+      padding: 6px 10px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .timer-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .timer-display {
+      font-size: 25px;
+      font-weight: 800;
+      color: #245a9b;
+      font-variant-numeric: tabular-nums;
+    }
+
+    @media (max-width: 750px) {
+      .part-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topic-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .page-hero {
+        padding: 35px 24px;
+      }
+
+      .question-item {
+        flex-wrap: wrap;
+      }
+
+      .practise-question {
+        margin-left: 43px;
+      }
+    }
+  </style>
+</head>
+
+<body>
 <header class="topbar">
   <a class="brand" href="../index.html">
     <span class="logo">E</span>
@@ -33,106 +432,149 @@
 
 <main class="container">
 
-  <section class="page-header">
+  <section class="page-hero">
     <div class="breadcrumb">Englisity / IELTS / Speaking</div>
-    <div class="eyebrow">SPEAKING LAB</div>
-    <h1>Find your voice.</h1>
+    <div class="eyebrow">IELTS SPEAKING PRACTICE</div>
+    <h1>Practise speaking. Build confidence.</h1>
     <p>
-      Practise IELTS Speaking, record your answers and listen to your
-      performance. Build confidence one answer at a time.
+      Explore real exam-style questions, practise all three parts of IELTS Speaking,
+      and record your answers to improve your fluency.
     </p>
   </section>
 
-  <section class="panel">
-    <div class="practice-intro">
-      <div class="practice-icon">🎙</div>
-      <div>
-        <h2>Your voice recorder</h2>
-        <p>Record your answer and listen back to it.</p>
-      </div>
+  <!-- PART SELECTION -->
+  <section class="panel" id="partSelection">
+    <div class="section-heading">
+      <h2>Choose a speaking part</h2>
+      <p>Select a part to explore topics and practise questions.</p>
     </div>
 
-    <div class="recorder">
+    <div class="part-grid">
+      <button class="part-card" data-part="1">
+        <span class="part-number">01</span>
+        <h3>Introduction and Interview</h3>
+        <p>Answer questions about familiar topics, everyday life and personal experiences.</p>
+        <span class="card-link">Explore Part 1 →</span>
+      </button>
 
-      <div class="recorder-display">
-        <span class="record-dot" id="recordDot"></span>
-        <span class="record-status" id="recordStatus">Ready to record</span>
-        <span class="record-time" id="recordTime">00:00</span>
+      <button class="part-card" data-part="2">
+        <span class="part-number">02</span>
+        <h3>Individual Long Turn</h3>
+        <p>Choose a cue card, prepare your ideas and speak for one to two minutes.</p>
+        <span class="card-link">Explore Part 2 →</span>
+      </button>
+
+      <button class="part-card" data-part="3">
+        <span class="part-number">03</span>
+        <h3>Discussion</h3>
+        <p>Discuss broader topics, explain your opinions and compare different ideas.</p>
+        <span class="card-link">Explore Part 3 →</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- TOPIC SELECTION -->
+  <section class="panel practice-section" id="topicSection" hidden>
+    <button class="back-button" id="backToParts">← All speaking parts</button>
+
+    <div class="section-heading">
+      <h2 id="topicTitle">Choose a topic</h2>
+      <p id="topicDescription"></p>
+    </div>
+
+    <div id="topicGrid" class="topic-grid"></div>
+  </section>
+
+  <!-- QUESTION LIST -->
+  <section class="panel question-section" id="questionSection" hidden>
+    <button class="back-button" id="backToTopics">← Back to topics</button>
+
+    <div class="section-heading">
+      <h2 id="questionTitle">Questions</h2>
+      <p id="questionDescription"></p>
+    </div>
+
+    <div id="questionDate" class="date-label" hidden></div>
+
+    <div id="questionList" class="question-list"></div>
+
+    <div id="cueCardArea" hidden>
+      <div class="cue-card">
+        <h3>Describe an enjoyable evening you spent with friends.</h3>
+        <p>You should say:</p>
+        <ul>
+          <li>when it was</li>
+          <li>where you spent the evening</li>
+          <li>what you did together</li>
+          <li>and explain why you enjoyed it</li>
+        </ul>
       </div>
 
-      <div class="recorder-actions">
-        <button class="recorder-button primary" id="startRecording">
-          ● Start recording
-        </button>
+      <p class="helper">
+        You have one minute to prepare. You should speak for one to two minutes.
+      </p>
 
-        <button class="recorder-button recording" id="stopRecording" disabled>
-          ■ Stop recording
-        </button>
-
-        <button class="recorder-button" id="recordAgain" disabled>
-          ↻ Record again
-        </button>
+      <div class="timer-controls">
+        <button class="recorder-button" id="prepTimerButton">Start 1-minute preparation</button>
+        <button class="recorder-button" id="speakTimerButton">Start 2-minute timer</button>
+        <button class="recorder-button" id="resetTimerButton">Reset timer</button>
       </div>
 
-      <div class="recording-playback" id="playbackArea" hidden>
-        <h3>Your recording</h3>
-        <audio id="recordingPlayback" controls></audio>
-        <a class="download-recording" id="downloadRecording" href="#" download>
-          ↓ Download recording
-        </a>
-      </div>
+      <div class="timer-display" id="timerDisplay">01:00</div>
+      <p class="helper" id="timerStatus" aria-live="polite">Ready to prepare.</p>
+    </div>
 
+    <div class="selected-question" id="selectedQuestionBox">
+      <small>QUESTION SELECTED FOR PRACTICE</small>
+      <strong id="selectedQuestionText">Choose a question above to begin.</strong>
+    </div>
+
+    <button class="back-button" id="showRecorder">🎙 Go to recorder</button>
+  </section>
+
+  <!-- RECORDER -->
+  <section class="panel" id="recorderPanel">
+    <div class="section-heading">
+      <h2>Your voice recorder</h2>
+      <p>Select a question first, then record your answer.</p>
+    </div>
+
+    <div class="selected-question">
+      <small>YOUR CURRENT QUESTION</small>
+      <strong id="recorderQuestion">No question selected yet.</strong>
+    </div>
+
+    <div class="recorder-display">
+      <span class="record-dot" id="recordDot"></span>
+      <span class="record-status" id="recordStatus">Ready to record</span>
+      <span class="record-time" id="recordTime">00:00</span>
+    </div>
+
+    <div class="recorder-actions">
+      <button class="recorder-button primary" id="startRecording">● Start recording</button>
+      <button class="recorder-button" id="stopRecording" disabled>■ Stop recording</button>
+      <button class="recorder-button" id="recordAgain" disabled>↻ Record again</button>
+    </div>
+
+    <div class="recording-playback" id="playbackArea" hidden>
+      <h3>Your recording</h3>
+      <audio id="recordingPlayback" controls></audio>
+      <a class="download-recording" id="downloadRecording" href="#" download>
+        ↓ Download recording
+      </a>
     </div>
 
     <p class="helper" id="recorderMessage" aria-live="polite">
-      Allow microphone access when your browser asks. Your recording
-      stays in this page unless you download it.
+      Allow microphone access when your browser asks. Your recording stays in this page unless you download it.
     </p>
   </section>
 
   <section class="panel">
-    <h2>IELTS Speaking practice</h2>
-    <p>Choose a question and answer it using the recorder above.</p>
-
-    <div class="card-grid">
-
-      <article class="feature-card">
-        <span class="icon">01</span>
-        <span class="tag">PART 1</span>
-        <h3>Introduction and interview</h3>
-        <p>Answer familiar questions about your life and everyday experiences.</p>
-        <strong>Try:</strong>
-        <p>What do you enjoy doing in your free time?</p>
-      </article>
-
-      <article class="feature-card">
-        <span class="icon">02</span>
-        <span class="tag">PART 2</span>
-        <h3>Individual long turn</h3>
-        <p>Prepare a short talk and organise your ideas clearly.</p>
-        <strong>Try:</strong>
-        <p>Describe a skill you would like to learn.</p>
-      </article>
-
-      <article class="feature-card">
-        <span class="icon">03</span>
-        <span class="tag">PART 3</span>
-        <h3>Two-way discussion</h3>
-        <p>Explain opinions, compare ideas and support your arguments.</p>
-        <strong>Try:</strong>
-        <p>How has technology changed education?</p>
-      </article>
-
-    </div>
-  </section>
-
-  <section class="panel">
-    <h2>A simple speaking plan</h2>
+    <h2>How to practise effectively</h2>
     <p>
-      <strong>1. Answer:</strong> Respond directly.
-      <strong>2. Explain:</strong> Give a reason.
-      <strong>3. Example:</strong> Support your idea.
-      <strong>4. Finish:</strong> Add a concluding thought.
+      <strong>Part 1:</strong> Give a direct answer and explain it briefly.
+      <strong>Part 2:</strong> Organise your ideas and use the preparation minute.
+      <strong>Part 3:</strong> Explain your opinions, compare ideas and give examples.
     </p>
   </section>
 
@@ -145,6 +587,298 @@
 
 <script>
 (() => {
+  const questionSets = {
+    1: [
+      {
+        topic: "Work and studies",
+        questions: [
+          "Do you work or are you a student?",
+          "What do you enjoy most about your studies?",
+          "Is there anything you dislike about your studies?"
+        ]
+      },
+      {
+        topic: "Fruits and vegetables",
+        questions: [
+          "Do you like fruits and vegetables?",
+          "Do you eat fruit every day? Why or why not?",
+          "Was there any fruit you disliked when you were a child?"
+        ]
+      },
+      {
+        topic: "Feeling tired",
+        questions: [
+          "When do you feel tired?",
+          "What do you do to stay active when you feel tired?"
+        ]
+      }
+    ],
+
+    2: [
+      {
+        topic: "Events and experiences",
+        questions: [
+          "Describe an enjoyable evening you spent with friends."
+        ],
+        cueCard: true
+      },
+      {
+        topic: "People",
+        questions: [
+          "Describe a person who has influenced you.",
+          "Describe someone you enjoy spending time with."
+        ]
+      },
+      {
+        topic: "Places",
+        questions: [
+          "Describe a place you enjoy visiting."
+        ]
+      },
+      {
+        topic: "Activities",
+        questions: [
+          "Describe an activity you enjoy doing in your free time."
+        ]
+      },
+      {
+        topic: "Objects and possessions",
+        questions: [
+          "Describe an object that is important to you."
+        ]
+      },
+      {
+        topic: "Situations and challenges",
+        questions: [
+          "Describe a difficult situation you successfully handled."
+        ]
+      }
+    ],
+
+    3: [
+      {
+        topic: "Family and leisure time",
+        questions: [
+          "What do you do with your family in the evenings?",
+          "What leisure activities do old and young people prefer?",
+          "How do people spend their free time in your country?",
+          "Do people in your country prefer spending time with their friends or their family?",
+          "What is the difference between spending time with friends and spending time with family?"
+        ]
+      }
+    ]
+  };
+
+  const partInfo = {
+    1: {
+      title: "Part 1 — Introduction and Interview",
+      description: "Choose a familiar topic and practise answering short questions."
+    },
+    2: {
+      title: "Part 2 — Individual Long Turn",
+      description: "Choose a cue card category and practise speaking for one to two minutes."
+    },
+    3: {
+      title: "Part 3 — Discussion",
+      description: "Choose a discussion topic and practise giving detailed answers."
+    }
+  };
+
+  const partSelection = document.getElementById("partSelection");
+  const topicSection = document.getElementById("topicSection");
+  const questionSection = document.getElementById("questionSection");
+  const recorderPanel = document.getElementById("recorderPanel");
+
+  const topicGrid = document.getElementById("topicGrid");
+  const questionList = document.getElementById("questionList");
+
+  const topicTitle = document.getElementById("topicTitle");
+  const topicDescription = document.getElementById("topicDescription");
+  const questionTitle = document.getElementById("questionTitle");
+  const questionDescription = document.getElementById("questionDescription");
+  const questionDate = document.getElementById("questionDate");
+
+  const cueCardArea = document.getElementById("cueCardArea");
+  const selectedQuestionText = document.getElementById("selectedQuestionText");
+  const recorderQuestion = document.getElementById("recorderQuestion");
+
+  let currentPart = null;
+  let currentTopic = null;
+  let selectedQuestion = null;
+
+  function selectPart(part) {
+    currentPart = part;
+    topicTitle.textContent = partInfo[part].title;
+    topicDescription.textContent = partInfo[part].description;
+
+    topicGrid.innerHTML = "";
+
+    questionSets[part].forEach((item, index) => {
+      const button = document.createElement("button");
+      button.className = "topic-button";
+
+      const name = document.createElement("strong");
+      name.textContent = item.topic;
+
+      const count = document.createElement("span");
+      count.textContent = item.questions.length +
+        (item.questions.length === 1 ? " question" : " questions");
+
+      button.append(name, count);
+
+      button.addEventListener("click", () => {
+        selectTopic(index);
+      });
+
+      topicGrid.appendChild(button);
+    });
+
+    partSelection.hidden = true;
+    topicSection.hidden = false;
+    questionSection.hidden = true;
+    recorderPanel.hidden = true;
+  }
+
+  function selectTopic(index) {
+    currentTopic = questionSets[currentPart][index];
+
+    questionTitle.textContent = currentTopic.topic;
+    questionDescription.textContent =
+      partInfo[currentPart].title + " · " + currentTopic.questions.length +
+      (currentTopic.questions.length === 1 ? " question" : " questions");
+
+    questionList.innerHTML = "";
+
+    currentTopic.questions.forEach((question, questionIndex) => {
+      const item = document.createElement("div");
+      item.className = "question-item";
+
+      const number = document.createElement("span");
+      number.className = "question-number";
+      number.textContent = questionIndex + 1;
+
+      const text = document.createElement("span");
+      text.className = "question-text";
+      text.textContent = question;
+
+      const button = document.createElement("button");
+      button.className = "practise-question";
+      button.textContent = "Practise";
+
+      button.addEventListener("click", () => {
+        chooseQuestion(question);
+        recorderPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      item.append(number, text, button);
+      questionList.appendChild(item);
+    });
+
+    cueCardArea.hidden = !currentTopic.cueCard;
+    questionDate.hidden = currentPart === 2 && currentTopic.cueCard
+      ? false
+      : currentPart !== 1 && currentPart !== 3;
+
+    if (currentPart === 1 || currentPart === 3) {
+      questionDate.textContent = "Reported in the exam · 26 October 2026";
+      questionDate.hidden = false;
+    } else if (currentPart === 2 && currentTopic.cueCard) {
+      questionDate.textContent = "Reported in the exam · 26 October 2026";
+      questionDate.hidden = false;
+    } else {
+      questionDate.hidden = true;
+    }
+
+    topicSection.hidden = true;
+    questionSection.hidden = false;
+    recorderPanel.hidden = false;
+
+    selectedQuestion = null;
+    selectedQuestionText.textContent = "Choose a question above to begin.";
+    recorderQuestion.textContent = "No question selected yet.";
+  }
+
+  function chooseQuestion(question) {
+    selectedQuestion = question;
+    selectedQuestionText.textContent = question;
+    recorderQuestion.textContent = question;
+    document.getElementById("recorderMessage").textContent =
+      "Your question is ready. Start recording when you are ready.";
+  }
+
+  document.querySelectorAll("[data-part]").forEach(button => {
+    button.addEventListener("click", () => {
+      selectPart(button.dataset.part);
+    });
+  });
+
+  document.getElementById("backToParts").addEventListener("click", () => {
+    topicSection.hidden = true;
+    questionSection.hidden = true;
+    partSelection.hidden = false;
+    recorderPanel.hidden = false;
+  });
+
+  document.getElementById("backToTopics").addEventListener("click", () => {
+    questionSection.hidden = true;
+    topicSection.hidden = false;
+  });
+
+  document.getElementById("showRecorder").addEventListener("click", () => {
+    recorderPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  // PART 2 TIMERS
+  let timerInterval = null;
+  let remainingSeconds = 60;
+
+  const timerDisplay = document.getElementById("timerDisplay");
+  const timerStatus = document.getElementById("timerStatus");
+
+  function displayTimer() {
+    const minutes = Math.floor(remainingSeconds / 60);
+    const seconds = remainingSeconds % 60;
+
+    timerDisplay.textContent =
+      String(minutes).padStart(2, "0") + ":" +
+      String(seconds).padStart(2, "0");
+  }
+
+  function startTimer(seconds, label) {
+    clearInterval(timerInterval);
+    remainingSeconds = seconds;
+    displayTimer();
+    timerStatus.textContent = label;
+
+    timerInterval = setInterval(() => {
+      remainingSeconds--;
+      displayTimer();
+
+      if (remainingSeconds <= 0) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        timerStatus.textContent = "Time is up!";
+      }
+    }, 1000);
+  }
+
+  document.getElementById("prepTimerButton").addEventListener("click", () => {
+    startTimer(60, "Preparation time. Make a few notes.");
+  });
+
+  document.getElementById("speakTimerButton").addEventListener("click", () => {
+    startTimer(120, "Speaking time. Keep going until the timer ends.");
+  });
+
+  document.getElementById("resetTimerButton").addEventListener("click", () => {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    remainingSeconds = 60;
+    displayTimer();
+    timerStatus.textContent = "Timer reset.";
+  });
+
+  // VOICE RECORDER
   const startButton = document.getElementById("startRecording");
   const stopButton = document.getElementById("stopRecording");
   const againButton = document.getElementById("recordAgain");
@@ -200,8 +934,12 @@
   }
 
   async function startRecording() {
-    if (!navigator.mediaDevices?.getUserMedia ||
-        !window.MediaRecorder) {
+    if (!selectedQuestion) {
+      message.textContent = "Please select a question before recording.";
+      return;
+    }
+
+    if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
       message.textContent =
         "Your browser does not support recording. Try an updated version of Chrome, Edge or Firefox.";
       return;
@@ -215,9 +953,7 @@
       status.textContent = "Requesting microphone access...";
       message.textContent = "Please allow microphone access.";
 
-      stream = await navigator.mediaDevices.getUserMedia({
-        audio: true
-      });
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
       const mimeTypes = [
         "audio/webm;codecs=opus",
@@ -340,12 +1076,14 @@
 
   window.addEventListener("beforeunload", () => {
     clearInterval(timer);
+    clearInterval(timerInterval);
     releaseMicrophone();
 
     if (recordingUrl) {
       URL.revokeObjectURL(recordingUrl);
     }
   });
+
 })();
 </script>
 

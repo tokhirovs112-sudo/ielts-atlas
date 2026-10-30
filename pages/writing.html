@@ -2,28 +2,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Writing Studio — Englisity</title>
-<link rel="stylesheet" href="../css/style.css">
-<script src="../js/resources.js" defer></script><script src="../js/app.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Writing Studio — Englisity</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/resources.js" defer></script>
+  <script src="../js/app.js" defer></script>
+  <style>
+    .page-hero {
+      background: linear-gradient(125deg, #101f3d, #244d83);
+      color: white;
+      padding: 52px 42px;
+      border-radius: 22px;
+      margin: 28px 0;
+    }
+    .page-hero .eyebrow {
+      color: #a9cbff;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      margin-bottom: 14px;
+    }
+    .page-hero h1 {
+      font-size: clamp(30px, 5vw, 44px);
+      line-height: 1.15;
+      margin: 0 0 15px;
+      color: white;
+    }
+    .page-hero p {
+      color: #d9e6f7;
+      max-width: 650px;
+      line-height: 1.7;
+      margin: 0;
+    }
+    .breadcrumb {
+      color: #b9d3f7;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+    @media (max-width: 600px) {
+      .page-hero { padding: 35px 24px; }
+    }
+  </style>
 </head>
 <body>
-<header class="topbar"><a class="brand" href="../index.html"><span class="logo">E</span><span>Englisity<small>WRITING STUDIO</small></span></a><button class="menu-toggle" id="menuToggle">☰</button><nav class="nav" id="navigation"><a href="../index.html">Home</a><a href="reading.html">Reading</a><a href="listening.html">Listening</a><a class="active" href="writing.html">Writing</a><a href="speaking.html">Speaking</a><a href="articles.html">Articles</a><a href="podcasts.html">Podcasts</a></nav></header>
-<main class="container">
-<div class="page-header"><div class="breadcrumb">IELTS / Writing</div><h1>Writing studio</h1><p>Practise organising ideas, writing clearly and developing your response.</p></div>
-<section class="panel"><h2>Choose a writing task</h2><div class="card-grid two">
-<article class="feature-card"><span class="icon">▥</span><h3>Academic Task 1</h3><p>Summarise the main features of a chart, table, process or map.</p><p><strong>Steps:</strong> identify the overview, select key details, compare accurately.</p></article>
-<article class="feature-card"><span class="icon">✎</span><h3>Task 2 essay</h3><p>Respond to an opinion, discussion, problem or advantage question.</p><p><strong>Steps:</strong> plan your position, develop two main ideas, check coherence.</p></article>
-</div></section>
-<section class="panel"><h2>Your writing draft</h2><p>Your draft is saved only in this browser when you click Save draft.</p><label for="writingDraft"><strong>Write or paste your practice here</strong></label><textarea id="writingDraft" placeholder="Start with your introduction..."></textarea><div class="resource-actions"><button class="small-button primary" id="saveDraft">Save draft</button><button class="small-button" id="clearDraft" type="button">Clear draft</button></div><p id="draftStatus" class="helper" aria-live="polite"></p></section>
-<section class="panel"><h2>Official guidance</h2><a class="resource-url" href="https://ielts.org/take-a-test/preparation-resources" target="_blank" rel="noopener noreferrer">IELTS preparation resources ↗</a></section>
-</main><footer class="footer"><strong>Englisity</strong><a href="../index.html">Back home ↑</a></footer>
-<script>
-document.getElementById("clearDraft").addEventListener("click",()=>{
-if(confirm("Clear the draft saved in this browser?")){
-document.getElementById("writingDraft").value="";
-localStorage.removeItem("atlas-writing-draft");
-document.getElementById("draftStatus").textContent="Draft cleared.";
-}});
-</script>
-</body></html>
+  <header class="topbar">
+    <a class="brand" href="../index.html">
+      <span class="logo">E</span>
+      <span>Englisity<small>WRITING STUDIO</small></span>
+    </a>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <nav class="nav" id="navigation">
+      <a href="../index.html">Home</a>
+      <a href="reading.html">Reading</a>
+      <a href="listening.html">Listening</a>
+      <a class="active" href="writing.html">Writing</a>
+      <a href="speaking.html">Speaking</a>
+      <a href="articles.html">Articles</a>
+      <a href="podcasts.html">Podcasts</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="page-hero">
+      <div class="breadcrumb">IELTS / Writing</div>
+      <div class="eyebrow">DEVELOP YOUR ENGLISH WRITING</div>
+      <h1>Write clearly. Express your ideas.</h1>
+      <p>
+        Practise organising your ideas, building clear paragraphs,
+        and writing stronger responses to different IELTS tasks.
+      </p>
+    </section>
+
+    <section class="panel">
+      <h2>Choose a writing task</h2>
+      <div class="card-grid two">
+        <article class="feature-card">
+          <span class="icon">▥</span>
+          <h3>Academic Task 1</h3>
+          <p>Summarise the main features of a chart, table, process or map.</p>
+          <p><strong>Steps:</strong> identify the overview, select key details, compare accurately.</p>
+        </article>
+
+        <article class="feature-card">
+          <span class="icon">✎</span>
+          <h3>Task 2 essay</h3>
+          <p>Respond to an opinion, discussion, problem or advantage question.</p>
+          <p><strong>Steps:</strong> plan your position, develop two main ideas, check coherence.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Your writing draft</h2>
+      <p>Your draft is saved only in this browser when you click Save draft.</p>
+
+      <label for="writingDraft">
+        <strong>Write or paste your practice here</strong>
+      </label>
+
+      <textarea id="writingDraft" placeholder="Start with your introduction..."></textarea>
+
+      <div class="resource-actions">
+        <button class="small-button primary" id="saveDraft">Save draft</button>
+        <button class="small-button" id="clearDraft" type="button">Clear draft</button>
+      </div>
+
+      <p id="draftStatus" class="helper" aria-live="polite"></p>
+    </section>
+
+    <section class="panel">
+      <h2>Official guidance</h2>
+      <a class="resource-url" href="https://ielts.org/take-a-test/preparation-resources" target="_blank" rel="noopener noreferrer">
+        IELTS preparation resources ↗
+      </a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <strong>Englisity</strong>
+    <a href="../index.html">Back home ↑</a>
+  </footer>
+
+  <script>
+    document.getElementById("clearDraft").addEventListener("click", () => {
+      if (confirm("Clear the draft saved in this browser?")) {
+        document.getElementById("writingDraft").value = "";
+        localStorage.removeItem("atlas-writing-draft");
+        document.getElementById("draftStatus").textContent = "Draft cleared.";
+      }
+    });
+  </script>
+</body>
+</html>

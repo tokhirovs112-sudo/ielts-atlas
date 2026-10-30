@@ -2,20 +2,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Podcast Library — Englisity</title>
-<link rel="stylesheet" href="../css/style.css">
-<script src="../js/resources.js" defer></script><script src="../js/app.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Podcast Library — Englisity</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/resources.js" defer></script>
+  <script src="../js/app.js" defer></script>
+  <style>
+    .page-hero {
+      background: linear-gradient(125deg, #101f3d, #244d83);
+      color: white;
+      padding: 52px 42px;
+      border-radius: 22px;
+      margin: 28px 0;
+    }
+    .page-hero .eyebrow {
+      color: #a9cbff;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      margin-bottom: 14px;
+    }
+    .page-hero h1 {
+      font-size: clamp(30px, 5vw, 44px);
+      line-height: 1.15;
+      margin: 0 0 15px;
+      color: white;
+    }
+    .page-hero p {
+      color: #d9e6f7;
+      max-width: 650px;
+      line-height: 1.7;
+      margin: 0;
+    }
+    .breadcrumb {
+      color: #b9d3f7;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+    @media (max-width: 600px) {
+      .page-hero { padding: 35px 24px; }
+    }
+  </style>
 </head>
 <body data-resource-type="podcast">
-<header class="topbar"><a class="brand" href="../index.html"><span class="logo">E</span><span>English Atlas<small>PODCAST LIBRARY</small></span></a><button class="menu-toggle" id="menuToggle">☰</button><nav class="nav" id="navigation"><a href="../index.html">Home</a><a href="reading.html">Reading</a><a href="listening.html">Listening</a><a href="writing.html">Writing</a><a href="speaking.html">Speaking</a><a href="articles.html">Articles</a><a class="active" href="podcasts.html">Podcasts</a></nav></header>
-<main class="container">
-<div class="page-header"><div class="breadcrumb">Discover / Podcasts</div><h1>Podcast library</h1><p>Find listening resources by level, topic and date added.</p></div>
-<section class="panel"><h2>Filter by English level</h2><div class="level-picker">
-<button class="level-button active" data-level="All levels">All levels</button><button class="level-button" data-level="A1–A2">A1–A2</button><button class="level-button" data-level="B1–B2">B1–B2</button><button class="level-button" data-level="C1–C2">C1–C2</button>
-</div></section>
-<div class="toolbar"><input id="resourceSearch" type="search" placeholder="Search podcasts by title or topic"><select id="resourceSort" aria-label="Sort podcasts"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="title">Title A–Z</option></select></div>
-<div id="libraryResources" class="resource-grid"></div>
-</main><footer class="footer"><strong>English Atlas</strong><a href="../index.html">Back home ↑</a></footer>
-</body></html>
+  <header class="topbar">
+    <a class="brand" href="../index.html">
+      <span class="logo">E</span>
+      <span>Englisity<small>PODCAST LIBRARY</small></span>
+    </a>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <nav class="nav" id="navigation">
+      <a href="../index.html">Home</a>
+      <a href="reading.html">Reading</a>
+      <a href="listening.html">Listening</a>
+      <a href="writing.html">Writing</a>
+      <a href="speaking.html">Speaking</a>
+      <a href="articles.html">Articles</a>
+      <a class="active" href="podcasts.html">Podcasts</a>
+    </nav>
+  </header>
 
+  <main class="container">
+    <section class="page-hero">
+      <div class="breadcrumb">Discover / Podcasts</div>
+      <div class="eyebrow">LEARN ENGLISH THROUGH PODCASTS</div>
+      <h1>Listen, learn, and improve.</h1>
+      <p>
+        Explore podcasts on different topics, practise your listening skills,
+        and discover new vocabulary at your English level.
+      </p>
+    </section>
+
+    <section class="panel">
+      <h2>Filter by English level</h2>
+      <div class="level-picker">
+        <button class="level-button active" data-level="All levels">All levels</button>
+        <button class="level-button" data-level="A1–A2">A1–A2</button>
+        <button class="level-button" data-level="B1–B2">B1–B2</button>
+        <button class="level-button" data-level="C1–C2">C1–C2</button>
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <input id="resourceSearch" type="search" placeholder="Search podcasts by title or topic">
+      <select id="resourceSort" aria-label="Sort podcasts">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="title">Title A–Z</option>
+      </select>
+    </div>
+
+    <div id="libraryResources" class="resource-grid"></div>
+  </main>
+
+  <footer class="footer">
+    <strong>Englisity</strong>
+    <a href="../index.html">Back home ↑</a>
+  </footer>
+</body>
+</html>

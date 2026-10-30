@@ -9,416 +9,67 @@
   <link rel="stylesheet" href="../css/style.css">
   <script src="../js/resources.js" defer></script>
   <script src="../js/app.js" defer></script>
-
   <style>
-    .page-hero {
-      background: linear-gradient(125deg, #101f3d, #244d83);
-      color: white;
-      padding: 48px 42px;
-      border-radius: 22px;
-      margin: 28px 0;
-    }
-
-    .page-hero .eyebrow {
-      color: #a9cbff;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      margin-bottom: 14px;
-    }
-
-    .page-hero h1 {
-      font-size: clamp(30px, 5vw, 44px);
-      line-height: 1.15;
-      margin: 0 0 15px;
-      color: white;
-    }
-
-    .page-hero p {
-      color: #d9e6f7;
-      max-width: 650px;
-      line-height: 1.7;
-      margin: 0;
-    }
-
-    .breadcrumb {
-      color: #b9d3f7;
-      font-size: 13px;
-      margin-bottom: 12px;
-    }
-
-    .part-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-top: 22px;
-    }
-
-    .part-card {
-      text-align: left;
-      border: 1px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 23px;
-      background: white;
-      cursor: pointer;
-      transition: transform .2s, border-color .2s, box-shadow .2s;
-      color: #172b4d;
-      font: inherit;
-    }
-
-    .part-card:hover {
-      transform: translateY(-3px);
-      border-color: #8bb5e9;
-      box-shadow: 0 8px 24px rgba(20, 50, 90, .08);
-    }
-
-    .part-number {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      background: #eaf2ff;
-      color: #245a9b;
-      font-weight: 800;
-      margin-bottom: 16px;
-    }
-
-    .part-card h3 {
-      margin: 0 0 9px;
-      font-size: 19px;
-    }
-
-    .part-card p {
-      color: #64748b;
-      line-height: 1.6;
-      font-size: 14px;
-      margin: 0 0 15px;
-    }
-
-    .part-card .card-link {
-      color: #2863a8;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .practice-section[hidden],
-    .topic-section[hidden],
-    .question-section[hidden] {
-      display: none !important;
-    }
-
-    .back-button {
-      border: 0;
-      background: #edf3fb;
-      color: #245a9b;
-      padding: 10px 15px;
-      border-radius: 9px;
-      cursor: pointer;
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
-
-    .back-button:hover {
-      background: #dceaff;
-    }
-
-    .section-heading {
-      margin-bottom: 18px;
-    }
-
-    .section-heading h2 {
-      margin-bottom: 7px;
-    }
-
-    .section-heading p {
-      color: #64748b;
-      margin: 0;
-    }
-
-    .topic-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 13px;
-      margin-top: 20px;
-    }
-
-    .topic-button {
-      background: white;
-      border: 1px solid #e2e8f0;
-      padding: 17px;
-      border-radius: 13px;
-      text-align: left;
-      cursor: pointer;
-      color: #172b4d;
-      font: inherit;
-      transition: border-color .2s, background .2s;
-    }
-
-    .topic-button:hover {
-      border-color: #8bb5e9;
-      background: #f7faff;
-    }
-
-    .topic-button strong {
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    .topic-button span {
-      color: #64748b;
-      font-size: 13px;
-    }
-
-    .topic-meta {
-      color: #64748b;
-      font-size: 13px;
-      margin-bottom: 18px;
-    }
-
-    .question-list {
-      display: grid;
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .question-item {
-      border: 1px solid #e2e8f0;
-      padding: 17px;
-      border-radius: 12px;
-      display: flex;
-      align-items: flex-start;
-      gap: 13px;
-      background: white;
-    }
-
-    .question-number {
-      background: #eaf2ff;
-      color: #245a9b;
-      font-weight: 800;
-      width: 30px;
-      height: 30px;
-      flex-shrink: 0;
-      border-radius: 9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-    }
-
-    .question-text {
-      flex: 1;
-      line-height: 1.55;
-      color: #24364d;
-    }
-
-    .practise-question {
-      border: 0;
-      background: #edf3fb;
-      color: #245a9b;
-      padding: 8px 11px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    .practise-question:hover {
-      background: #dceaff;
-    }
-
-    .cue-card {
-      background: #f4f7fc;
-      border: 1px solid #dce6f3;
-      border-radius: 15px;
-      padding: 23px;
-      margin: 18px 0;
-    }
-
-    .cue-card h3 {
-      margin-top: 0;
-    }
-
-    .cue-card ul {
-      padding-left: 21px;
-      line-height: 1.9;
-    }
-
-    .selected-question {
-      background: #edf5ff;
-      border: 1px solid #c7dcf7;
-      padding: 18px;
-      border-radius: 12px;
-      margin: 18px 0;
-    }
-
-    .selected-question small {
-      color: #52749d;
-      font-weight: 700;
-      display: block;
-      margin-bottom: 8px;
-    }
-
-    .selected-question strong {
-      color: #17365d;
-      font-size: 17px;
-      line-height: 1.5;
-    }
-
-    .recorder-display {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #f3f6fa;
-      padding: 14px;
-      border-radius: 11px;
-      margin: 20px 0;
-    }
-
-    .record-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #9ca3af;
-      flex-shrink: 0;
-    }
-
-    .record-dot.recording {
-      background: #dc4545;
-      animation: pulse 1.2s infinite;
-    }
-
-    @keyframes pulse {
-      50% { opacity: .35; }
-    }
-
-    .record-status {
-      font-size: 14px;
-      font-weight: 700;
-      color: #334155;
-    }
-
-    .record-time {
-      margin-left: auto;
-      font-weight: 800;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .recorder-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .recorder-button {
-      border: 1px solid #d5deea;
-      background: white;
-      color: #24466f;
-      padding: 11px 16px;
-      border-radius: 9px;
-      cursor: pointer;
-      font-weight: 700;
-    }
-
-    .recorder-button.primary {
-      background: #245a9b;
-      border-color: #245a9b;
-      color: white;
-    }
-
-    .recorder-button:disabled {
-      opacity: .45;
-      cursor: not-allowed;
-    }
-
-    .recording-playback {
-      margin-top: 22px;
-      padding: 17px;
-      border-radius: 12px;
-      background: #f4f7fc;
-    }
-
-    .recording-playback audio {
-      width: 100%;
-      margin: 10px 0;
-    }
-
-    .download-recording {
-      display: inline-block;
-      color: #245a9b;
-      font-weight: 700;
-      text-decoration: none;
-    }
-
-    .helper {
-      color: #64748b;
-      font-size: 13px;
-      line-height: 1.6;
-      margin-top: 15px;
-    }
-
-    .date-label {
-      display: inline-block;
-      color: #245a9b;
-      background: #eaf2ff;
-      padding: 6px 10px;
-      border-radius: 7px;
-      font-size: 12px;
-      font-weight: 800;
-      margin-bottom: 12px;
-    }
-
-    .timer-controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 15px 0;
-    }
-
-    .timer-display {
-      font-size: 25px;
-      font-weight: 800;
-      color: #245a9b;
-      font-variant-numeric: tabular-nums;
-    }
-
-    @media (max-width: 750px) {
-      .part-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .topic-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .page-hero {
-        padding: 35px 24px;
-      }
-
-      .question-item {
-        flex-wrap: wrap;
-      }
-
-      .practise-question {
-        margin-left: 43px;
-      }
-    }
+    .page-hero{background:linear-gradient(125deg,#101f3d,#244d83);color:#fff;padding:48px 42px;border-radius:22px;margin:28px 0}
+    .page-hero .eyebrow{color:#a9cbff;font-size:12px;font-weight:800;letter-spacing:1.5px;margin-bottom:14px}
+    .page-hero h1{font-size:clamp(30px,5vw,44px);line-height:1.15;margin:0 0 15px;color:#fff}
+    .page-hero p{color:#d9e6f7;max-width:650px;line-height:1.7;margin:0}
+    .breadcrumb{color:#b9d3f7;font-size:13px;margin-bottom:12px}
+    .practice-screen[hidden]{display:none!important}
+    .part-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+    .part-card{width:100%;text-align:left;border:1px solid #e2e8f0;border-radius:16px;padding:23px;background:#fff;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s;color:#172b4d;font:inherit}
+    .part-card:hover,.topic-button:hover{transform:translateY(-2px);border-color:#8bb5e9;box-shadow:0 8px 24px rgba(20,50,90,.08)}
+    .part-number{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:#eaf2ff;color:#245a9b;font-weight:800;margin-bottom:16px}
+    .part-card h3{margin:0 0 9px;font-size:19px}
+    .part-card p{color:#64748b;line-height:1.6;font-size:14px;margin:0 0 15px}
+    .card-link{color:#2863a8;font-size:14px;font-weight:700}
+    .back-button{border:0;background:#edf3fb;color:#245a9b;padding:10px 15px;border-radius:9px;cursor:pointer;font-weight:700;margin-bottom:20px}
+    .back-button:hover{background:#dceaff}
+    .section-heading{margin-bottom:18px}
+    .section-heading h2{margin-bottom:7px}
+    .section-heading p{color:#64748b;margin:0;line-height:1.6}
+    .topic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-top:20px}
+    .topic-button{width:100%;background:#fff;border:1px solid #e2e8f0;padding:17px;border-radius:13px;text-align:left;cursor:pointer;color:#172b4d;font:inherit;transition:transform .2s,border-color .2s,box-shadow .2s}
+    .topic-button strong{display:block;margin-bottom:5px}
+    .topic-button span{color:#64748b;font-size:13px}
+    .question-list{display:grid;gap:12px;margin-top:20px}
+    .question-item{border:1px solid #e2e8f0;padding:17px;border-radius:12px;display:flex;align-items:center;gap:13px;background:#fff}
+    .question-number{background:#eaf2ff;color:#245a9b;font-weight:800;width:30px;height:30px;flex-shrink:0;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px}
+    .question-text{flex:1;line-height:1.55;color:#24364d}
+    .practise-question{border:0;background:#edf3fb;color:#245a9b;padding:9px 13px;border-radius:8px;cursor:pointer;font-weight:700;font-size:12px;white-space:nowrap}
+    .practise-question:hover{background:#dceaff}
+    .date-label{display:inline-block;color:#245a9b;background:#eaf2ff;padding:6px 10px;border-radius:7px;font-size:12px;font-weight:800;margin-bottom:12px}
+    .selected-question{background:#edf5ff;border:1px solid #c7dcf7;padding:18px;border-radius:12px;margin:18px 0}
+    .selected-question small{color:#52749d;font-weight:700;display:block;margin-bottom:8px}
+    .selected-question strong{color:#17365d;font-size:17px;line-height:1.5}
+    .cue-card{background:#f4f7fc;border:1px solid #dce6f3;border-radius:15px;padding:23px;margin:18px 0}
+    .cue-card h3{margin-top:0;color:#17365d}
+    .cue-card ul{padding-left:21px;line-height:1.9;margin-bottom:0}
+    .cue-card .cue-intro{font-weight:700;color:#24364d;line-height:1.6}
+    .timer-panel{background:#f8fafc;border:1px solid #e2e8f0;border-radius:13px;padding:18px;margin:18px 0}
+    .timer-controls,.recorder-actions{display:flex;flex-wrap:wrap;gap:10px;margin:15px 0}
+    .timer-display{font-size:25px;font-weight:800;color:#245a9b;font-variant-numeric:tabular-nums}
+    .recorder-button{border:1px solid #d5deea;background:#fff;color:#24466f;padding:11px 16px;border-radius:9px;cursor:pointer;font-weight:700}
+    .recorder-button.primary{background:#245a9b;border-color:#245a9b;color:#fff}
+    .recorder-button:disabled{opacity:.45;cursor:not-allowed}
+    .recorder-display{display:flex;align-items:center;gap:10px;background:#f3f6fa;padding:14px;border-radius:11px;margin:20px 0}
+    .record-dot{width:10px;height:10px;border-radius:50%;background:#9ca3af;flex-shrink:0}
+    .record-dot.recording{background:#dc4545;animation:pulse 1.2s infinite}
+    @keyframes pulse{50%{opacity:.35}}
+    .record-status{font-size:14px;font-weight:700;color:#334155}
+    .record-time{margin-left:auto;font-weight:800;font-variant-numeric:tabular-nums}
+    .recording-playback{margin-top:22px;padding:17px;border-radius:12px;background:#f4f7fc}
+    .recording-playback audio{width:100%;margin:10px 0}
+    .download-recording{display:inline-block;color:#245a9b;font-weight:700;text-decoration:none}
+    .helper{color:#64748b;font-size:13px;line-height:1.6;margin-top:15px}
+    @media(max-width:750px){.part-grid{grid-template-columns:1fr}.topic-grid{grid-template-columns:1fr}}
+    @media(max-width:600px){.page-hero{padding:35px 24px}.question-item{align-items:flex-start;flex-wrap:wrap}.practise-question{margin-left:43px}}
   </style>
 </head>
-
 <body>
 <header class="topbar">
-  <a class="brand" href="../index.html">
-    <span class="logo">E</span>
-    <span>Englisity<small>SPEAKING PRACTICE</small></span>
-  </a>
-
+  <a class="brand" href="../index.html"><span class="logo">E</span><span>Englisity<small>SPEAKING PRACTICE</small></span></a>
   <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
-
   <nav class="nav" id="navigation">
     <a href="../index.html">Home</a>
     <a href="reading.html">Reading</a>
@@ -431,24 +82,18 @@
 </header>
 
 <main class="container">
-
   <section class="page-hero">
     <div class="breadcrumb">Englisity / IELTS / Speaking</div>
     <div class="eyebrow">IELTS SPEAKING PRACTICE</div>
     <h1>Practise speaking. Build confidence.</h1>
-    <p>
-      Explore real exam-style questions, practise all three parts of IELTS Speaking,
-      and record your answers to improve your fluency.
-    </p>
+    <p>Explore exam-style questions, practise all three parts of IELTS Speaking, and record your answers to improve your fluency.</p>
   </section>
 
-  <!-- PART SELECTION -->
-  <section class="panel" id="partSelection">
+  <section class="panel practice-screen" id="partSelection">
     <div class="section-heading">
       <h2>Choose a speaking part</h2>
       <p>Select a part to explore topics and practise questions.</p>
     </div>
-
     <div class="part-grid">
       <button class="part-card" data-part="1">
         <span class="part-number">01</span>
@@ -456,14 +101,12 @@
         <p>Answer questions about familiar topics, everyday life and personal experiences.</p>
         <span class="card-link">Explore Part 1 →</span>
       </button>
-
       <button class="part-card" data-part="2">
         <span class="part-number">02</span>
         <h3>Individual Long Turn</h3>
         <p>Choose a cue card, prepare your ideas and speak for one to two minutes.</p>
         <span class="card-link">Explore Part 2 →</span>
       </button>
-
       <button class="part-card" data-part="3">
         <span class="part-number">03</span>
         <h3>Discussion</h3>
@@ -473,100 +116,71 @@
     </div>
   </section>
 
-  <!-- TOPIC SELECTION -->
-  <section class="panel practice-section" id="topicSection" hidden>
+  <section class="panel practice-screen" id="topicSection" hidden>
     <button class="back-button" id="backToParts">← All speaking parts</button>
-
     <div class="section-heading">
       <h2 id="topicTitle">Choose a topic</h2>
       <p id="topicDescription"></p>
     </div>
-
     <div id="topicGrid" class="topic-grid"></div>
   </section>
 
-  <!-- QUESTION LIST -->
-  <section class="panel question-section" id="questionSection" hidden>
+  <section class="panel practice-screen" id="questionSection" hidden>
     <button class="back-button" id="backToTopics">← Back to topics</button>
-
     <div class="section-heading">
       <h2 id="questionTitle">Questions</h2>
       <p id="questionDescription"></p>
     </div>
-
     <div id="questionDate" class="date-label" hidden></div>
-
     <div id="questionList" class="question-list"></div>
-
-    <div id="cueCardArea" hidden>
-      <div class="cue-card">
-        <h3>Describe an enjoyable evening you spent with friends.</h3>
-        <p>You should say:</p>
-        <ul>
-          <li>when it was</li>
-          <li>where you spent the evening</li>
-          <li>what you did together</li>
-          <li>and explain why you enjoyed it</li>
-        </ul>
-      </div>
-
-      <p class="helper">
-        You have one minute to prepare. You should speak for one to two minutes.
-      </p>
-
-      <div class="timer-controls">
-        <button class="recorder-button" id="prepTimerButton">Start 1-minute preparation</button>
-        <button class="recorder-button" id="speakTimerButton">Start 2-minute timer</button>
-        <button class="recorder-button" id="resetTimerButton">Reset timer</button>
-      </div>
-
-      <div class="timer-display" id="timerDisplay">01:00</div>
-      <p class="helper" id="timerStatus" aria-live="polite">Ready to prepare.</p>
-    </div>
-
-    <div class="selected-question" id="selectedQuestionBox">
-      <small>QUESTION SELECTED FOR PRACTICE</small>
-      <strong id="selectedQuestionText">Choose a question above to begin.</strong>
-    </div>
-
-    <button class="back-button" id="showRecorder">🎙 Go to recorder</button>
   </section>
 
-  <!-- RECORDER -->
-  <section class="panel" id="recorderPanel">
+  <section class="panel practice-screen" id="practiceSection" hidden>
+    <button class="back-button" id="backToQuestions">← Back to questions</button>
     <div class="section-heading">
-      <h2>Your voice recorder</h2>
-      <p>Select a question first, then record your answer.</p>
+      <h2>Your speaking practice</h2>
+      <p id="practiceSubtitle">Read the question, then record your answer.</p>
+    </div>
+
+    <div id="cueCardArea" class="cue-card" hidden>
+      <h3>Part 2 cue card</h3>
+      <p class="cue-intro" id="cueCardTitle"></p>
+      <p>You should say:</p>
+      <ul id="cueCardPrompts"></ul>
+      <p class="helper">You have one minute to prepare. You should speak for one to two minutes.</p>
+      <div class="timer-panel">
+        <div class="timer-controls">
+          <button class="recorder-button" id="prepTimerButton">Start 1-minute preparation</button>
+          <button class="recorder-button" id="speakTimerButton">Start 2-minute timer</button>
+          <button class="recorder-button" id="resetTimerButton">Reset timer</button>
+        </div>
+        <div class="timer-display" id="timerDisplay">01:00</div>
+        <p class="helper" id="timerStatus" aria-live="polite">Ready to prepare.</p>
+      </div>
     </div>
 
     <div class="selected-question">
-      <small>YOUR CURRENT QUESTION</small>
+      <small>YOUR QUESTION</small>
       <strong id="recorderQuestion">No question selected yet.</strong>
     </div>
 
+    <h3>Your voice recorder</h3>
     <div class="recorder-display">
       <span class="record-dot" id="recordDot"></span>
       <span class="record-status" id="recordStatus">Ready to record</span>
       <span class="record-time" id="recordTime">00:00</span>
     </div>
-
     <div class="recorder-actions">
       <button class="recorder-button primary" id="startRecording">● Start recording</button>
       <button class="recorder-button" id="stopRecording" disabled>■ Stop recording</button>
       <button class="recorder-button" id="recordAgain" disabled>↻ Record again</button>
     </div>
-
     <div class="recording-playback" id="playbackArea" hidden>
       <h3>Your recording</h3>
       <audio id="recordingPlayback" controls></audio>
-      <a class="download-recording" id="downloadRecording" href="#" download>
-        ↓ Download recording
-      </a>
+      <a class="download-recording" id="downloadRecording" href="#" download>↓ Download recording</a>
     </div>
-
-    <p class="helper" id="recorderMessage" aria-live="polite">
-      Allow microphone access when your browser asks. Your recording stays in this page unless you download it.
-    </p>
+    <p class="helper" id="recorderMessage" aria-live="polite">Allow microphone access when your browser asks. Your recording stays in this page unless you download it.</p>
   </section>
 
   <section class="panel">
@@ -577,7 +191,6 @@
       <strong>Part 3:</strong> Explain your opinions, compare ideas and give examples.
     </p>
   </section>
-
 </main>
 
 <footer class="footer">
@@ -613,14 +226,20 @@
         ]
       }
     ],
-
     2: [
       {
         topic: "Events and experiences",
         questions: [
           "Describe an enjoyable evening you spent with friends."
         ],
-        cueCard: true
+        cueCard: true,
+        prompts: [
+          "When it happened",
+          "Where you spent the evening",
+          "What you did together",
+          "And explain why you enjoyed it"
+        ],
+        reported: true
       },
       {
         topic: "People",
@@ -654,7 +273,6 @@
         ]
       }
     ],
-
     3: [
       {
         topic: "Family and leisure time",
@@ -684,33 +302,39 @@
     }
   };
 
-  const partSelection = document.getElementById("partSelection");
-  const topicSection = document.getElementById("topicSection");
-  const questionSection = document.getElementById("questionSection");
-  const recorderPanel = document.getElementById("recorderPanel");
+  const screens = {
+    parts: document.getElementById("partSelection"),
+    topics: document.getElementById("topicSection"),
+    questions: document.getElementById("questionSection"),
+    practice: document.getElementById("practiceSection")
+  };
 
   const topicGrid = document.getElementById("topicGrid");
   const questionList = document.getElementById("questionList");
-
   const topicTitle = document.getElementById("topicTitle");
   const topicDescription = document.getElementById("topicDescription");
   const questionTitle = document.getElementById("questionTitle");
   const questionDescription = document.getElementById("questionDescription");
   const questionDate = document.getElementById("questionDate");
-
   const cueCardArea = document.getElementById("cueCardArea");
-  const selectedQuestionText = document.getElementById("selectedQuestionText");
   const recorderQuestion = document.getElementById("recorderQuestion");
+  const recorderMessage = document.getElementById("recorderMessage");
 
   let currentPart = null;
   let currentTopic = null;
   let selectedQuestion = null;
 
+  function showScreen(name) {
+    Object.entries(screens).forEach(([key, element]) => {
+      element.hidden = key !== name;
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   function selectPart(part) {
     currentPart = part;
     topicTitle.textContent = partInfo[part].title;
     topicDescription.textContent = partInfo[part].description;
-
     topicGrid.innerHTML = "";
 
     questionSets[part].forEach((item, index) => {
@@ -725,18 +349,11 @@
         (item.questions.length === 1 ? " question" : " questions");
 
       button.append(name, count);
-
-      button.addEventListener("click", () => {
-        selectTopic(index);
-      });
-
+      button.addEventListener("click", () => selectTopic(index));
       topicGrid.appendChild(button);
     });
 
-    partSelection.hidden = true;
-    topicSection.hidden = false;
-    questionSection.hidden = true;
-    recorderPanel.hidden = true;
+    showScreen("topics");
   }
 
   function selectTopic(index) {
@@ -763,70 +380,58 @@
 
       const button = document.createElement("button");
       button.className = "practise-question";
-      button.textContent = "Practise";
-
-      button.addEventListener("click", () => {
-        chooseQuestion(question);
-        recorderPanel.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
+      button.textContent = "Practise →";
+      button.addEventListener("click", () => openPractice(question));
 
       item.append(number, text, button);
       questionList.appendChild(item);
     });
 
-    cueCardArea.hidden = !currentTopic.cueCard;
-    questionDate.hidden = currentPart === 2 && currentTopic.cueCard
-      ? false
-      : currentPart !== 1 && currentPart !== 3;
-
-    if (currentPart === 1 || currentPart === 3) {
-      questionDate.textContent = "Reported in the exam · 26 October 2026";
-      questionDate.hidden = false;
-    } else if (currentPart === 2 && currentTopic.cueCard) {
+    if (currentTopic.reported || currentPart === 1 || currentPart === 3) {
       questionDate.textContent = "Reported in the exam · 26 October 2026";
       questionDate.hidden = false;
     } else {
       questionDate.hidden = true;
     }
 
-    topicSection.hidden = true;
-    questionSection.hidden = false;
-    recorderPanel.hidden = false;
-
-    selectedQuestion = null;
-    selectedQuestionText.textContent = "Choose a question above to begin.";
-    recorderQuestion.textContent = "No question selected yet.";
+    showScreen("questions");
   }
 
-  function chooseQuestion(question) {
+  function openPractice(question) {
     selectedQuestion = question;
-    selectedQuestionText.textContent = question;
     recorderQuestion.textContent = question;
-    document.getElementById("recorderMessage").textContent =
-      "Your question is ready. Start recording when you are ready.";
+    recorderMessage.textContent = "Your question is ready. Start recording when you are ready.";
+    document.getElementById("practiceSubtitle").textContent =
+      partInfo[currentPart].title + " · " + currentTopic.topic;
+
+    const isCueCard = currentPart === 2 && currentTopic.cueCard;
+    cueCardArea.hidden = !isCueCard;
+
+    if (isCueCard) {
+      document.getElementById("cueCardTitle").textContent = question;
+      const promptList = document.getElementById("cueCardPrompts");
+      promptList.innerHTML = "";
+
+      (currentTopic.prompts || []).forEach(prompt => {
+        const li = document.createElement("li");
+        li.textContent = prompt;
+        promptList.appendChild(li);
+      });
+
+      resetPrepTimer();
+    }
+
+    clearPreviousRecording();
+    showScreen("practice");
   }
 
   document.querySelectorAll("[data-part]").forEach(button => {
-    button.addEventListener("click", () => {
-      selectPart(button.dataset.part);
-    });
+    button.addEventListener("click", () => selectPart(button.dataset.part));
   });
 
-  document.getElementById("backToParts").addEventListener("click", () => {
-    topicSection.hidden = true;
-    questionSection.hidden = true;
-    partSelection.hidden = false;
-    recorderPanel.hidden = false;
-  });
-
-  document.getElementById("backToTopics").addEventListener("click", () => {
-    questionSection.hidden = true;
-    topicSection.hidden = false;
-  });
-
-  document.getElementById("showRecorder").addEventListener("click", () => {
-    recorderPanel.scrollIntoView({ behavior: "smooth", block: "start" });
-  });
+  document.getElementById("backToParts").addEventListener("click", () => showScreen("parts"));
+  document.getElementById("backToTopics").addEventListener("click", () => showScreen("topics"));
+  document.getElementById("backToQuestions").addEventListener("click", () => showScreen("questions"));
 
   // PART 2 TIMERS
   let timerInterval = null;
@@ -836,16 +441,18 @@
   const timerStatus = document.getElementById("timerStatus");
 
   function displayTimer() {
-    const minutes = Math.floor(remainingSeconds / 60);
-    const seconds = remainingSeconds % 60;
-
     timerDisplay.textContent =
-      String(minutes).padStart(2, "0") + ":" +
-      String(seconds).padStart(2, "0");
+      String(Math.floor(remainingSeconds / 60)).padStart(2, "0") + ":" +
+      String(remainingSeconds % 60).padStart(2, "0");
+  }
+
+  function stopPart2Timer() {
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = null;
   }
 
   function startTimer(seconds, label) {
-    clearInterval(timerInterval);
+    stopPart2Timer();
     remainingSeconds = seconds;
     displayTimer();
     timerStatus.textContent = label;
@@ -855,11 +462,17 @@
       displayTimer();
 
       if (remainingSeconds <= 0) {
-        clearInterval(timerInterval);
-        timerInterval = null;
+        stopPart2Timer();
         timerStatus.textContent = "Time is up!";
       }
     }, 1000);
+  }
+
+  function resetPrepTimer() {
+    stopPart2Timer();
+    remainingSeconds = 60;
+    displayTimer();
+    timerStatus.textContent = "Ready to prepare.";
   }
 
   document.getElementById("prepTimerButton").addEventListener("click", () => {
@@ -870,13 +483,7 @@
     startTimer(120, "Speaking time. Keep going until the timer ends.");
   });
 
-  document.getElementById("resetTimerButton").addEventListener("click", () => {
-    clearInterval(timerInterval);
-    timerInterval = null;
-    remainingSeconds = 60;
-    displayTimer();
-    timerStatus.textContent = "Timer reset.";
-  });
+  document.getElementById("resetTimerButton").addEventListener("click", resetPrepTimer);
 
   // VOICE RECORDER
   const startButton = document.getElementById("startRecording");
@@ -886,7 +493,6 @@
   const status = document.getElementById("recordStatus");
   const timeDisplay = document.getElementById("recordTime");
   const dot = document.getElementById("recordDot");
-  const message = document.getElementById("recorderMessage");
 
   const playbackArea = document.getElementById("playbackArea");
   const playback = document.getElementById("recordingPlayback");
@@ -897,19 +503,15 @@
   let chunks = [];
   let recordingUrl = null;
   let startTime = 0;
-  let timer = null;
+  let recordingTimer = null;
 
   function formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const remaining = seconds % 60;
-
-    return String(minutes).padStart(2, "0") + ":" +
-           String(remaining).padStart(2, "0");
+    return String(Math.floor(seconds / 60)).padStart(2, "0") + ":" +
+      String(seconds % 60).padStart(2, "0");
   }
 
   function updateTime() {
-    const elapsed = Math.floor((Date.now() - startTime) / 1000);
-    timeDisplay.textContent = formatTime(elapsed);
+    timeDisplay.textContent = formatTime(Math.floor((Date.now() - startTime) / 1000));
   }
 
   function releaseMicrophone() {
@@ -935,23 +537,22 @@
 
   async function startRecording() {
     if (!selectedQuestion) {
-      message.textContent = "Please select a question before recording.";
+      recorderMessage.textContent = "Please select a question before recording.";
       return;
     }
 
     if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
-      message.textContent =
+      recorderMessage.textContent =
         "Your browser does not support recording. Try an updated version of Chrome, Edge or Firefox.";
       return;
     }
 
     try {
       clearPreviousRecording();
-
       chunks = [];
       timeDisplay.textContent = "00:00";
       status.textContent = "Requesting microphone access...";
-      message.textContent = "Please allow microphone access.";
+      recorderMessage.textContent = "Please allow microphone access.";
 
       stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
@@ -976,12 +577,12 @@
       };
 
       recorder.onstop = () => {
-        clearInterval(timer);
+        clearInterval(recordingTimer);
         releaseMicrophone();
 
         if (!chunks.length) {
           status.textContent = "No recording captured";
-          message.textContent = "Please try recording again.";
+          recorderMessage.textContent = "Please try recording again.";
           startButton.disabled = false;
           stopButton.disabled = true;
           againButton.disabled = false;
@@ -994,20 +595,16 @@
         });
 
         recordingUrl = URL.createObjectURL(audioBlob);
-
         playback.src = recordingUrl;
         playback.load();
 
-        const extension = audioBlob.type.includes("mp4")
-          ? "mp4"
-          : "webm";
-
+        const extension = audioBlob.type.includes("mp4") ? "mp4" : "webm";
         downloadLink.href = recordingUrl;
         downloadLink.download = `englisity-speaking.${extension}`;
 
         playbackArea.hidden = false;
         status.textContent = "Recording completed";
-        message.textContent =
+        recorderMessage.textContent =
           "Your recording is ready. Listen to it or download a copy.";
 
         startButton.disabled = false;
@@ -1017,11 +614,11 @@
       };
 
       recorder.onerror = () => {
-        clearInterval(timer);
+        clearInterval(recordingTimer);
         releaseMicrophone();
 
         status.textContent = "Recording error";
-        message.textContent = "Something went wrong. Please try again.";
+        recorderMessage.textContent = "Something went wrong. Please try again.";
 
         startButton.disabled = false;
         stopButton.disabled = true;
@@ -1032,14 +629,14 @@
 
       startTime = Date.now();
       updateTime();
-      timer = setInterval(updateTime, 1000);
+      recordingTimer = setInterval(updateTime, 1000);
 
       startButton.disabled = true;
       stopButton.disabled = false;
       againButton.disabled = true;
 
       status.textContent = "Recording in progress";
-      message.textContent = "Speak clearly. Press Stop when you finish.";
+      recorderMessage.textContent = "Speak clearly. Press Stop when you finish.";
       dot.classList.add("recording");
 
     } catch (error) {
@@ -1052,10 +649,10 @@
 
       if (error.name === "NotAllowedError" ||
           error.name === "PermissionDeniedError") {
-        message.textContent =
+        recorderMessage.textContent =
           "Microphone access was denied. Allow it in your browser settings and try again.";
       } else {
-        message.textContent =
+        recorderMessage.textContent =
           "Could not access the microphone. Check your microphone connection.";
       }
     }
@@ -1066,7 +663,7 @@
       recorder.stop();
       stopButton.disabled = true;
       status.textContent = "Processing recording...";
-      message.textContent = "Preparing your recording...";
+      recorderMessage.textContent = "Preparing your recording...";
     }
   }
 
@@ -1075,17 +672,15 @@
   againButton.addEventListener("click", startRecording);
 
   window.addEventListener("beforeunload", () => {
-    clearInterval(timer);
-    clearInterval(timerInterval);
+    clearInterval(recordingTimer);
+    stopPart2Timer();
     releaseMicrophone();
 
     if (recordingUrl) {
       URL.revokeObjectURL(recordingUrl);
     }
   });
-
 })();
 </script>
-
 </body>
 </html>

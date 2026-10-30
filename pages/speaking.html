@@ -2,20 +2,352 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Speaking Room —Englisity</title>
-<link rel="stylesheet" href="../css/style.css">
-<script src="../js/resources.js" defer></script><script src="../js/app.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Practise IELTS Speaking and record your answers on Englisity.">
+  <title>Speaking Practice | Englisity</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/resources.js" defer></script>
+  <script src="../js/app.js" defer></script>
 </head>
 <body>
-<header class="topbar"><a class="brand" href="../index.html"><span class="logo">E</span><span>Englisity<small>SPEAKING ROOM</small></span></a><button class="menu-toggle" id="menuToggle">☰</button><nav class="nav" id="navigation"><a href="../index.html">Home</a><a href="reading.html">Reading</a><a href="listening.html">Listening</a><a href="writing.html">Writing</a><a class="active" href="speaking.html">Speaking</a><a href="articles.html">Articles</a><a href="podcasts.html">Podcasts</a></nav></header>
+
+<header class="topbar">
+  <a class="brand" href="../index.html">
+    <span class="logo">E</span>
+    <span>Englisity<small>SPEAKING PRACTICE</small></span>
+  </a>
+
+  <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+
+  <nav class="nav" id="navigation">
+    <a href="../index.html">Home</a>
+    <a href="reading.html">Reading</a>
+    <a href="listening.html">Listening</a>
+    <a href="writing.html">Writing</a>
+    <a class="active" href="speaking.html">Speaking</a>
+    <a href="articles.html">Articles</a>
+    <a href="podcasts.html">Podcasts</a>
+  </nav>
+</header>
+
 <main class="container">
-<div class="page-header"><div class="breadcrumb">IELTS / Speaking</div><h1>Speaking room</h1><p>Practise answering clearly, supporting your ideas and speaking naturally.</p></div>
-<section class="panel"><h2>Speaking sections</h2><div class="card-grid">
-<article class="feature-card"><span class="icon">1</span><h3>Part 1 · Interview</h3><p>Answer familiar questions about study, hobbies and everyday life.</p><strong>Try:</strong> What do you enjoy doing in your free time?</article>
-<article class="feature-card"><span class="icon">2</span><h3>Part 2 · Cue card</h3><p>Prepare a short talk using a simple plan: who, what, when, why.</p><strong>Try:</strong> Describe a skill you would like to learn.</article>
-<article class="feature-card"><span class="icon">3</span><h3>Part 3 · Discussion</h3><p>Explain opinions, compare ideas and give reasons or examples.</p><strong>Try:</strong> How has technology changed education?</article>
-</div></section>
-<section class="panel"><h2>Simple speaking plan</h2><p>Answer the question directly. Give one reason. Add a specific example. Finish with a short concluding thought.</p></section>
-</main><footer class="footer"><strong>Englisity</strong><a href="../index.html">Back home ↑</a></footer>
-</body></html>
+
+  <section class="page-header">
+    <div class="breadcrumb">Englisity / IELTS / Speaking</div>
+    <div class="eyebrow">SPEAKING LAB</div>
+    <h1>Find your voice.</h1>
+    <p>
+      Practise IELTS Speaking, record your answers and listen to your
+      performance. Build confidence one answer at a time.
+    </p>
+  </section>
+
+  <section class="panel">
+    <div class="practice-intro">
+      <div class="practice-icon">🎙</div>
+      <div>
+        <h2>Your voice recorder</h2>
+        <p>Record your answer and listen back to it.</p>
+      </div>
+    </div>
+
+    <div class="recorder">
+
+      <div class="recorder-display">
+        <span class="record-dot" id="recordDot"></span>
+        <span class="record-status" id="recordStatus">Ready to record</span>
+        <span class="record-time" id="recordTime">00:00</span>
+      </div>
+
+      <div class="recorder-actions">
+        <button class="recorder-button primary" id="startRecording">
+          ● Start recording
+        </button>
+
+        <button class="recorder-button recording" id="stopRecording" disabled>
+          ■ Stop recording
+        </button>
+
+        <button class="recorder-button" id="recordAgain" disabled>
+          ↻ Record again
+        </button>
+      </div>
+
+      <div class="recording-playback" id="playbackArea" hidden>
+        <h3>Your recording</h3>
+        <audio id="recordingPlayback" controls></audio>
+        <a class="download-recording" id="downloadRecording" href="#" download>
+          ↓ Download recording
+        </a>
+      </div>
+
+    </div>
+
+    <p class="helper" id="recorderMessage" aria-live="polite">
+      Allow microphone access when your browser asks. Your recording
+      stays in this page unless you download it.
+    </p>
+  </section>
+
+  <section class="panel">
+    <h2>IELTS Speaking practice</h2>
+    <p>Choose a question and answer it using the recorder above.</p>
+
+    <div class="card-grid">
+
+      <article class="feature-card">
+        <span class="icon">01</span>
+        <span class="tag">PART 1</span>
+        <h3>Introduction and interview</h3>
+        <p>Answer familiar questions about your life and everyday experiences.</p>
+        <strong>Try:</strong>
+        <p>What do you enjoy doing in your free time?</p>
+      </article>
+
+      <article class="feature-card">
+        <span class="icon">02</span>
+        <span class="tag">PART 2</span>
+        <h3>Individual long turn</h3>
+        <p>Prepare a short talk and organise your ideas clearly.</p>
+        <strong>Try:</strong>
+        <p>Describe a skill you would like to learn.</p>
+      </article>
+
+      <article class="feature-card">
+        <span class="icon">03</span>
+        <span class="tag">PART 3</span>
+        <h3>Two-way discussion</h3>
+        <p>Explain opinions, compare ideas and support your arguments.</p>
+        <strong>Try:</strong>
+        <p>How has technology changed education?</p>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>A simple speaking plan</h2>
+    <p>
+      <strong>1. Answer:</strong> Respond directly.
+      <strong>2. Explain:</strong> Give a reason.
+      <strong>3. Example:</strong> Support your idea.
+      <strong>4. Finish:</strong> Add a concluding thought.
+    </p>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <strong>Englisity</strong>
+  <a href="../index.html">Back home ↑</a>
+</footer>
+
+<script>
+(() => {
+  const startButton = document.getElementById("startRecording");
+  const stopButton = document.getElementById("stopRecording");
+  const againButton = document.getElementById("recordAgain");
+
+  const status = document.getElementById("recordStatus");
+  const timeDisplay = document.getElementById("recordTime");
+  const dot = document.getElementById("recordDot");
+  const message = document.getElementById("recorderMessage");
+
+  const playbackArea = document.getElementById("playbackArea");
+  const playback = document.getElementById("recordingPlayback");
+  const downloadLink = document.getElementById("downloadRecording");
+
+  let recorder = null;
+  let stream = null;
+  let chunks = [];
+  let recordingUrl = null;
+  let startTime = 0;
+  let timer = null;
+
+  function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remaining = seconds % 60;
+
+    return String(minutes).padStart(2, "0") + ":" +
+           String(remaining).padStart(2, "0");
+  }
+
+  function updateTime() {
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    timeDisplay.textContent = formatTime(elapsed);
+  }
+
+  function releaseMicrophone() {
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+      stream = null;
+    }
+  }
+
+  function clearPreviousRecording() {
+    if (recordingUrl) {
+      URL.revokeObjectURL(recordingUrl);
+      recordingUrl = null;
+    }
+
+    playback.pause();
+    playback.removeAttribute("src");
+    playback.load();
+
+    downloadLink.removeAttribute("href");
+    playbackArea.hidden = true;
+  }
+
+  async function startRecording() {
+    if (!navigator.mediaDevices?.getUserMedia ||
+        !window.MediaRecorder) {
+      message.textContent =
+        "Your browser does not support recording. Try an updated version of Chrome, Edge or Firefox.";
+      return;
+    }
+
+    try {
+      clearPreviousRecording();
+
+      chunks = [];
+      timeDisplay.textContent = "00:00";
+      status.textContent = "Requesting microphone access...";
+      message.textContent = "Please allow microphone access.";
+
+      stream = await navigator.mediaDevices.getUserMedia({
+        audio: true
+      });
+
+      const mimeTypes = [
+        "audio/webm;codecs=opus",
+        "audio/webm",
+        "audio/mp4"
+      ];
+
+      const supportedType = mimeTypes.find(type =>
+        MediaRecorder.isTypeSupported(type)
+      );
+
+      recorder = supportedType
+        ? new MediaRecorder(stream, { mimeType: supportedType })
+        : new MediaRecorder(stream);
+
+      recorder.ondataavailable = event => {
+        if (event.data && event.data.size > 0) {
+          chunks.push(event.data);
+        }
+      };
+
+      recorder.onstop = () => {
+        clearInterval(timer);
+        releaseMicrophone();
+
+        if (!chunks.length) {
+          status.textContent = "No recording captured";
+          message.textContent = "Please try recording again.";
+          startButton.disabled = false;
+          stopButton.disabled = true;
+          againButton.disabled = false;
+          dot.classList.remove("recording");
+          return;
+        }
+
+        const audioBlob = new Blob(chunks, {
+          type: recorder.mimeType || "audio/webm"
+        });
+
+        recordingUrl = URL.createObjectURL(audioBlob);
+
+        playback.src = recordingUrl;
+        playback.load();
+
+        const extension = audioBlob.type.includes("mp4")
+          ? "mp4"
+          : "webm";
+
+        downloadLink.href = recordingUrl;
+        downloadLink.download = `englisity-speaking.${extension}`;
+
+        playbackArea.hidden = false;
+        status.textContent = "Recording completed";
+        message.textContent =
+          "Your recording is ready. Listen to it or download a copy.";
+
+        startButton.disabled = false;
+        stopButton.disabled = true;
+        againButton.disabled = false;
+        dot.classList.remove("recording");
+      };
+
+      recorder.onerror = () => {
+        clearInterval(timer);
+        releaseMicrophone();
+
+        status.textContent = "Recording error";
+        message.textContent = "Something went wrong. Please try again.";
+
+        startButton.disabled = false;
+        stopButton.disabled = true;
+        dot.classList.remove("recording");
+      };
+
+      recorder.start();
+
+      startTime = Date.now();
+      updateTime();
+      timer = setInterval(updateTime, 1000);
+
+      startButton.disabled = true;
+      stopButton.disabled = false;
+      againButton.disabled = true;
+
+      status.textContent = "Recording in progress";
+      message.textContent = "Speak clearly. Press Stop when you finish.";
+      dot.classList.add("recording");
+
+    } catch (error) {
+      releaseMicrophone();
+
+      status.textContent = "Microphone unavailable";
+      startButton.disabled = false;
+      stopButton.disabled = true;
+      dot.classList.remove("recording");
+
+      if (error.name === "NotAllowedError" ||
+          error.name === "PermissionDeniedError") {
+        message.textContent =
+          "Microphone access was denied. Allow it in your browser settings and try again.";
+      } else {
+        message.textContent =
+          "Could not access the microphone. Check your microphone connection.";
+      }
+    }
+  }
+
+  function stopRecording() {
+    if (recorder && recorder.state === "recording") {
+      recorder.stop();
+      stopButton.disabled = true;
+      status.textContent = "Processing recording...";
+      message.textContent = "Preparing your recording...";
+    }
+  }
+
+  startButton.addEventListener("click", startRecording);
+  stopButton.addEventListener("click", stopRecording);
+  againButton.addEventListener("click", startRecording);
+
+  window.addEventListener("beforeunload", () => {
+    clearInterval(timer);
+    releaseMicrophone();
+
+    if (recordingUrl) {
+      URL.revokeObjectURL(recordingUrl);
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

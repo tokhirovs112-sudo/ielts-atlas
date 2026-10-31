@@ -32,7 +32,7 @@
   document.head.appendChild(styles);
 
   const nav = document.querySelector(".topbar");
-  // Keep passage-test workspaces focused: do not inject the learning progress strip here.\n  if (nav && page !== "beatrix-potter.html") {
+  // Keep passage-test workspaces focused: do not inject the learning progress strip here.\n  if (nav && !document.body.classList.contains("passage-test-page")) {
     const strip = document.createElement("section");
     strip.className = "eng-progress";
     strip.innerHTML = '<div><strong>My learning</strong><small>Progress is saved on this device.</small></div><div class="eng-progress-actions"><a href="' + (page === "index.html" ? "#myDashboard" : "../index.html#myDashboard") + '">Dashboard</a><button type="button" id="engMarkVisit">Mark this visit complete</button></div>';

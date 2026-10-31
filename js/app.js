@@ -74,7 +74,7 @@
       ? `<a class="small-button primary"
             href="${safeURL}"
             ${/^https?:\/\//i.test(resource.url) ? 'target="_blank" rel="noopener noreferrer"' : ""}>
-            Open resource ↗
+            ${resource.type === "article" ? "Start reading →" : "Open resource ↗"}
          </a>`
       : `<span class="small-button">Content coming soon</span>`;
 

@@ -8,7 +8,8 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"
 document.getElementById("passageText").innerHTML=passage.map(([id,s],i)=>'<p id="'+id+'"><span class="para-number">'+(i+1)+'</span>'+esc(s)+'</p>').join("");
 document.getElementById("questionList").innerHTML=questions.map(q=>{
 const control=q.t==="text"?'<input class="answer-input" id="a'+q.n+'" type="text" autocomplete="off" placeholder="Your answer" aria-label="Answer to question '+q.n+'">':'<div class="answer-options">'+["TRUE","FALSE","NOT GIVEN"].map(v=>'<label><input type="radio" name="a'+q.n+'" value="'+v+'"> '+v+'</label>').join("")+'</div>';
-return '<section class="question-card" id="q'+q.n+'"><div class="question-number">Question '+q.n+'</div><p>'+esc(q.p)+'</p>'+control+'<div class="question-feedback" id="f'+q.n+'" hidden></div></section>';
+const prompt=q.t==="text"?esc(q.p).replace("______",control):esc(q.p);
+return '<section class="question-card" id="q'+q.n+'"><div class="question-number">Question '+q.n+'</div><p>'+prompt+'</p>'+(q.t==="tf"?control:"")+'<div class="question-feedback" id="f'+q.n+'" hidden></div></section>';
 }).join("");
 document.getElementById("checkAnswers").addEventListener("click",()=>{
 let score=0;

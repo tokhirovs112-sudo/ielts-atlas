@@ -96,6 +96,83 @@
 
     .writing-editor .question-input { min-height: 105px; }
 
+    .task-library-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .task-library-card {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      overflow: hidden;
+      text-align: left;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      background: #fff;
+      cursor: pointer;
+      font: inherit;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .task-library-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(25, 42, 70, 0.09);
+    }
+
+    .task-library-card img {
+      display: block;
+      width: 100%;
+      height: 175px;
+      object-fit: contain;
+      padding: 12px;
+      box-sizing: border-box;
+      background: #f5f7fb;
+    }
+
+    .task-library-card-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 17px;
+    }
+
+    .task-library-card-content strong { color: #25334d; }
+    .task-library-card-content span { color: #718096; font-size: 0.9rem; }
+    .task-library-card-content .task-card-link {
+      color: #3767e8;
+      font-weight: 700;
+      margin-top: 5px;
+    }
+
+    .word-count-guidance {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #f3f6fc;
+      color: #34445e;
+      line-height: 1.5;
+    }
+
+    .word-count-guidance span { color: #718096; font-size: 0.9rem; }
+
+    .word-count-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 10px;
+      color: #526078;
+      font-size: 0.9rem;
+    }
+
+    .word-count-row .meets-minimum { color: #16834a; font-weight: 700; }
+    .word-count-row .below-minimum { color: #a15c12; font-weight: 700; }
+
     .writing-editor textarea:focus {
       outline: 2px solid rgba(55, 103, 232, 0.18);
       border-color: #3767e8;
@@ -156,7 +233,7 @@
           <h3>Academic Task 1</h3>
           <p>Describe and compare information in charts, tables, maps or processes.</p>
           <p><strong>Focus:</strong> overview, key features and accurate comparisons.</p>
-          <div class="resource-actions"><button class="small-button primary" type="button" data-open-task="task1">Open Task 1</button></div>
+          <div class="resource-actions"><button class="small-button primary" type="button" data-open-task="task1">Browse Task 1</button></div>
         </article>
         <article class="feature-card">
           <span class="icon">✎</span>
@@ -168,8 +245,28 @@
       </div>
     </section>
 
-    <section class="panel task-workspace" id="task1Workspace" hidden>
+    <!-- TASK 1 LIBRARY -->
+    <section class="panel task-workspace" id="task1Library" hidden>
       <button class="small-button task-back" type="button" data-back-to-tasks>← All writing tasks</button>
+      <h2>Academic Task 1 library</h2>
+      <p class="task-instructions">Choose a task to view its question and start writing.</p>
+
+      <div class="task-library-grid">
+        <button class="task-library-card" type="button" data-open-task-detail="waste-production">
+          <img src="../images/task1/image_2026-10-31_16-47-51.png"
+            alt="Preview of the table showing waste production in six countries">
+          <span class="task-library-card-content">
+            <strong>Waste production in six countries</strong>
+            <span>Table · 1980, 1990 and 2000</span>
+            <span class="task-card-link">Open writing task →</span>
+          </span>
+        </button>
+      </div>
+    </section>
+
+    <!-- SELECTED TASK 1 -->
+    <section class="panel task-workspace" id="task1Workspace" hidden>
+      <button class="small-button task-back" type="button" data-back-to-task-library>← Task 1 library</button>
       <h2>Academic Writing Task 1</h2>
       <p class="task-instructions">
         The table below shows the amount of waste production
@@ -184,8 +281,16 @@
         and make comparisons where relevant.
       </p>
       <div class="writing-editor">
+        <div class="word-count-guidance">
+          <strong>Write at least 150 words.</strong>
+          <span>Your response should be long enough to cover the main features clearly.</span>
+        </div>
         <label for="task1Draft"><strong>Your Task 1 response</strong></label>
         <textarea id="task1Draft" placeholder="Write your introduction, overview and details here..."></textarea>
+        <div class="word-count-row" aria-live="polite">
+          <span>Word count: <strong id="task1WordCount">0</strong></span>
+          <span id="task1WordStatus">150-word minimum</span>
+        </div>
         <div class="resource-actions">
           <button class="small-button primary" type="button" data-save-draft="task1">Save draft</button>
           <button class="small-button" type="button" data-clear-draft="task1">Clear draft</button>
@@ -206,6 +311,10 @@
         <textarea id="task2Question" class="question-input" placeholder="Paste or type your Task 2 question here..."></textarea>
         <label for="task2Draft"><strong>Your Task 2 essay</strong></label>
         <textarea id="task2Draft" placeholder="Write your introduction, body paragraphs and conclusion here..."></textarea>
+        <div class="word-count-row" aria-live="polite">
+          <span>Word count: <strong id="task2WordCount">0</strong></span>
+          <span id="task2WordStatus">250-word minimum</span>
+        </div>
         <div class="resource-actions">
           <button class="small-button primary" type="button" data-save-draft="task2">Save draft</button>
           <button class="small-button" type="button" data-clear-draft="task2">Clear draft</button>
@@ -229,42 +338,74 @@
 
   <script>
     const taskChooser = document.getElementById("taskChooser");
-    const taskWorkspaces = {
-      task1: document.getElementById("task1Workspace"),
-      task2: document.getElementById("task2Workspace")
-    };
+    const taskLibrary = document.getElementById("task1Library");
+    const task1Workspace = document.getElementById("task1Workspace");
+    const task2Workspace = document.getElementById("task2Workspace");
+    const officialGuidance = document.getElementById("officialGuidance");
 
-    function showTask(task) {
-      taskChooser.hidden = true;
-      document.getElementById("officialGuidance").hidden = true;
-      Object.entries(taskWorkspaces).forEach(([key, section]) => {
-        section.hidden = key !== task;
-      });
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    function hideAllViews() {
+      [taskChooser, taskLibrary, task1Workspace, task2Workspace].forEach(view => view.hidden = true);
+      officialGuidance.hidden = true;
     }
 
     function showTaskChooser() {
-      Object.values(taskWorkspaces).forEach(section => section.hidden = true);
+      hideAllViews();
       taskChooser.hidden = false;
-      document.getElementById("officialGuidance").hidden = false;
+      officialGuidance.hidden = false;
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    document.querySelectorAll("[data-open-task]").forEach(button => {
-      button.addEventListener("click", () => showTask(button.dataset.openTask));
-    });
-    document.querySelectorAll("[data-back-to-tasks]").forEach(button => {
-      button.addEventListener("click", showTaskChooser);
-    });
+    function showTaskLibrary() {
+      hideAllViews();
+      taskLibrary.hidden = false;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function showTaskDetail() {
+      hideAllViews();
+      task1Workspace.hidden = false;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function showTask2() {
+      hideAllViews();
+      task2Workspace.hidden = false;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.querySelector('[data-open-task="task1"]').addEventListener("click", showTaskLibrary);
+    document.querySelector('[data-open-task="task2"]').addEventListener("click", showTask2);
+    document.querySelectorAll("[data-back-to-tasks]").forEach(button => button.addEventListener("click", showTaskChooser));
+    document.querySelectorAll("[data-back-to-task-library]").forEach(button => button.addEventListener("click", showTaskLibrary));
+    document.querySelectorAll("[data-open-task-detail]").forEach(button => button.addEventListener("click", showTaskDetail));
 
     const draftSettings = {
-      task1: { draft: "englisity-task1-draft", textarea: "task1Draft", status: "task1Status" },
-      task2: { draft: "englisity-task2-draft", question: "englisity-task2-question", textarea: "task2Draft", status: "task2Status" }
+      task1: { draft: "englisity-task1-draft", textarea: "task1Draft", status: "task1Status", minimum: 150 },
+      task2: { draft: "englisity-task2-draft", question: "englisity-task2-question", textarea: "task2Draft", status: "task2Status", minimum: 250 }
     };
+
+    function countWords(value) {
+      const trimmed = value.trim();
+      return trimmed ? trimmed.split(/\s+/).length : 0;
+    }
 
     Object.entries(draftSettings).forEach(([task, settings]) => {
       const draftBox = document.getElementById(settings.textarea);
+      const count = document.getElementById(task + "WordCount");
+      const status = document.getElementById(task + "WordStatus");
       draftBox.value = localStorage.getItem(settings.draft) || "";
+
+      function updateWordCount() {
+        const words = countWords(draftBox.value);
+        count.textContent = words;
+        status.textContent = words >= settings.minimum
+          ? "Minimum reached"
+          : (settings.minimum - words) + " more to reach " + settings.minimum;
+        status.className = words >= settings.minimum ? "meets-minimum" : "below-minimum";
+      }
+
+      updateWordCount();
+      draftBox.addEventListener("input", updateWordCount);
 
       if (settings.question) {
         document.getElementById("task2Question").value = localStorage.getItem(settings.question) || "";
@@ -286,10 +427,11 @@
           document.getElementById("task2Question").value = "";
           localStorage.removeItem(settings.question);
         }
+        updateWordCount();
         document.getElementById(settings.status).textContent = "Draft cleared.";
       });
     });
-  </script>
+  </script>t>
 
 </body>
 </html>

@@ -6,7 +6,7 @@ html,body{height:100%;overflow:hidden}
 body{display:flex;flex-direction:column}
 .test-main{width:100%;max-width:none;margin:0;flex:1;min-height:0;display:flex;flex-direction:column}
 .reading-test-hero{margin:0;padding:10px 22px;border-radius:0;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.reading-test-hero .breadcrumb{margin:0}.reading-test-hero .eyebrow{margin:0;font-size:10px}.reading-test-hero h1{font-size:19px;margin:0}.reading-test-hero p{font-size:12px}
+.reading-test-hero .breadcrumb{margin:0}.reading-test-hero .eyebrow{margin:0;font-size:10px}.reading-test-hero h1{font-size:19px;margin:0}.reading-test-hero p{font-size:12px}.reading-timer{margin-left:auto;display:flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid rgba(255,255,255,.28);border-radius:10px;color:#fff;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums}.reading-timer strong{font-size:17px}.reading-timer.overtime{background:#fff1f0;color:#b42318;border-color:#fecaca}.timer-note{font-size:11px;font-weight:500;opacity:.85}
 .test-layout{--passage-width:50%;display:grid;grid-template-columns:minmax(260px,var(--passage-width)) 12px minmax(300px,1fr);gap:0;flex:1;min-height:0;align-items:stretch}
 .test-column{min-width:0;min-height:0;overflow:hidden}
 .test-column>.panel{height:100%;margin:0;border-radius:0;border-top:0;border-bottom:0;box-shadow:none;padding:18px 22px;overflow:auto}
@@ -49,7 +49,7 @@ body{display:flex;flex-direction:column}
 <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation">☰</button>
 <nav class="nav" id="navigation"><a href="../index.html">Home</a><a class="active" href="reading.html">Reading</a><a href="listening.html">Listening</a><a href="writing.html">Writing</a><a href="speaking.html">Speaking</a><a href="articles.html">Articles</a><a href="podcasts.html">Podcasts</a></nav></header>
 <main class="test-main" id="beatrixTest">
-<section class="reading-test-hero"><div class="breadcrumb">IELTS / Reading / Practice test</div><div class="eyebrow">IELTS ACADEMIC READING · PASSAGE 1</div><h1>The life of Beatrix Potter</h1><p>The children's author and illustrator who created Peter Rabbit</p></section>
+<section class="reading-test-hero"><div class="breadcrumb">IELTS / Reading / Practice test</div><div class="eyebrow">IELTS ACADEMIC READING · PASSAGE 1</div><h1>The life of Beatrix Potter</h1><p>The children's author and illustrator who created Peter Rabbit</p><div class="reading-timer" id="readingTimer" role="timer"><span>Time</span><strong id="timerDisplay">20:00</strong><span class="timer-note" id="timerNote">remaining</span></div></section>
 <div class="test-layout" id="resizableTest"><div class="test-column"><section class="panel passage-panel"><h2>Reading Passage 1</h2><p class="passage-subtitle">The children's author and illustrator who created Peter Rabbit</p><div id="passageText"></div></section></div>
 <div class="resize-divider" id="resizeDivider" role="separator" aria-label="Resize passage and questions panels" aria-orientation="vertical" aria-valuemin="30" aria-valuemax="70" aria-valuenow="50" tabindex="0"></div>
 <div class="test-column"><section class="panel"><h2>Questions 1–13</h2><p>Complete the notes and decide whether statements 7–13 are TRUE, FALSE or NOT GIVEN.</p><div class="notice">Questions 1–6: Choose ONE WORD ONLY from the passage for each answer.</div><div id="questionList"></div>
@@ -83,6 +83,19 @@ body{display:flex;flex-direction:column}
    layout.style.setProperty("--passage-width",next+"%");
    divider.setAttribute("aria-valuenow",String(Math.round(next)));
  });
+})();
+</script>
+<script>
+(() => {
+ const display=document.getElementById("timerDisplay"),wrap=document.getElementById("readingTimer"),note=document.getElementById("timerNote");
+ if(!display||!wrap)return;
+ const duration=20*60,started=Date.now();
+ const update=()=>{
+  const remaining=duration-Math.floor((Date.now()-started)/1000);
+  if(remaining>=0){display.textContent=String(Math.floor(remaining/60)).padStart(2,"0")+":"+String(remaining%60).padStart(2,"0");}
+  else{const over=-remaining;display.textContent="-"+String(Math.floor(over/60)).padStart(2,"0")+":"+String(over%60).padStart(2,"0");wrap.classList.add("overtime");note.textContent="overtime";}
+ };
+ update();setInterval(update,250);
 })();
 </script>
 </body></html>

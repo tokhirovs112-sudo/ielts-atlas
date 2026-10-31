@@ -96,6 +96,48 @@
 
     .writing-editor .question-input { min-height: 105px; }
 
+    .task-category-filter {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin: 18px 0 8px;
+    }
+
+    .task-category-filter label {
+      color: #34445e;
+      font-weight: 700;
+    }
+
+    .task-category-filter select {
+      min-width: 190px;
+      padding: 10px 36px 10px 12px;
+      border: 1px solid #dce4ef;
+      border-radius: 10px;
+      background: #fff;
+      color: #25334d;
+      font: inherit;
+    }
+
+    .task-category-tag {
+      display: inline-block;
+      width: fit-content;
+      padding: 5px 9px;
+      border-radius: 20px;
+      background: #eef3ff;
+      color: #3767e8 !important;
+      font-size: 0.78rem !important;
+      font-weight: 700;
+    }
+
+    .task-empty-state {
+      padding: 18px;
+      border: 1px dashed #cbd5e1;
+      border-radius: 12px;
+      color: #718096;
+      grid-column: 1 / -1;
+    }
+
     .task-library-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
@@ -249,26 +291,38 @@
     <section class="panel task-workspace" id="task2Library" hidden>
       <button class="small-button task-back" type="button" data-back-to-tasks>← All writing tasks</button>
       <h2>Task 2 essay library</h2>
-      <p class="task-instructions">Choose a question to open its own writing workspace. Your draft will be saved separately for each question.</p>
-      <div class="task-library-grid">
-        <button class="task-library-card" type="button" data-open-task2-detail="museum">
+      <p class="task-instructions">Choose a question type to practise, then open a question. Each essay has its own saved draft.</p>
+      <div class="task-category-filter">
+        <label for="task2CategoryFilter">Question type</label>
+        <select id="task2CategoryFilter">
+          <option value="all">All question types</option>
+          <option value="agree-disagree">Agree / disagree</option>
+          <option value="advantages-disadvantages">Advantages / disadvantages</option>
+          <option value="discuss-both-views">Discuss both views</option>
+          <option value="causes-solutions">Causes and solutions</option>
+          <option value="problems-solutions">Problems and solutions</option>
+          <option value="two-part">Two-part question</option>
+        </select>
+      </div>
+      <div class="task-library-grid" id="task2TaskGrid">
+        <button class="task-library-card" type="button" data-task2-category="causes-solutions" data-open-task2-detail="museum">
           <span class="task-library-card-content">
             <strong>Museums and historical sites</strong>
-            <span>Causes and solutions</span>
+            <span class="task-category-tag">Causes and solutions</span>
             <span class="task-card-link">Open essay question →</span>
           </span>
         </button>
-        <button class="task-library-card" type="button" data-open-task2-detail="climate">
+        <button class="task-library-card" type="button" data-task2-category="agree-disagree" data-open-task2-detail="climate">
           <span class="task-library-card-content">
             <strong>Living with climate change</strong>
-            <span>Agree or disagree</span>
+            <span class="task-category-tag">Agree / disagree</span>
             <span class="task-card-link">Open essay question →</span>
           </span>
         </button>
-        <button class="task-library-card" type="button" data-open-task2-detail="family">
+        <button class="task-library-card" type="button" data-task2-category="discuss-both-views" data-open-task2-detail="family">
           <span class="task-library-card-content">
             <strong>Research into family history</strong>
-            <span>Discuss both views and give your opinion</span>
+            <span class="task-category-tag">Discuss both views</span>
             <span class="task-card-link">Open essay question →</span>
           </span>
         </button>
@@ -278,15 +332,28 @@
     <section class="panel task-workspace" id="task1Library" hidden>
       <button class="small-button task-back" type="button" data-back-to-tasks>← All writing tasks</button>
       <h2>Academic Task 1 library</h2>
-      <p class="task-instructions">Choose a task to view its question and start writing.</p>
+      <p class="task-instructions">Choose a chart or diagram type to find a matching practice task.</p>
+      <div class="task-category-filter">
+        <label for="task1CategoryFilter">Task type</label>
+        <select id="task1CategoryFilter">
+          <option value="all">All Task 1 types</option>
+          <option value="table">Table</option>
+          <option value="pie-chart">Pie chart</option>
+          <option value="bar-chart">Bar chart</option>
+          <option value="line-graph">Line graph</option>
+          <option value="map">Map</option>
+          <option value="process">Process diagram</option>
+        </select>
+      </div>
 
-      <div class="task-library-grid">
-        <button class="task-library-card" type="button" data-open-task-detail="waste-production">
+      <div class="task-library-grid" id="task1TaskGrid">
+        <button class="task-library-card" type="button" data-task1-category="table" data-open-task-detail="waste-production">
           <img src="../images/task1/image_2026-10-31_16-47-51.png"
             alt="Preview of the table showing waste production in six countries">
           <span class="task-library-card-content">
             <strong>Waste production in six countries</strong>
-            <span>Table · 1980, 1990 and 2000</span>
+            <span class="task-category-tag">Table</span>
+            <span>1980, 1990 and 2000</span>
             <span class="task-card-link">Open writing task →</span>
           </span>
         </button>
@@ -372,6 +439,33 @@
     const task2Library = document.getElementById("task2Library");
     const task2Workspace = document.getElementById("task2Workspace");
     const officialGuidance = document.getElementById("officialGuidance");
+
+    function setupCategoryFilter(selectId, gridId, cardSelector, emptyMessage) {
+      const select = document.getElementById(selectId);
+      const grid = document.getElementById(gridId);
+      const cards = [...grid.querySelectorAll(cardSelector)];
+      const empty = document.createElement("p");
+      empty.className = "task-empty-state";
+      empty.textContent = emptyMessage;
+
+      function filterCards() {
+        const category = select.value;
+        let visible = 0;
+        cards.forEach(card => {
+          const show = category === "all" || card.dataset[selectId === "task1CategoryFilter" ? "task1Category" : "task2Category"] === category;
+          card.hidden = !show;
+          if (show) visible++;
+        });
+        empty.hidden = visible > 0;
+        if (!empty.isConnected) grid.appendChild(empty);
+      }
+
+      select.addEventListener("change", filterCards);
+      filterCards();
+    }
+
+    setupCategoryFilter("task1CategoryFilter", "task1TaskGrid", "[data-task1-category]", "No tasks in this category yet. More practice tasks will be added.");
+    setupCategoryFilter("task2CategoryFilter", "task2TaskGrid", "[data-task2-category]", "No questions in this category yet. More essay questions will be added.");
 
     function hideAllViews() {
       [taskChooser, taskLibrary, task1Workspace, task2Library, task2Workspace].forEach(view => view.hidden = true);

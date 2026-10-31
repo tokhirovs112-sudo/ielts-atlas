@@ -5,7 +5,8 @@ const questions=[{"n":1,"t":"text","p":"She received lessons at home from a ____
 const root=document.getElementById("beatrixTest");
 if(!root)return;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-document.getElementById("passageText").innerHTML=passage.map(([id,s],i)=>'<p id="'+id+'"><span class="para-number">'+(i+1)+'</span>'+esc(s)+'</p>').join("");
+const wordify=value=>esc(value).replace(/([\\p{L}]+(?:['’\\-][\\p{L}]+)*)/gu,'<span class="vocab-word" data-word="$1">$1</span>');
+document.getElementById("passageText").innerHTML=passage.map(([id,txt],i)=>'<p id="'+id+'"><span class="para-number">'+(i+1)+'</span>'+wordify(txt)+'</p>').join("");
 document.getElementById("questionList").innerHTML=questions.map(q=>{
 const control=q.t==="text"?'<input class="answer-input" id="a'+q.n+'" type="text" autocomplete="off" placeholder="Your answer" aria-label="Answer to question '+q.n+'">':'<div class="answer-options">'+["TRUE","FALSE","NOT GIVEN"].map(v=>'<label><input type="radio" name="a'+q.n+'" value="'+v+'"> '+v+'</label>').join("")+'</div>';
 const prompt=q.t==="text"?esc(q.p).replace("______",control):esc(q.p);
@@ -38,4 +39,83 @@ document.querySelectorAll("#passageText p.is-highlighted").forEach(p=>p.classLis
 const target=document.getElementById(a.dataset.para);
 if(target){target.classList.add("is-highlighted");target.scrollIntoView({behavior:"smooth",block:"center"});}
 });
+
+let submitted=false;
+const gate=document.getElementById("modeGate");
+const popup=document.getElementById("vocabPopup");
+function closeDefinition(){popup.classList.remove("show");}
+async function lookupWord(word,x,y){
+ popup.innerHTML='<strong>'+esc(word)+'</strong><span>Looking up definition…</span>';
+ popup.style.left=Math.max(12,Math.min(window.innerWidth-350,x))+"px";
+ popup.style.top=Math.max(12,Math.min(window.innerHeight-150,y))+"px";
+ popup.classList.add("show");
+ try{
+  const response=await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/"+encodeURIComponent(word.toLowerCase()));
+  if(!response.ok)throw new Error("Not found");
+  const data=await response.json();
+  const defs=(data[0]?.meanings||[]).slice(0,2).map(m=>{
+   const d=m.definitions?.[0]?.definition;
+   return d?'<p><b>'+esc(m.partOfSpeech||"Meaning")+':</b> '+esc(d)+'</p>':"";
+  }).join("");
+  popup.innerHTML='<strong>'+esc(data[0]?.word||word)+'</strong>'+(defs||'<span>No definition found.</span>');
+ }catch(error){popup.innerHTML='<strong>'+esc(word)+'</strong><span>Definition unavailable. Check your connection or try another word.</span>';}
+}
+document.getElementById("practiceModeButton").addEventListener("click",()=>{
+ gate.hidden=true;
+ document.body.classList.add("practice-mode");
+ document.getElementById("modeLabel").textContent="PRACTICE MODE · Click a word for its definition";
+ document.getElementById("readingTimer").style.display="none";
+});
+document.getElementById("examModeButton").addEventListener("click",async()=>{
+ gate.hidden=true;
+ document.body.classList.add("exam-mode");
+ document.getElementById("modeLabel").textContent="EXAM MODE · Select text and highlight";
+ document.getElementById("readingTimer").style.display="flex";
+ try{if(document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen();}
+ catch(error){document.getElementById("modeLabel").textContent="EXAM MODE · Full-screen unavailable; timer is active";}
+ window.examTimer=window.startReadingTimer(()=>document.getElementById("checkAnswers").click());
+});
+document.getElementById("passageText").addEventListener("click",event=>{
+ if(!document.body.classList.contains("practice-mode"))return;
+ const word=event.target.closest(".vocab-word");
+ if(!word)return;
+ const rect=word.getBoundingClientRect();
+ lookupWord(word.dataset.word,rect.left,rect.bottom+8);
+});
+document.getElementById("highlightSelection").addEventListener("click",()=>{
+ const selection=window.getSelection();
+ if(!selection||selection.isCollapsed)return;
+ const range=selection.getRangeAt(0);
+ if(!document.getElementById("passageText").contains(range.commonAncestorContainer))return;
+ const mark=document.createElement("mark");
+ mark.className="user-highlight";
+ try{range.surroundContents(mark);}
+ catch(error){const fragment=range.extractContents();mark.appendChild(fragment);range.insertNode(mark);}
+ selection.removeAllRanges();
+});
+document.getElementById("clearHighlights").addEventListener("click",()=>{
+ document.querySelectorAll("#passageText mark.user-highlight").forEach(mark=>mark.replaceWith(...mark.childNodes));
+});
+document.getElementById("checkAnswers").addEventListener("click",event=>{
+ if(submitted){event.stopImmediatePropagation();return;}
+ submitted=true;
+},true);
+document.getElementById("checkAnswers").addEventListener("click",()=>{
+ root.querySelectorAll("input").forEach(input=>input.disabled=true);
+ document.getElementById("checkAnswers").disabled=true;
+ if(window.examTimer)clearInterval(window.examTimer);
+ if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+});
+document.getElementById("resetTest").addEventListener("click",()=>{
+ submitted=false;
+ root.querySelectorAll("input").forEach(input=>input.disabled=false);
+ document.getElementById("checkAnswers").disabled=false;
+ document.body.classList.remove("practice-mode","exam-mode");
+ gate.hidden=false;
+ document.getElementById("modeLabel").textContent="Choose a mode to begin";
+ document.getElementById("readingTimer").style.display="";
+ if(window.examTimer)clearInterval(window.examTimer);
+ if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+});
+
 })();

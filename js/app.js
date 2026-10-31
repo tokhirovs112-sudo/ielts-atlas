@@ -110,15 +110,58 @@
       : `<div class="empty">No resources for this level yet.</div>`;
   }
 
+  // Search is forgiving: ignore capitalisation/accents/punctuation and allow small typos.
+  function normalizeSearchText(value) {
+    return String(value || "")
+      .toLocaleLowerCase()
+      .normalize("NFD")
+      .replace(/[\\u0300-\\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+  }
+
+  function editDistanceAtMost(a, b, limit) {
+    if (Math.abs(a.length - b.length) > limit) return limit + 1;
+    let previous = Array.from({ length: b.length + 1 }, (_, i) => i);
+    for (let i = 1; i <= a.length; i++) {
+      const current = [i];
+      let rowMin = i;
+      for (let j = 1; j <= b.length; j++) {
+        current[j] = Math.min(
+          current[j - 1] + 1,
+          previous[j] + 1,
+          previous[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+        );
+        rowMin = Math.min(rowMin, current[j]);
+      }
+      if (rowMin > limit) return limit + 1;
+      previous = current;
+    }
+    return previous[b.length];
+  }
+
+  function forgivingSearchMatch(query, searchableText) {
+    const terms = normalizeSearchText(query).split(/\\s+/).filter(Boolean);
+    if (!terms.length) return true;
+    const text = normalizeSearchText(searchableText);
+    const words = text.split(/\\s+/).filter(Boolean);
+    return terms.every(term => {
+      if (text.includes(term)) return true;
+      const limit = term.length >= 8 ? 2 : term.length >= 4 ? 1 : 0;
+      return words.some(word => {
+        if (word.startsWith(term) || term.startsWith(word)) return true;
+        return limit > 0 && editDistanceAtMost(term, word, limit) <= limit;
+      });
+    });
+  }
+
   function renderLibrary() {
     const target = document.getElementById("libraryResources");
     if (!target) return;
 
     const type = document.body.dataset.resourceType;
 
-    const search = (
-      document.getElementById("resourceSearch")?.value || ""
-    ).toLowerCase().trim();
+    const search = document.getElementById("resourceSearch")?.value || "";
 
     const sort =
       document.getElementById("resourceSort")?.value || "newest";
@@ -128,11 +171,10 @@
     let list = resources
       .filter(item => item.type === type)
       .filter(item => matchesLevel(item.level, selected))
-      .filter(item =>
-        `${item.title || ""} ${item.topic || ""} ${item.description || ""}`
-          .toLowerCase()
-          .includes(search)
-      );
+      .filter(item => forgivingSearchMatch(
+        search,
+        `${item.title || ""} ${item.topic || ""} ${item.description || ""} ${(item.keywords || []).join(" ")}`
+      ));
 
     if (sort === "oldest") {
       list.sort((a, b) =>

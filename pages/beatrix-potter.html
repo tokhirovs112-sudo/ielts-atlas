@@ -2,10 +2,36 @@
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Life of Beatrix Potter — IELTS Reading | Englisity</title><link rel="stylesheet" href="../css/style.css">
 <style>
-.reading-test-hero{margin:24px 0;padding:clamp(22px,3vw,34px);border-radius:18px;background:linear-gradient(125deg,#101f3d,#244d83);color:#fff}
+html,body{height:100%;overflow:hidden}
+body{display:flex;flex-direction:column}
+.test-main{width:100%;max-width:none;margin:0;flex:1;min-height:0;display:flex;flex-direction:column}
+.reading-test-hero{margin:0;padding:10px 22px;border-radius:0;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.reading-test-hero .breadcrumb{margin:0}.reading-test-hero .eyebrow{margin:0;font-size:10px}.reading-test-hero h1{font-size:19px;margin:0}.reading-test-hero p{font-size:12px}
+.test-layout{--passage-width:50%;display:grid;grid-template-columns:minmax(260px,var(--passage-width)) 12px minmax(300px,1fr);gap:0;flex:1;min-height:0;align-items:stretch}
+.test-column{min-width:0;min-height:0;overflow:hidden}
+.test-column>.panel{height:100%;margin:0;border-radius:0;border-top:0;border-bottom:0;box-shadow:none;padding:18px 22px;overflow:auto}
+.passage-panel{position:static;max-height:none}
+.panel h2{font-size:18px}
+.resize-divider{position:relative;cursor:col-resize;background:#edf1f7;touch-action:none;user-select:none}
+.resize-divider:after{content:"";position:absolute;top:0;bottom:0;left:4px;width:4px;background:#cbd5e1;border-radius:4px}
+.resize-divider:hover,.resize-divider:focus{background:#dbe7fb;outline:none}
+.resize-divider:hover:after,.resize-divider:focus:after{background:var(--blue)}
+.test-layout .test-column:first-child .panel{border-left:0}
+.test-layout .test-column:last-child .panel{border-right:0}
+.footer{display:none}
+@media(max-width:850px){
+ html,body{height:auto;min-height:100%;overflow:auto}
+ .test-main{display:block}
+ .test-layout{display:flex;flex-direction:column;gap:0}
+ .test-column{overflow:visible}
+ .test-column>.panel{height:auto;max-height:none;border:1px solid var(--border);border-radius:0;padding:17px}
+ .passage-panel{position:static;max-height:none}
+ .resize-divider{display:none}
+}
+.reading-test-hero{background:linear-gradient(125deg,#101f3d,#244d83);color:#fff}
 .reading-test-hero .eyebrow{color:#a9cbff}.reading-test-hero h1{margin:10px 0;font-size:clamp(28px,4vw,40px);line-height:1.2;color:#fff}.reading-test-hero p{margin:0;color:#d9e6f7}
-.test-layout{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(340px,.92fr);gap:16px;align-items:start}.test-column{min-width:0}.test-column>.panel{margin-top:0}
-.passage-panel{position:sticky;top:92px;max-height:calc(100vh - 108px);overflow:auto}.passage-panel h2,.test-column>.panel h2{font-size:19px;margin-bottom:12px}.passage-subtitle{color:var(--muted);font-style:italic;margin-top:0;font-size:14px}
+.test-column{min-width:0}
+.passage-panel{overflow:auto}.passage-panel h2,.test-column>.panel h2{font-size:19px;margin-bottom:12px}.passage-subtitle{color:var(--muted);font-style:italic;margin-top:0;font-size:14px}
 #passageText p{position:relative;padding:7px 10px 7px 34px;border-radius:8px;line-height:1.68;font-size:15px;color:#344258;margin:7px 0}.para-number{position:absolute;left:8px;top:9px;color:#8b98ad;font-size:10px;font-weight:800}
 #passageText p.is-highlighted{background:#fff2bf;outline:2px solid #f0d77a}
 .question-card{padding:13px 0;border-bottom:1px solid var(--border)}.question-card:last-child{border-bottom:0}
@@ -22,11 +48,41 @@
 <header class="topbar"><a class="brand" href="../index.html"><span class="logo">E</span><span>Englisity<small>READING PRACTICE</small></span></a>
 <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation">☰</button>
 <nav class="nav" id="navigation"><a href="../index.html">Home</a><a class="active" href="reading.html">Reading</a><a href="listening.html">Listening</a><a href="writing.html">Writing</a><a href="speaking.html">Speaking</a><a href="articles.html">Articles</a><a href="podcasts.html">Podcasts</a></nav></header>
-<main class="container" id="beatrixTest">
+<main class="test-main" id="beatrixTest">
 <section class="reading-test-hero"><div class="breadcrumb">IELTS / Reading / Practice test</div><div class="eyebrow">IELTS ACADEMIC READING · PASSAGE 1</div><h1>The life of Beatrix Potter</h1><p>The children's author and illustrator who created Peter Rabbit</p></section>
-<div class="test-layout"><div class="test-column"><section class="panel passage-panel"><h2>Reading Passage 1</h2><p class="passage-subtitle">The children's author and illustrator who created Peter Rabbit</p><div id="passageText"></div></section></div>
+<div class="test-layout" id="resizableTest"><div class="test-column"><section class="panel passage-panel"><h2>Reading Passage 1</h2><p class="passage-subtitle">The children's author and illustrator who created Peter Rabbit</p><div id="passageText"></div></section></div>
+<div class="resize-divider" id="resizeDivider" role="separator" aria-label="Resize passage and questions panels" aria-orientation="vertical" aria-valuemin="30" aria-valuemax="70" aria-valuenow="50" tabindex="0"></div>
 <div class="test-column"><section class="panel"><h2>Questions 1–13</h2><p>Complete the notes and decide whether statements 7–13 are TRUE, FALSE or NOT GIVEN.</p><div class="notice">Questions 1–6: Choose ONE WORD ONLY from the passage for each answer.</div><div id="questionList"></div>
 <div class="test-actions"><button type="button" class="primary-action" id="checkAnswers">Check answers</button><button type="button" id="resetTest">Try again</button></div><div class="test-result" id="testResult" hidden></div></section></div></div>
 </main><footer class="footer"><strong>Englisity</strong><a href="reading.html">Back to Reading ↑</a></footer>
 <script src="../js/app.js"></script><script src="../js/features.js"></script><script src="../js/beatrix-potter.js"></script>
+<script>
+(() => {
+ const layout=document.getElementById("resizableTest");
+ const divider=document.getElementById("resizeDivider");
+ if(!layout||!divider)return;
+ let dragging=false;
+ const setSplit=(clientX)=>{
+   const rect=layout.getBoundingClientRect();
+   const percent=Math.max(30,Math.min(70,((clientX-rect.left)/rect.width)*100));
+   layout.style.setProperty("--passage-width",percent+"%");
+   divider.setAttribute("aria-valuenow",String(Math.round(percent)));
+ };
+ divider.addEventListener("pointerdown",e=>{
+   dragging=true;divider.setPointerCapture(e.pointerId);document.body.style.cursor="col-resize";e.preventDefault();
+ });
+ divider.addEventListener("pointermove",e=>{if(dragging)setSplit(e.clientX);});
+ const stop=()=>{dragging=false;document.body.style.cursor="";};
+ divider.addEventListener("pointerup",stop);divider.addEventListener("pointercancel",stop);
+ divider.addEventListener("keydown",e=>{
+   if(e.key!=="ArrowLeft"&&e.key!=="ArrowRight")return;
+   e.preventDefault();
+   const rect=layout.getBoundingClientRect();
+   const current=parseFloat(getComputedStyle(layout).getPropertyValue("--passage-width"))||50;
+   const next=Math.max(30,Math.min(70,current+(e.key==="ArrowRight"?2:-2)));
+   layout.style.setProperty("--passage-width",next+"%");
+   divider.setAttribute("aria-valuenow",String(Math.round(next)));
+ });
+})();
+</script>
 </body></html>

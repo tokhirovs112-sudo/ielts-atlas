@@ -1,379 +1,70 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Explore English learning articles for different levels on Englisity.">
-  <meta name="theme-color" content="#f5f7fc">
-  <title>Articles | Englisity</title>
+  <title>Articles — Englisity</title>
   <link rel="stylesheet" href="../css/style.css">
-
-  <style>
-    :root {
-      --article-navy: #14213d;
-      --article-blue: #3767e8;
-      --article-muted: #718096;
-      --article-border: #e5eaf2;
-      --article-bg: #f5f7fc;
-    }
-
-    body {
-      background: var(--article-bg);
-    }
-
-    .articles-page {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 55px 24px 80px;
-    }
-
-    .articles-hero {
-      position: relative;
-      overflow: hidden;
-      padding: 55px;
-      border-radius: 26px;
-      background: linear-gradient(120deg, #14213d, #233f72);
-      color: white;
-      margin-bottom: 42px;
-    }
-
-    .articles-hero::after {
-      content: "";
-      position: absolute;
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      background: rgba(91, 139, 255, 0.15);
-      right: -75px;
-      top: -110px;
-    }
-
-    .articles-eyebrow {
-      display: inline-block;
-      color: #a9c2ff;
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-
-    .articles-hero h1 {
-      max-width: 650px;
-      margin: 0 0 17px;
-      color: white;
-      font-size: clamp(2.2rem, 5vw, 3.5rem);
-      line-height: 1.12;
-      letter-spacing: -1.5px;
-    }
-
-    .articles-hero p {
-      max-width: 590px;
-      margin: 0;
-      color: #d4def1;
-      font-size: 1.05rem;
-      line-height: 1.8;
-    }
-
-    .articles-section-heading {
-      margin-bottom: 20px;
-    }
-
-    .articles-section-heading h2 {
-      color: var(--article-navy);
-      font-size: 1.55rem;
-      margin: 0 0 7px;
-    }
-
-    .articles-section-heading p {
-      color: var(--article-muted);
-      margin: 0;
-      line-height: 1.6;
-    }
-
-    .level-picker {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 22px 0 28px;
-    }
-
-    .level-button {
-      border: 1px solid var(--article-border);
-      background: white;
-      color: #536176;
-      border-radius: 30px;
-      padding: 10px 18px;
-      font: inherit;
-      font-size: 0.92rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .level-button:hover {
-      border-color: var(--article-blue);
-      color: var(--article-blue);
-      transform: translateY(-1px);
-    }
-
-    .level-button.active {
-      background: var(--article-blue);
-      color: white;
-      border-color: var(--article-blue);
-      box-shadow: 0 5px 14px rgba(55, 103, 232, 0.2);
-    }
-
-    .library-controls {
-      display: flex;
-      gap: 13px;
-      margin: 0 0 25px;
-    }
-
-    .library-controls input,
-    .library-controls select {
-      min-height: 48px;
-      padding: 0 15px;
-      border: 1px solid var(--article-border);
-      border-radius: 12px;
-      background: white;
-      color: var(--article-navy);
-      font: inherit;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .library-controls input {
-      flex: 1;
-      min-width: 180px;
-    }
-
-    .library-controls input:focus,
-    .library-controls select:focus {
-      border-color: var(--article-blue);
-      box-shadow: 0 0 0 3px rgba(55, 103, 232, 0.1);
-    }
-
-    .resource-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-      gap: 20px;
-    }
-
-    .resource-card {
-      display: flex;
-      flex-direction: column;
-      padding: 25px;
-      border: 1px solid var(--article-border);
-      border-radius: 18px;
-      background: white;
-      box-shadow: 0 5px 18px rgba(25, 42, 70, 0.035);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .resource-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 28px rgba(25, 42, 70, 0.09);
-    }
-
-    .resource-meta {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 9px;
-      color: var(--article-muted);
-      font-size: 0.82rem;
-    }
-
-    .tag {
-      display: inline-block;
-      padding: 5px 10px;
-      border-radius: 20px;
-      background: #edf2ff;
-      color: #3767e8;
-      font-size: 0.78rem;
-      font-weight: 700;
-    }
-
-    .resource-card h3 {
-      margin: 17px 0 10px;
-      color: var(--article-navy);
-      font-size: 1.15rem;
-      line-height: 1.45;
-    }
-
-    .resource-card p {
-      color: var(--article-muted);
-      font-size: 0.94rem;
-      line-height: 1.7;
-    }
-
-    .resource-actions {
-      margin-top: auto;
-      padding-top: 18px;
-    }
-
-    .small-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 16px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 700;
-      transition: 0.2s ease;
-    }
-
-    .small-button.primary {
-      background: var(--article-blue);
-      color: white;
-    }
-
-    .small-button.primary:hover {
-      background: #2855ce;
-      transform: translateY(-1px);
-    }
-
-    .empty {
-      grid-column: 1 / -1;
-      padding: 35px 20px;
-      border: 1px dashed #cbd5e1;
-      border-radius: 16px;
-      color: var(--article-muted);
-      text-align: center;
-      background: white;
-    }
-
-    .articles-footer {
-      padding: 25px 20px;
-      border-top: 1px solid var(--article-border);
-      color: var(--article-muted);
-      text-align: center;
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 700px) {
-      .articles-page {
-        padding: 28px 17px 55px;
-      }
-
-      .articles-hero {
-        padding: 35px 25px;
-        border-radius: 20px;
-      }
-
-      .articles-hero h1 {
-        letter-spacing: -0.7px;
-      }
-
-      .library-controls {
-        flex-direction: column;
-      }
-
-      .library-controls input,
-      .library-controls select {
-        width: 100%;
-      }
-
-      .resource-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
 </head>
-
 <body data-resource-type="article">
-
   <header class="topbar">
-    <div class="container nav-container">
-      <a class="brand" href="../index.html">Englisity</a>
-
-      <button
-        id="menuToggle"
-        class="menu-toggle"
-        type="button"
-        aria-label="Toggle navigation"
-        aria-expanded="false"
-      >
-        ☰
-      </button>
-
-      <nav id="navigation" class="nav">
-        <a href="../index.html">Home</a>
-        <a href="reading.html">Reading</a>
-        <a href="listening.html">Listening</a>
-        <a href="writing.html">Writing</a>
-        <a href="speaking.html">Speaking</a>
-        <a href="articles.html" aria-current="page">Articles</a>
-        <a href="podcasts.html">Podcasts</a>
-      </nav>
-    </div>
+    <a class="brand" href="../index.html">
+      <span class="logo">E</span>
+      <span>Englisity<small>ARTICLE LIBRARY</small></span>
+    </a>
+    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation">☰</button>
+    <nav class="nav" id="navigation">
+      <a href="../index.html">Home</a>
+      <a href="reading.html">Reading</a>
+      <a href="listening.html">Listening</a>
+      <a href="writing.html">Writing</a>
+      <a href="speaking.html">Speaking</a>
+      <a class="active" href="articles.html">Articles</a>
+      <a href="podcasts.html">Podcasts</a>
+    </nav>
   </header>
 
-  <main class="articles-page">
-
-    <section class="articles-hero">
-      <span class="articles-eyebrow">THE ENG­LISITY LIBRARY</span>
-      <h1>Read more. Learn more. Grow your English.</h1>
-      <p>
-        Discover interesting ideas, explore new topics, and develop
-        your reading skills with articles selected for your English level.
-      </p>
+  <main class="container">
+    <section class="page-hero">
+      <div class="breadcrumb">Discover / Articles</div>
+      <div class="eyebrow">READ • LEARN • EXPLORE</div>
+      <h1>Ideas worth reading.</h1>
+      <p>Explore interesting topics, build your vocabulary, and practise reading with articles selected for different English levels.</p>
     </section>
 
-    <section aria-label="Article library">
-
-      <div class="articles-section-heading">
-        <h2>Explore the library</h2>
-        <p>Choose your English level and find something worth reading.</p>
-      </div>
-
+    <section class="panel">
+      <h2>Choose your English level</h2>
+      <p>Find an article that matches your current level.</p>
       <div class="level-picker">
-        <button class="level-button active" data-level="All levels" type="button">
-          All levels
-        </button>
-        <button class="level-button" data-level="A1–A2" type="button">
-          A1–A2
-        </button>
-        <button class="level-button" data-level="B1–B2" type="button">
-          B1–B2
-        </button>
-        <button class="level-button" data-level="C1–C2" type="button">
-          C1–C2
-        </button>
+        <button class="level-button active" data-level="All levels" type="button">All levels</button>
+        <button class="level-button" data-level="A1–A2" type="button">A1–A2</button>
+        <button class="level-button" data-level="B1–B2" type="button">B1–B2</button>
+        <button class="level-button" data-level="C1–C2" type="button">C1–C2</button>
       </div>
+    </section>
 
-      <div class="library-controls">
-        <input
-          type="search"
-          id="resourceSearch"
-          placeholder="Search articles by title or topic..."
-          aria-label="Search articles"
-        >
+    <div class="toolbar">
+      <input type="search" id="resourceSearch" placeholder="Search articles by title or topic..." aria-label="Search articles">
+      <select id="resourceSort" aria-label="Sort articles">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="title">Title A–Z</option>
+      </select>
+    </div>
 
-        <select id="resourceSort" aria-label="Sort articles">
-          <option value="newest">Newest first</option>
-          <option value="oldest">Oldest first</option>
-          <option value="title">Title A–Z</option>
-        </select>
-      </div>
-
-      <div id="libraryResources" class="resource-grid">
-        <p class="empty">Loading articles...</p>
-      </div>
-
+    <section id="libraryResources" class="resource-grid" aria-label="Article resources">
+      <p class="empty">Loading articles...</p>
     </section>
   </main>
 
-  <footer class="articles-footer">
-    <p>Englisity · Learn English at your own pace.</p>
+  <footer class="footer">
+    <strong>Englisity</strong>
+    <a href="../index.html">Back home ↑</a>
   </footer>
 
   <script src="../js/resources.js"></script>
   <script src="../js/app.js"></script>
-
-<script src="../js/features.js"></script>
+  <script src="../js/features.js"></script>
 </body>
 </html>

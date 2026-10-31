@@ -246,6 +246,35 @@
     </section>
 
     <!-- TASK 1 LIBRARY -->
+    <section class="panel task-workspace" id="task2Library" hidden>
+      <button class="small-button task-back" type="button" data-back-to-tasks>← All writing tasks</button>
+      <h2>Task 2 essay library</h2>
+      <p class="task-instructions">Choose a question to open its own writing workspace. Your draft will be saved separately for each question.</p>
+      <div class="task-library-grid">
+        <button class="task-library-card" type="button" data-open-task2-detail="museum">
+          <span class="task-library-card-content">
+            <strong>Museums and historical sites</strong>
+            <span>Causes and solutions</span>
+            <span class="task-card-link">Open essay question →</span>
+          </span>
+        </button>
+        <button class="task-library-card" type="button" data-open-task2-detail="climate">
+          <span class="task-library-card-content">
+            <strong>Living with climate change</strong>
+            <span>Agree or disagree</span>
+            <span class="task-card-link">Open essay question →</span>
+          </span>
+        </button>
+        <button class="task-library-card" type="button" data-open-task2-detail="family">
+          <span class="task-library-card-content">
+            <strong>Research into family history</strong>
+            <span>Discuss both views and give your opinion</span>
+            <span class="task-card-link">Open essay question →</span>
+          </span>
+        </button>
+      </div>
+    </section>
+
     <section class="panel task-workspace" id="task1Library" hidden>
       <button class="small-button task-back" type="button" data-back-to-tasks>← All writing tasks</button>
       <h2>Academic Task 1 library</h2>
@@ -300,16 +329,16 @@
     </section>
 
     <section class="panel task-workspace" id="task2Workspace" hidden>
-      <button class="small-button task-back" type="button" data-back-to-tasks>← All writing tasks</button>
-      <h2>Academic Writing Task 2</h2>
-      <p class="task-instructions">
-        Write an essay in response to the question. Support your ideas with
-        explanations and relevant examples.
-      </p>
+      <button class="small-button task-back" type="button" data-back-to-task2-library>← Task 2 library</button>
+      <h2 id="task2TaskTitle">Academic Writing Task 2</h2>
+      <p class="task-instructions">Write an essay in response to the question. Support your ideas with explanations and relevant examples.</p>
+      <div class="word-count-guidance">
+        <strong>Write at least 250 words.</strong>
+        <span>Your response should develop a clear position and support it with relevant explanations and examples.</span>
+      </div>
+      <blockquote id="task2Prompt" class="task-instructions"></blockquote>
       <div class="writing-editor">
-        <label for="task2Question"><strong>Task 2 question</strong></label>
-        <textarea id="task2Question" class="question-input" placeholder="Paste or type your Task 2 question here..."></textarea>
-        <label for="task2Draft"><strong>Your Task 2 essay</strong></label>
+        <label for="task2Draft"><strong>Your essay</strong></label>
         <textarea id="task2Draft" placeholder="Write your introduction, body paragraphs and conclusion here..."></textarea>
         <div class="word-count-row" aria-live="polite">
           <span>Word count: <strong id="task2WordCount">0</strong></span>
@@ -340,11 +369,12 @@
     const taskChooser = document.getElementById("taskChooser");
     const taskLibrary = document.getElementById("task1Library");
     const task1Workspace = document.getElementById("task1Workspace");
+    const task2Library = document.getElementById("task2Library");
     const task2Workspace = document.getElementById("task2Workspace");
     const officialGuidance = document.getElementById("officialGuidance");
 
     function hideAllViews() {
-      [taskChooser, taskLibrary, task1Workspace, task2Workspace].forEach(view => view.hidden = true);
+      [taskChooser, taskLibrary, task1Workspace, task2Library, task2Workspace].forEach(view => view.hidden = true);
       officialGuidance.hidden = true;
     }
 
@@ -367,21 +397,77 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    function showTask2() {
+    function showTask2Library() {
+      hideAllViews();
+      task2Library.hidden = false;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function showTask2Detail(taskId) {
+      const task = task2Tasks[taskId];
+      if (!task) return;
+      currentTask2Id = taskId;
+      document.getElementById("task2TaskTitle").textContent = task.title;
+      document.getElementById("task2Prompt").textContent = task.question;
+      const draftBox = document.getElementById("task2Draft");
+      draftBox.value = localStorage.getItem("englisity-task2-" + taskId + "-draft") || "";
+      updateTask2WordCount();
+      document.getElementById("task2Status").textContent = "";
       hideAllViews();
       task2Workspace.hidden = false;
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     document.querySelector('[data-open-task="task1"]').addEventListener("click", showTaskLibrary);
-    document.querySelector('[data-open-task="task2"]').addEventListener("click", showTask2);
+    document.querySelector('[data-open-task="task2"]').addEventListener("click", showTask2Library);
+    document.querySelectorAll("[data-open-task2-detail]").forEach(button => {
+      button.addEventListener("click", () => showTask2Detail(button.dataset.openTask2Detail));
+    });
+    document.querySelectorAll("[data-back-to-task2-library]").forEach(button => button.addEventListener("click", showTask2Library));
     document.querySelectorAll("[data-back-to-tasks]").forEach(button => button.addEventListener("click", showTaskChooser));
     document.querySelectorAll("[data-back-to-task-library]").forEach(button => button.addEventListener("click", showTaskLibrary));
     document.querySelectorAll("[data-open-task-detail]").forEach(button => button.addEventListener("click", showTaskDetail));
 
+    const task2Tasks = {
+      museum: {
+        title: "Museums and historical sites",
+        question: "Many museums and historical sites are mainly visited by tourists but not local people. Why is this the case and what can be done to attract more local people to visit these places?"
+      },
+      climate: {
+        title: "Living with climate change",
+        question: "Some people think that instead of preventing climate change, we need to find a way to live with it. To what extent do you agree or disagree?"
+      },
+      family: {
+        title: "Research into family history",
+        question: "Some argue people should focus on the present and future generations, while others argue that research on family history is necessary. Discuss both sides and give your opinion."
+      }
+    };
+    let currentTask2Id = null;
+
+    function updateTask2WordCount() {
+      const words = countWords(document.getElementById("task2Draft").value);
+      document.getElementById("task2WordCount").textContent = words;
+      const status = document.getElementById("task2WordStatus");
+      status.textContent = words >= 250 ? "Minimum reached" : (250 - words) + " more to reach 250";
+      status.className = words >= 250 ? "meets-minimum" : "below-minimum";
+    }
+
+    document.getElementById("task2Draft").addEventListener("input", updateTask2WordCount);
+    document.querySelector('[data-save-draft="task2"]').addEventListener("click", () => {
+      if (!currentTask2Id) return;
+      localStorage.setItem("englisity-task2-" + currentTask2Id + "-draft", document.getElementById("task2Draft").value);
+      document.getElementById("task2Status").textContent = "Draft saved in this browser.";
+    });
+    document.querySelector('[data-clear-draft="task2"]').addEventListener("click", () => {
+      if (!currentTask2Id || !confirm("Clear your essay draft for this question?")) return;
+      document.getElementById("task2Draft").value = "";
+      localStorage.removeItem("englisity-task2-" + currentTask2Id + "-draft");
+      updateTask2WordCount();
+      document.getElementById("task2Status").textContent = "Draft cleared.";
+    });
+
     const draftSettings = {
-      task1: { draft: "englisity-task1-draft", textarea: "task1Draft", status: "task1Status", minimum: 150 },
-      task2: { draft: "englisity-task2-draft", question: "englisity-task2-question", textarea: "task2Draft", status: "task2Status", minimum: 250 }
+      task1: { draft: "englisity-task1-draft", textarea: "task1Draft", status: "task1Status", minimum: 150 }
     };
 
     function countWords(value) {
@@ -407,15 +493,8 @@
       updateWordCount();
       draftBox.addEventListener("input", updateWordCount);
 
-      if (settings.question) {
-        document.getElementById("task2Question").value = localStorage.getItem(settings.question) || "";
-      }
-
       document.querySelector('[data-save-draft="' + task + '"]').addEventListener("click", () => {
         localStorage.setItem(settings.draft, draftBox.value);
-        if (settings.question) {
-          localStorage.setItem(settings.question, document.getElementById("task2Question").value);
-        }
         document.getElementById(settings.status).textContent = "Draft saved in this browser.";
       });
 
@@ -423,15 +502,11 @@
         if (!confirm("Clear your " + (task === "task1" ? "Task 1" : "Task 2") + " draft?")) return;
         draftBox.value = "";
         localStorage.removeItem(settings.draft);
-        if (settings.question) {
-          document.getElementById("task2Question").value = "";
-          localStorage.removeItem(settings.question);
-        }
         updateWordCount();
         document.getElementById(settings.status).textContent = "Draft cleared.";
       });
     });
-  </script>t>
+  </script>
 
 </body>
 </html>

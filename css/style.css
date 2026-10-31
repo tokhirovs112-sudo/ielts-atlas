@@ -786,3 +786,38 @@ body { background: var(--background); }
   .nav { padding:8px 0 4px; }
   .nav a { border-radius:10px; }
 }
+
+
+/* Header sizing and alignment fix */
+.brand-mark {
+  display: block !important;
+  width: 36px !important;
+  height: 36px !important;
+  max-width: 36px !important;
+  max-height: 36px !important;
+  flex: 0 0 36px !important;
+  object-fit: contain;
+}
+.topbar .nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.topbar .nav-container .brand {
+  flex: 0 0 auto;
+}
+.topbar .nav-container .nav {
+  flex: 1 1 auto;
+  justify-content: flex-end;
+}
+@media (max-width: 700px) {
+  .topbar .nav-container {
+    width: 92%;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .topbar .nav-container .nav {
+    flex: 1 0 100%;
+  }
+}

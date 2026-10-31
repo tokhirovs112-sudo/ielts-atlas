@@ -87,15 +87,10 @@
     <section class="panel" id="readingChooser">
       <div class="practice-intro"><div class="practice-icon">📚</div><div><h2>Choose a test</h2><p>Pick a full IELTS Reading test or practise one passage at a time.</p></div></div>
       <div class="card-grid">
-        <button class="feature-card reading-choice" type="button" data-reading-choice="full"><span class="tag">60 minutes</span><h3>Full test</h3><p>Practise all three passages under one exam-style time limit.</p><span class="card-link">Browse full tests →</span></button>
-        <button class="feature-card reading-choice" type="button" data-reading-choice="p1"><span class="tag">20 minutes per test</span><h3>Passage 1</h3><p>Browse individual Passage 1 practice tests.</p><span class="card-link">Browse Passage 1 tests →</span></button>
-        <button class="feature-card reading-choice" type="button" data-reading-choice="p2"><span class="tag">20 minutes per test</span><h3>Passage 2</h3><p>Browse individual Passage 2 practice tests.</p><span class="card-link">Browse Passage 2 tests →</span></button>
-        <button class="feature-card reading-choice" type="button" data-reading-choice="p3"><span class="tag">20 minutes per test</span><h3>Passage 3</h3><p>Browse individual Passage 3 practice tests.</p><span class="card-link">Browse Passage 3 tests →</span></button>
-      </div>
-      <div id="readingLibrary" hidden>
-        <button class="small-button" id="readingLibraryBack" type="button">← All test types</button>
-        <h2 id="readingLibraryTitle"></h2><p id="readingLibraryDescription" class="task-instructions"></p>
-        <div class="task-library-grid" id="readingTestList"></div>
+        <a class="feature-card reading-choice" href="full-tests.html"><span class="tag">60 minutes</span><h3>Full test</h3><p>All three passages in one exam-style test.</p><span class="card-link">Browse full tests →</span></a>
+        <a class="feature-card reading-choice" href="passage-1.html"><span class="tag">20 minutes each</span><h3>Passage 1</h3><p>Browse and search individual Passage 1 tests.</p><span class="card-link">Browse Passage 1 →</span></a>
+        <a class="feature-card reading-choice" href="passage-2.html"><span class="tag">20 minutes each</span><h3>Passage 2</h3><p>Browse individual Passage 2 tests.</p><span class="card-link">Browse Passage 2 →</span></a>
+        <a class="feature-card reading-choice" href="passage-3.html"><span class="tag">20 minutes each</span><h3>Passage 3</h3><p>Browse individual Passage 3 tests.</p><span class="card-link">Browse Passage 3 →</span></a>
       </div>
     </section>
 
@@ -118,25 +113,6 @@
     <a href="../index.html">Back home ↑</a>
   </footer>
 <script src="../js/features.js"></script>
-<script>
-(() => {
- const root=document.getElementById("readingChooser");if(!root)return;
- const cards=root.querySelector(".card-grid"),library=document.getElementById("readingLibrary");
- const title=document.getElementById("readingLibraryTitle"),desc=document.getElementById("readingLibraryDescription"),list=document.getElementById("readingTestList");
- const data={
-  full:["Full Reading tests","A full test contains all three passages and uses one 60-minute timer.",[]],
-  p1:["Passage 1 tests","Each individual passage has a 20-minute timer.",[{name:"The life of Beatrix Potter",detail:"13 questions · Note completion and TRUE / FALSE / NOT GIVEN",href:"beatrix-potter.html"}]],
-  p2:["Passage 2 tests","Each individual passage has a 20-minute timer.",[]],
-  p3:["Passage 3 tests","Each individual passage has a 20-minute timer.",[]]
- };
- root.addEventListener("click",e=>{
-  const b=e.target.closest("[data-reading-choice]");if(!b)return;
-  const d=data[b.dataset.readingChoice];title.textContent=d[0];desc.textContent=d[1];
-  list.innerHTML=d[2].length?d[2].map(t=>'<a class="task-library-card" href="'+t.href+'"><span class="task-library-card-content"><strong>'+t.name+'</strong><span>'+t.detail+'</span><span class="task-card-link">Start test →</span></span></a>').join(""):'<p class="task-empty-state">No tests have been added here yet. New practice tests will appear in this list.</p>';
-  cards.hidden=true;library.hidden=false;
- });
- document.getElementById("readingLibraryBack").addEventListener("click",()=>{library.hidden=true;cards.hidden=false;});
-})();
-</script>
+
 </body>
 </html>

@@ -61,7 +61,7 @@
     const options=document.createElement("div");options.className="quiz-options";
     q.options.forEach((option,i)=>{
       const button=document.createElement("button");button.type="button";button.className="quiz-option";button.textContent=String.fromCharCode(65+i)+". "+option;
-      button.addEventListener("click",()=>{if(finished||selected!==null)return;selected=i;options.querySelectorAll("button").forEach((b,j)=>{b.disabled=true;if(j===i)b.classList.add("selected");});submit.disabled=false;});
+      button.addEventListener("click",()=>{if(finished||checked)return;selected=i;options.querySelectorAll("button").forEach((b,j)=>b.classList.toggle("selected",j===i));submit.disabled=false;});
       options.append(button);
     });
     const feedback=document.createElement("p");feedback.className="quiz-feedback";feedback.setAttribute("aria-live","polite");

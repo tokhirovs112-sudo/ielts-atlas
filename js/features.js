@@ -49,6 +49,13 @@
     vocabLink.className = "eng-vocab-nav";
     const siteNav = nav.querySelector(".nav");
     if (siteNav && !siteNav.querySelector(".eng-vocab-nav")) siteNav.appendChild(vocabLink);
+    if (siteNav && !siteNav.querySelector(".eng-quiz-nav")) {
+      const quizLink = document.createElement("a");
+      quizLink.href = page === "index.html" ? "pages/vocabulary.html#dailyQuiz" : "../pages/vocabulary.html#dailyQuiz";
+      quizLink.textContent = "Quiz";
+      quizLink.className = "eng-quiz-nav";
+      siteNav.appendChild(quizLink);
+    }
     const strip = document.createElement("section");
     strip.className = "eng-progress";
     strip.innerHTML = '<div><strong>My learning</strong><small>Progress is saved on this device.</small></div><div class="eng-progress-actions"><span class="eng-streak-pill" id="engStreakPill">🔥 0-day streak</span><a href="' + (page === "index.html" ? "#myDashboard" : "../index.html#myDashboard") + '">Dashboard</a><a href="' + (page === "index.html" ? "pages/vocabulary.html" : "../pages/vocabulary.html") + '">Daily practice</a></div>';

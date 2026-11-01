@@ -159,6 +159,10 @@ document.addEventListener("pointerdown",event=>{
  if(!selectionToolbar.contains(event.target)&&!passageNode.contains(event.target))hideSelectionToolbar();
  if(!popup.contains(event.target))closeDefinition();
 });
+document.addEventListener("click",event=>{
+ const clickedWord=event.target.closest?.(".vocab-word");
+ if(!popup.contains(event.target)&&!clickedWord)closeDefinition();
+},true);
 window.addEventListener("scroll",()=>{if(!selectionToolbar.hidden)refreshSelectionToolbar();},true);
 window.addEventListener("resize",hideSelectionToolbar);
 document.getElementById("checkAnswers").addEventListener("click",event=>{

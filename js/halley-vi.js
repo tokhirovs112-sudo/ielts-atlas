@@ -29,24 +29,6 @@ const questions=[
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const wordify=s=>esc(s).replace(/([\p{L}]+(?:['’\-][\p{L}]+)*)/gu,'<span class="vocab-word" data-word="$1">$1</span>');
 document.getElementById("passageText").innerHTML=passage.map(([id,txt])=>'<p id="para'+id+'"><span class="para-number">'+id+'</span>'+wordify(txt)+'</p>').join("");
-
-}
-function updateSearchControls(){
- searchCount.textContent=searchMatches.length?(searchIndex>=0?(searchIndex+1)+" / "+searchMatches.length:searchMatches.length+" found"):"";
- searchPrev.disabled=searchNext.disabled=!searchMatches.length;
-}
-function activateSearchMatch(){
- searchMatches.forEach(p=>p.classList.remove("search-current"));
- const p=searchMatches[searchIndex];
- if(p){p.classList.add("search-current");p.scrollIntoView({behavior:"smooth",block:"center"});}
- updateSearchControls();
-}
-searchInput.addEventListener("input",()=>runPassageSearch(true));
-searchInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();if(!searchMatches.length)runPassageSearch(true);else{searchIndex=(searchIndex+1)%searchMatches.length;activateSearchMatch();}}if(e.key==="Escape"){searchInput.value="";runPassageSearch(false);}});
-searchPrev.addEventListener("click",()=>{if(searchMatches.length){searchIndex=(searchIndex-1+searchMatches.length)%searchMatches.length;activateSearchMatch();}});
-searchNext.addEventListener("click",()=>{if(searchMatches.length){searchIndex=(searchIndex+1)%searchMatches.length;activateSearchMatch();}});
-searchClear.addEventListener("click",()=>{searchInput.value="";runPassageSearch(false);searchInput.focus();});
-updateSearchControls();
 const groups=[
 {title:"Questions 14–18",kind:"MATCHING INFORMATION",instructions:"Reading Passage 2 has seven paragraphs, A–G. Which paragraph contains the following information? You may use any letter more than once.",questions:questions.slice(0,5),options:["A","B","C","D","E","F","G"]},
 {title:"Questions 19–22",kind:"SUMMARY COMPLETION",instructions:"Complete the summary below. Choose ONE WORD ONLY from the passage for each answer.",questions:questions.slice(5,9)},

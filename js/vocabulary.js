@@ -48,7 +48,7 @@
     document.querySelectorAll("[data-filter]").forEach(b=>b.classList.toggle("active",b===button));
     renderWords(button.dataset.filter);
   }));
-  const order=[...QUESTIONS].sort((a,b)=>a.q.localeCompare(b.q)).slice(0,5);
+  const order=QUESTIONS.slice(0,5);
   let index=0,score=0,selected=null,finished=false;
   const area=$("quizArea");
   function renderQuestion(){
@@ -93,8 +93,10 @@
         streak.longest=Math.max(streak.longest||0,streak.current);
         streak.lastActive=date;write(STREAK_KEY,streak);
       }
-      const stats=read(STATS_KEY,{passed:0,words:[]});
-      stats.passed=(stats.passed||0)+1;stats.words=[...new Set([...(stats.words||[]),daily.word])];write(STATS_KEY,stats);
+      const stats=read(STATS_KEY,{passed:0,words:[],days:[]});
+      stats.days=stats.days||[];
+      if(!stats.days.includes(date)){stats.passed=(stats.passed||0)+1;stats.days.push(date);}
+      stats.words=[...new Set([...(stats.words||[]),daily.word])];write(STATS_KEY,stats);
       window.dispatchEvent(new CustomEvent("englisity:quiz-passed",{detail:{score,streak}}));
     }else{
       message.textContent="You need at least 4/5 to pass. Review the explanations and try again — this attempt does not change your streak.";

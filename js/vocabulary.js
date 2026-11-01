@@ -53,6 +53,7 @@
   const area=$("quizArea");
   function renderQuestion(){
     selected=null;
+    let checked=false;
     $("quizProgress").textContent="Question "+(index+1)+" of 5 · "+score+" correct so far";
     area.innerHTML="";
     const q=order[index];
@@ -67,13 +68,11 @@
     const submit=document.createElement("button");submit.type="button";submit.className="quiz-submit";submit.textContent=index===4?"Finish quiz":"Check answer";submit.disabled=true;
     submit.addEventListener("click",()=>{
       if(selected===null)return;
+      if(checked){index++;if(index===5)showResult();else renderQuestion();return;}
+      checked=true;
       if(selected===q.answer)score++;
       feedback.textContent=(selected===q.answer?"Correct. ":"Not quite. ")+q.why;
       submit.textContent=index===4?"See result":"Next question";
-      submit.onclick=()=>{
-        index++;
-        if(index===5)showResult();else renderQuestion();
-      };
     });
     area.append(title,options,feedback,submit);
   }

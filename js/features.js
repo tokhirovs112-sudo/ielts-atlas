@@ -2,23 +2,10 @@
   "use strict";
   const KEY = "englisity-progress-v1";
   const BOOKMARKS = "englisity-bookmarks-v1";
-  const STREAK_KEY = "englisity-streak-v1";
+  const STREAK_KEY = "englisity-quiz-streak-v1";
   const read = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } };
   const save = (key, value) => localStorage.setItem(key, JSON.stringify(value));
   const localDateKey = (date = new Date()) => [date.getFullYear(), String(date.getMonth()+1).padStart(2,"0"), String(date.getDate()).padStart(2,"0")].join("-");
-  function recordLearningActivity() {
-    const today = localDateKey();
-    const streak = read(STREAK_KEY, { current:0, longest:0, lastActive:null });
-    if (streak.lastActive === today) return streak;
-    const yesterdayDate = new Date();
-    yesterdayDate.setDate(yesterdayDate.getDate()-1);
-    const yesterday = localDateKey(yesterdayDate);
-    streak.current = streak.lastActive === yesterday ? streak.current + 1 : 1;
-    streak.longest = Math.max(streak.longest || 0, streak.current);
-    streak.lastActive = today;
-    save(STREAK_KEY, streak);
-    return streak;
-  }
   function getCurrentStreak() {
     const streak = read(STREAK_KEY, { current:0, longest:0, lastActive:null });
     const today = localDateKey();
@@ -56,20 +43,17 @@
 
   const nav = document.querySelector(".topbar");
   // Keep passage-test workspaces focused: do not inject the learning progress strip here.\n  if (nav && !document.body.classList.contains("passage-test-page")) {
+    const vocabLink = document.createElement("a");
+    vocabLink.href = page === "index.html" ? "pages/vocabulary.html" : "../pages/vocabulary.html";
+    vocabLink.textContent = "Vocabulary";
+    vocabLink.className = "eng-vocab-nav";
+    const siteNav = nav.querySelector(".nav");
+    if (siteNav && !siteNav.querySelector(".eng-vocab-nav")) siteNav.appendChild(vocabLink);
     const strip = document.createElement("section");
     strip.className = "eng-progress";
-    strip.innerHTML = '<div><strong>My learning</strong><small>Progress is saved on this device.</small></div><div class="eng-progress-actions"><span class="eng-streak-pill" id="engStreakPill">🔥 0-day streak</span><a href="' + (page === "index.html" ? "#myDashboard" : "../index.html#myDashboard") + '">Dashboard</a><button type="button" id="engMarkVisit">Mark this visit complete</button></div>';
+    strip.innerHTML = '<div><strong>My learning</strong><small>Progress is saved on this device.</small></div><div class="eng-progress-actions"><span class="eng-streak-pill" id="engStreakPill">🔥 0-day streak</span><a href="' + (page === "index.html" ? "#myDashboard" : "../index.html#myDashboard") + '">Dashboard</a><a href="' + (page === "index.html" ? "pages/vocabulary.html" : "../pages/vocabulary.html") + '">Daily practice</a></div>';
     updateStreakPill();
     nav.insertAdjacentElement("afterend", strip);
-    strip.querySelector("#engMarkVisit").addEventListener("click", () => {
-      const current = read(KEY, {visits:{},completed:{},minutes:0});
-      current.completed[page] = (current.completed[page] || 0) + 1;
-      save(KEY,current);
-      recordLearningActivity();
-      updateStreakPill();
-      strip.querySelector("small").textContent = "Visit recorded on this device.";
-      renderDashboard();
-    });
   }
 
   function bookmarkButton(element, title, url) {
@@ -125,7 +109,7 @@
     const totalCompleted = Object.values(data.completed || {}).reduce((a,b)=>a+b,0);
     const saved = read(BOOKMARKS,[]);
     const streak = getCurrentStreak();
-    target.innerHTML = '<div class="eng-dashboard-grid"><div class="eng-stat"><b>'+totalVisits+'</b><span>Page visits</span></div><div class="eng-stat"><b>'+totalCompleted+'</b><span>Visits marked complete</span></div><div class="eng-stat"><b>🔥 '+streak.current+'</b><span>Current streak</span></div><div class="eng-stat"><b>'+(streak.longest||0)+'</b><span>Longest streak</span></div><div class="eng-stat"><b>'+saved.length+'</b><span>Saved resources</span></div><div class="eng-bookmarks"><strong>Saved resources</strong><div class="eng-bookmark-list">'+(saved.length?saved.map(x=>'<a href="'+String(x.url).replace(/&/g,"&amp;").replace(/"/g,"&quot;")+'">'+String(x.title).replace(/&/g,"&amp;").replace(/</g,"&lt;")+'</a>').join(""):'<p>You have not saved any resources yet. Use “Save resource” on an existing resource.</p>')+'</div></div></div>';
+    target.innerHTML = '<div class="eng-dashboard-grid"><div class="eng-stat"><b>'+totalVisits+'</b><span>Page visits</span></div><div class="eng-stat"><b>'+totalCompleted+'</b><span>Vocabulary quizzes passed</span></div><div class="eng-stat"><b>🔥 '+streak.current+'</b><span>Current streak</span></div><div class="eng-stat"><b>'+(streak.longest||0)+'</b><span>Longest streak</span></div><div class="eng-stat"><b>'+saved.length+'</b><span>Saved resources</span></div><div class="eng-bookmarks"><strong>Saved resources</strong><div class="eng-bookmark-list">'+(saved.length?saved.map(x=>'<a href="'+String(x.url).replace(/&/g,"&amp;").replace(/"/g,"&quot;")+'">'+String(x.title).replace(/&/g,"&amp;").replace(/</g,"&lt;")+'</a>').join(""):'<p>You have not saved any resources yet. Use “Save resource” on an existing resource.</p>')+'</div></div></div>';
   }
 
   function addDashboard() {
@@ -180,12 +164,12 @@
     document.querySelectorAll("audio").forEach(audio=>audio.addEventListener("ended",()=>{
       const data=read(KEY,{visits:{},completed:{},minutes:0});
       data.completed["listening-audio"]=(data.completed["listening-audio"]||0)+1;save(KEY,data);
-      recordLearningActivity();updateStreakPill();renderDashboard();
+      updateStreakPill();renderDashboard();
     }));
     document.querySelectorAll(".recording-playback audio").forEach(audio=>audio.addEventListener("ended",()=>{
       const data=read(KEY,{visits:{},completed:{},minutes:0});
       data.completed["speaking-recordings"]=(data.completed["speaking-recordings"]||0)+1;save(KEY,data);
-      recordLearningActivity();updateStreakPill();renderDashboard();
+      updateStreakPill();renderDashboard();
     }));
   }
 

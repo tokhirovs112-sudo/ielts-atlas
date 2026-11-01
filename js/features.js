@@ -6,15 +6,50 @@
   const read = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } };
   const save = (key, value) => localStorage.setItem(key, JSON.stringify(value));
   const localDateKey = (date = new Date()) => [date.getFullYear(), String(date.getMonth()+1).padStart(2,"0"), String(date.getDate()).padStart(2,"0")].join("-");
-  function getCurrentStreak() {
-    const streak = read(STREAK_KEY, { current:0, longest:0, lastActive:null });
-    const today = localDateKey();
-    const yesterdayDate = new Date();
-    yesterdayDate.setDate(yesterdayDate.getDate()-1);
-    return (streak.lastActive === today || streak.lastActive === localDateKey(yesterdayDate)) ? streak : { ...streak, current:0 };
+  function shiftDateKey(key, amount) {
+    const [year, month, day] = String(key).split("-").map(Number);
+    const date = new Date(year, month - 1, day);
+    date.setDate(date.getDate() + amount);
+    return localDateKey(date);
   }
+
+  function getCurrentStreak() {
+    const stored = read(STREAK_KEY, { current:0, longest:0, lastActive:null });
+    const streak = {
+      current: Math.max(0, Number(stored.current) || 0),
+      longest: Math.max(0, Number(stored.longest) || 0),
+      lastActive: typeof stored.lastActive === "string" ? stored.lastActive : null
+    };
+    const today = localDateKey();
+    if (streak.lastActive !== today && streak.lastActive !== shiftDateKey(today, -1)) {
+      return { ...streak, current:0 };
+    }
+    return streak;
+  }
+
+  function recordStreakActivity() {
+    const stored = read(STREAK_KEY, { current:0, longest:0, lastActive:null });
+    const today = localDateKey();
+    if (stored.lastActive === today) return getCurrentStreak();
+
+    const current = stored.lastActive === shiftDateKey(today, -1)
+      ? Math.max(0, Number(stored.current) || 0) + 1
+      : 1;
+    const next = {
+      current,
+      longest: Math.max(Math.max(0, Number(stored.longest) || 0), current),
+      lastActive: today
+    };
+    save(STREAK_KEY, next);
+    updateStreakPill();
+    renderDashboard();
+    return next;
+  }
+
+  window.EnglisityProgress = window.EnglisityProgress || {};
+  window.EnglisityProgress.recordActivity = recordStreakActivity;
   const page = location.pathname.split("/").pop() || "index.html";
-  const labels = { "index.html":"Home", "reading.html":"Reading", "listening.html":"Listening", "writing.html":"Writing", "speaking.html":"Speaking", "articles.html":"Articles", "podcasts.html":"Podcasts" };
+  const labels = { "index.html":"Home", "reading.html":"Reading", "listening.html":"Listening", "writing.html":"Writing", "speaking.html":"Speaking", "vocabulary.html":"Vocabulary", "articles.html":"Articles", "podcasts.html":"Podcasts" };
   const progress = read(KEY, { visits:{}, completed:{}, minutes:0 });
   progress.visits[page] = (progress.visits[page] || 0) + 1;
   save(KEY, progress);
@@ -123,7 +158,7 @@
 
   function addDashboard() {
     if (page !== "index.html" || document.getElementById("myDashboard")) return;
-    const hero = document.querySelector(".home-hero");
+    const hero = document.querySelector(".home-hero, .home-hero-new");
     if (!hero) return;
     const section = document.createElement("section");
     section.className = "eng-dashboard";
@@ -218,7 +253,7 @@
       audio.addEventListener("ended",()=>{
         const data=read(KEY,{visits:{},completed:{},minutes:0});
         data.completed["listening-audio"]=(data.completed["listening-audio"]||0)+1;save(KEY,data);
-        renderDashboard();
+        recordStreakActivity();renderDashboard();
       });
     });
     const speakingAudio=document.getElementById("recordingPlayback");
@@ -227,12 +262,12 @@
       speakingAudio.addEventListener("ended",()=>{
         const data=read(KEY,{visits:{},completed:{},minutes:0});
         data.completed["speaking-recordings"]=(data.completed["speaking-recordings"]||0)+1;save(KEY,data);
-        renderDashboard();
+        recordStreakActivity();renderDashboard();
       });
     }
   }
 
-  window.addEventListener("englisity:quiz-passed",()=>{updateStreakPill();renderDashboard();});
+  window.addEventListener("englisity:quiz-passed", recordStreakActivity);
 
   document.addEventListener("DOMContentLoaded",()=>{
     addDashboard();scanBookmarks();addTimer();initAutosave();trackActivities();

@@ -8,7 +8,7 @@ const passage=[
 ["C","Still, Broughton managed to navigate these challenges and enlisted the help of a colour expert to devise a palette that was bright, but not overpowering. Lebanese cedar, which gives off a natural fragrance, was used around parts of the station to combat sensory deprivation. As well, Broughton worked with a team to develop special lighting that simulates the sun's rhythms; the aim was to mitigate seasonal affective disorder (winter depression) during the 105 days a year in which there is no daylight. Few appreciate the impact of these innovations more than Tom Welsh, Halley VI's winter station leader. 'During the winter, you can't really get out and do very much,' he says. 'So you really rely on getting your mental stimulus from inside the station.' The large central module is key for this function. It's where staff meet to watch movies, eat and play pool. Welsh's team has even constructed a small mini golf course there."],
 ["D","Life at Halley VI isn't all fun and games. There's also the job of conducting research into topics ranging from space weather to ozone levels. Some of this work is done on a purpose-built observation deck atop the northernmost module. The station's triple glazed windows and heating system normally keep the temperature fairly moderate, but they're not completely foolproof. In 2014 a power outage left the entire station exposed to record low temperatures for 19 hours. It was so cold that when someone threw a cup of boiling water in the air, it instantly turned into a cloud of ice crystals."],
 ["E","Thankfully, the entire crisis ended up being handled and no one was hurt. But it gave Halley VI's team a taste of what life was like for pioneering Antarctic explorers at the start of the 20th century. Back then, research stations provided the bare essentials of survival. They were usually dirty, stuffy places, where tempers flared, and the divisions in ranks were strictly maintained. 'There were definitely a lot of people living in very close contact with each other,' says Pip Cheshire, a New Zealand architect who has helped restore a number of old Antarctic huts. 'There are a few cases of explorers actually succumbing to "cabin fever" in these harsh surroundings.'"],
-["F","It's difficult to imagine such bleakness on Halley VI. Here, every measure is taken to make its crew comfortable. Broughton is now seen as an expert in designing research bases, and was commissioned to design a new facility for the Spanish Antarctic programme. NASA also reached out for guidance on how to build stations for long-range space missions. 'They've asked questions like, "How small were the sleeping quarters and what features did you introduce to give them individual personality?" he says. 'They're interested in how architecture can contribute to psychological wellbeing during long periods of isolation.'"],
+["F","It's difficult to imagine such bleakness on Halley VI. Here, every measure is taken to make its crew comfortable. Broughton is now seen as an expert in designing research bases, and was commissioned to design a new facility for the Spanish Antarctic programme. NASA also reached out for guidance on how to build stations for long-range space missions. 'They've asked questions like, \"How small were the sleeping quarters and what features did you introduce to give them individual personality?\" he says. 'They're interested in how architecture can contribute to psychological wellbeing during long periods of isolation.'"],
 ["G","For Sam Jacob, a London-based architect and writer who recently wrote a foreword for a book about Antarctic architecture, applying Broughton's ideas to space travel makes sense. 'Antarctica is the place on Earth that is the least like Earth, if you know what I mean - it's the place most like another planet,' he says. 'So, with that in mind, you can really imagine Halley sitting on a planet in outer space. It's something that's not only informed by science fiction, but could also give an idea of how we might actually colonise other places.'"]
 ];
 const questions=[
@@ -29,6 +29,34 @@ const questions=[
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const wordify=s=>esc(s).replace(/([\p{L}]+(?:['’\-][\p{L}]+)*)/gu,'<span class="vocab-word" data-word="$1">$1</span>');
 document.getElementById("passageText").innerHTML=passage.map(([id,txt])=>'<p id="para'+id+'"><span class="para-number">'+id+'</span>'+wordify(txt)+'</p>').join("");
+const searchInput=document.getElementById("passageSearchInput"),searchPrev=document.getElementById("passageSearchPrev"),searchNext=document.getElementById("passageSearchNext"),searchClear=document.getElementById("passageSearchClear"),searchCount=document.getElementById("passageSearchCount");
+let searchMatches=[],searchIndex=-1;
+function runPassageSearch(moveToFirst=true){
+ const term=searchInput.value.trim().toLocaleLowerCase();
+ const paras=[...document.querySelectorAll("#passageText p")];
+ paras.forEach(p=>p.classList.remove("search-match","search-current"));
+ searchMatches=term?paras.filter(p=>p.textContent.toLocaleLowerCase().includes(term)):[];
+ searchMatches.forEach(p=>p.classList.add("search-match"));
+ searchIndex=searchMatches.length?(moveToFirst?0:-1):-1;
+ if(searchIndex>=0)activateSearchMatch();
+ else updateSearchControls();
+}
+function updateSearchControls(){
+ searchCount.textContent=searchMatches.length?(searchIndex>=0?(searchIndex+1)+" / "+searchMatches.length:searchMatches.length+" found"):"";
+ searchPrev.disabled=searchNext.disabled=!searchMatches.length;
+}
+function activateSearchMatch(){
+ searchMatches.forEach(p=>p.classList.remove("search-current"));
+ const p=searchMatches[searchIndex];
+ if(p){p.classList.add("search-current");p.scrollIntoView({behavior:"smooth",block:"center"});}
+ updateSearchControls();
+}
+searchInput.addEventListener("input",()=>runPassageSearch(true));
+searchInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();if(!searchMatches.length)runPassageSearch(true);else{searchIndex=(searchIndex+1)%searchMatches.length;activateSearchMatch();}}if(e.key==="Escape"){searchInput.value="";runPassageSearch(false);}});
+searchPrev.addEventListener("click",()=>{if(searchMatches.length){searchIndex=(searchIndex-1+searchMatches.length)%searchMatches.length;activateSearchMatch();}});
+searchNext.addEventListener("click",()=>{if(searchMatches.length){searchIndex=(searchIndex+1)%searchMatches.length;activateSearchMatch();}});
+searchClear.addEventListener("click",()=>{searchInput.value="";runPassageSearch(false);searchInput.focus();});
+updateSearchControls();
 const groups=[
 {title:"Questions 14–18",kind:"MATCHING INFORMATION",instructions:"Reading Passage 2 has seven paragraphs, A–G. Which paragraph contains the following information? You may use any letter more than once.",questions:questions.slice(0,5),options:["A","B","C","D","E","F","G"]},
 {title:"Questions 19–22",kind:"SUMMARY COMPLETION",instructions:"Complete the summary below. Choose ONE WORD ONLY from the passage for each answer.",questions:questions.slice(5,9)},

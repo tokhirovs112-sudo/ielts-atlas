@@ -134,22 +134,62 @@
   }
 
   function addTimer() {
-    const editor = document.querySelector("#task1Draft, #task2Draft, #writingDraft");
-    if (!editor || document.querySelector(".eng-timer")) return;
-    const panel = document.createElement("div");
-    panel.className = "eng-timer";
-    panel.innerHTML = '<strong>Writing timer</strong><output id="engTimerDisplay">40:00</output><button type="button" id="engTimerStart">Start</button><button type="button" id="engTimerReset">Reset</button><span class="helper">Optional practice timer. It does not affect your draft.</span>';
-    editor.insertAdjacentElement("beforebegin",panel);
-    let remaining=2400, interval=null;
-    const output=panel.querySelector("output");
-    const paint=()=>output.textContent=String(Math.floor(remaining/60)).padStart(2,"0")+":"+String(remaining%60).padStart(2,"0");
-    panel.querySelector("#engTimerStart").addEventListener("click",()=>{
-      if(interval){clearInterval(interval);interval=null;panel.querySelector("#engTimerStart").textContent="Resume";return;}
-      panel.querySelector("#engTimerStart").textContent="Pause";
-      interval=setInterval(()=>{remaining=Math.max(0,remaining-1);paint();if(!remaining){clearInterval(interval);interval=null;panel.querySelector("#engTimerStart").textContent="Start again";}},1000);
+    const timerConfigs = [
+      { selector: "#task1Draft", label: "Task 1 timer", minutes: 20 },
+      { selector: "#task2Draft", label: "Task 2 timer", minutes: 40 },
+      { selector: "#writingDraft", label: "Writing timer", minutes: 40 }
+    ];
+
+    timerConfigs.forEach(({ selector, label, minutes }) => {
+      const editor = document.querySelector(selector);
+      if (!editor || editor.parentElement.querySelector(".eng-timer")) return;
+
+      const panel = document.createElement("div");
+      panel.className = "eng-timer";
+      panel.innerHTML = '<strong>' + label + '</strong><output aria-live="off">' +
+        String(minutes).padStart(2, "0") + ':00</output><button type="button" class="eng-timer-start">Start</button><button type="button" class="eng-timer-reset">Reset</button><span class="helper">Optional practice timer. It does not affect your draft.</span>';
+      editor.insertAdjacentElement("beforebegin", panel);
+
+      let remaining = minutes * 60;
+      let interval = null;
+      const output = panel.querySelector("output");
+      const startButton = panel.querySelector(".eng-timer-start");
+      const resetButton = panel.querySelector(".eng-timer-reset");
+      const paint = () => {
+        output.textContent = String(Math.floor(remaining / 60)).padStart(2, "0") +
+          ":" + String(remaining % 60).padStart(2, "0");
+      };
+
+      startButton.addEventListener("click", () => {
+        if (interval) {
+          clearInterval(interval);
+          interval = null;
+          startButton.textContent = "Resume";
+          return;
+        }
+        if (remaining <= 0) remaining = minutes * 60;
+        startButton.textContent = "Pause";
+        interval = setInterval(() => {
+          remaining = Math.max(0, remaining - 1);
+          paint();
+          if (remaining === 0) {
+            clearInterval(interval);
+            interval = null;
+            startButton.textContent = "Start again";
+          }
+        }, 1000);
+      });
+
+      resetButton.addEventListener("click", () => {
+        clearInterval(interval);
+        interval = null;
+        remaining = minutes * 60;
+        paint();
+        startButton.textContent = "Start";
+      });
+
+      paint();
     });
-    panel.querySelector("#engTimerReset").addEventListener("click",()=>{clearInterval(interval);interval=null;remaining=2400;paint();panel.querySelector("#engTimerStart").textContent="Start";});
-    paint();
   }
 
   function initAutosave() {

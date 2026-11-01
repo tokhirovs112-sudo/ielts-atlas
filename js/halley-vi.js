@@ -37,7 +37,7 @@ const groups=[
 const renderQuestion=q=>{
 let control="";
 if(q.type==="text")control='<input class="answer-input" id="a'+q.n+'" type="text" autocomplete="off" placeholder="Your answer" aria-label="Answer to question '+q.n+'">';
-else control='<div class="answer-options">'+(q.type==="person"?["A","B","C","D"]:["A","B","C","D","E","F","G"]).map(v=>'<label><input type="radio" name="a'+q.n+'" value="'+v+'"> '+v+'</label>').join("")+'</div>';
+else {const choices=q.type==="person"?["A","B","C","D"]:["A","B","C","D","E","F","G"];control='<select class="answer-select" id="a'+q.n+'" aria-label="Choose answer for question '+q.n+'"><option value="">Choose an answer…</option>'+choices.map(v=>'<option value="'+v+'">'+v+'</option>').join("")+'</select>';}
 const prompt=q.type==="text"?esc(q.p).replace("______",control):esc(q.p);
 return '<section class="question-card" id="q'+q.n+'"><div class="question-number">Question '+q.n+'</div><p>'+prompt+'</p>'+(q.type!=="text"?control:"")+'<div class="question-feedback" id="f'+q.n+'" hidden></div></section>';
 };
@@ -47,12 +47,12 @@ const clean=s=>String(s||"").trim().toLowerCase().replace(/[.!?;,:'"“”‘’
 function submit(){
  if(submitted)return;submitted=true;let score=0;
  questions.forEach(q=>{
- const val=q.type==="text"?(document.getElementById("a"+q.n).value||""): (document.querySelector('input[name="a'+q.n+'"]:checked')?.value||"");
+ const val=(document.getElementById("a"+q.n)?.value||"");
  const ok=q.type==="text"?clean(val)===q.a:val===q.a;if(ok)score++;
  const f=document.getElementById("f"+q.n);f.hidden=false;f.className="question-feedback "+(ok?"correct":"incorrect");
  f.innerHTML='<strong>'+(ok?"Correct":"Not quite")+'</strong><p>Correct answer: <b>'+esc(q.a)+'</b></p><p>'+esc(q.why)+'</p><p><b>Evidence in the passage:</b></p><blockquote>'+esc(q.e)+'</blockquote><a class="view-in-test" href="#para'+q.para+'" data-para="'+q.para+'">View in passage ↗</a>';
  });
- root.querySelectorAll("input").forEach(x=>x.disabled=true);document.getElementById("checkAnswers").disabled=true;
+ root.querySelectorAll("input,select").forEach(x=>x.disabled=true);document.getElementById("checkAnswers").disabled=true;
  const result=document.getElementById("testResult");result.hidden=false;result.innerHTML='<strong>Your score: '+score+' / 13</strong><span>'+(score===13?"Excellent work — a perfect score!":score>=10?"Strong result. Review any missed questions below.":score>=7?"Good effort. Check the evidence for the questions you missed.":"Review the explanations and try the passage again.")+'</span>';
  if(timer)clearInterval(timer);if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
  result.scrollIntoView({behavior:"smooth",block:"center"});
@@ -68,7 +68,7 @@ document.getElementById("resetTest").addEventListener("click",()=>{
  if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});window.scrollTo({top:0,behavior:"smooth"});
 });
 root.addEventListener("click",ev=>{const a=ev.target.closest(".view-in-test");if(!a)return;ev.preventDefault();document.querySelectorAll("#passageText p.is-highlighted").forEach(p=>p.classList.remove("is-highlighted"));const target=document.getElementById("para"+a.dataset.para);if(target){target.classList.add("is-highlighted");target.scrollIntoView({behavior:"smooth",block:"center"});}});
-function runTimer(isExam){if(timer)clearInterval(timer);startTime=Date.now();const display=document.getElementById("timerDisplay"),note=document.getElementById("timerNote"),wrap=document.getElementById("readingTimer");wrap.classList.remove("overtime");const tick=()=>{const sec=Math.floor((Date.now()-startTime)/1000),left=isExam?1200-sec:sec;display.textContent=String(Math.floor(Math.abs(left)/60)).padStart(2,"0")+":"+String(Math.abs(left)%60).padStart(2,"0");note.textContent=isExam?"remaining":"elapsed";if(isExam&&left<=0){wrap.classList.add("overtime");note.textContent="time is up · submitting";submit();}};tick();timer=setInterval(tick,500);}
+function runTimer(isExam){if(timer)clearInterval(timer);startTime=Date.now();const display=document.getElementById("timerDisplay"),note=document.getElementById("timerNote"),wrap=document.getElementById("readingTimer");wrap.classList.remove("overtime");const tick=()=>{const elapsed=Math.floor((Date.now()-startTime)/1000),left=isExam?1200-elapsed:elapsed,absolute=Math.abs(left),time=String(Math.floor(absolute/60)).padStart(2,"0")+":"+String(absolute%60).padStart(2,"0");display.textContent=isExam&&left<0?"-"+time:time;note.textContent=isExam?(left<0?"overtime":"remaining"):"elapsed";if(isExam&&left<=0)wrap.classList.add("overtime");};tick();timer=setInterval(tick,250);}
 document.getElementById("practiceModeButton").addEventListener("click",()=>{document.getElementById("modeGate").hidden=true;document.body.classList.add("practice-mode");document.getElementById("modeLabel").textContent="PRACTICE MODE · CLICK A WORD FOR ITS MEANING";runTimer(false);});
 document.getElementById("examModeButton").addEventListener("click",async()=>{document.getElementById("modeGate").hidden=true;document.body.classList.add("exam-mode");document.getElementById("modeLabel").textContent="EXAM MODE · SELECT TEXT TO HIGHLIGHT";runTimer(true);try{if(document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen();}catch(e){}});
 const layout=document.getElementById("resizableTest"),divider=document.getElementById("resizeDivider");let dragging=false;

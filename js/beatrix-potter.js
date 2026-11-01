@@ -60,8 +60,8 @@ function inferPartOfSpeech(context,word){
  const escaped=word.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
  const match=new RegExp("\\b"+escaped+"\\b","i").exec(clean);
  if(!match)return null;
- const before=clean.slice(0,match.index).trim().split(/\\s+/).filter(Boolean);
- const after=clean.slice(match.index+match[0].length).trim().split(/\\s+/).filter(Boolean);
+ const before=clean.slice(0,match.index).trim().split(" ").filter(Boolean);
+ const after=clean.slice(match.index+match[0].length).trim().split(" ").filter(Boolean);
  const prev=(before[before.length-1]||"").toLowerCase().replace(/[^a-z'-]/g,"");
  const next=(after[0]||"").toLowerCase().replace(/[^a-z'-]/g,"");
  if(["to"].includes(prev))return "verb";

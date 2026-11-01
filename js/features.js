@@ -2,8 +2,30 @@
   "use strict";
   const KEY = "englisity-progress-v1";
   const BOOKMARKS = "englisity-bookmarks-v1";
+  const STREAK_KEY = "englisity-streak-v1";
   const read = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } };
   const save = (key, value) => localStorage.setItem(key, JSON.stringify(value));
+  const localDateKey = (date = new Date()) => [date.getFullYear(), String(date.getMonth()+1).padStart(2,"0"), String(date.getDate()).padStart(2,"0")].join("-");
+  function recordLearningActivity() {
+    const today = localDateKey();
+    const streak = read(STREAK_KEY, { current:0, longest:0, lastActive:null });
+    if (streak.lastActive === today) return streak;
+    const yesterdayDate = new Date();
+    yesterdayDate.setDate(yesterdayDate.getDate()-1);
+    const yesterday = localDateKey(yesterdayDate);
+    streak.current = streak.lastActive === yesterday ? streak.current + 1 : 1;
+    streak.longest = Math.max(streak.longest || 0, streak.current);
+    streak.lastActive = today;
+    save(STREAK_KEY, streak);
+    return streak;
+  }
+  function getCurrentStreak() {
+    const streak = read(STREAK_KEY, { current:0, longest:0, lastActive:null });
+    const today = localDateKey();
+    const yesterdayDate = new Date();
+    yesterdayDate.setDate(yesterdayDate.getDate()-1);
+    return (streak.lastActive === today || streak.lastActive === localDateKey(yesterdayDate)) ? streak : { ...streak, current:0 };
+  }
   const page = location.pathname.split("/").pop() || "index.html";
   const labels = { "index.html":"Home", "reading.html":"Reading", "listening.html":"Listening", "writing.html":"Writing", "speaking.html":"Speaking", "articles.html":"Articles", "podcasts.html":"Podcasts" };
   const progress = read(KEY, { visits:{}, completed:{}, minutes:0 });
@@ -35,12 +57,15 @@
   // Keep passage-test workspaces focused: do not inject the learning progress strip here.\n  if (nav && !document.body.classList.contains("passage-test-page")) {
     const strip = document.createElement("section");
     strip.className = "eng-progress";
-    strip.innerHTML = '<div><strong>My learning</strong><small>Progress is saved on this device.</small></div><div class="eng-progress-actions"><a href="' + (page === "index.html" ? "#myDashboard" : "../index.html#myDashboard") + '">Dashboard</a><button type="button" id="engMarkVisit">Mark this visit complete</button></div>';
+    strip.innerHTML = '<div><strong>My learning</strong><small>Progress is saved on this device.</small></div><div class="eng-progress-actions"><span class="eng-streak-pill" id="engStreakPill">🔥 0-day streak</span><a href="' + (page === "index.html" ? "#myDashboard" : "../index.html#myDashboard") + '">Dashboard</a><button type="button" id="engMarkVisit">Mark this visit complete</button></div>';
+    updateStreakPill();
     nav.insertAdjacentElement("afterend", strip);
     strip.querySelector("#engMarkVisit").addEventListener("click", () => {
       const current = read(KEY, {visits:{},completed:{},minutes:0});
       current.completed[page] = (current.completed[page] || 0) + 1;
       save(KEY,current);
+      recordLearningActivity();
+      updateStreakPill();
       strip.querySelector("small").textContent = "Visit recorded on this device.";
       renderDashboard();
     });
@@ -83,6 +108,14 @@
     });
   }
 
+  function updateStreakPill() {
+    const pill = document.getElementById("engStreakPill");
+    if (!pill) return;
+    const streak = getCurrentStreak();
+    pill.textContent = "🔥 " + streak.current + (streak.current === 1 ? "-day streak" : "-day streak");
+    pill.title = "Longest streak: " + (streak.longest || 0) + " days";
+  }
+
   function renderDashboard() {
     const target = document.getElementById("engDashboardContent");
     if (!target) return;
@@ -90,7 +123,8 @@
     const totalVisits = Object.values(data.visits || {}).reduce((a,b)=>a+b,0);
     const totalCompleted = Object.values(data.completed || {}).reduce((a,b)=>a+b,0);
     const saved = read(BOOKMARKS,[]);
-    target.innerHTML = '<div class="eng-dashboard-grid"><div class="eng-stat"><b>'+totalVisits+'</b><span>Page visits</span></div><div class="eng-stat"><b>'+totalCompleted+'</b><span>Visits marked complete</span></div><div class="eng-stat"><b>'+saved.length+'</b><span>Saved resources</span></div><div class="eng-bookmarks"><strong>Saved resources</strong><div class="eng-bookmark-list">'+(saved.length?saved.map(x=>'<a href="'+String(x.url).replace(/&/g,"&amp;").replace(/"/g,"&quot;")+'">'+String(x.title).replace(/&/g,"&amp;").replace(/</g,"&lt;")+'</a>').join(""):'<p>You have not saved any resources yet. Use “Save resource” on an existing resource.</p>')+'</div></div></div>';
+    const streak = getCurrentStreak();
+    target.innerHTML = '<div class="eng-dashboard-grid"><div class="eng-stat"><b>'+totalVisits+'</b><span>Page visits</span></div><div class="eng-stat"><b>'+totalCompleted+'</b><span>Visits marked complete</span></div><div class="eng-stat"><b>🔥 '+streak.current+'</b><span>Current streak</span></div><div class="eng-stat"><b>'+(streak.longest||0)+'</b><span>Longest streak</span></div><div class="eng-stat"><b>'+saved.length+'</b><span>Saved resources</span></div><div class="eng-bookmarks"><strong>Saved resources</strong><div class="eng-bookmark-list">'+(saved.length?saved.map(x=>'<a href="'+String(x.url).replace(/&/g,"&amp;").replace(/"/g,"&quot;")+'">'+String(x.title).replace(/&/g,"&amp;").replace(/</g,"&lt;")+'</a>').join(""):'<p>You have not saved any resources yet. Use “Save resource” on an existing resource.</p>')+'</div></div></div>';
   }
 
   function addDashboard() {
@@ -145,10 +179,12 @@
     document.querySelectorAll("audio").forEach(audio=>audio.addEventListener("ended",()=>{
       const data=read(KEY,{visits:{},completed:{},minutes:0});
       data.completed["listening-audio"]=(data.completed["listening-audio"]||0)+1;save(KEY,data);
+      recordLearningActivity();updateStreakPill();renderDashboard();
     }));
     document.querySelectorAll(".recording-playback audio").forEach(audio=>audio.addEventListener("ended",()=>{
       const data=read(KEY,{visits:{},completed:{},minutes:0});
       data.completed["speaking-recordings"]=(data.completed["speaking-recordings"]||0)+1;save(KEY,data);
+      recordLearningActivity();updateStreakPill();renderDashboard();
     }));
   }
 

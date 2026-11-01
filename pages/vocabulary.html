@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Build useful English vocabulary for IELTS Writing and Speaking with daily words and short quizzes.">
+<title>Vocabulary & Daily Practice — Englisity</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="icon" type="image/svg+xml" href="../assets/englisity-mark.svg">
+<style>
+.vocab-wrap{max-width:1100px;margin:28px auto 60px;padding:0 22px}
+.vocab-hero{padding:38px 36px;border-radius:22px;background:linear-gradient(125deg,#101f3d,#244d83);color:#fff}
+.vocab-hero .eyebrow{color:#a9cbff;font-size:12px;font-weight:800;letter-spacing:1.5px}
+.vocab-hero h1{color:#fff;font-size:clamp(30px,5vw,43px);margin:12px 0}
+.vocab-hero p{color:#d9e6f7;max-width:680px;line-height:1.7;margin:0}
+.vocab-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin-top:22px}
+.vocab-card{background:#fff;border:1px solid #e3e9f2;border-radius:17px;padding:24px}
+.vocab-kicker{font-size:12px;font-weight:800;letter-spacing:1px;color:#3767e8;text-transform:uppercase}
+.vocab-word{font-size:32px;color:#14213d;margin:9px 0 4px}
+.vocab-pos{color:#718096;font-size:14px}
+.vocab-definition{font-size:17px;line-height:1.6;color:#34445e;margin:18px 0}
+.vocab-example{padding:15px 17px;background:#f4f7fc;border-left:3px solid #3767e8;border-radius:9px;line-height:1.65;color:#34445e}
+.vocab-meta{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.vocab-tag{padding:6px 10px;border-radius:20px;background:#edf2ff;color:#2855a8;font-size:12px;font-weight:700}
+.vocab-note{font-size:13px;color:#718096;line-height:1.6}
+.vocab-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}
+.vocab-tabs button,.quiz-option,.quiz-submit{font:inherit;cursor:pointer}
+.vocab-tabs button{padding:9px 15px;border:1px solid #dce4ef;border-radius:20px;background:#fff;color:#526078;font-weight:700}
+.vocab-tabs button.active{background:#3767e8;border-color:#3767e8;color:#fff}
+.word-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.word-item{padding:16px;border:1px solid #e3e9f2;border-radius:13px;background:#fff}
+.word-item h3{margin:0 0 6px;color:#14213d}
+.word-item p{margin:0;color:#59677d;line-height:1.55;font-size:14px}
+.word-item small{display:block;color:#3767e8;font-weight:700;margin-top:9px}
+.quiz-card{margin-top:22px}
+.quiz-progress{color:#718096;font-size:13px}
+.quiz-question{font-size:19px;color:#14213d;line-height:1.5;margin:16px 0}
+.quiz-options{display:grid;gap:9px}
+.quiz-option{padding:12px 14px;border:1px solid #dce4ef;border-radius:10px;background:#fff;text-align:left;color:#34445e}
+.quiz-option.selected{border-color:#3767e8;background:#edf2ff}
+.quiz-option:disabled{cursor:default;opacity:1}
+.quiz-feedback{min-height:25px;margin:13px 0;color:#526078;line-height:1.5}
+.quiz-submit{padding:11px 18px;border:0;border-radius:9px;background:#3767e8;color:#fff;font-weight:700}
+.quiz-submit:disabled{opacity:.45;cursor:not-allowed}
+.quiz-result{padding:17px;background:#f3f7fd;border-radius:12px;line-height:1.6;color:#34445e}
+@media(max-width:760px){.vocab-grid{grid-template-columns:1fr}.word-list{grid-template-columns:1fr}.vocab-hero{padding:30px 23px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+<div class="container nav-container">
+<a class="brand" href="../index.html"><img class="brand-mark" src="../assets/englisity-mark.svg" alt=""><span>Englisity<small>LEARN WITH PURPOSE</small></span></a>
+<button id="menuToggle" class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+<nav id="navigation" class="nav">
+<a href="../index.html">Home</a><a href="reading.html">Reading</a><a href="listening.html">Listening</a><a href="writing.html">Writing</a><a href="speaking.html">Speaking</a><a class="active" href="vocabulary.html">Vocabulary</a><a href="articles.html">Articles</a><a href="podcasts.html">Podcasts</a>
+</nav></div></header>
+<main class="vocab-wrap">
+<section class="vocab-hero"><div class="eyebrow">BUILD YOUR ACTIVE VOCABULARY</div><h1>Learn words you can actually use.</h1><p>Explore practical vocabulary for IELTS Writing and Speaking, understand where each expression fits, and finish a short quiz to build your daily learning streak.</p></section>
+<div class="vocab-grid">
+<section class="vocab-card" id="dailyWord" aria-live="polite">
+<div class="vocab-kicker">Word of the day</div><div class="vocab-word" id="dailyWordText">Substantial</div><div class="vocab-pos" id="dailyPos">adjective</div>
+<p class="vocab-definition" id="dailyDefinition"></p>
+<div class="vocab-example" id="dailyExample"></div>
+<div class="vocab-meta" id="dailyTags"></div>
+<p class="vocab-note" id="dailyNote"></p>
+</section>
+<section class="vocab-card">
+<div class="vocab-kicker">How to use this page</div><h2>Learn the context, not just the definition.</h2>
+<p>Some words are more natural in formal essays; others are especially useful in conversation. The labels are guidance, not strict rules — many expressions work in both.</p>
+<p class="vocab-note">A streak day is counted only after you score at least 4 out of 5 in the quiz. Simply opening the page or browsing words does not count.</p>
+<div class="vocab-meta"><span class="vocab-tag">4/5 to pass</span><span class="vocab-tag">One streak day per date</span><span class="vocab-tag">Saved in this browser</span></div>
+</section></div>
+<section class="vocab-card" style="margin-top:22px">
+<div class="vocab-kicker">Vocabulary bank</div><h2>Useful words and expressions</h2>
+<div class="vocab-tabs" role="group" aria-label="Filter vocabulary"><button class="active" data-filter="all">All</button><button data-filter="Writing">Writing</button><button data-filter="Speaking">Speaking</button><button data-filter="Both">Both</button></div>
+<div class="word-list" id="wordList"></div>
+</section>
+<section class="vocab-card quiz-card" id="dailyQuiz">
+<div class="vocab-kicker">Daily check</div><h2>Test what you know</h2><p class="quiz-progress" id="quizProgress">5 questions · Choose one answer for each.</p>
+<div id="quizArea"></div>
+</section>
+</main>
+<footer class="footer"><strong>Englisity</strong><a href="../index.html">Back home ↑</a></footer>
+<script src="../js/vocabulary.js"></script>
+<script src="../js/features.js"></script>
+</body></html>

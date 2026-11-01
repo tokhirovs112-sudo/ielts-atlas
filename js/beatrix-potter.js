@@ -6,7 +6,7 @@ const questions=[{"n":1,"t":"text","p":"She received lessons at home from a ____
 
 if(!root)return;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const wordify=value=>esc(value).replace(/([\\p{L}]+(?:['’\\-][\\p{L}]+)*)/gu,'<span class="vocab-word" data-word="$1">$1</span>');
+const wordify=value=>esc(value).replace(/([\p{L}]+(?:['’\-][\p{L}]+)*)/gu,'<span class="vocab-word" data-word="$1">$1</span>');
 document.getElementById("passageText").innerHTML=passage.map(([id,txt],i)=>'<p id="'+id+'"><span class="para-number">'+(i+1)+'</span>'+wordify(txt)+'</p>').join("");
 document.getElementById("questionList").innerHTML=questions.map(q=>{
 const control=q.t==="text"?'<input class="answer-input" id="a'+q.n+'" type="text" autocomplete="off" placeholder="Your answer" aria-label="Answer to question '+q.n+'">':'<div class="answer-options">'+["TRUE","FALSE","NOT GIVEN"].map(v=>'<label><input type="radio" name="a'+q.n+'" value="'+v+'"> '+v+'</label>').join("")+'</div>';

@@ -84,20 +84,79 @@ document.getElementById("passageText").addEventListener("click",event=>{
  const rect=word.getBoundingClientRect();
  lookupWord(word.dataset.word,rect.left,rect.bottom+8);
 });
-document.getElementById("highlightSelection").addEventListener("click",()=>{
+const passageNode=document.getElementById("passageText");
+const selectionToolbar=document.getElementById("selectionToolbar");
+const selectionAction=document.getElementById("selectionAction");
+let toolbarTargetMark=null;
+function unwrapHighlight(mark){
+ if(!mark||!mark.isConnected)return;
+ const parent=mark.parentNode;
+ while(mark.firstChild)parent.insertBefore(mark.firstChild,mark);
+ mark.remove();
+ parent.normalize();
+}
+function hideSelectionToolbar(){
+ selectionToolbar.hidden=true;
+ toolbarTargetMark=null;
+}
+function positionSelectionToolbar(rect){
+ selectionToolbar.hidden=false;
+ const width=selectionToolbar.offsetWidth||170;
+ const height=selectionToolbar.offsetHeight||42;
+ const left=Math.max(8,Math.min(window.innerWidth-width-8,rect.left+rect.width/2-width/2));
+ let top=rect.top-height-10;
+ if(top<8)top=Math.min(window.innerHeight-height-8,rect.bottom+10);
+ selectionToolbar.style.left=left+"px";
+ selectionToolbar.style.top=Math.max(8,top)+"px";
+}
+function refreshSelectionToolbar(){
  const selection=window.getSelection();
- if(!selection||selection.isCollapsed)return;
+ if(!selection||selection.isCollapsed||!selection.rangeCount){hideSelectionToolbar();return;}
  const range=selection.getRangeAt(0);
- if(!document.getElementById("passageText").contains(range.commonAncestorContainer))return;
+ if(!passageNode.contains(range.commonAncestorContainer)){hideSelectionToolbar();return;}
+ const rect=range.getBoundingClientRect();
+ if(!rect.width&&!rect.height){hideSelectionToolbar();return;}
+ const node=range.commonAncestorContainer.nodeType===Node.ELEMENT_NODE?range.commonAncestorContainer:range.commonAncestorContainer.parentElement;
+ const mark=node?.closest?.("mark.user-highlight");
+ toolbarTargetMark=mark||null;
+ selectionAction.textContent=mark?"Remove highlight":"Highlight text";
+ selectionAction.setAttribute("aria-label",mark?"Remove this highlight":"Highlight selected text");
+ positionSelectionToolbar(rect);
+}
+document.addEventListener("selectionchange",refreshSelectionToolbar);
+selectionToolbar.addEventListener("pointerdown",event=>event.preventDefault());
+selectionAction.addEventListener("click",()=>{
+ if(toolbarTargetMark){
+  unwrapHighlight(toolbarTargetMark);
+  hideSelectionToolbar();
+  window.getSelection()?.removeAllRanges();
+  return;
+ }
+ const selection=window.getSelection();
+ if(!selection||selection.isCollapsed||!selection.rangeCount)return;
+ const range=selection.getRangeAt(0);
+ if(!passageNode.contains(range.commonAncestorContainer))return;
  const mark=document.createElement("mark");
  mark.className="user-highlight";
  try{range.surroundContents(mark);}
  catch(error){const fragment=range.extractContents();mark.appendChild(fragment);range.insertNode(mark);}
  selection.removeAllRanges();
+ hideSelectionToolbar();
 });
-document.getElementById("clearHighlights").addEventListener("click",()=>{
- document.querySelectorAll("#passageText mark.user-highlight").forEach(mark=>mark.replaceWith(...mark.childNodes));
+passageNode.addEventListener("click",event=>{
+ const mark=event.target.closest("mark.user-highlight");
+ if(!mark)return;
+ toolbarTargetMark=mark;
+ selectionAction.textContent="Remove highlight";
+ selectionAction.setAttribute("aria-label","Remove this highlight");
+ const rect=mark.getBoundingClientRect();
+ positionSelectionToolbar(rect);
 });
+document.addEventListener("pointerdown",event=>{
+ if(!selectionToolbar.contains(event.target)&&!passageNode.contains(event.target))hideSelectionToolbar();
+});
+window.addEventListener("scroll",()=>{if(!selectionToolbar.hidden)refreshSelectionToolbar();},true);
+window.addEventListener("resize",hideSelectionToolbar);
 document.getElementById("checkAnswers").addEventListener("click",event=>{
  if(submitted){event.stopImmediatePropagation();return;}
  submitted=true;

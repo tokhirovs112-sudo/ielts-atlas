@@ -29,17 +29,7 @@ const questions=[
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const wordify=s=>esc(s).replace(/([\p{L}]+(?:['’\-][\p{L}]+)*)/gu,'<span class="vocab-word" data-word="$1">$1</span>');
 document.getElementById("passageText").innerHTML=passage.map(([id,txt])=>'<p id="para'+id+'"><span class="para-number">'+id+'</span>'+wordify(txt)+'</p>').join("");
-const searchInput=document.getElementById("passageSearchInput"),searchPrev=document.getElementById("passageSearchPrev"),searchNext=document.getElementById("passageSearchNext"),searchClear=document.getElementById("passageSearchClear"),searchCount=document.getElementById("passageSearchCount");
-let searchMatches=[],searchIndex=-1;
-function runPassageSearch(moveToFirst=true){
- const term=searchInput.value.trim().toLocaleLowerCase();
- const paras=[...document.querySelectorAll("#passageText p")];
- paras.forEach(p=>p.classList.remove("search-match","search-current"));
- searchMatches=term?paras.filter(p=>p.textContent.toLocaleLowerCase().includes(term)):[];
- searchMatches.forEach(p=>p.classList.add("search-match"));
- searchIndex=searchMatches.length?(moveToFirst?0:-1):-1;
- if(searchIndex>=0)activateSearchMatch();
- else updateSearchControls();
+
 }
 function updateSearchControls(){
  searchCount.textContent=searchMatches.length?(searchIndex>=0?(searchIndex+1)+" / "+searchMatches.length:searchMatches.length+" found"):"";

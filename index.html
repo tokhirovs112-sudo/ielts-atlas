@@ -1,591 +1,33 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <meta name="description" content="Improve your English with Englisity. Practise IELTS reading, listening, writing and speaking, and explore articles and podcasts.">
-
-  <meta name="theme-color" content="#f5f7fc">
-  <title>Englisity | Improve Your English</title>
-
-  <link rel="stylesheet" href="css/style.css">
-
-  <style>
-    :root {
-      --home-navy: #14213d;
-      --home-blue: #3767e8;
-      --home-muted: #718096;
-      --home-border: #e5eaf2;
-      --home-bg: #f5f7fc;
-    }
-
-    body {
-      background: var(--home-bg);
-    }
-
-    .home-main {
-      padding-bottom: 60px;
-    }
-
-    /* HERO */
-
-    .home-hero {
-      position: relative;
-      isolation: isolate;
-      display: flex;
-      align-items: center;
-      min-height: 510px;
-      overflow: hidden;
-      max-width: 1280px;
-      margin: 0 auto 58px;
-      padding: 64px max(5.5vw, 36px);
-      border-radius: 0;
-      background: linear-gradient(100deg, #eff5f9 0%, #eff5f9 42%, rgba(239,245,249,.86) 58%, rgba(239,245,249,.08) 100%);
-      color: #14213d;
-    }
-
-    .home-hero::before {
-      content: "";
-      position: absolute;
-      z-index: -2;
-      inset: 0 0 0 38%;
-      background:
-        radial-gradient(ellipse at 76% 34%, rgba(92,151,177,.22), transparent 42%),
-        linear-gradient(135deg, #dceaf0, #b8d0d9 55%, #e6eef0);
-    }
-
-    .home-hero::after {
-      content: "";
-      position: absolute;
-      z-index: -1;
-      inset: 0;
-      background: linear-gradient(90deg, #eff5f9 0%, rgba(239,245,249,.98) 38%, rgba(239,245,249,.72) 56%, rgba(239,245,249,.03) 100%);
-      pointer-events: none;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 610px;
-      padding: 16px 0;
-    }
-
-    .hero-visual {
-      position: absolute;
-      z-index: 1;
-      right: 4%;
-      bottom: 0;
-      width: min(48%, 570px);
-      height: 92%;
-      display: grid;
-      place-items: center;
-      pointer-events: none;
-    }
-
-    .study-art {
-      position: relative;
-      width: 100%;
-      height: 88%;
-      border: 1px solid rgba(255,255,255,.75);
-      border-radius: 46% 46% 18px 18px;
-      background: linear-gradient(145deg, rgba(255,255,255,.72), rgba(211,230,234,.32));
-      box-shadow: 0 28px 70px rgba(42,74,94,.12);
-      overflow: hidden;
-    }
-
-    .study-art::before {
-      content: "";
-      position: absolute;
-      width: 260px;
-      height: 260px;
-      right: 8%;
-      top: 7%;
-      border-radius: 50%;
-      background: linear-gradient(145deg, #d6e9e9, #a9c8cb);
-      box-shadow: 0 0 0 24px rgba(255,255,255,.2), 0 0 0 48px rgba(255,255,255,.12);
-    }
-
-    .study-window {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 37%;
-      height: 55%;
-      background: linear-gradient(135deg, rgba(255,255,255,.9), rgba(191,219,220,.65));
-      border-left: 9px solid rgba(255,255,255,.6);
-      border-bottom: 9px solid rgba(255,255,255,.6);
-    }
-
-    .study-book {
-      position: absolute;
-      left: 9%;
-      bottom: 14%;
-      width: 62%;
-      height: 28%;
-      border-radius: 8px 16px 13px 8px;
-      background: linear-gradient(100deg, #fff 0 48%, #dbe7e9 49% 51%, #f8fbfb 52%);
-      transform: rotate(-8deg);
-      box-shadow: 0 18px 25px rgba(40,67,83,.18);
-    }
-
-    .study-book::before {
-      content: "";
-      position: absolute;
-      left: 9%;
-      right: 9%;
-      top: 20%;
-      height: 2px;
-      background: #c8d9dc;
-      box-shadow: 0 13px #d3e0e2, 0 26px #d3e0e2, 0 39px #d3e0e2;
-    }
-
-    .study-headphones {
-      position: absolute;
-      right: 13%;
-      bottom: 27%;
-      width: 115px;
-      height: 105px;
-      border: 15px solid #426b7c;
-      border-bottom-color: transparent;
-      border-radius: 70px 70px 0 0;
-      transform: rotate(12deg);
-    }
-
-    .study-headphones::before,
-    .study-headphones::after {
-      content: "";
-      position: absolute;
-      bottom: -4px;
-      width: 24px;
-      height: 43px;
-      border-radius: 9px;
-      background: #426b7c;
-    }
-
-    .study-headphones::before { left: -17px; }
-    .study-headphones::after { right: -17px; }
-
-    .hero-eyebrow { color: #1685a4; }
-
-    .hero-eyebrow {
-      display: inline-block;
-      margin-bottom: 20px;
-      color: #a9c2ff;
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    .home-hero h1 {
-      max-width: 680px;
-      margin: 0 0 20px;
-      color: #14213d;
-      font-size: clamp(2.5rem, 5.5vw, 4.2rem);
-      line-height: 1.1;
-      letter-spacing: -2px;
-    }
-
-    .home-hero p {
-      max-width: 590px;
-      margin: 0 0 30px;
-      color: #526477;
-      font-size: 1.08rem;
-      line-height: 1.8;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .home-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 49px;
-      padding: 12px 21px;
-      border: 1px solid transparent;
-      border-radius: 11px;
-      background: #0788b5;
-      color: white;
-      text-decoration: none;
-      font-weight: 700;
-      transition: 0.2s ease;
-    }
-
-    .home-button:hover {
-      background: #2855ce;
-      transform: translateY(-2px);
-    }
-
-    .home-button.secondary {
-      border-color: #b9cbd5;
-      background: rgba(255,255,255,.65);
-      color: #203449;
-    }
-
-    .home-button.secondary:hover {
-      background: white;
-    }
-
-    /* GENERAL SECTIONS */
-
-    .home-section {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 0 24px 65px;
-    }
-
-    .home-section-heading {
-      margin-bottom: 25px;
-    }
-
-    .home-section-heading span {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--home-blue);
-      font-size: 0.75rem;
-      font-weight: 800;
-      letter-spacing: 1.7px;
-      text-transform: uppercase;
-    }
-
-    .home-section-heading h2 {
-      margin: 0 0 9px;
-      color: var(--home-navy);
-      font-size: clamp(1.55rem, 3vw, 2rem);
-      letter-spacing: -0.5px;
-    }
-
-    .home-section-heading p {
-      max-width: 620px;
-      margin: 0;
-      color: var(--home-muted);
-      line-height: 1.7;
-    }
-
-    /* SKILL CARDS */
-
-    .skill-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 19px;
-    }
-
-    .skill-card {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      min-height: 205px;
-      padding: 25px;
-      border: 1px solid var(--home-border);
-      border-radius: 18px;
-      background: white;
-      color: inherit;
-      text-decoration: none;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .skill-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 28px rgba(25, 42, 70, 0.08);
-    }
-
-    .skill-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 47px;
-      height: 47px;
-      margin-bottom: 20px;
-      border-radius: 13px;
-      background: #edf2ff;
-      color: var(--home-blue);
-      font-size: 1.35rem;
-      font-weight: 800;
-    }
-
-    .skill-card h3 {
-      margin: 0 0 9px;
-      color: var(--home-navy);
-      font-size: 1.12rem;
-    }
-
-    .skill-card p {
-      margin: 0;
-      color: var(--home-muted);
-      font-size: 0.93rem;
-      line-height: 1.65;
-    }
-
-    .skill-arrow {
-      position: absolute;
-      right: 23px;
-      top: 27px;
-      color: #9aa9c0;
-      font-size: 1.2rem;
-      transition: 0.2s ease;
-    }
-
-    .skill-card:hover .skill-arrow {
-      color: var(--home-blue);
-      transform: translate(3px, -3px);
-    }
-
-    /* LEVEL SELECTOR */
-
-    .level-section {
-      padding: 35px;
-      border: 1px solid var(--home-border);
-      border-radius: 22px;
-      background: white;
-    }
-
-    .level-picker {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 22px 0 38px;
-    }
-
-    .level-button {
-      padding: 10px 18px;
-      border: 1px solid var(--home-border);
-      border-radius: 30px;
-      background: white;
-      color: #536176;
-      font: inherit;
-      font-size: 0.92rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .level-button:hover {
-      border-color: var(--home-blue);
-      color: var(--home-blue);
-    }
-
-    .level-button.active {
-      border-color: var(--home-blue);
-      background: var(--home-blue);
-      color: white;
-      box-shadow: 0 5px 14px rgba(55, 103, 232, 0.18);
-    }
-
-    /* RECENT RESOURCES */
-
-    .recent-heading {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .recent-heading h2 {
-      margin: 0;
-      color: var(--home-navy);
-      font-size: 1.5rem;
-    }
-
-    .recent-heading a {
-      color: var(--home-blue);
-      font-size: 0.92rem;
-      font-weight: 700;
-      text-decoration: none;
-    }
-
-    .recent-heading a:hover {
-      text-decoration: underline;
-    }
-
-    .resource-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 18px;
-      margin-top: 18px;
-    }
-
-    .resource-card {
-      padding: 23px;
-      border: 1px solid var(--home-border);
-      border-radius: 17px;
-      background: white;
-      transition: 0.2s ease;
-    }
-
-    .resource-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 24px rgba(25, 42, 70, 0.07);
-    }
-
-    .resource-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      color: var(--home-muted);
-      font-size: 0.83rem;
-    }
-
-    .tag {
-      padding: 5px 10px;
-      border-radius: 20px;
-      background: #edf2ff;
-      color: var(--home-blue);
-      font-size: 0.78rem;
-      font-weight: 700;
-    }
-
-    .resource-card h3 {
-      margin: 15px 0 10px;
-      color: var(--home-navy);
-      line-height: 1.45;
-    }
-
-    .resource-card p {
-      color: var(--home-muted);
-      font-size: 0.93rem;
-      line-height: 1.65;
-    }
-
-    .resource-actions {
-      margin-top: 17px;
-    }
-
-    .small-button {
-      display: inline-block;
-      padding: 10px 15px;
-      border-radius: 9px;
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 700;
-    }
-
-    .small-button.primary {
-      background: var(--home-blue);
-      color: white;
-    }
-
-    .small-button.primary:hover {
-      background: #2855ce;
-    }
-
-    .empty {
-      grid-column: 1 / -1;
-      padding: 25px;
-      border: 1px dashed #cbd5e1;
-      border-radius: 14px;
-      color: var(--home-muted);
-      text-align: center;
-    }
-
-    /* FOOTER */
-
-    .home-footer {
-      padding: 28px 20px;
-      border-top: 1px solid var(--home-border);
-      color: var(--home-muted);
-      text-align: center;
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 900px) {
-      .home-hero {
-        margin: 0 auto 45px;
-        padding: 55px 40px;
-      }
-      .hero-visual { right: -4%; width: 48%; opacity: .72; }
-
-      .skill-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 600px) {
-      .home-hero {
-        min-height: 590px;
-        margin: 0 auto 42px;
-        padding: 46px 24px 250px;
-        border-radius: 0;
-      }
-      .hero-visual { width: 78%; height: 43%; right: 2%; opacity: .82; }
-      .home-hero::before { inset: 48% 0 0 0; }
-      .home-hero::after { background: linear-gradient(180deg,#eff5f9 0%,rgba(239,245,249,.96) 43%,rgba(239,245,249,.2) 100%); }
-
-      .home-hero h1 {
-        letter-spacing: -1px;
-      }
-
-      .home-hero p {
-        font-size: 1rem;
-      }
-
-      .hero-actions {
-        flex-direction: column;
-      }
-
-      .home-button {
-        width: 100%;
-      }
-
-      .home-section {
-        padding: 0 17px 45px;
-      }
-
-      .skill-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .skill-card {
-        min-height: 175px;
-      }
-
-      .level-section {
-        padding: 22px 17px;
-      }
-
-      .level-picker {
-        margin-bottom: 28px;
-      }
-
-      .resource-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+  <meta name="description" content="A focused space to build English skills, practise IELTS, grow vocabulary and explore ideas through articles and podcasts.">
+  <meta name="theme-color" content="#f5f7f4">
+  <title>Englisity — Build your English</title>
   <link rel="icon" type="image/svg+xml" href="assets/englisity-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/design.css">
 </head>
-
-<body>
-
+<body class="home-page">
   <header class="topbar">
     <div class="container nav-container">
-      <a class="brand" href="index.html" aria-label="Englisity home"><img class="brand-mark" src="assets/englisity-mark.svg" alt=""><span>Englisity<small>LEARN WITH PURPOSE</small></span></a>
-
-      <button
-        id="menuToggle"
-        class="menu-toggle"
-        type="button"
-        aria-label="Toggle navigation"
-        aria-expanded="false"
-      >
-        ☰
-      </button>
-
-      <nav id="navigation" class="nav">
+      <a class="brand" href="index.html" aria-label="Englisity home">
+        <img class="brand-mark" src="assets/englisity-mark.svg" alt="">
+        <span>Englisity<small>LEARN WITH PURPOSE</small></span>
+      </a>
+      <button id="menuToggle" class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+      <nav id="navigation" class="nav" aria-label="Main navigation">
         <a href="index.html" aria-current="page">Home</a>
         <a href="pages/reading.html">Reading</a>
         <a href="pages/listening.html">Listening</a>
         <a href="pages/writing.html">Writing</a>
         <a href="pages/speaking.html">Speaking</a>
+        <a class="eng-vocab-nav" href="pages/vocabulary.html">Vocabulary</a>
         <a href="pages/articles.html">Articles</a>
         <a href="pages/podcasts.html">Podcasts</a>
       </nav>
@@ -593,152 +35,72 @@
   </header>
 
   <main class="home-main">
-
-    <!-- HERO -->
-
-    <section class="home-hero">
-      <div class="hero-visual" aria-hidden="true">
-        <div class="study-art">
-          <div class="study-window"></div>
-          <div class="study-book"></div>
-          <div class="study-headphones"></div>
-        </div>
-      </div>
-      <div class="hero-content">
-        <span class="hero-eyebrow">YOUR ENGLISH LEARNING SPACE</span>
-
-        <h1>Build your English. One step at a time.</h1>
-
-        <p>
-          Practise your skills, prepare for IELTS, discover interesting
-          articles, and explore listening resources — all in one place.
-        </p>
-
+    <section class="home-hero home-hero-new" aria-labelledby="home-title">
+      <div class="home-hero-copy">
+        <span class="hero-eyebrow"><span class="eyebrow-dot"></span> YOUR ENGLISH, YOUR PACE</span>
+        <h1 id="home-title">Make every practice session <em>count.</em></h1>
+        <p>Build stronger English skills with focused IELTS practice, useful vocabulary and ideas worth exploring.</p>
         <div class="hero-actions">
-          <a class="home-button" href="pages/reading.html">
-            Start practising
-          </a>
-
-          <a class="home-button secondary" href="pages/articles.html">
-            Explore articles
-          </a>
+          <a class="home-button" href="pages/reading.html">Start practising <span aria-hidden="true">↗</span></a>
+          <a class="home-button secondary" href="#learning-path">Explore the platform</a>
         </div>
+        <div class="hero-note"><span class="hero-note-mark">✓</span> Learn at your level. Keep your progress on this device.</div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+        <div class="art-card art-card-main">
+          <div class="art-card-top"><span class="art-mini-label">TODAY'S FOCUS</span><span class="art-spark">✳</span></div>
+          <div class="art-book"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="art-card-bottom"><span class="art-check">✓</span><span><b>Small steps add up.</b><small>One session at a time</small></span></div>
+        </div>
+        <div class="art-float art-float-word"><span>Aa</span><small>VOCABULARY</small></div>
+        <div class="art-float art-float-sound"><span>♫</span><small>LISTEN</small></div>
+        <div class="art-leaf leaf-one"></div><div class="art-leaf leaf-two"></div>
       </div>
     </section>
 
-    <!-- SKILLS -->
-
-    <section class="home-section">
+    <section class="home-section home-path" id="learning-path">
       <div class="home-section-heading">
-        <span>LEARN YOUR WAY</span>
-        <h2>Everything you need to improve</h2>
-        <p>
-          Develop each English skill with dedicated practice areas
-          and learning resources.
-        </p>
+        <span>YOUR LEARNING SPACE</span>
+        <h2>Choose what you want to work on</h2>
+        <p>Move between focused practice and discovery. Start wherever you need most.</p>
       </div>
-
-      <div class="skill-grid">
-
-        <a class="skill-card" href="pages/reading.html">
-          <span class="skill-icon">R</span>
-          <span class="skill-arrow">↗</span>
-          <h3>Reading</h3>
-          <p>Improve comprehension, expand vocabulary, and practise IELTS-style reading.</p>
-        </a>
-
-        <a class="skill-card" href="pages/listening.html">
-          <span class="skill-icon">L</span>
-          <span class="skill-arrow">↗</span>
-          <h3>Listening</h3>
-          <p>Explore IELTS listening strategies and trusted external practice materials.</p>
-        </a>
-
-        <a class="skill-card" href="pages/writing.html">
-          <span class="skill-icon">W</span>
-          <span class="skill-arrow">↗</span>
-          <h3>Writing</h3>
-          <p>Practise organizing your ideas and developing clear written answers.</p>
-        </a>
-
-        <a class="skill-card" href="pages/speaking.html">
-          <span class="skill-icon">S</span>
-          <span class="skill-arrow">↗</span>
-          <h3>Speaking</h3>
-          <p>Explore IELTS speaking questions and practise recording your answers.</p>
-        </a>
-
-        <a class="skill-card" href="pages/vocabulary.html"><span class="skill-icon">V</span><span class="skill-arrow">↗</span><h3>Vocabulary</h3><p>Learn useful words for Writing and Speaking, then test yourself with short quizzes.</p></a>
-
-        <a class="skill-card" href="pages/articles.html">
-          <span class="skill-icon">A</span>
-          <span class="skill-arrow">↗</span>
-          <h3>Articles</h3>
-          <p>Explore ideas about science, technology, society, and everyday life.</p>
-        </a>
-
-        <a class="skill-card" href="pages/podcasts.html">
-          <span class="skill-icon">P</span>
-          <span class="skill-arrow">↗</span>
-          <h3>Podcasts</h3>
-          <p>Discover listening materials for different English proficiency levels.</p>
-        </a>
-
+      <div class="skill-grid skill-grid-new">
+        <a class="skill-card skill-card-featured" href="pages/reading.html"><span class="skill-icon">01</span><span class="skill-arrow">↗</span><h3>Reading</h3><p>Work through IELTS-style passages and sharpen your comprehension.</p><span class="skill-link">Explore reading <b>→</b></span></a>
+        <a class="skill-card" href="pages/listening.html"><span class="skill-icon">02</span><span class="skill-arrow">↗</span><h3>Listening</h3><p>Find guided strategies and trusted listening practice resources.</p><span class="skill-link">Explore listening <b>→</b></span></a>
+        <a class="skill-card" href="pages/writing.html"><span class="skill-icon">03</span><span class="skill-arrow">↗</span><h3>Writing</h3><p>Plan ideas, practise IELTS tasks and keep your drafts in one place.</p><span class="skill-link">Explore writing <b>→</b></span></a>
+        <a class="skill-card" href="pages/speaking.html"><span class="skill-icon">04</span><span class="skill-arrow">↗</span><h3>Speaking</h3><p>Practise all three parts and record answers for your own review.</p><span class="skill-link">Explore speaking <b>→</b></span></a>
+        <a class="skill-card" href="pages/vocabulary.html"><span class="skill-icon">05</span><span class="skill-arrow">↗</span><h3>Vocabulary</h3><p>Study useful words with flashcards, a word bank and short quizzes.</p><span class="skill-link">Build vocabulary <b>→</b></span></a>
+        <a class="skill-card" href="pages/articles.html"><span class="skill-icon">06</span><span class="skill-arrow">↗</span><h3>Articles</h3><p>Read about science, technology, society and everyday questions.</p><span class="skill-link">Browse articles <b>→</b></span></a>
+        <a class="skill-card" href="pages/podcasts.html"><span class="skill-icon">07</span><span class="skill-arrow">↗</span><h3>Podcasts</h3><p>Explore audio and video resources for different English levels.</p><span class="skill-link">Explore podcasts <b>→</b></span></a>
       </div>
     </section>
 
-    <!-- RESOURCES -->
-
-    <section class="home-section">
-      <div class="level-section">
-
+    <section class="home-section home-resources">
+      <div class="level-section level-section-new">
         <div class="home-section-heading">
-          <span>FIND YOUR NEXT RESOURCE</span>
-          <h2>Learn at your own level</h2>
-          <p>
-            Choose your English level to explore suitable learning materials.
-          </p>
+          <span>MADE FOR YOUR LEVEL</span>
+          <h2>Find your next resource</h2>
+          <p>Choose a level to see recently added material that matches your learning stage.</p>
         </div>
-
-        <div class="level-picker">
-          <button class="level-button active" data-level="All levels" type="button">
-            All levels
-          </button>
-
-          <button class="level-button" data-level="A1–A2" type="button">
-            A1–A2
-          </button>
-
-          <button class="level-button" data-level="B1–B2" type="button">
-            B1–B2
-          </button>
-
-          <button class="level-button" data-level="C1–C2" type="button">
-            C1–C2
-          </button>
+        <div class="level-picker" role="group" aria-label="Filter resources by English level">
+          <button class="level-button active" data-level="All levels" type="button" aria-pressed="true">All levels</button>
+          <button class="level-button" data-level="A1–A2" type="button" aria-pressed="false">A1–A2</button>
+          <button class="level-button" data-level="B1–B2" type="button" aria-pressed="false">B1–B2</button>
+          <button class="level-button" data-level="C1–C2" type="button" aria-pressed="false">C1–C2</button>
         </div>
-
-        <div class="recent-heading">
-          <h2>Recently added resources</h2>
-          <a href="pages/articles.html">Explore all articles →</a>
-        </div>
-
-        <div id="recentResources" class="resource-grid">
-          <p class="empty">Loading resources...</p>
-        </div>
-
+        <div class="recent-heading"><h2>Recently added</h2><a href="pages/articles.html">View all articles <span aria-hidden="true">→</span></a></div>
+        <div id="recentResources" class="resource-grid"><p class="empty">Loading resources…</p></div>
       </div>
     </section>
-
+    <section class="home-bottom-cta">
+      <div><span>KEEP MOVING FORWARD</span><h2>A little practice goes a long way.</h2><p>Choose one skill, give it your attention, and build from there.</p></div>
+      <a href="pages/vocabulary.html">Start a study session <span aria-hidden="true">↗</span></a>
+    </section>
   </main>
-
-  <footer class="home-footer">
-    <p>Englisity · Learn English at your own pace.</p>
-  </footer>
-
+  <footer class="home-footer"><p><strong>Englisity</strong> <span>·</span> Learn English with purpose, at your own pace.</p></footer>
   <script src="js/resources.js"></script>
   <script src="js/app.js"></script>
-
-<script src="js/features.js"></script>
+  <script src="js/features.js"></script>
 </body>
 </html>

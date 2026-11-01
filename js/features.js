@@ -107,6 +107,7 @@
     const data = read(KEY,{visits:{},completed:{},minutes:0});
     const totalVisits = Object.values(data.visits || {}).reduce((a,b)=>a+b,0);
     const totalCompleted = Object.values(data.completed || {}).reduce((a,b)=>a+b,0);
+    const vocabStats = read("englisity-vocab-stats-v1",{passed:0,words:[]});
     const saved = read(BOOKMARKS,[]);
     const streak = getCurrentStreak();
     target.innerHTML = '<div class="eng-dashboard-grid"><div class="eng-stat"><b>'+totalVisits+'</b><span>Page visits</span></div><div class="eng-stat"><b>'+totalCompleted+'</b><span>Vocabulary quizzes passed</span></div><div class="eng-stat"><b>🔥 '+streak.current+'</b><span>Current streak</span></div><div class="eng-stat"><b>'+(streak.longest||0)+'</b><span>Longest streak</span></div><div class="eng-stat"><b>'+saved.length+'</b><span>Saved resources</span></div><div class="eng-bookmarks"><strong>Saved resources</strong><div class="eng-bookmark-list">'+(saved.length?saved.map(x=>'<a href="'+String(x.url).replace(/&/g,"&amp;").replace(/"/g,"&quot;")+'">'+String(x.title).replace(/&/g,"&amp;").replace(/</g,"&lt;")+'</a>').join(""):'<p>You have not saved any resources yet. Use “Save resource” on an existing resource.</p>')+'</div></div></div>';
@@ -172,6 +173,8 @@
       updateStreakPill();renderDashboard();
     }));
   }
+
+  window.addEventListener("englisity:quiz-passed",()=>{updateStreakPill();renderDashboard();});
 
   document.addEventListener("DOMContentLoaded",()=>{
     addDashboard();scanBookmarks();addTimer();initAutosave();trackActivities();

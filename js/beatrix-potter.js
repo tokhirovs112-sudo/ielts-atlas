@@ -46,23 +46,71 @@ const gate=document.getElementById("modeGate");
 const popup=document.getElementById("vocabPopup");
 let definitionLookupId=0;
 function closeDefinition(){definitionLookupId++;popup.classList.remove("show");}
-async function lookupWord(word,x,y){
+function getSentenceContext(element){
+ const paragraph=element.closest("p");
+ if(!paragraph)return element.textContent||"";
+ const text=paragraph.innerText||paragraph.textContent||"";
+ const word=element.textContent.trim();
+ const escaped=word.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+ const match=new RegExp("[^.!?]*\\b"+escaped+"\\b[^.!?]*[.!?]?","i").exec(text);
+ return (match?.[0]||text).trim();
+}
+function inferPartOfSpeech(context,word){
+ const clean=context.replace(/[“”‘’"]/g,"").trim();
+ const escaped=word.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+ const match=new RegExp("\\b"+escaped+"\\b","i").exec(clean);
+ if(!match)return null;
+ const before=clean.slice(0,match.index).trim().split(/\\s+/).filter(Boolean);
+ const after=clean.slice(match.index+match[0].length).trim().split(/\\s+/).filter(Boolean);
+ const prev=(before[before.length-1]||"").toLowerCase().replace(/[^a-z'-]/g,"");
+ const next=(after[0]||"").toLowerCase().replace(/[^a-z'-]/g,"");
+ const next2=(after[1]||"").toLowerCase().replace(/[^a-z'-]/g,"");
+ if(["to"].includes(prev))return "verb";
+ if(["a","an","the","this","that","my","his","her","their","our"].includes(prev)&&!["of","to","for","in","on"].includes(next))return "noun";
+ if(next&&/^(?:the|a|an|this|that|these|those|my|his|her|their|our)$/.test(next))return null;
+ if(next&&/^[a-z]/.test(next)&&!["of","to","for","in","on","at","by","with","from","and","or","but"].includes(next))return "adjective";
+ if(/ly$/i.test(word))return "adverb";
+ return null;
+}
+function contextTokens(value){
+ return new Set((value.toLowerCase().match(/[a-z]{3,}/g)||[]).filter(t=>!["the","and","that","with","from","this","were","was","are","for","his","her","their","which","into","over","when","also","been","have","has","had","who","what","where","your","about"].includes(t)));
+}
+function scoreDefinition(definition,context,preferredPos){
+ const contextWords=contextTokens(context);
+ const definitionWords=contextTokens([definition.definition,definition.example||""].join(" "));
+ let overlap=0;
+ contextWords.forEach(token=>{if(definitionWords.has(token))overlap++;});
+ const technical=/billiards?|bowling|phonetic|linguistic|botan(y|ical)|mycology|anatom(y|ical)|chemistry|computing|mathematics/i.test(definition.definition||"");
+ return overlap*1.5+(definition.example?0.4:0)+(technical?-4:0);
+}
+async function lookupWord(word,x,y,context){
  const lookupId=++definitionLookupId;
- popup.innerHTML='<strong>'+esc(word)+'</strong><span>Looking up definition…</span>';
+ popup.innerHTML='<strong>'+esc(word)+'</strong><span>Finding the meaning that best fits this sentence…</span>';
  popup.style.left=Math.max(12,Math.min(window.innerWidth-350,x))+"px";
- popup.style.top=Math.max(12,Math.min(window.innerHeight-150,y))+"px";
+ popup.style.top=Math.max(12,Math.min(window.innerHeight-180,y))+"px";
  popup.classList.add("show");
  try{
   const response=await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/"+encodeURIComponent(word.toLowerCase()));
   if(!response.ok)throw new Error("Not found");
   const data=await response.json();
   if(lookupId!==definitionLookupId)return;
-  const defs=(data[0]?.meanings||[]).slice(0,2).map(m=>{
-   const d=m.definitions?.[0]?.definition;
-   return d?'<p><b>'+esc(m.partOfSpeech||"Meaning")+':</b> '+esc(d)+'</p>':"";
-  }).join("");
-  popup.innerHTML='<strong>'+esc(data[0]?.word||word)+'</strong>'+(defs||'<span>No definition found.</span>');
- }catch(error){if(lookupId===definitionLookupId&&popup.classList.contains("show"))popup.innerHTML='<strong>'+esc(word)+'</strong><span>Definition unavailable. Check your connection or try another word.</span>';}
+  const preferredPos=inferPartOfSpeech(context,word);
+  const candidates=(data||[]).flatMap(entry=>(entry.meanings||[]).flatMap(meaning=>(meaning.definitions||[]).map(definition=>({
+   word:entry.word||word,
+   partOfSpeech:meaning.partOfSpeech||"Meaning",
+   definition:definition.definition||"",
+   example:definition.example||"",
+   score:scoreDefinition(definition,context,preferredPos)+(preferredPos&&meaning.partOfSpeech===preferredPos?5:0)
+  }))));
+  const usable=candidates.filter(item=>item.definition);
+  usable.sort((a,b)=>b.score-a.score);
+  const best=usable[0];
+  if(!best){popup.innerHTML='<strong>'+esc(word)+'</strong><span>No useful definition was found for this word.</span>';return;}
+  const example=best.example?'<div class="vocab-example"><b>Example:</b> '+esc(best.example)+'</div>':"";
+  popup.innerHTML='<strong>'+esc(word)+'</strong><span class="vocab-context-label">Meaning that best fits this sentence</span><p><b>'+esc(best.partOfSpeech)+':</b> '+esc(best.definition)+'</p>'+example+'<span class="vocab-context-note">Dictionary meanings can vary by context. This is the closest match, not a guaranteed interpretation.</span>';
+ }catch(error){
+  if(lookupId===definitionLookupId&&popup.classList.contains("show"))popup.innerHTML='<strong>'+esc(word)+'</strong><span>Definition unavailable. Check your connection or try another word.</span>';
+ }
 }
 document.getElementById("practiceModeButton").addEventListener("click",()=>{
  gate.hidden=true;
@@ -85,7 +133,8 @@ document.getElementById("passageText").addEventListener("click",event=>{
  const word=event.target.closest(".vocab-word");
  if(!word)return;
  const rect=word.getBoundingClientRect();
- lookupWord(word.dataset.word,rect.left,rect.bottom+8);
+ const context=getSentenceContext(word);
+ lookupWord(word.dataset.word,rect.left,rect.bottom+8,context);
 });
 const passageNode=document.getElementById("passageText");
 const selectionToolbar=document.getElementById("selectionToolbar");

@@ -33,44 +33,141 @@
 
     .home-hero {
       position: relative;
+      isolation: isolate;
+      display: flex;
+      align-items: center;
+      min-height: 510px;
       overflow: hidden;
-      max-width: 1160px;
-      margin: 38px auto 65px;
-      padding: 75px 65px;
-      border-radius: 28px;
-      background: linear-gradient(120deg, #14213d, #233f72);
-      color: white;
-    }
-
-    .home-hero::before,
-    .home-hero::after {
-      content: "";
-      position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
+      max-width: 1280px;
+      margin: 0 auto 58px;
+      padding: 64px max(5.5vw, 36px);
+      border-radius: 0;
+      background: linear-gradient(100deg, #eff5f9 0%, #eff5f9 42%, rgba(239,245,249,.86) 58%, rgba(239,245,249,.08) 100%);
+      color: #14213d;
     }
 
     .home-hero::before {
-      width: 340px;
-      height: 340px;
-      background: rgba(91, 139, 255, 0.13);
-      right: -90px;
-      top: -120px;
+      content: "";
+      position: absolute;
+      z-index: -2;
+      inset: 0 0 0 38%;
+      background:
+        radial-gradient(ellipse at 76% 34%, rgba(92,151,177,.22), transparent 42%),
+        linear-gradient(135deg, #dceaf0, #b8d0d9 55%, #e6eef0);
     }
 
     .home-hero::after {
-      width: 220px;
-      height: 220px;
-      background: rgba(91, 139, 255, 0.09);
-      right: 180px;
-      bottom: -150px;
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      background: linear-gradient(90deg, #eff5f9 0%, rgba(239,245,249,.98) 38%, rgba(239,245,249,.72) 56%, rgba(239,245,249,.03) 100%);
+      pointer-events: none;
     }
 
     .hero-content {
       position: relative;
-      z-index: 1;
-      max-width: 720px;
+      z-index: 2;
+      max-width: 610px;
+      padding: 16px 0;
     }
+
+    .hero-visual {
+      position: absolute;
+      z-index: 1;
+      right: 4%;
+      bottom: 0;
+      width: min(48%, 570px);
+      height: 92%;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+    }
+
+    .study-art {
+      position: relative;
+      width: 100%;
+      height: 88%;
+      border: 1px solid rgba(255,255,255,.75);
+      border-radius: 46% 46% 18px 18px;
+      background: linear-gradient(145deg, rgba(255,255,255,.72), rgba(211,230,234,.32));
+      box-shadow: 0 28px 70px rgba(42,74,94,.12);
+      overflow: hidden;
+    }
+
+    .study-art::before {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      right: 8%;
+      top: 7%;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #d6e9e9, #a9c8cb);
+      box-shadow: 0 0 0 24px rgba(255,255,255,.2), 0 0 0 48px rgba(255,255,255,.12);
+    }
+
+    .study-window {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 37%;
+      height: 55%;
+      background: linear-gradient(135deg, rgba(255,255,255,.9), rgba(191,219,220,.65));
+      border-left: 9px solid rgba(255,255,255,.6);
+      border-bottom: 9px solid rgba(255,255,255,.6);
+    }
+
+    .study-book {
+      position: absolute;
+      left: 9%;
+      bottom: 14%;
+      width: 62%;
+      height: 28%;
+      border-radius: 8px 16px 13px 8px;
+      background: linear-gradient(100deg, #fff 0 48%, #dbe7e9 49% 51%, #f8fbfb 52%);
+      transform: rotate(-8deg);
+      box-shadow: 0 18px 25px rgba(40,67,83,.18);
+    }
+
+    .study-book::before {
+      content: "";
+      position: absolute;
+      left: 9%;
+      right: 9%;
+      top: 20%;
+      height: 2px;
+      background: #c8d9dc;
+      box-shadow: 0 13px #d3e0e2, 0 26px #d3e0e2, 0 39px #d3e0e2;
+    }
+
+    .study-headphones {
+      position: absolute;
+      right: 13%;
+      bottom: 27%;
+      width: 115px;
+      height: 105px;
+      border: 15px solid #426b7c;
+      border-bottom-color: transparent;
+      border-radius: 70px 70px 0 0;
+      transform: rotate(12deg);
+    }
+
+    .study-headphones::before,
+    .study-headphones::after {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      width: 24px;
+      height: 43px;
+      border-radius: 9px;
+      background: #426b7c;
+    }
+
+    .study-headphones::before { left: -17px; }
+    .study-headphones::after { right: -17px; }
+
+    .hero-eyebrow { color: #1685a4; }
 
     .hero-eyebrow {
       display: inline-block;
@@ -85,7 +182,7 @@
     .home-hero h1 {
       max-width: 680px;
       margin: 0 0 20px;
-      color: white;
+      color: #14213d;
       font-size: clamp(2.5rem, 5.5vw, 4.2rem);
       line-height: 1.1;
       letter-spacing: -2px;
@@ -94,7 +191,7 @@
     .home-hero p {
       max-width: 590px;
       margin: 0 0 30px;
-      color: #d4def1;
+      color: #526477;
       font-size: 1.08rem;
       line-height: 1.8;
     }
@@ -113,7 +210,7 @@
       padding: 12px 21px;
       border: 1px solid transparent;
       border-radius: 11px;
-      background: var(--home-blue);
+      background: #0788b5;
       color: white;
       text-decoration: none;
       font-weight: 700;
@@ -126,13 +223,13 @@
     }
 
     .home-button.secondary {
-      border-color: rgba(255, 255, 255, 0.35);
-      background: transparent;
-      color: white;
+      border-color: #b9cbd5;
+      background: rgba(255,255,255,.65);
+      color: #203449;
     }
 
     .home-button.secondary:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: white;
     }
 
     /* GENERAL SECTIONS */
@@ -401,9 +498,10 @@
 
     @media (max-width: 900px) {
       .home-hero {
-        margin: 25px 18px 50px;
+        margin: 0 auto 45px;
         padding: 55px 40px;
       }
+      .hero-visual { right: -4%; width: 48%; opacity: .72; }
 
       .skill-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -412,10 +510,14 @@
 
     @media (max-width: 600px) {
       .home-hero {
-        margin: 18px 12px 42px;
-        padding: 42px 24px;
-        border-radius: 21px;
+        min-height: 590px;
+        margin: 0 auto 42px;
+        padding: 46px 24px 250px;
+        border-radius: 0;
       }
+      .hero-visual { width: 78%; height: 43%; right: 2%; opacity: .82; }
+      .home-hero::before { inset: 48% 0 0 0; }
+      .home-hero::after { background: linear-gradient(180deg,#eff5f9 0%,rgba(239,245,249,.96) 43%,rgba(239,245,249,.2) 100%); }
 
       .home-hero h1 {
         letter-spacing: -1px;
@@ -494,6 +596,13 @@
     <!-- HERO -->
 
     <section class="home-hero">
+      <div class="hero-visual" aria-hidden="true">
+        <div class="study-art">
+          <div class="study-window"></div>
+          <div class="study-book"></div>
+          <div class="study-headphones"></div>
+        </div>
+      </div>
       <div class="hero-content">
         <span class="hero-eyebrow">YOUR ENGLISH LEARNING SPACE</span>
 

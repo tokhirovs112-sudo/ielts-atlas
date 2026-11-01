@@ -115,7 +115,7 @@
     return String(value || "")
       .toLocaleLowerCase()
       .normalize("NFD")
-      .replace(/[\\u0300-\\u036f]/g, "")
+      .replace(/[\u0300-\u036f]/g, "")
       .replace(/[^a-z0-9]+/g, " ")
       .trim();
   }
@@ -141,7 +141,7 @@
   }
 
   function forgivingSearchMatch(query, searchableText) {
-    const terms = normalizeSearchText(query).split(/\\s+/).filter(Boolean);
+    const terms = normalizeSearchText(query).split(/\s+/).filter(Boolean);
     if (!terms.length) return true;
     const text = normalizeSearchText(searchableText);
     const words = text.split(/\\s+/).filter(Boolean);
@@ -232,7 +232,18 @@
 
     if (toggle && nav) {
       toggle.addEventListener("click", () => {
-        nav.classList.toggle("open");
+        const isOpen = nav.classList.toggle("open");
+        toggle.setAttribute("aria-expanded", String(isOpen));
+      });
+      nav.querySelectorAll("a").forEach(link => link.addEventListener("click", () => {
+        nav.classList.remove("open");
+        toggle.setAttribute("aria-expanded", "false");
+      }));
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+          nav.classList.remove("open");
+          toggle.setAttribute("aria-expanded", "false");
+        }
       });
     }
   }

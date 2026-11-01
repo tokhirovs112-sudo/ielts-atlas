@@ -7,7 +7,7 @@
   const input = document.getElementById("testSearch");
   const cards = [...document.querySelectorAll("#testGrid .library-card")];
   const empty = document.getElementById("noResults");
-  const normalize = value => String(value || "").toLocaleLowerCase().normalize("NFD").replace(/[\\u0300-\\u036f]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+  const normalize = value => String(value || "").toLocaleLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
   const distance = (a, b, max) => {
     if (Math.abs(a.length - b.length) > max) return max + 1;
     let prev = Array.from({length:b.length + 1}, (_, i) => i);
@@ -23,7 +23,7 @@
     return prev[b.length];
   };
   const matches = (query, content) => {
-    const terms = normalize(query).split(/\\s+/).filter(Boolean);
+    const terms = normalize(query).split(/\s+/).filter(Boolean);
     const text = normalize(content);
     const words = text.split(/\\s+/).filter(Boolean);
     return terms.every(term => text.includes(term) || words.some(word => {
@@ -41,4 +41,4 @@
     empty.hidden = shown !== 0;
   });
 })();
-</script></main><script src="../js/features.js"></script></body></html>
+</script></main><script src="../js/features.js?v=20261101-2"></script></body></html>

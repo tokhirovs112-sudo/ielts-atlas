@@ -388,7 +388,7 @@
       questionList.appendChild(item);
     });
 
-    if (currentTopic.reported || currentPart === 1 || currentPart === 3) {
+    if (currentTopic.reported) {
       questionDate.textContent = "Reported in the exam · 26 October 2026";
       questionDate.hidden = false;
     } else {

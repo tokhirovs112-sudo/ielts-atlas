@@ -30,7 +30,7 @@
   function recordStreakActivity() {
     const stored = read(STREAK_KEY, { current:0, longest:0, lastActive:null });
     const today = localDateKey();
-    if (stored.lastActive === today) return getCurrentStreak();
+    if (stored.lastActive === today) { const current = getCurrentStreak(); updateStreakPill(); renderDashboard(); return current; }
 
     const current = stored.lastActive === shiftDateKey(today, -1)
       ? Math.max(0, Number(stored.current) || 0) + 1

@@ -144,7 +144,7 @@
     const terms = normalizeSearchText(query).split(/\s+/).filter(Boolean);
     if (!terms.length) return true;
     const text = normalizeSearchText(searchableText);
-    const words = text.split(/\\s+/).filter(Boolean);
+    const words = text.split(/\s+/).filter(Boolean);
     return terms.every(term => {
       if (text.includes(term)) return true;
       const limit = term.length >= 8 ? 2 : term.length >= 4 ? 1 : 0;

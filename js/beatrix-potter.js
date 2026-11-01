@@ -44,8 +44,10 @@ if(target){target.classList.add("is-highlighted");target.scrollIntoView({behavio
 let submitted=false;
 const gate=document.getElementById("modeGate");
 const popup=document.getElementById("vocabPopup");
-function closeDefinition(){popup.classList.remove("show");}
+let definitionLookupId=0;
+function closeDefinition(){definitionLookupId++;popup.classList.remove("show");}
 async function lookupWord(word,x,y){
+ const lookupId=++definitionLookupId;
  popup.innerHTML='<strong>'+esc(word)+'</strong><span>Looking up definition…</span>';
  popup.style.left=Math.max(12,Math.min(window.innerWidth-350,x))+"px";
  popup.style.top=Math.max(12,Math.min(window.innerHeight-150,y))+"px";
@@ -54,12 +56,13 @@ async function lookupWord(word,x,y){
   const response=await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/"+encodeURIComponent(word.toLowerCase()));
   if(!response.ok)throw new Error("Not found");
   const data=await response.json();
+  if(lookupId!==definitionLookupId)return;
   const defs=(data[0]?.meanings||[]).slice(0,2).map(m=>{
    const d=m.definitions?.[0]?.definition;
    return d?'<p><b>'+esc(m.partOfSpeech||"Meaning")+':</b> '+esc(d)+'</p>':"";
   }).join("");
   popup.innerHTML='<strong>'+esc(data[0]?.word||word)+'</strong>'+(defs||'<span>No definition found.</span>');
- }catch(error){popup.innerHTML='<strong>'+esc(word)+'</strong><span>Definition unavailable. Check your connection or try another word.</span>';}
+ }catch(error){if(lookupId===definitionLookupId&&popup.classList.contains("show"))popup.innerHTML='<strong>'+esc(word)+'</strong><span>Definition unavailable. Check your connection or try another word.</span>';}
 }
 document.getElementById("practiceModeButton").addEventListener("click",()=>{
  gate.hidden=true;
@@ -154,6 +157,7 @@ passageNode.addEventListener("click",event=>{
 });
 document.addEventListener("pointerdown",event=>{
  if(!selectionToolbar.contains(event.target)&&!passageNode.contains(event.target))hideSelectionToolbar();
+ if(!popup.contains(event.target))closeDefinition();
 });
 window.addEventListener("scroll",()=>{if(!selectionToolbar.hidden)refreshSelectionToolbar();},true);
 window.addEventListener("resize",hideSelectionToolbar);

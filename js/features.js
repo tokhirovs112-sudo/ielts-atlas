@@ -36,6 +36,7 @@
   styles.textContent = `
     .eng-progress{max-width:1160px;margin:18px auto;padding:18px 22px;background:#fff;border:1px solid #e5eaf3;border-radius:16px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
     .eng-progress strong{color:#14213d}.eng-progress small{display:block;color:#718096;margin-top:3px}
+    .eng-streak-pill{display:inline-flex;align-items:center;padding:8px 11px;border-radius:999px;background:#fff4df;color:#9a5b08;font-size:13px;font-weight:800;white-space:nowrap}
     .eng-progress a,.eng-progress button{border:1px solid #dce5f2;background:#f7f9fd;color:#2457a6;padding:9px 12px;border-radius:9px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
     .eng-progress-actions{display:flex;gap:8px;flex-wrap:wrap}
     .eng-dashboard{max-width:1160px;margin:0 auto 36px;padding:0 24px}
@@ -112,7 +113,7 @@
     const pill = document.getElementById("engStreakPill");
     if (!pill) return;
     const streak = getCurrentStreak();
-    pill.textContent = "🔥 " + streak.current + (streak.current === 1 ? "-day streak" : "-day streak");
+    pill.textContent = "🔥 " + streak.current + "-day streak";
     pill.title = "Longest streak: " + (streak.longest || 0) + " days";
   }
 

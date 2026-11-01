@@ -295,3 +295,33 @@ h1,h2,h3,.brand{font-family:var(--font-display),sans-serif}
 @media(max-width:700px){.home-hero-new{grid-template-columns:1fr;gap:0;min-height:0;margin-bottom:55px;padding:56px 24px 18px;border-radius:0 0 22px 22px}.home-hero-new h1{font-size:clamp(2.55rem,11vw,3.55rem);letter-spacing:-2px}.home-hero-new p{font-size:.98rem}.home-hero-new .hero-actions{flex-direction:row}.home-hero-new .home-button{width:auto;flex:1;padding-inline:12px;font-size:.85rem}.hero-art{min-height:300px;transform:scale(.82);margin-top:-4px}.orbit-two{width:390px}.home-path{padding-bottom:55px}.skill-grid-new{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.skill-grid-new .skill-card{min-height:220px;padding:17px}.skill-grid-new .skill-card p{font-size:.81rem}.skill-grid-new .skill-icon{margin-bottom:13px}.home-bottom-cta{margin:0 17px 55px;padding:25px;align-items:flex-start;flex-direction:column}.home-bottom-cta>a{width:100%;text-align:center}.eng-progress{margin-inline:12px!important}.eng-dashboard{padding-inline:16px}}
 @media(max-width:430px){.skill-grid-new{grid-template-columns:1fr}.skill-grid-new .skill-card{min-height:190px}.home-hero-new .hero-actions{flex-direction:column}.home-hero-new .home-button{width:100%}.hero-art{min-height:270px;transform:scale(.72);margin:-10px -35px -8px}.level-section-new{padding:23px 17px}.level-section-new .level-button{padding:8px 12px;font-size:.82rem}}
 @media(prefers-reduced-motion:reduce){.art-float,.art-card-main,.skill-link b{transition:none!important}}
+
+/* Final consistency and learning-progress refinements */
+:root{color-scheme:light}
+body{color:#263b32;background:#f7f8f5}
+.topbar{border-bottom:1px solid #e6ece5;background:rgba(255,255,255,.94);backdrop-filter:blur(14px)}
+.brand{color:#28483b}.brand small{color:#829187}
+.nav a{border-radius:9px;transition:background .18s ease,color .18s ease}
+.nav a:hover{background:#edf4ee;color:#276c5c}
+.nav a.active,.nav a[aria-current="page"]{background:#e8f1e9;color:#276c5c}
+.page-hero,.vocab-hero{border:1px solid #dce9df!important;background:linear-gradient(120deg,#edf4ed,#e6f0e8)!important;box-shadow:none!important}
+.page-hero h1,.vocab-hero h1{color:#29483b!important;letter-spacing:-1.2px}
+.page-hero p,.vocab-hero p{color:#687b70!important}
+.panel,.card,.practice-card,.resource-card,.vocab-panel{border-color:#e2e9e1!important;border-radius:16px!important;box-shadow:0 5px 18px rgba(35,59,47,.035)}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid rgba(67,139,101,.38)!important;outline-offset:2px}
+.eng-progress{max-width:1160px!important;margin:14px auto!important;padding:15px 19px!important;border:1px solid #e1e9e1!important;border-radius:15px!important;background:#fff!important;box-shadow:0 5px 18px rgba(35,59,47,.035)!important}
+.eng-progress strong{color:#29483b!important}.eng-progress small{color:#829087!important}
+.eng-streak-pill{background:#edf5e9!important;color:#557a42!important}
+.eng-progress a,.eng-progress button{border-color:#dce8dd!important;background:#f7faf6!important;color:#386c54!important}
+.eng-progress a:hover,.eng-progress button:hover{background:#eaf3eb!important}
+.eng-dashboard{margin:0 auto 50px!important}
+.eng-dashboard .home-section-heading h2{color:#29483b}
+.eng-stat,.eng-bookmarks{border-color:#e1e9e1!important;box-shadow:0 5px 18px rgba(35,59,47,.035)!important}
+.eng-stat b{color:#29483b!important}.eng-stat span,.eng-bookmarks p{color:#829087!important}
+.eng-bookmark-list a{background:#edf4ee!important;color:#386c54!important}
+.vocab-wrap .vocab-btn.primary,.vocab-wrap .vocab-filter.active{background:#276c5c!important;border-color:#276c5c!important;color:#fff!important}
+.vocab-wrap .vocab-option.selected{border-color:#6a9a79!important;background:#edf5ee!important}
+.vocab-wrap .word-example{background:#f1f6f0!important;border-left-color:#6a9a79!important}
+.vocab-wrap .vocab-stat strong{color:#315b45!important}
+.footer,.home-footer{border-color:#e4ebe4!important;background:#f7f8f5!important}
+@media(max-width:700px){.eng-progress{margin:12px!important}.eng-progress-actions{width:100%}.eng-progress-actions>*{flex:1;justify-content:center;text-align:center}}

@@ -64,9 +64,9 @@ function inferPartOfSpeech(context,word){
  const after=clean.slice(match.index+match[0].length).trim().split(/\\s+/).filter(Boolean);
  const prev=(before[before.length-1]||"").toLowerCase().replace(/[^a-z'-]/g,"");
  const next=(after[0]||"").toLowerCase().replace(/[^a-z'-]/g,"");
- const next2=(after[1]||"").toLowerCase().replace(/[^a-z'-]/g,"");
  if(["to"].includes(prev))return "verb";
- if(["a","an","the","this","that","my","his","her","their","our"].includes(prev)&&!["of","to","for","in","on"].includes(next))return "noun";
+ if(["a","an","the","this","that","my","his","her","their","our"].includes(prev)&&next&&!["of","to","for","in","on"].includes(next))return "adjective";
+ if(["a","an","the","this","that","my","his","her","their","our"].includes(prev))return "noun";
  if(next&&/^(?:the|a|an|this|that|these|those|my|his|her|their|our)$/.test(next))return null;
  if(next&&/^[a-z]/.test(next)&&!["of","to","for","in","on","at","by","with","from","and","or","but"].includes(next))return "adjective";
  if(/ly$/i.test(word))return "adverb";

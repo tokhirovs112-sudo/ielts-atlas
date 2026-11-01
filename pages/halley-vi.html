@@ -51,7 +51,38 @@ body.exam-mode .topbar{display:none!important}body.exam-mode .test-actions{posit
 <div class="mode-gate" id="modeGate"><section class="mode-card" role="dialog" aria-modal="true" aria-labelledby="modeTitle"><div class="mode-kicker">ENGLISITY · IELTS ACADEMIC READING</div><h1 id="modeTitle">Antarctic architecture: Halley VI</h1><p>Choose how you want to practise this passage.</p><div class="mode-choices"><button class="mode-choice" id="practiceModeButton" type="button" onclick="if(!document.getElementById('modeGate').hidden){document.getElementById('modeGate').hidden=true;document.body.classList.add('practice-mode');document.getElementById('modeLabel').textContent='PRACTICE MODE · CLICK A WORD FOR ITS MEANING';}"><span class="mode-icon">✎</span><span><strong>Practice mode</strong><span>Explore word meanings, highlight useful details and work at your own pace.</span><b class="mode-feature">NO TIME LIMIT · LEARNING TOOLS</b></span></button><button class="mode-choice" id="examModeButton" type="button" onclick="if(!document.getElementById('modeGate').hidden){document.getElementById('modeGate').hidden=true;document.body.classList.add('exam-mode');document.getElementById('modeLabel').textContent='EXAM MODE · SELECT TEXT TO HIGHLIGHT';}"><span class="mode-icon">◷</span><span><strong>Exam mode</strong><span>Work under timed conditions with a focused, distraction-free layout.</span><b class="mode-feature">20 MINUTES · TIMED PRACTICE</b></span></button></div></section></div>
 <main class="test-main" id="halleyTest"><div class="test-layout" id="resizableTest">
 <div class="test-column"><section class="panel passage-panel"><h2>Antarctic architecture: Halley VI</h2><p class="passage-subtitle">Inspired by science fiction, the Halley VI Research Station has a lot to teach about how architecture can impact psychology</p><div class="passage-tools"><span id="modeLabel">CHOOSE A MODE TO BEGIN</span></div><div id="passageText"></div><div class="selection-toolbar" id="selectionToolbar" role="toolbar" aria-label="Text selection actions" hidden><button type="button" id="selectionAction">Highlight text</button></div><div class="vocab-popup" id="vocabPopup"></div></section></div>
-<div class="resi3 questions. Read the instructions carefully before each group.</p><div id="questionList"></div><div class="test-actions"><button type="button" class="primary-action" id="checkAnswers">Submit answers</button><button type="button" id="resetTest">Try again</button></div><div class="test-result" id="testResult" hidden></div></section></div>
+<div class="resize-divider" id="resizeDivider" role="separator" aria-label="Resize passage and questions panels" aria-orientation="vertical" aria-valuemin="30" aria-valuemax="70" aria-valuenow="50" tabindex="0"></div>
+<div class="test-column"><section class="panel"><div class="reading-timer" id="readingTimer" role="timer"><span>Time</span><strong id="timerDisplay">20:00</strong><span class="timer-note" id="timerNote">remaining</span></div><h2>Questions 14–26</h2><p class="test-instructions">Read the instructions carefully before each group of questions.</p><div class="notice">Questions 14–18: Which paragraph contains the information? Questions 19–26: Complete the sentences using ONE WORD ONLY from the passage.</div><div id="questionList"></div>
+<div class="test-actions"><button type="button" class="primary-action" id="checkAnswers">Submit answers</button><button type="button" id="resetTest">Try again</button></div><div class="test-result" id="testResult" hidden></div></section></div>
 </div></main>
 <script src="../js/app.js"></script><script src="../js/features.js"></script><script src="../js/halley-vi.js?v=4"></script>
+<script>
+(() => {
+ const layout=document.getElementById("resizableTest");
+ const divider=document.getElementById("resizeDivider");
+ if(!layout||!divider)return;
+ let dragging=false;
+ const setSplit=(clientX)=>{
+   const rect=layout.getBoundingClientRect();
+   const percent=Math.max(30,Math.min(70,((clientX-rect.left)/rect.width)*100));
+   layout.style.setProperty("--passage-width",percent+"%");
+   divider.setAttribute("aria-valuenow",String(Math.round(percent)));
+ };
+ divider.addEventListener("pointerdown",e=>{
+   dragging=true;divider.setPointerCapture(e.pointerId);document.body.style.cursor="col-resize";e.preventDefault();
+ });
+ divider.addEventListener("pointermove",e=>{if(dragging)setSplit(e.clientX);});
+ const stop=()=>{dragging=false;document.body.style.cursor="";};
+ divider.addEventListener("pointerup",stop);divider.addEventListener("pointercancel",stop);
+ divider.addEventListener("keydown",e=>{
+   if(e.key!=="ArrowLeft"&&e.key!=="ArrowRight")return;
+   e.preventDefault();
+   const rect=layout.getBoundingClientRect();
+   const current=parseFloat(getComputedStyle(layout).getPropertyValue("--passage-width"))||50;
+   const next=Math.max(30,Math.min(70,current+(e.key==="ArrowRight"?2:-2)));
+   layout.style.setProperty("--passage-width",next+"%");
+   divider.setAttribute("aria-valuenow",String(Math.round(next)));
+ });
+})();
+</script>
 </body></html>

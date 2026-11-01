@@ -1,0 +1,165 @@
+/* Englisity — cohesive product design system */
+:root{
+  --blue:#276c73;--blue-dark:#20565d;--blue-soft:#e7f2ef;
+  --navy:#1d3037;--background:#f5f7f4;--surface:#fff;
+  --text:#26363a;--muted:#718087;--border:#e1e8e4;
+  --green:#39856a;--green-soft:#e8f3ec;--radius:18px;
+  --shadow:0 8px 28px rgba(29,48,55,.055);
+  --shadow-hover:0 16px 36px rgba(29,48,55,.10);
+  font-family:Inter,"Segoe UI",Arial,sans-serif;
+}
+html{scroll-behavior:smooth;scroll-padding-top:100px}
+body{background:var(--background);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased}
+::selection{background:#cfe5dc;color:#183c3e}
+a{color:inherit}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid #91c6b5!important;outline-offset:3px!important}
+.topbar{
+  min-height:72px;padding:10px max(4%,calc((100% - 1240px)/2));
+  background:rgba(250,252,249,.94);border-bottom:1px solid rgba(218,229,222,.9);
+  box-shadow:0 3px 18px rgba(28,52,46,.035);backdrop-filter:blur(16px);
+}
+.topbar .nav-container{width:100%;max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:24px}
+.brand{gap:10px;color:var(--navy);font-size:20px;font-weight:800;letter-spacing:-.8px;white-space:nowrap}
+.brand-mark{width:38px!important;height:38px!important;max-width:38px!important;max-height:38px!important;flex:0 0 38px!important;filter:none}
+.brand small{color:#82918c;font-size:8px;font-weight:750;letter-spacing:1.5px}
+.nav{display:flex;align-items:center;justify-content:flex-end;gap:4px}
+.nav a{padding:9px 13px;border-radius:999px;color:#65746f;font-size:13px;font-weight:650;transition:background .18s,color .18s}
+.nav a:hover,.nav a.active{background:#e7f1ed;color:#245f58}
+.menu-toggle{border:1px solid var(--border);border-radius:11px;background:#fff;color:var(--navy);padding:8px 12px}
+.container{width:min(1160px,91%);margin-inline:auto}
+.home-main{padding-bottom:58px}
+.home-hero{
+  min-height:430px;max-width:1280px;margin:20px auto 58px;padding:66px max(5.5vw,36px);
+  border-radius:28px;background:linear-gradient(120deg,#e6f0e9 0%,#eef3e9 56%,#dcebe4 100%);
+  color:var(--navy);box-shadow:0 16px 44px rgba(43,83,68,.07);
+}
+.home-hero::before{inset:10% 5% 10% 57%;border-radius:48% 52% 42% 58%;background:radial-gradient(circle at 45% 45%,#c2ddd0 0 28%,#d8e9de 29% 52%,rgba(255,255,255,.1) 53%);opacity:.9}
+.home-hero::after{inset:0;background:linear-gradient(90deg,#e6f0e9 0%,rgba(230,240,233,.96) 44%,rgba(230,240,233,.2) 100%)}
+.hero-content{max-width:590px}
+.hero-eyebrow,.home-section-heading span{color:#39796d!important;letter-spacing:1.6px;font-size:.72rem;font-weight:800}
+.home-hero h1{max-width:600px;color:#1d3435;font-size:clamp(2.4rem,5vw,4rem);letter-spacing:-2px;line-height:1.08}
+.home-hero p{color:#5d706b;font-size:1.03rem;line-height:1.75}
+.home-button,.button,.small-button.primary,.recorder-button.primary{
+  border:1px solid #276c73;background:#276c73;color:#fff;border-radius:11px;
+  box-shadow:0 5px 12px rgba(39,108,115,.12);font-weight:700
+}
+.home-button:hover,.button:hover,.small-button.primary:hover,.recorder-button.primary:hover{background:#20565d;transform:translateY(-1px)}
+.home-button.secondary{background:rgba(255,255,255,.68);border-color:#cbdcd3;color:#31564e;box-shadow:none}
+.home-button.secondary:hover{background:#fff}
+.home-section{max-width:1160px;padding-inline:24px}
+.home-section-heading h2,.section-heading h2{color:var(--navy);letter-spacing:-.7px}
+.home-section-heading p,.section-heading p{color:var(--muted)}
+.skill-grid{gap:14px}
+.skill-card,.feature-card,.resource-card,.part-card,.topic-button,.task-library-card,.library-card{
+  border:1px solid var(--border);border-radius:16px;background:#fff;
+  box-shadow:0 3px 12px rgba(29,48,55,.025);transition:transform .2s,border-color .2s,box-shadow .2s
+}
+.skill-card{min-height:190px;padding:22px}
+.skill-card:hover,.feature-card:hover,.resource-card:hover,.part-card:hover,.topic-button:hover,.task-library-card:hover,.library-card:hover{
+  transform:translateY(-3px);border-color:#b8d2c6;box-shadow:var(--shadow-hover)
+}
+.skill-icon,.icon,.practice-icon,.part-number,.question-number{
+  background:#e8f2ed;color:#39796d;border-radius:13px
+}
+.skill-card h3,.feature-card h3,.resource-card h3{color:var(--navy)}
+.skill-card p,.feature-card p,.resource-card p{color:var(--muted)}
+.skill-arrow{color:#91a39a}
+.level-section,.panel,.vocab-panel,.vocab-stat,.eng-progress,.eng-stat,.eng-bookmarks{
+  background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow)
+}
+.level-section{padding:30px}
+.level-button,.vocab-filter{
+  border:1px solid var(--border);background:#fff;color:#64746d;border-radius:999px;
+  padding:9px 15px;font-weight:650;transition:.18s
+}
+.level-button:hover,.vocab-filter:hover{border-color:#9bbfb0;color:#276c73}
+.level-button.active,.vocab-filter.active{background:#276c73;border-color:#276c73;color:#fff;box-shadow:none}
+.page-hero,.vocab-hero,.library-hero{
+  margin:28px 0;padding:42px clamp(24px,4vw,44px)!important;border:1px solid #dce9e1;
+  border-radius:22px!important;background:linear-gradient(120deg,#e7f1eb,#f1f4eb 70%,#e4eee8)!important;
+  color:var(--navy)!important;box-shadow:none
+}
+.page-hero .eyebrow,.vocab-hero .eyebrow,.vocab-kicker{color:#39796d!important}
+.page-hero h1,.vocab-hero h1,.library-hero h1{color:#1d3435!important;font-size:clamp(2rem,4vw,3rem)!important;letter-spacing:-1.2px}
+.page-hero p,.vocab-hero p,.library-hero p{color:#5d706b!important;max-width:700px;line-height:1.75}
+.breadcrumb,.page-hero .breadcrumb,.library-hero .crumb{color:#718780!important}
+.panel{padding:clamp(20px,3vw,30px);margin:18px 0}
+.panel h2,.vocab-panel h2{color:var(--navy);letter-spacing:-.4px}
+.panel p{color:#697a75}
+.toolbar input,.toolbar select,.vocab-search,.task-category-filter select,.writing-editor textarea,textarea{
+  border:1px solid #dce6e0;border-radius:11px;background:#fbfdfb;color:var(--text)
+}
+.toolbar input:focus,.toolbar select:focus,.vocab-search:focus,.writing-editor textarea:focus,textarea:focus{border-color:#7daea0;outline:3px solid rgba(83,145,124,.13)}
+.resource-card{padding:22px}
+.tag,.task-category-tag,.date-label{background:#eaf3ed;color:#39796d!important;border-radius:999px}
+.small-button{border:1px solid var(--border);border-radius:9px;background:#fff;color:#38564d}
+.small-button.primary{border-color:#276c73}
+.empty,.task-empty-state,.library-empty,.vocab-empty{border:1px dashed #cbdad1;border-radius:13px;background:#fbfdfb;color:var(--muted)}
+.practice-intro{gap:14px}
+.audio-card,.recorder,.timer-panel,.cue-card,.selected-question,.study-card,.word-example{
+  border:1px solid #e0eae4;border-radius:15px;background:#f7faf7;color:var(--text)
+}
+.audio-placeholder{border-color:#cbdad1;background:#fff;color:var(--muted);border-radius:11px}
+.recorder-button,.back-button,.practise-question,.vocab-btn{
+  border:1px solid #d8e4dc;border-radius:10px;background:#fff;color:#315d51;font-weight:700
+}
+.recorder-button.primary,.vocab-btn.primary{background:#276c73;border-color:#276c73;color:#fff}
+.part-grid{gap:14px}
+.part-card{padding:22px;color:var(--text)}
+.part-card h3{color:var(--navy)}
+.part-card p,.topic-button span{color:var(--muted)}
+.topic-button{border-radius:13px}
+.question-item{border:1px solid var(--border);border-radius:12px;background:#fff}
+.question-number{background:#e8f2ed;color:#39796d}
+.practise-question,.back-button{background:#edf4ef;color:#315d51}
+.selected-question{background:#eff6f0;border-color:#d4e5d8}
+.cue-card{background:#f5f8f4}
+.word-example{border-left:3px solid #6c9c87}
+.vocab-wrap{color:var(--text)}
+.vocab-hero{padding:38px!important}
+.vocab-stat strong,.word-heading h3,.study-word{color:var(--navy)}
+.vocab-item{border:1px solid var(--border);border-radius:13px;background:#fff}
+.vocab-item h3{color:var(--navy)}
+.vocab-option{border:1px solid var(--border);border-radius:11px;background:#fff;color:var(--text)}
+.vocab-option.selected{border-color:#75a994;background:#edf5ef}
+.vocab-result{background:#edf5ef;border-radius:12px}
+.eng-progress{padding:17px 20px}
+.eng-progress a,.eng-progress button{border-color:#d8e4dc;background:#f7faf7;color:#315d51;border-radius:10px}
+.eng-bookmark-list a{background:#edf4ef;color:#315d51}
+.eng-save.saved{background:#eaf4ed;border-color:#bcd9c5;color:#276c52}
+.footer,.home-footer{background:#eef3ee;border-top:1px solid #dfe8e1;color:#718078}
+.footer{padding:28px max(4%,calc((100% - 1160px)/2));}
+.home-footer{padding:30px 20px}
+input,select,textarea{accent-color:#39796d}
+hr{border:0;border-top:1px solid var(--border)}
+@media(max-width:1000px){
+ .topbar{flex-wrap:wrap}.nav{justify-content:flex-end}
+}
+@media(max-width:700px){
+ .topbar{min-height:66px;padding:10px 4%}
+ .topbar .nav-container{width:92%;flex-wrap:wrap;gap:10px}
+ .menu-toggle{display:block}
+ .nav{display:none;width:100%;align-items:stretch;flex-direction:column;padding:8px 0}
+ .nav.open{display:flex}
+ .nav a{padding:11px 13px;border-radius:10px}
+ .home-hero{min-height:560px;margin:12px 12px 40px;padding:36px 24px 250px;border-radius:20px}
+ .hero-visual{width:78%;height:43%;right:2%;opacity:.75}
+ .home-hero::before{inset:48% 0 0 0}
+ .home-hero::after{background:linear-gradient(180deg,#e7f1eb 0%,rgba(231,241,235,.97) 43%,rgba(231,241,235,.16) 100%)}
+ .home-hero h1{letter-spacing:-1.2px}
+ .home-section{padding:0 17px 42px}
+ .skill-grid{grid-template-columns:1fr}
+ .skill-card{min-height:160px}
+ .level-section{padding:22px 17px}
+ .page-hero,.vocab-hero,.library-hero{margin:16px 0 22px!important;padding:28px 22px!important;border-radius:17px!important}
+ .part-grid,.topic-grid,.vocab-layout{grid-template-columns:1fr}
+ .vocab-overview{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .vocab-stat{padding:12px}
+ .vocab-stat strong{font-size:21px}
+ .vocab-list,.resource-grid,.card-grid,.card-grid.two{grid-template-columns:1fr}
+ .question-item{align-items:flex-start;flex-wrap:wrap}
+ .footer{flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}

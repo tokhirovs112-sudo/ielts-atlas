@@ -64,7 +64,14 @@
     .helper{color:#64748b;font-size:13px;line-height:1.6;margin-top:15px}
     @media(max-width:750px){.part-grid{grid-template-columns:1fr}.topic-grid{grid-template-columns:1fr}}
     @media(max-width:600px){.page-hero{padding:35px 24px}.question-item{align-items:flex-start;flex-wrap:wrap}.practise-question{margin-left:43px}}
-  </style>
+  
+    .speaking-review-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
+    .speaking-review-grid>div{padding:16px;border:1px solid #e1e9e1;border-radius:12px;background:#fbfcfa}
+    .speaking-review-grid h3{margin:0 0 9px;color:#29483b;font-size:16px}
+    .speaking-review-grid label{display:flex;align-items:flex-start;gap:10px;line-height:1.6}
+    .speaking-review-grid input{margin-top:5px;accent-color:#39856a;flex-shrink:0}
+    @media(max-width:600px){.speaking-review-grid{grid-template-columns:1fr}}
+</style>
   <link rel="icon" type="image/svg+xml" href="../assets/englisity-mark.svg">
   <link rel="stylesheet" href="../css/design.css">
 </head>
@@ -192,6 +199,18 @@
       <strong>Part 2:</strong> Organise your ideas and use the preparation minute.
       <strong>Part 3:</strong> Explain your opinions, compare ideas and give examples.
     </p>
+  </section>
+
+  <section class="panel speaking-self-review" id="speakingSelfReview">
+    <h2>Review your speaking practice</h2>
+    <p class="helper">Listen to your recording and reflect on these four IELTS Speaking assessment areas. This is a self-review checklist, not an official band estimate.</p>
+    <div class="speaking-review-grid">
+      <div><h3>Fluency and coherence</h3><label><input type="checkbox"> I spoke at a steady pace and developed my answers with relevant details.</label></div>
+      <div><h3>Lexical resource</h3><label><input type="checkbox"> I used precise vocabulary and paraphrased naturally when needed.</label></div>
+      <div><h3>Grammar</h3><label><input type="checkbox"> I used a mix of sentence structures and checked recurring errors.</label></div>
+      <div><h3>Pronunciation</h3><label><input type="checkbox"> My key words were clear, and my word stress and pauses helped the listener follow me.</label></div>
+    </div>
+    <p class="helper">For Part 2, check whether your answer stayed on topic and developed a clear story or description within the two-minute limit.</p>
   </section>
 </main>
 

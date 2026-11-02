@@ -229,7 +229,13 @@
         padding: 35px 24px;
       }
     }
-  </style>
+  
+    .self-review-panel details{padding:14px 0;border-top:1px solid #e1e9e1}
+    .self-review-panel summary{cursor:pointer;color:#29483b}
+    .self-review-list{display:grid;gap:10px;padding-left:0;list-style:none}
+    .self-review-list label{display:flex;align-items:flex-start;gap:10px;line-height:1.6}
+    .self-review-list input{margin-top:5px;accent-color:#39856a;flex-shrink:0}
+</style>
   <link rel="icon" type="image/svg+xml" href="../assets/englisity-mark.svg">
   <link rel="stylesheet" href="../css/design.css">
 </head>
@@ -425,7 +431,32 @@
       </div>
     </section>
 
-    <section class="panel" id="officialGuidance">
+    
+    <section class="panel self-review-panel" id="writingSelfReview">
+      <h2>Review your writing before you finish</h2>
+      <p class="task-instructions">Use these prompts to check your work. This checklist supports self-review; it does not calculate an IELTS band score.</p>
+      <details>
+        <summary><strong>Academic Task 1 checklist</strong></summary>
+        <ul class="self-review-list">
+          <li><label><input type="checkbox"> I included a clear overview of the main features.</label></li>
+          <li><label><input type="checkbox"> I selected the most important data or stages instead of describing everything.</label></li>
+          <li><label><input type="checkbox"> My comparisons are accurate and supported by the visual information.</label></li>
+          <li><label><input type="checkbox"> My information is grouped logically and I used the correct units and dates.</label></li>
+          <li><label><input type="checkbox"> I checked grammar, spelling and the 150-word minimum.</label></li>
+        </ul>
+      </details>
+      <details>
+        <summary><strong>Task 2 essay checklist</strong></summary>
+        <ul class="self-review-list">
+          <li><label><input type="checkbox"> I answered every part of the question and made my position clear.</label></li>
+          <li><label><input type="checkbox"> Each body paragraph develops a main idea with explanation or an example.</label></li>
+          <li><label><input type="checkbox"> My ideas follow a logical order and linking words sound natural.</label></li>
+          <li><label><input type="checkbox"> My vocabulary is precise and my sentence structures are varied and controlled.</label></li>
+          <li><label><input type="checkbox"> I checked grammar, spelling, punctuation and the 250-word minimum.</label></li>
+        </ul>
+      </details>
+    </section>
+<section class="panel" id="officialGuidance">
       <h2>Official guidance</h2>
       <a class="resource-url" href="https://ielts.org/take-a-test/preparation-resources"
         target="_blank" rel="noopener noreferrer">IELTS preparation resources ↗</a>

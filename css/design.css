@@ -1003,3 +1003,33 @@ html[data-theme="dark"] body #questionList .question-text{
 html[data-theme="dark"] body #topicGrid .topic-button span{
   color:#b8c9bf!important;
 }
+
+
+/* Reading passage libraries: remove the remaining white list wrapper in dark mode. */
+html[data-theme="dark"] body .container>section.panel:has(.task-library-grid),
+html[data-theme="dark"] body .container>section.panel:has(.library-grid),
+html[data-theme="dark"] body .container>section.panel:has(#testGrid),
+html[data-theme="dark"] body .container>section.panel:has(.library-tools),
+html[data-theme="dark"] body .container>section.panel:has(.library-search-wrap){
+  background:#172421!important;
+  border-color:#344b40!important;
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] body .task-library-grid,
+html[data-theme="dark"] body .library-grid,
+html[data-theme="dark"] body #testGrid{
+  background:transparent!important;
+  border-color:transparent!important;
+}
+html[data-theme="dark"] body .library-tools,
+html[data-theme="dark"] body .library-search-wrap,
+html[data-theme="dark"] body .library-search-box{
+  background:transparent!important;
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] body .library-search-box input,
+html[data-theme="dark"] body .library-tools input{
+  background:#111e1c!important;
+  color:#edf5ef!important;
+  border-color:#53685d!important;
+}

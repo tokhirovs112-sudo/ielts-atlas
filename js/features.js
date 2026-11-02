@@ -244,33 +244,10 @@
     });
   }
 
-  function trackActivities() {
-    // Count only real listening files, not the speaking recorder's playback element.
-    document.querySelectorAll('audio.audio-player[src], audio.audio-player source[src]').forEach(node=>{
-      const audio=node.tagName==="AUDIO"?node:node.closest("audio");
-      if(!audio || audio.dataset.engTracked) return;
-      audio.dataset.engTracked="true";
-      audio.addEventListener("ended",()=>{
-        const data=read(KEY,{visits:{},completed:{},minutes:0});
-        data.completed["listening-audio"]=(data.completed["listening-audio"]||0)+1;save(KEY,data);
-        recordStreakActivity();renderDashboard();
-      });
-    });
-    const speakingAudio=document.getElementById("recordingPlayback");
-    if(speakingAudio && !speakingAudio.dataset.engTracked){
-      speakingAudio.dataset.engTracked="true";
-      speakingAudio.addEventListener("ended",()=>{
-        const data=read(KEY,{visits:{},completed:{},minutes:0});
-        data.completed["speaking-recordings"]=(data.completed["speaking-recordings"]||0)+1;save(KEY,data);
-        recordStreakActivity();renderDashboard();
-      });
-    }
-  }
-
   window.addEventListener("englisity:quiz-passed", recordStreakActivity);
 
   document.addEventListener("DOMContentLoaded",()=>{
-    addDashboard();scanBookmarks();addTimer();initAutosave();trackActivities();
+    addDashboard();scanBookmarks();addTimer();initAutosave();
     const observer=new MutationObserver(()=>scanBookmarks());
     observer.observe(document.body,{childList:true,subtree:true});
   });

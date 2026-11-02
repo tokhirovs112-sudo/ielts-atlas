@@ -1033,3 +1033,35 @@ html[data-theme="dark"] body .library-tools input{
   color:#edf5ef!important;
   border-color:#53685d!important;
 }
+
+
+/* Explicit dark surface for the Passage 1–3 test libraries.
+   Uses a dedicated class rather than :has(), so the fix is deterministic. */
+html[data-theme="dark"] body .passage-library-panel{
+  background:#172421!important;
+  background-color:#172421!important;
+  border:1px solid #344b40!important;
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] body .passage-library-panel .library-tools,
+html[data-theme="dark"] body .passage-library-panel .library-search-wrap,
+html[data-theme="dark"] body .passage-library-panel .library-grid,
+html[data-theme="dark"] body .passage-library-panel .task-library-grid,
+html[data-theme="dark"] body .passage-library-panel #testGrid{
+  background:transparent!important;
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] body .passage-library-panel .library-card{
+  background:#1a2826!important;
+  background-color:#1a2826!important;
+  border-color:#3b5147!important;
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] body .passage-library-panel .library-card strong{color:#edf5ef!important}
+html[data-theme="dark"] body .passage-library-panel .library-card span{color:#b8c9bf!important}
+html[data-theme="dark"] body .passage-library-panel .library-card .open{color:#9bd9b2!important}
+html[data-theme="dark"] body .passage-library-panel .library-empty{
+  background:#172522!important;
+  border-color:#43574c!important;
+  color:#b4c4ba!important;
+}

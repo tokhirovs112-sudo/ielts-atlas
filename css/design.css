@@ -533,3 +533,96 @@ html[data-theme="dark"] :focus-visible{outline-color:#8bd0a4!important}
 .theme-toggle{flex:0 0 auto;min-height:40px;padding:8px 12px;border:1px solid #527365;border-radius:999px;background:#24483e;color:#eef6ef;font:inherit;font-size:12px;font-weight:750;cursor:pointer;white-space:nowrap}
 .theme-toggle:focus-visible{outline:3px solid #9bd1ad;outline-offset:3px}
 @media(max-width:700px){.theme-toggle{min-height:42px;margin-left:auto}.topbar{flex-wrap:wrap}}
+
+
+/* Follow-up dark-mode readability fixes across individual IELTS skill pages */
+html[data-theme="dark"] .reading-choice,
+html[data-theme="dark"] .reading-choice h3,
+html[data-theme="dark"] .reading-choice p,
+html[data-theme="dark"] .reading-choice .card-link,
+html[data-theme="dark"] .practice-intro,
+html[data-theme="dark"] .practice-intro h2,
+html[data-theme="dark"] .practice-intro p{
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] .reading-choice .card-link{color:#9bd9b2!important}
+html[data-theme="dark"] .reading-choice .tag{background:#29483b!important;color:#c4e4ce!important}
+
+/* Listening: section headings, descriptions and bottom section navigation */
+html[data-theme="dark"] .section-panel,
+html[data-theme="dark"] .section-panel h2,
+html[data-theme="dark"] .section-panel h3,
+html[data-theme="dark"] .section-panel p,
+html[data-theme="dark"] .section-panel li,
+html[data-theme="dark"] .section-panel strong,
+html[data-theme="dark"] .section-panel span,
+html[data-theme="dark"] .section-heading,
+html[data-theme="dark"] .section-heading *{
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] .section-panel .muted,
+html[data-theme="dark"] .audio-panel .muted{color:#b4c4ba!important}
+html[data-theme="dark"] .bottom-bar{
+  background:#14221e!important;border-color:#344b40!important;box-shadow:0 -5px 18px rgba(0,0,0,.28)!important
+}
+html[data-theme="dark"] .section-tab{color:#c5d5ca!important}
+html[data-theme="dark"] .section-tab.active{background:#29483b!important;color:#c4e4ce!important}
+html[data-theme="dark"] .nav-numbers button{background:#263b33!important;color:#dcebe1!important}
+html[data-theme="dark"] .nav-numbers button.answered{background:#37664d!important;color:#fff!important}
+html[data-theme="dark"] .audio-panel .alt{background:#29483b!important;color:#e3f0e6!important;border:1px solid #547661!important}
+
+/* Writing: task names, prompts, instructions and word-count guidance */
+html[data-theme="dark"] .task-library-card-content strong,
+html[data-theme="dark"] .task-library-card-content span,
+html[data-theme="dark"] .task-library-card-content .task-card-link,
+html[data-theme="dark"] .task-workspace h2,
+html[data-theme="dark"] .task-instructions,
+html[data-theme="dark"] .task-instructions *,
+html[data-theme="dark"] #task2Prompt,
+html[data-theme="dark"] .writing-editor label,
+html[data-theme="dark"] .word-count-row,
+html[data-theme="dark"] .word-count-guidance,
+html[data-theme="dark"] .word-count-guidance strong{
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] .task-library-card-content .task-card-link{color:#9bd9b2!important}
+html[data-theme="dark"] .task-back{background:#223630!important;color:#dcebe1!important;border-color:#496355!important}
+html[data-theme="dark"] .word-count-guidance{background:#20352d!important;border:1px solid #405b4a!important}
+html[data-theme="dark"] .word-count-guidance span,
+html[data-theme="dark"] #task1WordStatus,
+html[data-theme="dark"] #task2WordStatus{color:#b4c4ba!important}
+
+/* Writing timers: cover the common timer IDs/classes used by practice layouts */
+html[data-theme="dark"] .timer,
+html[data-theme="dark"] .timer-display,
+html[data-theme="dark"] .countdown,
+html[data-theme="dark"] .time-display,
+html[data-theme="dark"] .exam-timer,
+html[data-theme="dark"] [data-timer],
+html[data-theme="dark"] #timer,
+html[data-theme="dark"] #countdown,
+html[data-theme="dark"] [id*="timer"],
+html[data-theme="dark"] [class*="timer"]{
+  background:#20352d!important;color:#e7eee9!important;border-color:#496355!important;
+}
+html[data-theme="dark"] .timer *,
+html[data-theme="dark"] .timer-display *,
+html[data-theme="dark"] .countdown *,
+html[data-theme="dark"] .time-display *,
+html[data-theme="dark"] .exam-timer *,
+html[data-theme="dark"] [data-timer] *,
+html[data-theme="dark"] #timer *,
+html[data-theme="dark"] #countdown *,
+html[data-theme="dark"] [id*="timer"] *,
+html[data-theme="dark"] [class*="timer"] *{color:#e7eee9!important}
+
+/* Speaking: self-review checklist cards and all their text */
+html[data-theme="dark"] .speaking-self-review,
+html[data-theme="dark"] .speaking-self-review h2,
+html[data-theme="dark"] .speaking-self-review p,
+html[data-theme="dark"] .speaking-review-grid>div,
+html[data-theme="dark"] .speaking-review-grid h3,
+html[data-theme="dark"] .speaking-review-grid label{
+  background-color:#1a2826!important;color:#e7eee9!important;border-color:#40564b!important;
+}
+html[data-theme="dark"] .speaking-review-grid input{accent-color:#69b887}

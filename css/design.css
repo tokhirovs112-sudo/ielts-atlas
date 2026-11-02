@@ -804,3 +804,63 @@ html[data-theme="dark"] .selection-toolbar button{
 }
 html[data-theme="dark"] .resize-divider{background:#1a2b25!important}
 html[data-theme="dark"] .resize-divider:after{background:#496355!important}
+
+
+/* Shared light-theme question styling: one calm, consistent card language. */
+html[data-theme="light"] .part-card,
+html[data-theme="light"] .topic-button,
+html[data-theme="light"] .question-item{
+  background:#fff!important;
+  border:1px solid #e1e8e4!important;
+  border-radius:14px!important;
+  color:#26363a!important;
+  box-shadow:0 3px 12px rgba(29,48,55,.035)!important;
+}
+html[data-theme="light"] .part-card h3,
+html[data-theme="light"] .topic-button strong,
+html[data-theme="light"] .question-text{
+  color:#26363a!important;
+}
+html[data-theme="light"] .part-card p,
+html[data-theme="light"] .topic-button span{
+  color:#718087!important;
+}
+html[data-theme="light"] .question-number,
+html[data-theme="light"] .part-number{
+  background:#e8f3ec!important;
+  color:#39796a!important;
+}
+html[data-theme="light"] .practise-question,
+html[data-theme="light"] .back-button{
+  background:#edf4ef!important;
+  border:1px solid #d8e4dc!important;
+  color:#315d51!important;
+}
+html[data-theme="light"] .question-card{
+  margin:12px 0!important;
+  padding:16px!important;
+  border:1px solid #e1e8e4!important;
+  border-radius:13px!important;
+  background:#fff!important;
+  box-shadow:0 3px 12px rgba(29,48,55,.035)!important;
+}
+html[data-theme="light"] .question-card>p{
+  color:#26363a!important;
+  font-weight:550!important;
+}
+html[data-theme="light"] .answer-options label{
+  background:#f8faf8!important;
+  border:1px solid #e1e8e4!important;
+  border-radius:10px!important;
+  color:#344740!important;
+  transition:background .15s,border-color .15s!important;
+}
+html[data-theme="light"] .answer-options label:hover{
+  background:#edf5ef!important;
+  border-color:#b9d2c2!important;
+}
+html[data-theme="light"] .answer-input{
+  background:#fbfdfb!important;
+  border-color:#dce6e0!important;
+  color:#26363a!important;
+}

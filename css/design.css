@@ -354,3 +354,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
   background:#e2eee4!important;
 }
 input,select,textarea{accent-color:#39856a}
+
+
+/* Mobile touch targets and reduced-motion support */
+.menu-toggle{min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+.qcombobox,.review-transcript,.mode-choice,.actions button,.submit-area button{min-height:44px}
+@media(max-width:560px){
+  .section-tab{min-height:32px}
+  .nav-numbers button{min-width:28px;min-height:32px}
+  .qcombobox{width:min(180px,48%)}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}

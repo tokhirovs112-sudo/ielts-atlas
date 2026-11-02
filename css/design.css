@@ -626,3 +626,181 @@ html[data-theme="dark"] .speaking-review-grid label{
   background-color:#1a2826!important;color:#e7eee9!important;border-color:#40564b!important;
 }
 html[data-theme="dark"] .speaking-review-grid input{accent-color:#69b887}
+
+
+/* Dark-mode audit: Speaking question text and Reading passage libraries/tests.
+   These pages contain legacy inline styles, so target their child elements explicitly. */
+html[data-theme="dark"] .part-card,
+html[data-theme="dark"] .topic-button,
+html[data-theme="dark"] .question-item{
+  background:#1a2826!important;
+  border-color:#3b5147!important;
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] .part-card h3,
+html[data-theme="dark"] .topic-button strong,
+html[data-theme="dark"] .question-text,
+html[data-theme="dark"] .question-item .question-text{
+  color:#edf5ef!important;
+}
+html[data-theme="dark"] .part-card p,
+html[data-theme="dark"] .topic-button span{
+  color:#b8c9bf!important;
+}
+html[data-theme="dark"] .part-card .card-link,
+html[data-theme="dark"] .practise-question{
+  color:#b9e3c6!important;
+}
+html[data-theme="dark"] .question-number,
+html[data-theme="dark"] .part-number{
+  background:#29483b!important;
+  color:#b9e3c6!important;
+}
+html[data-theme="dark"] .practise-question,
+html[data-theme="dark"] .back-button{
+  background:#29483b!important;
+  border:1px solid #496355!important;
+  color:#dcebe1!important;
+}
+html[data-theme="dark"] .selected-question{
+  background:#20372f!important;
+  border-color:#496355!important;
+}
+html[data-theme="dark"] .selected-question small{color:#b4cdbb!important}
+html[data-theme="dark"] .selected-question strong{color:#edf5ef!important}
+html[data-theme="dark"] .speaking-review-grid>div{
+  background:#1a2826!important;
+  border:1px solid #3b5147!important;
+  border-radius:13px!important;
+}
+
+/* Reading library cards: title, metadata and action link must all remain legible. */
+html[data-theme="dark"] .library-card{
+  background:#1a2826!important;
+  border-color:#3b5147!important;
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] .library-card strong{color:#edf5ef!important}
+html[data-theme="dark"] .library-card span{color:#b8c9bf!important}
+html[data-theme="dark"] .library-card .open{color:#9bd9b2!important}
+html[data-theme="dark"] .library-tools input{
+  background:#111e1c!important;
+  color:#edf5ef!important;
+  border-color:#53685d!important;
+}
+html[data-theme="dark"] .library-empty{
+  background:#172522!important;
+  color:#b8c9bf!important;
+  border-color:#496355!important;
+}
+
+/* Reading test: passage text, question prompts, answer choices and controls. */
+html[data-theme="dark"] .passage-panel,
+html[data-theme="dark"] .test-column>.panel{
+  background:#172421!important;
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] .passage-panel h2,
+html[data-theme="dark"] .test-column>.panel h2{
+  color:#edf5ef!important;
+}
+html[data-theme="dark"] .passage-subtitle,
+html[data-theme="dark"] .test-instructions{
+  color:#b8c9bf!important;
+}
+html[data-theme="dark"] #passageText p,
+html[data-theme="dark"] .question-card>p{
+  color:#e1ebe4!important;
+}
+html[data-theme="dark"] .para-number,
+html[data-theme="dark"] .question-number{
+  color:#a9cbb4!important;
+}
+html[data-theme="dark"] .question-card{
+  border-color:#344b40!important;
+}
+html[data-theme="dark"] .answer-options label{
+  background:#20332d!important;
+  border-color:#496355!important;
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] .answer-options label span,
+html[data-theme="dark"] .answer-options label strong{
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] .answer-input{
+  background:#111e1c!important;
+  border-color:#53685d!important;
+  color:#edf5ef!important;
+}
+html[data-theme="dark"] .reading-timer{
+  background:#20352d!important;
+  border-color:#496355!important;
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] .reading-timer strong,
+html[data-theme="dark"] .timer-note{color:#e7eee9!important}
+html[data-theme="dark"] .notice{
+  background:#20372f!important;
+  border-color:#496355!important;
+  color:#dcebe1!important;
+}
+html[data-theme="dark"] .test-actions button,
+html[data-theme="dark"] .passage-tools button{
+  background:#29483b!important;
+  border-color:#496355!important;
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] .question-feedback.correct{
+  background:#1d392b!important;
+  border-color:#3d7453!important;
+  color:#e0f1e4!important;
+}
+html[data-theme="dark"] .question-feedback.incorrect{
+  background:#3b2d22!important;
+  border-color:#76543a!important;
+  color:#f4e6d8!important;
+}
+html[data-theme="dark"] .question-feedback blockquote{
+  background:#263a32!important;
+  border-color:#78a88a!important;
+  color:#e1ebe4!important;
+}
+html[data-theme="dark"] #passageText p.is-highlighted{
+  background:#51451f!important;
+  outline-color:#a98c3b!important;
+  color:#fff4cf!important;
+}
+html[data-theme="dark"] .vocab-popup{
+  background:#1a2826!important;
+  border-color:#496355!important;
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] .vocab-popup strong{color:#edf5ef!important}
+html[data-theme="dark"] .vocab-example{
+  background:#263a32!important;
+  color:#dcebe1!important;
+}
+html[data-theme="dark"] .mode-card{
+  background:linear-gradient(145deg,#1b2c27,#14231f)!important;
+  border-color:#496355!important;
+}
+html[data-theme="dark"] .mode-card h1,
+html[data-theme="dark"] .mode-choice-copy>strong{color:#edf5ef!important}
+html[data-theme="dark"] .mode-card>p,
+html[data-theme="dark"] .mode-heading p,
+html[data-theme="dark"] .mode-choice-copy>span,
+html[data-theme="dark"] .mode-footnote{color:#b8c9bf!important}
+html[data-theme="dark"] .mode-choice{
+  background:#20332d!important;
+  border-color:#496355!important;
+}
+html[data-theme="dark"] .mode-icon{background:#29483b!important;color:#b9e3c6!important}
+html[data-theme="dark"] .mode-choice-copy .mode-feature{color:#a8d8b6!important}
+html[data-theme="dark"] .mode-arrow{color:#a9bdb0!important}
+html[data-theme="dark"] .selection-toolbar{background:#20332d!important;border-color:#496355!important}
+html[data-theme="dark"] .selection-toolbar button{
+  background:#29483b!important;color:#e7eee9!important;
+}
+html[data-theme="dark"] .resize-divider{background:#1a2b25!important}
+html[data-theme="dark"] .resize-divider:after{background:#496355!important}

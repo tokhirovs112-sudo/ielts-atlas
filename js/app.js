@@ -226,6 +226,39 @@
     });
   }
 
+
+  function initTheme() {
+    const header = document.querySelector(".topbar");
+    if (!header || document.querySelector(".theme-toggle")) return;
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "theme-toggle";
+    button.setAttribute("aria-label", "Switch to dark mode");
+
+    const applyTheme = theme => {
+      const dark = theme === "dark";
+      document.documentElement.dataset.theme = dark ? "dark" : "light";
+      button.textContent = dark ? "☀ Light" : "☾ Dark";
+      button.setAttribute("aria-pressed", String(dark));
+      button.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute("content", dark ? "#111b1a" : "#f5f7f4");
+    };
+
+    const saved = localStorage.getItem("englisity-theme");
+    applyTheme(saved === "dark" ? "dark" : "light");
+    button.addEventListener("click", () => {
+      const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      localStorage.setItem("englisity-theme", next);
+      applyTheme(next);
+    });
+
+    const brand = header.querySelector(".brand");
+    if (brand) brand.insertAdjacentElement("afterend", button);
+    else header.insertBefore(button, header.firstChild);
+  }
+
   function initMenu() {
     const toggle = document.getElementById("menuToggle");
     const nav = document.getElementById("navigation");
@@ -294,6 +327,7 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     initLevels();
+    initTheme();
     initMenu();
     initWriting();
     initReadingPassages();

@@ -437,3 +437,64 @@ html[data-theme="dark"] .eng-bookmark-list a{background:#203b37!important;color:
 html[data-theme="dark"] .empty,html[data-theme="dark"] .task-empty-state,html[data-theme="dark"] .library-empty,html[data-theme="dark"] .vocab-empty{background:#192627!important;border-color:#3a514a!important;color:#a3b5ad!important}
 html[data-theme="dark"] :focus-visible{outline-color:#8acbb6!important}
 @media(max-width:700px){html[data-theme="dark"] .nav{background:#142223!important}}
+
+
+/* Dark-mode readability fix for IELTS question sheets and answer areas */
+html[data-theme="dark"] .q,
+html[data-theme="dark"] .question-content,
+html[data-theme="dark"] .notes-list,
+html[data-theme="dark"] .matching-list,
+html[data-theme="dark"] .table-scroll,
+html[data-theme="dark"] .club-table,
+html[data-theme="dark"] .club-table tbody,
+html[data-theme="dark"] .club-table tr,
+html[data-theme="dark"] .club-table td,
+html[data-theme="dark"] .club-table th{
+  color:#e5eee9!important;
+}
+html[data-theme="dark"] .q{
+  background:#1b2b2c!important;
+  border-color:#405653!important;
+}
+html[data-theme="dark"] .q label,
+html[data-theme="dark"] .q strong,
+html[data-theme="dark"] .question-content h2,
+html[data-theme="dark"] .question-content h3,
+html[data-theme="dark"] .question-content p,
+html[data-theme="dark"] .question-content li,
+html[data-theme="dark"] .question-content span,
+html[data-theme="dark"] .notes-list,
+html[data-theme="dark"] .matching-list,
+html[data-theme="dark"] .inline-answer{
+  color:#e5eee9!important;
+}
+html[data-theme="dark"] .club-table th,
+html[data-theme="dark"] .club-table td{
+  background:#1b2b2c!important;
+  border-color:#405653!important;
+}
+html[data-theme="dark"] .club-table thead th,
+html[data-theme="dark"] .club-table tbody th{
+  background:#243936!important;
+  color:#e5eee9!important;
+}
+html[data-theme="dark"] .q input,
+html[data-theme="dark"] .q select,
+html[data-theme="dark"] .notes-list input,
+html[data-theme="dark"] .club-table input,
+html[data-theme="dark"] .qcombobox{
+  background:#101e20!important;
+  color:#f0f6f2!important;
+  border-color:#536b64!important;
+}
+html[data-theme="dark"] .q input::placeholder,
+html[data-theme="dark"] .notes-list input::placeholder{color:#9aada5!important}
+html[data-theme="dark"] .muted,
+html[data-theme="dark"] .q .muted{color:#b2c1ba!important}
+html[data-theme="dark"] .q.good{background:#19372c!important;border-color:#4b9872!important}
+html[data-theme="dark"] .q.bad{background:#3a2527!important;border-color:#a65e63!important}
+html[data-theme="dark"] .mode-choice{
+  background:#1b2b2c!important;color:#e5eee9!important;border-color:#405653!important;
+}
+html[data-theme="dark"] .mode-choice span{color:#b2c1ba!important}
+html[data-theme="dark"] .mode-choice:hover{background:#243936!important;border-color:#79b99a!important}

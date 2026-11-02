@@ -864,3 +864,142 @@ html[data-theme="light"] .answer-input{
   border-color:#dce6e0!important;
   color:#26363a!important;
 }
+
+
+/* Final cross-page dark-theme safety net.
+   Several older pages define their own inline component colours. Keep those
+   layouts, but normalize readable text, controls and common content surfaces. */
+html[data-theme="dark"] body :is(
+  h1,h2,h3,h4,h5,h6,p,li,label,small,strong,em,b,i,blockquote,
+  dt,dd,td,th,figcaption,summary,legend
+){
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] body :is(.muted,.helper,.eyebrow,.breadcrumb,.description,.subtitle,.meta,.date,.hint,.secondary-text){
+  color:#b4c4ba!important;
+}
+html[data-theme="dark"] body a:not(.brand):not(.nav a){
+  color:#a9d9b7;
+}
+html[data-theme="dark"] body :is(
+  .panel,.card,.feature-card,.practice-card,.resource-card,.library-card,
+  .task-library-card,.task-card,.part-card,.topic-button,.question-item,
+  .question-card,.question-section,.section-panel,.audio-panel,.audio-card,
+  .study-card,.cue-card,.selected-question,.speaking-self-review,
+  .speaking-review-grid>div,.vocab-panel,.vocab-stat,.vocab-item,
+  .word-example,.word-card,.stat-card,.result-card,.feedback-card,
+  .instructions,.notice,.info-box,.prompt-card,.task-prompt,.task-instructions,
+  .empty-state,.library-empty,.test-item,.test-meta,.writing-editor,
+  .recorder,.timer-panel,.word-count-guidance,.progress-card
+){
+  background-color:#1a2826!important;
+  border-color:#3b5147!important;
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] body :is(
+  .question-card>p,.question-section p,.question-content,.question-content p,
+  .question-content li,.q label,.q,.q p,.q span,.test-instructions,
+  .passage-subtitle,.task-instructions,.selected-question strong,
+  .selected-question small,.question-text,.question-item p
+){
+  color:#e1ebe4!important;
+}
+html[data-theme="dark"] body :is(
+  input,select,textarea,button:not(.primary-action):not(.button.primary),
+  .answer-input,.q input,.q select,.q textarea,.library-tools input,
+  .search-input,.filter-select,.vocab-search
+){
+  background-color:#111e1c!important;
+  border-color:#53685d!important;
+  color:#edf5ef!important;
+}
+html[data-theme="dark"] body :is(input,textarea)::placeholder{
+  color:#9aada2!important;
+}
+html[data-theme="dark"] body :is(
+  .answer-options label,.option,.option-label,.choice,.choice-label,
+  .question-option,.radio-option,.checkbox-option,.q-option
+){
+  background-color:#20332d!important;
+  border-color:#496355!important;
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] body :is(
+  .answer-options label,.option,.option-label,.choice,.choice-label,
+  .question-option,.radio-option,.checkbox-option,.q-option
+) *{color:#e7eee9!important}
+html[data-theme="dark"] body :is(
+  .reading-timer,.timer,.timer-display,.countdown,.exam-timer,
+  #timer,#countdown,[data-timer]
+){
+  background:#20352d!important;
+  border-color:#496355!important;
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] body :is(
+  .reading-timer,.timer,.timer-display,.countdown,.exam-timer,
+  #timer,#countdown,[data-timer]
+) *{color:#e7eee9!important}
+html[data-theme="dark"] body :is(
+  .tag,.badge,.date-label,.part-number,.question-number,.number-badge
+){
+  background:#29483b!important;
+  color:#c4e4ce!important;
+  border-color:#496355!important;
+}
+html[data-theme="dark"] body :is(
+  .back-button,.practise-question,.secondary-action,.small-button,
+  .vocab-btn:not(.primary),.task-back,.passage-tools button
+){
+  background:#29483b!important;
+  border-color:#496355!important;
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] body :is(
+  .test-actions,.bottom-bar,.sticky-actions,.action-bar
+){
+  background:#14221e!important;
+  border-color:#344b40!important;
+}
+html[data-theme="dark"] body table,
+html[data-theme="dark"] body th,
+html[data-theme="dark"] body td{
+  border-color:#3b5147!important;
+}
+html[data-theme="dark"] body hr{border-color:#3b5147!important}
+html[data-theme="dark"] body :focus-visible{
+  outline-color:#8fc9a2!important;
+}
+html[data-theme="dark"] body input[type="checkbox"],
+html[data-theme="dark"] body input[type="radio"]{
+  accent-color:#69b887!important;
+}
+
+/* Older Reading passages use their own inline light palette. */
+html[data-theme="dark"] body.passage-test-page #passageText p,
+html[data-theme="dark"] body #passageText p{
+  color:#e1ebe4!important;
+}
+html[data-theme="dark"] body.passage-test-page .question-section,
+html[data-theme="dark"] body.passage-test-page .q,
+html[data-theme="dark"] body.passage-test-page .question-card{
+  background-color:#1a2826!important;
+  border-color:#3b5147!important;
+}
+html[data-theme="dark"] body.passage-test-page .answer-options label{
+  background:#20332d!important;
+  color:#e7eee9!important;
+  border-color:#496355!important;
+}
+
+/* Speaking dynamically inserts topic and question text into these containers. */
+html[data-theme="dark"] body #topicGrid .topic-button,
+html[data-theme="dark"] body #questionList .question-item,
+html[data-theme="dark"] body #questionList .question-text{
+  background:#1a2826!important;
+  color:#e7eee9!important;
+  border-color:#3b5147!important;
+}
+html[data-theme="dark"] body #topicGrid .topic-button span{
+  color:#b8c9bf!important;
+}

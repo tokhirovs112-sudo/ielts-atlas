@@ -121,7 +121,8 @@ const transcriptHTML=`<h3>Part 1</h3>
 <p><strong>Tutor:</strong> As well as doing this, the newspapers have also introduced aggressive sales campaigns over the last few years. This has resulted in a significant and continuing rise in the number of advertisers prepared to pay the extra for <strong>full page</strong> ads. So what I would like to move on to...</p>
 <p><strong>Narrator:</strong> That is the end of the listening test.</p>`;
 document.getElementById('transcriptContent').innerHTML=transcriptHTML;
-\nconst names=['Section 1 · Questions 1–10','Section 2 · Questions 11–20','Section 3 · Questions 21–30','Section 4 · Questions 31–40'];
+
+const names=['Section 1 · Questions 1–10','Section 2 · Questions 11–20','Section 3 · Questions 21–30','Section 4 · Questions 31–40'];
 const groups=document.getElementById('groups'),sectionTabs=document.getElementById('sectionTabs');let mode='practice',done=false,lastTime=0,currentSection=0;
 const audio=document.getElementById('audio'),testArea=document.getElementById('testArea'),modeScreen=document.getElementById('modeScreen'),bottomBar=document.getElementById('bottomBar');
 prompts.forEach((list,g)=>{

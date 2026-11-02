@@ -325,3 +325,32 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .vocab-wrap .vocab-stat strong{color:#315b45!important}
 .footer,.home-footer{border-color:#e4ebe4!important;background:#f7f8f5!important}
 @media(max-width:700px){.eng-progress{margin:12px!important}.eng-progress-actions{width:100%}.eng-progress-actions>*{flex:1;justify-content:center;text-align:center}}
+
+
+/* Shared Englisity theme — align older library and practice pages with the green/teal identity */
+:root{
+  --blue:#276c73;--blue-dark:#20565d;--blue-soft:#e7f2ef;
+  --navy:#1d3037;--background:#f7f8f5;--surface:#fff;
+  --text:#263b32;--muted:#718087;--border:#e1e8e4;
+  --green:#39856a;--green-soft:#e8f3ec;
+}
+.page-hero,.library-hero,.vocab-hero{
+  border:1px solid #dce9df!important;
+  background:linear-gradient(120deg,#edf4ed,#e6f0e8)!important;
+  color:#29483b!important;box-shadow:none!important;
+}
+.page-hero h1,.library-hero h1,.vocab-hero h1{color:#29483b!important}
+.page-hero p,.library-hero p,.vocab-hero p{color:#687b70!important}
+.page-hero .eyebrow,.library-hero .crumb,.breadcrumb,.vocab-hero .eyebrow,.vocab-kicker{color:#527b69!important}
+.library-card,.test-item,.resource-card,.skill-card,.vocab-panel{
+  border-color:#e1e9e1!important;box-shadow:0 5px 18px rgba(35,59,47,.035)!important;
+}
+.library-card strong,.library-card .open,.library-card .tag,.skill-link,.test-item a{color:#39796d!important}
+.library-card .tag{background:#edf5ef!important}
+.small-button,.library-tools button,.toolbar button,.level-button.active{
+  border-color:#cfe0d1!important;background:#edf5ee!important;color:#315d51!important;
+}
+.small-button:hover,.library-tools button:hover,.toolbar button:hover,.level-button.active:hover{
+  background:#e2eee4!important;
+}
+input,select,textarea{accent-color:#39856a}

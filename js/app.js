@@ -231,6 +231,8 @@
     const nav = document.getElementById("navigation");
 
     if (toggle && nav) {
+      toggle.setAttribute("aria-controls", nav.id);
+      toggle.setAttribute("aria-expanded", String(nav.classList.contains("open")));
       toggle.addEventListener("click", () => {
         const isOpen = nav.classList.toggle("open");
         toggle.setAttribute("aria-expanded", String(isOpen));
@@ -240,9 +242,10 @@
         toggle.setAttribute("aria-expanded", "false");
       }));
       document.addEventListener("keydown", event => {
-        if (event.key === "Escape") {
+        if (event.key === "Escape" && nav.classList.contains("open")) {
           nav.classList.remove("open");
           toggle.setAttribute("aria-expanded", "false");
+          toggle.focus();
         }
       });
     }

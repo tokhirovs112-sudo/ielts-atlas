@@ -251,32 +251,6 @@
     }
   }
 
-  function initTheme() {
-    const root = document.documentElement;
-    const header = document.querySelector('.topbar');
-    if (!header) return;
-    const nav = header.querySelector('.nav');
-    const host = header.querySelector('.nav-container') || header;
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'theme-toggle';
-    button.setAttribute('title', 'Switch theme');
-    host.insertBefore(button, nav || null);
-    const saved = localStorage.getItem('englisity-theme');
-    const initial = saved === 'dark' || saved === 'light' ? saved : 'light';
-    function apply(theme) {
-      const dark = theme === 'dark';
-      root.dataset.theme = theme;
-      button.textContent = dark ? '☀ Light' : '☾ Dark';
-      button.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
-      button.setAttribute('aria-pressed', String(dark));
-      localStorage.setItem('englisity-theme', theme);
-      const meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute('content', dark ? '#101a1b' : '#183b34');
-    }
-    apply(initial);
-    button.addEventListener('click', () => apply(root.dataset.theme === 'dark' ? 'light' : 'dark'));
-  }
 
   function initWriting() {
     const editor = document.getElementById("writingDraft");
@@ -321,7 +295,6 @@
   document.addEventListener("DOMContentLoaded", () => {
     initLevels();
     initMenu();
-    initTheme();
     initWriting();
     initReadingPassages();
 

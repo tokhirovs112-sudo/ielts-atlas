@@ -1201,3 +1201,47 @@ html[data-theme="dark"] body.home-page .home-hero-new .art-float span{
 html[data-theme="dark"] body.home-page .home-hero-new .art-float small{
   color:#d0dfd5!important;
 }
+
+
+/* IELTS Reading results and answer review: readable in dark mode. */
+html[data-theme="dark"] body.passage-test-page .test-result{
+  background:#20352d!important;
+  border:1px solid #496355!important;
+  color:#f0f6f1!important;
+}
+html[data-theme="dark"] body.passage-test-page .test-result strong,
+html[data-theme="dark"] body.passage-test-page .test-result span{
+  color:#e1eee5!important;
+}
+html[data-theme="dark"] body.passage-test-page .question-feedback.correct{
+  background:#1d382b!important;
+  border-color:#47785a!important;
+  color:#e4f3e8!important;
+}
+html[data-theme="dark"] body.passage-test-page .question-feedback.incorrect{
+  background:#3a2b20!important;
+  border-color:#805b39!important;
+  color:#f5e9dc!important;
+}
+html[data-theme="dark"] body.passage-test-page .question-feedback,
+html[data-theme="dark"] body.passage-test-page .question-feedback p,
+html[data-theme="dark"] body.passage-test-page .question-feedback strong,
+html[data-theme="dark"] body.passage-test-page .question-feedback b{
+  color:inherit!important;
+}
+html[data-theme="dark"] body.passage-test-page .question-feedback blockquote{
+  background:#172522!important;
+  border-left-color:#78ad88!important;
+  color:#dce9df!important;
+}
+html[data-theme="dark"] body.passage-test-page .question-feedback .view-in-test{
+  color:#a9dfb8!important;
+}
+html[data-theme="dark"] body.passage-test-page .test-actions button:not(.primary-action){
+  background:#29483b!important;
+  border-color:#557363!important;
+  color:#f0f6f1!important;
+}
+html[data-theme="dark"] body.passage-test-page .test-actions button:disabled{
+  opacity:.65;
+}

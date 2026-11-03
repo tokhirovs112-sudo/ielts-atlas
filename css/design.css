@@ -1171,3 +1171,33 @@ html[data-theme="dark"] body.home-page #recentResources .resource-card p,
 html[data-theme="dark"] body.home-page #recentResources .resource-card span,
 html[data-theme="dark"] body.home-page #recentResources .resource-card small{color:#b8c9bf!important}
 html[data-theme="dark"] body.home-page #recentResources .resource-card a{color:#a9d9b7!important}
+
+
+/* Home hero illustration: explicit high-contrast text in dark mode. */
+html[data-theme="dark"] body.home-page .home-hero-new .art-card-main{
+  background:linear-gradient(145deg,#243b33,#1b302a)!important;
+  border-color:#557363!important;
+  color:#edf5ef!important;
+}
+html[data-theme="dark"] body.home-page .home-hero-new .art-mini-label,
+html[data-theme="dark"] body.home-page .home-hero-new .art-card-bottom b{
+  color:#edf5ef!important;
+}
+html[data-theme="dark"] body.home-page .home-hero-new .art-card-bottom small{
+  color:#c0d2c6!important;
+}
+html[data-theme="dark"] body.home-page .home-hero-new .art-card-bottom{
+  border-top-color:#496055!important;
+}
+html[data-theme="dark"] body.home-page .home-hero-new .art-check{
+  background:#315b46!important;color:#d9f0df!important;
+}
+html[data-theme="dark"] body.home-page .home-hero-new .art-float{
+  background:#243b33!important;border-color:#557363!important;color:#edf5ef!important;
+}
+html[data-theme="dark"] body.home-page .home-hero-new .art-float span{
+  color:#a9dfb8!important;
+}
+html[data-theme="dark"] body.home-page .home-hero-new .art-float small{
+  color:#d0dfd5!important;
+}

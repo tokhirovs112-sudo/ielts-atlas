@@ -1123,3 +1123,51 @@ html[data-theme="dark"] body .passage-library-panel .library-card .open{color:#9
 html[data-theme="dark"] body .passage-library-panel .library-empty{
   background:#172522!important;color:#b4c4ba!important;border-color:#43574c!important;
 }
+
+
+/* Home page contrast fixes: hero in light mode, resource picker in dark mode. */
+html[data-theme="light"] body.home-page .home-hero-new{
+  background:linear-gradient(115deg,#f0f6ef 0%,#edf4ed 54%,#e1eee5 100%)!important;
+  color:#203a32!important;
+}
+html[data-theme="light"] body.home-page .home-hero-new .hero-eyebrow{color:#426c56!important}
+html[data-theme="light"] body.home-page .home-hero-new h1{color:#203a32!important}
+html[data-theme="light"] body.home-page .home-hero-new h1 em{color:#287653!important}
+html[data-theme="light"] body.home-page .home-hero-new p,
+html[data-theme="light"] body.home-page .home-hero-new .hero-note{color:#4f6559!important}
+html[data-theme="light"] body.home-page .home-hero-new .hero-note-mark{color:#287653!important}
+html[data-theme="light"] body.home-page .home-hero-new .art-card,
+html[data-theme="light"] body.home-page .home-hero-new .art-float{color:#263b32!important}
+html[data-theme="light"] body.home-page .home-hero-new .art-mini-label,
+html[data-theme="light"] body.home-page .home-hero-new .art-card-bottom small,
+html[data-theme="light"] body.home-page .home-hero-new .art-float small{color:#5f7468!important}
+
+/* Find your next resource: keep labels, filters and recent items readable in dark mode. */
+html[data-theme="dark"] body.home-page .home-resources,
+html[data-theme="dark"] body.home-page .home-resources .level-section,
+html[data-theme="dark"] body.home-page .home-resources .level-section-new{
+  background:transparent!important;color:#e7eee9!important;
+}
+html[data-theme="dark"] body.home-page .home-resources .home-section-heading,
+html[data-theme="dark"] body.home-page .home-resources .home-section-heading *,
+html[data-theme="dark"] body.home-page .home-resources .recent-heading,
+html[data-theme="dark"] body.home-page .home-resources .recent-heading *{color:#e7eee9!important}
+html[data-theme="dark"] body.home-page .home-resources .home-section-heading>span{color:#a9d9b7!important}
+html[data-theme="dark"] body.home-page .home-resources .home-section-heading p{color:#b8c9bf!important}
+html[data-theme="dark"] body.home-page .home-resources .level-button{
+  background:#20332d!important;color:#dcebe1!important;border-color:#496355!important;
+}
+html[data-theme="dark"] body.home-page .home-resources .level-button.active{
+  background:#397b59!important;border-color:#397b59!important;color:#fff!important;
+}
+html[data-theme="dark"] body.home-page #recentResources,
+html[data-theme="dark"] body.home-page #recentResources .empty{color:#b8c9bf!important}
+html[data-theme="dark"] body.home-page #recentResources .resource-card{
+  background:#1a2826!important;border-color:#3b5147!important;color:#e7eee9!important;
+}
+html[data-theme="dark"] body.home-page #recentResources .resource-card h3,
+html[data-theme="dark"] body.home-page #recentResources .resource-card strong{color:#edf5ef!important}
+html[data-theme="dark"] body.home-page #recentResources .resource-card p,
+html[data-theme="dark"] body.home-page #recentResources .resource-card span,
+html[data-theme="dark"] body.home-page #recentResources .resource-card small{color:#b8c9bf!important}
+html[data-theme="dark"] body.home-page #recentResources .resource-card a{color:#a9d9b7!important}

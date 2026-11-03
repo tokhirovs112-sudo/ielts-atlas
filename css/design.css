@@ -1284,3 +1284,25 @@ html[data-theme="dark"] body.passage-test-page select.answer-select option{
   background:#172923!important;
   color:#f4fff6!important;
 }
+
+
+/* Dictionary lookup words: subtle, readable interaction states in dark mode. */
+html[data-theme="dark"] body.passage-test-page #passageText .vocab-word{
+  color:#dcebe1!important;
+  border-radius:4px;
+  transition:background-color .15s ease,color .15s ease,box-shadow .15s ease;
+}
+html[data-theme="dark"] body.passage-test-page.practice-mode #passageText .vocab-word:hover,
+html[data-theme="dark"] body.passage-test-page.practice-mode #passageText .vocab-word:active,
+html[data-theme="dark"] body.passage-test-page.practice-mode #passageText .vocab-word:focus{
+  background:#355b49!important;
+  color:#d8f0de!important;
+  text-decoration:underline;
+  text-decoration-style:dotted;
+  text-decoration-color:#a9dfb8;
+  outline:none!important;
+}
+html[data-theme="dark"] body.passage-test-page #passageText .vocab-word::selection{
+  background:#52765e!important;
+  color:#f0fff3!important;
+}

@@ -353,7 +353,7 @@
     if (!document.querySelector('link[data-englisity-mobile-css]')) {
       const mobileStyles = document.createElement("link");
       mobileStyles.rel = "stylesheet";
-      mobileStyles.href = new URL("css/mobile.css?v=20261103-responsive-pwa-1", appRoot).href;
+      mobileStyles.href = new URL("css/mobile.css?v=20261103-responsive-pwa-2", appRoot).href;
       mobileStyles.dataset.englisityMobileCss = "true";
       document.head.appendChild(mobileStyles);
     }

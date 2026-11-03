@@ -104,9 +104,9 @@
 
   .topbar .brand,
   .brand {
-    flex: 1 1 auto;
+    flex: 1 1 120px;
     min-width: 0;
-    max-width: calc(100% - 104px);
+    max-width: none;
     gap: 9px;
     font-size: 17px;
   }

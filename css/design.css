@@ -23,7 +23,7 @@ button{cursor:pointer}
 .topbar .nav-container{width:100%;max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:24px}
 .brand{gap:10px;color:var(--navy);font-size:20px;font-weight:800;letter-spacing:-.8px;white-space:nowrap}
 .brand-mark{width:38px!important;height:38px!important;max-width:38px!important;max-height:38px!important;flex:0 0 38px!important;filter:none}
-.brand small{color:#82918c;font-size:8px;font-weight:750;letter-spacing:1.5px}
+.brand small{color:#52645d;font-size:8px;font-weight:850;letter-spacing:1.5px}
 .nav{display:flex;align-items:center;justify-content:flex-end;gap:4px}
 .nav a{padding:9px 13px;border-radius:999px;color:#65746f;font-size:13px;font-weight:650;transition:background .18s,color .18s}
 .nav a:hover,.nav a.active{background:#e7f1ed;color:#245f58}

@@ -1,0 +1,45 @@
+{
+  "id": "./",
+  "name": "Englisity — IELTS and English Practice",
+  "short_name": "Englisity",
+  "description": "Practise IELTS Reading, Listening, Writing and Speaking with Englisity.",
+  "start_url": "./?source=installed-app",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "theme_color": "#183b34",
+  "background_color": "#f5f7f4",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "assets/englisity-mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/englisity-app-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Reading practice",
+      "short_name": "Reading",
+      "url": "pages/reading.html"
+    },
+    {
+      "name": "Listening practice",
+      "short_name": "Listening",
+      "url": "pages/listening.html"
+    },
+    {
+      "name": "Speaking practice",
+      "short_name": "Speaking",
+      "url": "pages/speaking.html"
+    }
+  ]
+}

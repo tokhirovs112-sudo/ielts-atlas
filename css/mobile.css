@@ -1,0 +1,820 @@
+/* Englisity mobile presentation layer.
+   Loaded after page styles so it can adapt older standalone practice pages too.
+   All rules are scoped to smaller viewports; desktop layout remains unchanged. */
+
+@media (max-width: 900px) {
+  html, body {
+    height: auto !important;
+    min-height: 100% !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  body:has(.test-main) {
+    display: block !important;
+  }
+
+  .test-main {
+    display: block !important;
+    min-height: 0 !important;
+    height: auto !important;
+    flex: none !important;
+  }
+
+  .test-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    flex: none !important;
+  }
+
+  .test-column {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  .test-column > .panel {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .resize-divider {
+    display: none !important;
+  }
+
+  .review-layout.review-active {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .review-layout .transcript-panel {
+    position: static !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+
+@media (max-width: 700px) {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-padding-top: 82px;
+  }
+
+  body {
+    min-width: 320px;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  img, video, canvas, iframe {
+    max-width: 100%;
+  }
+
+  button, a, input, select, textarea, audio {
+    touch-action: manipulation;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 62px;
+    padding: 9px 16px;
+  }
+
+  .topbar .nav-container {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    width: 100% !important;
+    gap: 8px !important;
+  }
+
+  .topbar .brand,
+  .brand {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: calc(100% - 104px);
+    gap: 9px;
+    font-size: 17px;
+  }
+
+  .brand-mark {
+    width: 36px !important;
+    height: 36px !important;
+    max-width: 36px !important;
+    max-height: 36px !important;
+    flex: 0 0 36px !important;
+  }
+
+  .brand small {
+    overflow: hidden;
+    max-width: 100%;
+    font-size: 7px !important;
+    letter-spacing: .11em !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .menu-toggle {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 44px;
+    width: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    margin-left: auto;
+    padding: 8px;
+    border-radius: 11px;
+    font-size: 20px;
+  }
+
+  .theme-toggle {
+    min-height: 42px;
+    padding: 7px 9px;
+    border-radius: 10px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .nav,
+  .topbar .nav-container .nav {
+    display: none !important;
+    flex: 1 0 100% !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    gap: 4px !important;
+    padding: 7px 0 3px !important;
+    order: 5;
+  }
+
+  .nav.open,
+  .topbar .nav-container .nav.open {
+    display: flex !important;
+  }
+
+  .nav a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 11px 13px !important;
+    border-radius: 10px !important;
+    font-size: 14px !important;
+  }
+
+  .pwa-install-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    min-height: 44px;
+    margin-top: 4px;
+    padding: 9px 13px;
+    border: 1px solid rgba(190, 224, 203, .45);
+    border-radius: 10px;
+    background: #245548;
+    color: #f0f8f2;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 750;
+  }
+
+  .container:not(.nav-container) {
+    width: auto !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .wrap,
+  .vocab-wrap {
+    width: auto !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  main {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .page-header {
+    padding: 28px 0 17px;
+  }
+
+  .page-header h1,
+  .page-hero h1,
+  .library-hero h1,
+  .vocab-hero h1 {
+    font-size: clamp(27px, 8vw, 36px) !important;
+    line-height: 1.12;
+    overflow-wrap: anywhere;
+  }
+
+  .home-hero,
+  .home-hero-new,
+  .page-hero,
+  .library-hero,
+  .vocab-hero {
+    margin-top: 12px;
+    margin-bottom: 28px;
+    padding: 27px 19px !important;
+    border-radius: 18px !important;
+  }
+
+  .home-hero-new {
+    min-height: 0 !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .home-hero-new h1,
+  .home-hero h1 {
+    font-size: clamp(32px, 9vw, 43px) !important;
+    line-height: 1.08;
+    letter-spacing: -1.4px !important;
+  }
+
+  .home-hero-new p,
+  .home-hero p {
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .home-hero-new .hero-actions,
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+
+  .home-hero-new .home-button,
+  .home-button,
+  .button,
+  .small-button {
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-art {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .skill-grid-new {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .skill-grid-new .skill-card {
+    min-width: 0;
+    min-height: 0 !important;
+    padding: 15px !important;
+  }
+
+  .skill-grid-new .skill-card h3 {
+    font-size: 15px;
+    overflow-wrap: anywhere;
+  }
+
+  .skill-grid-new .skill-card p {
+    font-size: 12px !important;
+  }
+
+  .card-grid,
+  .card-grid.two,
+  .resource-grid,
+  .part-grid,
+  .topic-grid,
+  .speaking-review-grid,
+  .grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .panel {
+    min-width: 0;
+    margin: 13px 0;
+    padding: 17px !important;
+    border-radius: 15px;
+  }
+
+  .feature-card,
+  .resource-card,
+  .audio-card,
+  .recorder,
+  .question-section,
+  .question-card {
+    min-width: 0;
+    padding: 15px !important;
+    border-radius: 13px;
+  }
+
+  .feature-card p {
+    min-height: 0;
+  }
+
+  .toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .toolbar input,
+  .toolbar select,
+  input,
+  select,
+  textarea,
+  .writing-editor textarea {
+    max-width: 100%;
+    min-width: 0;
+    font-size: 16px !important;
+  }
+
+  textarea,
+  .writing-editor textarea {
+    min-height: 190px;
+    line-height: 1.6;
+  }
+
+  .writing-editor {
+    min-width: 0;
+  }
+
+  .practice-intro {
+    align-items: flex-start;
+    gap: 11px;
+  }
+
+  .practice-icon {
+    flex-basis: 42px;
+    width: 42px;
+    height: 42px;
+  }
+
+  .audio-player,
+  audio {
+    display: block;
+    width: 100% !important;
+    max-width: 100%;
+    min-height: 42px;
+  }
+
+  .recorder-actions,
+  .timer-controls,
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .recorder-actions > button,
+  .timer-controls > button,
+  .actions > button {
+    flex: 1 1 140px;
+    min-height: 46px;
+  }
+
+  .question-item {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 9px;
+    padding: 13px !important;
+  }
+
+  .question-text {
+    flex: 1 1 calc(100% - 48px);
+    min-width: 0;
+  }
+
+  .practise-question {
+    min-height: 44px;
+    margin-left: 43px;
+  }
+
+  .speaking-review-grid > div {
+    min-width: 0;
+    padding: 14px;
+  }
+
+  .speaking-review-grid label {
+    align-items: flex-start;
+    line-height: 1.55;
+  }
+
+  .speaking-review-grid input,
+  .answer-options input,
+  input[type="checkbox"],
+  input[type="radio"] {
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+  }
+
+  .answer-options {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .answer-options label {
+    display: flex !important;
+    align-items: center !important;
+    min-height: 46px;
+    padding: 10px 12px !important;
+    gap: 10px !important;
+    border-radius: 10px !important;
+    line-height: 1.4;
+  }
+
+  .test-layout {
+    gap: 0 !important;
+  }
+
+  .test-column > .panel {
+    padding: 16px !important;
+    border-radius: 0 !important;
+  }
+
+  .test-column:first-child > .panel,
+  .test-column:last-child > .panel {
+    border-left: 0;
+    border-right: 0;
+  }
+
+  .passage-tools {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .passage-tools .exit-test-button {
+    min-height: 42px;
+    margin-left: 0 !important;
+  }
+
+  #passageText p {
+    padding: 9px 8px 9px 34px !important;
+    font-size: 15px !important;
+    line-height: 1.75 !important;
+    overflow-wrap: anywhere;
+  }
+
+  .para-number {
+    left: 5px !important;
+  }
+
+  .reading-timer {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    padding: 10px 12px !important;
+    margin: 0 0 14px !important;
+  }
+
+  .reading-timer strong {
+    font-size: 20px;
+  }
+
+  .test-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .test-actions button,
+  #checkAnswers,
+  #resetTest {
+    flex: 1 1 135px;
+    min-height: 46px;
+  }
+
+  .summary-text {
+    font-size: 14px !important;
+    line-height: 2 !important;
+    overflow-wrap: anywhere;
+  }
+
+  .summary-text .drop-slot {
+    min-width: 0 !important;
+    max-width: 100%;
+    min-height: 40px !important;
+    margin: 2px 2px !important;
+    padding: 6px 8px !important;
+    font-size: 12px !important;
+    vertical-align: middle;
+    touch-action: manipulation;
+  }
+
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    padding: 11px !important;
+  }
+
+  .word-chip {
+    min-height: 44px;
+    padding: 9px 11px !important;
+    touch-action: manipulation;
+  }
+
+  .selection-toolbar {
+    z-index: 1200 !important;
+    max-width: calc(100vw - 20px);
+  }
+
+  .vocab-popup {
+    z-index: 1201 !important;
+    width: min(310px, calc(100vw - 24px)) !important;
+    max-width: calc(100vw - 24px) !important;
+    max-height: min(45vh, 300px);
+    overflow-y: auto;
+    overflow-wrap: anywhere;
+  }
+
+  .table-scroll {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table-scroll table {
+    min-width: 600px;
+  }
+
+  .club-table {
+    min-width: 600px;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 9px;
+    padding: 22px 16px calc(22px + env(safe-area-inset-bottom));
+  }
+
+  .eng-progress {
+    margin: 12px !important;
+    padding: 14px !important;
+  }
+
+  .eng-progress-actions {
+    width: 100%;
+  }
+
+  .eng-progress-actions > * {
+    flex: 1 1 120px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .eng-dashboard {
+    padding-inline: 14px !important;
+  }
+
+  .eng-dashboard-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .review-layout.review-active {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 12px;
+  }
+
+  .review-layout .transcript-panel {
+    position: static !important;
+    max-height: none !important;
+  }
+
+  .bottom-bar {
+    display: flex;
+    flex-wrap: wrap !important;
+    gap: 7px !important;
+    padding: 8px 10px calc(8px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .bottom-bar[hidden] {
+    display: none !important;
+  }
+
+  .bottom-sections {
+    display: flex;
+    flex: 1 1 100% !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    min-width: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 3px;
+  }
+
+  .section-item {
+    flex: 0 0 auto;
+    gap: 4px;
+  }
+
+  .section-tab {
+    min-height: 38px;
+    padding: 7px 9px !important;
+    font-size: 12px !important;
+  }
+
+  .nav-numbers {
+    display: flex;
+    flex: 0 0 auto;
+    max-width: 58vw;
+    gap: 3px !important;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-numbers button {
+    flex: 0 0 auto;
+    min-width: 30px !important;
+    min-height: 34px;
+    padding: 5px !important;
+    font-size: 11px !important;
+  }
+
+  .submit-area {
+    display: flex;
+    align-items: center;
+    flex: 1 1 100%;
+    justify-content: space-between;
+    gap: 10px;
+    margin-left: 0 !important;
+  }
+
+  .submit-area button {
+    flex: 1 1 auto;
+    min-height: 44px;
+    padding: 9px 12px !important;
+    font-size: 13px !important;
+  }
+
+  .answered-count {
+    font-size: 12px !important;
+    white-space: nowrap;
+  }
+
+  body:has(.bottom-bar:not([hidden])) main,
+  body:has(.bottom-bar:not([hidden])) .wrap {
+    padding-bottom: 160px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .brand {
+    font-size: 15px;
+  }
+
+  .skill-grid-new {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .home-hero-new .hero-actions {
+    flex-direction: column !important;
+  }
+
+  .home-hero-new .home-button {
+    width: 100%;
+  }
+
+  .panel {
+    padding: 14px !important;
+  }
+
+  .mode-choices,
+  .mode-chooser {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .mode-choice {
+    min-height: 0 !important;
+    padding: 16px !important;
+  }
+
+  .summary-text .drop-slot {
+    max-width: 100%;
+    white-space: normal;
+  }
+}
+
+@media (display-mode: standalone) {
+  html, body {
+    min-height: 100%;
+  }
+
+  .topbar {
+    padding-top: max(9px, env(safe-area-inset-top));
+  }
+
+  .footer {
+    padding-bottom: calc(22px + env(safe-area-inset-bottom));
+  }
+}
+
+.pwa-install-button {
+  border: 1px solid #d4e3da;
+  border-radius: 9px;
+  background: #edf5ef;
+  color: #285d49;
+  padding: 8px 12px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.pwa-install-button:disabled {
+  opacity: .7;
+  cursor: default;
+}
+
+.pwa-install-dialog {
+  width: min(420px, calc(100vw - 28px));
+  max-width: calc(100vw - 28px);
+  border: 1px solid #dce8df;
+  border-radius: 18px;
+  padding: 0;
+  color: #263b32;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(15, 35, 27, .25);
+}
+
+.pwa-install-dialog::backdrop {
+  background: rgba(10, 25, 20, .58);
+  backdrop-filter: blur(3px);
+}
+
+.pwa-install-dialog-content {
+  padding: 23px;
+}
+
+.pwa-install-kicker {
+  margin: 0 0 8px;
+  color: #39796a;
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: .13em;
+}
+
+.pwa-install-dialog h2 {
+  margin: 0 0 9px;
+  color: #25483b;
+  font-size: 21px;
+}
+
+.pwa-install-dialog-instructions,
+.pwa-install-dialog p:not(.pwa-install-kicker) {
+  color: #61736a;
+  line-height: 1.6;
+}
+
+.pwa-install-dialog form {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.pwa-install-dialog button {
+  min-height: 44px;
+  padding: 9px 16px;
+  border: 0;
+  border-radius: 10px;
+  background: #276c5c;
+  color: #fff;
+  font: inherit;
+  font-weight: 750;
+}

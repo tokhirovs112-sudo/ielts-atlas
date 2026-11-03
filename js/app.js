@@ -325,9 +325,156 @@
     });
   }
 
+
+  // Add the shared mobile presentation and PWA shell without changing desktop styles.
+  function getAppRoot() {
+    const nestedPage = /\/(?:pages|articles)\//.test(window.location.pathname);
+    return new URL(nestedPage ? "../" : "./", window.location.href);
+  }
+
+  let deferredInstallPrompt = null;
+
+  function initPWAAssets() {
+    const appRoot = getAppRoot();
+    const addLink = (rel, href, extra = {}) => {
+      let link = document.querySelector('link[rel="' + rel + '"]');
+      if (!link) {
+        link = document.createElement("link");
+        link.rel = rel;
+        document.head.appendChild(link);
+      }
+      link.href = href;
+      Object.entries(extra).forEach(([key, value]) => link.setAttribute(key, value));
+    };
+
+    addLink("manifest", new URL("manifest.webmanifest", appRoot).href);
+    addLink("apple-touch-icon", new URL("assets/englisity-app-icon.png", appRoot).href, { sizes: "180x180" });
+
+    if (!document.querySelector('link[data-englisity-mobile-css]')) {
+      const mobileStyles = document.createElement("link");
+      mobileStyles.rel = "stylesheet";
+      mobileStyles.href = new URL("css/mobile.css?v=20261103-responsive-pwa-1", appRoot).href;
+      mobileStyles.dataset.englisityMobileCss = "true";
+      document.head.appendChild(mobileStyles);
+    }
+
+    const ensureMeta = (name, content) => {
+      let meta = document.querySelector('meta[name="' + name + '"]');
+      if (!meta) {
+        meta = document.createElement("meta");
+        meta.name = name;
+        document.head.appendChild(meta);
+      }
+      meta.content = content;
+    };
+
+    ensureMeta("theme-color", "#183b34");
+    ensureMeta("mobile-web-app-capable", "yes");
+    ensureMeta("apple-mobile-web-app-capable", "yes");
+    ensureMeta("apple-mobile-web-app-title", "Englisity");
+    ensureMeta("apple-mobile-web-app-status-bar-style", "black-translucent");
+
+    const viewport = document.querySelector('meta[name="viewport"]');
+    if (viewport && !/viewport-fit\s*=\s*cover/i.test(viewport.content)) {
+      viewport.content += ", viewport-fit=cover";
+    }
+
+    const isStandalone = window.matchMedia("(display-mode: standalone)").matches ||
+      window.navigator.standalone === true;
+    document.documentElement.classList.toggle("pwa-standalone", isStandalone);
+
+    window.addEventListener("beforeinstallprompt", event => {
+      event.preventDefault();
+      deferredInstallPrompt = event;
+    });
+
+    window.addEventListener("appinstalled", () => {
+      const installButton = document.querySelector(".pwa-install-button");
+      if (installButton) {
+        installButton.textContent = "Installed";
+        installButton.disabled = true;
+        installButton.setAttribute("aria-label", "Englisity is installed");
+      }
+    });
+
+    if ("serviceWorker" in navigator && window.location.protocol === "https:") {
+      const register = () => {
+        navigator.serviceWorker.register(new URL("sw.js", appRoot).href, {
+          scope: appRoot.pathname,
+          updateViaCache: "none"
+        }).catch(error => {
+          console.warn("Englisity offline support could not be enabled.", error);
+        });
+      };
+
+      if (document.readyState === "complete") register();
+      else window.addEventListener("load", register, { once: true });
+    }
+  }
+
+  function initPWAInstall() {
+    const isStandalone = window.matchMedia("(display-mode: standalone)").matches ||
+      window.navigator.standalone === true;
+    if (isStandalone) return;
+
+    const nav = document.getElementById("navigation");
+    if (!nav || nav.querySelector(".pwa-install-button")) return;
+
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "pwa-install-button";
+    button.textContent = "Install Englisity";
+    button.setAttribute("aria-label", "Install Englisity on this device");
+
+    const dialog = document.createElement("dialog");
+    dialog.className = "pwa-install-dialog";
+    dialog.innerHTML =
+      '<div class="pwa-install-dialog-content">' +
+        '<p class="pwa-install-kicker">ENGLISITY APP</p>' +
+        '<h2>Use Englisity like an app</h2>' +
+        '<p class="pwa-install-instructions"></p>' +
+        '<form method="dialog"><button type="submit">Got it</button></form>' +
+      '</div>';
+    const instructions = dialog.querySelector(".pwa-install-instructions");
+    instructions.textContent = isIOS
+      ? "In Safari, tap the Share button, choose “Add to Home Screen”, then tap Add."
+      : "Open your browser menu and choose “Install app” or “Add to Home Screen”. The exact wording depends on your browser.";
+
+    if (document.body) document.body.appendChild(dialog);
+
+    button.addEventListener("click", async () => {
+      if (deferredInstallPrompt) {
+        const promptEvent = deferredInstallPrompt;
+        deferredInstallPrompt = null;
+        try {
+          await promptEvent.prompt();
+          const choice = await promptEvent.userChoice;
+          if (choice && choice.outcome === "accepted") button.hidden = true;
+        } catch (error) {
+          console.warn("The install prompt was not available.", error);
+          if (typeof dialog.showModal === "function") dialog.showModal();
+          else dialog.open = true;
+        }
+        return;
+      }
+
+      if (typeof dialog.showModal === "function") dialog.showModal();
+      else dialog.open = true;
+    });
+
+    nav.appendChild(button);
+  }
+
+  initPWAAssets();
+
+
   document.addEventListener("DOMContentLoaded", () => {
     initLevels();
     initTheme();
+    initPWAInstall();
     initMenu();
     initWriting();
     initReadingPassages();

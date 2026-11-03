@@ -1306,3 +1306,17 @@ html[data-theme="dark"] body.passage-test-page #passageText .vocab-word::selecti
   background:#52765e!important;
   color:#f0fff3!important;
 }
+
+
+/* Final logo subtitle contrast fix: keep skill labels readable in light mode. */
+html:not([data-theme="dark"]) .topbar .brand small,
+html:not([data-theme="dark"]) .brand small {
+  color: #405b4d !important;
+  opacity: 1 !important;
+  font-weight: 850 !important;
+}
+html[data-theme="dark"] .topbar .brand small,
+html[data-theme="dark"] .brand small {
+  color: #edf5ef !important;
+  opacity: 1 !important;
+}

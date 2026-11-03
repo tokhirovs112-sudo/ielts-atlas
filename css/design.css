@@ -1311,7 +1311,7 @@ html[data-theme="dark"] body.passage-test-page #passageText .vocab-word::selecti
 /* Final logo subtitle contrast fix: keep skill labels readable in light mode. */
 html:not([data-theme="dark"]) .topbar .brand small,
 html:not([data-theme="dark"]) .brand small {
-  color: #405b4d !important;
+  color: #edf5ef !important;
   opacity: 1 !important;
   font-weight: 850 !important;
 }

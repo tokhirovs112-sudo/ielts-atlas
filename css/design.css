@@ -1245,3 +1245,42 @@ html[data-theme="dark"] body.passage-test-page .test-actions button:not(.primary
 html[data-theme="dark"] body.passage-test-page .test-actions button:disabled{
   opacity:.65;
 }
+
+
+/* Make the learner's selected answer unmistakable in dark-mode Reading quizzes. */
+html[data-theme="dark"] body.passage-test-page .answer-options label:has(input:checked){
+  background:#315b46!important;
+  border:2px solid #91d5a7!important;
+  color:#ffffff!important;
+  box-shadow:inset 0 0 0 1px rgba(145,213,167,.18),0 0 0 2px rgba(145,213,167,.12)!important;
+}
+html[data-theme="dark"] body.passage-test-page .answer-options label:has(input:checked) *,
+html[data-theme="dark"] body.passage-test-page .answer-options label:has(input:checked) span{
+  color:#ffffff!important;
+}
+html[data-theme="dark"] body.passage-test-page .answer-options label:has(input:checked)::after{
+  content:"Selected";
+  margin-left:auto;
+  color:#d7f5df!important;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+html[data-theme="dark"] body.passage-test-page .answer-options label:focus-within{
+  outline:2px solid #b4e8c2!important;
+  outline-offset:2px;
+}
+html[data-theme="dark"] body.passage-test-page select.answer-select{
+  background-color:#172923!important;
+  color:#f4fff6!important;
+  border:2px solid #6e927b!important;
+}
+html[data-theme="dark"] body.passage-test-page select.answer-select:focus{
+  border-color:#a9dfb8!important;
+  box-shadow:0 0 0 3px rgba(169,223,184,.2)!important;
+}
+html[data-theme="dark"] body.passage-test-page select.answer-select option{
+  background:#172923!important;
+  color:#f4fff6!important;
+}

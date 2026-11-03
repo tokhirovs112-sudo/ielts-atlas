@@ -1065,3 +1065,61 @@ html[data-theme="dark"] body .passage-library-panel .library-empty{
   border-color:#43574c!important;
   color:#b4c4ba!important;
 }
+
+
+/* Passage library pages: provide a theme toggle and keep every library label readable. */
+html[data-theme="light"] body .passage-library-panel{
+  background:#fff!important;
+  color:#26363a!important;
+  border-color:#e1e8e4!important;
+}
+html[data-theme="light"] body .passage-library-panel h1,
+html[data-theme="light"] body .passage-library-panel h2,
+html[data-theme="light"] body .passage-library-panel h3,
+html[data-theme="light"] body .passage-library-panel p,
+html[data-theme="light"] body .passage-library-panel label,
+html[data-theme="light"] body .passage-library-panel strong{
+  color:#26363a!important;
+}
+html[data-theme="light"] body .passage-library-panel .library-tools input{
+  background:#fbfdfb!important;color:#26363a!important;border-color:#dce6e0!important;
+}
+html[data-theme="light"] body .passage-library-panel .library-tools input::placeholder{
+  color:#718087!important;opacity:1!important;
+}
+html[data-theme="light"] body .passage-library-panel .library-card{
+  background:#fff!important;border-color:#e1e8e4!important;color:#26363a!important;
+}
+html[data-theme="light"] body .passage-library-panel .library-card strong{color:#26363a!important}
+html[data-theme="light"] body .passage-library-panel .library-card span{color:#718087!important}
+html[data-theme="light"] body .passage-library-panel .library-card .open{color:#2863a8!important}
+html[data-theme="light"] body .passage-library-panel .library-empty{
+  background:#fbfdfb!important;color:#718087!important;border-color:#cbdad1!important;
+}
+html[data-theme="dark"] body .passage-library-panel,
+html[data-theme="dark"] body .passage-library-panel h1,
+html[data-theme="dark"] body .passage-library-panel h2,
+html[data-theme="dark"] body .passage-library-panel h3,
+html[data-theme="dark"] body .passage-library-panel p,
+html[data-theme="dark"] body .passage-library-panel label,
+html[data-theme="dark"] body .passage-library-panel strong{
+  color:#e7eee9!important;
+}
+html[data-theme="dark"] body .passage-library-panel .small-button{
+  background:#29483b!important;color:#e7eee9!important;border-color:#496355!important;
+}
+html[data-theme="dark"] body .passage-library-panel .library-tools input{
+  background:#111e1c!important;color:#edf5ef!important;border-color:#53685d!important;
+}
+html[data-theme="dark"] body .passage-library-panel .library-tools input::placeholder{
+  color:#9aada2!important;opacity:1!important;
+}
+html[data-theme="dark"] body .passage-library-panel .library-card{
+  background:#1a2826!important;border-color:#3b5147!important;color:#e7eee9!important;
+}
+html[data-theme="dark"] body .passage-library-panel .library-card strong{color:#edf5ef!important}
+html[data-theme="dark"] body .passage-library-panel .library-card span{color:#b8c9bf!important}
+html[data-theme="dark"] body .passage-library-panel .library-card .open{color:#9bd9b2!important}
+html[data-theme="dark"] body .passage-library-panel .library-empty{
+  background:#172522!important;color:#b4c4ba!important;border-color:#43574c!important;
+}

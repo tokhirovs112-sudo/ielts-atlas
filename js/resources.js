@@ -20,16 +20,6 @@ window.ATLAS_RESOURCES = [
     url: "articles/sleep.html"
   },
   {
-    id: 3,
-    type: "article",
-    title: "The Future of Green Cities",
-    level: "C2",
-    topic: "Environment",
-    date: "2026-10-15",
-    description: "Explore sustainable cities, public transport and urban design.",
-    url: "#"
-  },
-  {
     id: 4,
     type: "podcast",
     title: "Everyday English Conversations",
@@ -48,16 +38,6 @@ window.ATLAS_RESOURCES = [
     date: "2026-10-17",
     description: "Practise understanding longer conversations and new vocabulary.",
     url: "https://www.youtube.com/watch?v=k2AQfG-ziP8"
-  },
-  {
-    id: 6,
-    type: "podcast",
-    title: "Advanced English Listening",
-    level: "C1",
-    topic: "Culture",
-    date: "2026-10-12",
-    description: "A placeholder for advanced listening resources.",
-    url: "#"
   },
   {
     id: 8,

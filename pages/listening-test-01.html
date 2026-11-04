@@ -362,6 +362,25 @@ html[data-theme="dark"] body .part-four-line span{color:#edf5ef!important}
  .transcript-panel{padding:14px!important}
 }
 
+
+/* Ensure the submitted score and all result text remain readable in dark mode. */
+html[data-theme="dark"] body .result-dialog,
+html[data-theme="dark"] body .result-dialog *{color:#edf5ef}
+html[data-theme="dark"] body #resultModalContent,
+html[data-theme="dark"] body #resultModalContent p,
+html[data-theme="dark"] body #resultModalContent span,
+html[data-theme="dark"] body #resultModalContent strong,
+html[data-theme="dark"] body #resultModalContent .muted{color:#dcebe1!important}
+html[data-theme="dark"] body #resultModalContent h2{color:#f0f7f2!important}
+html[data-theme="dark"] body #resultModalContent #results>h2{
+ background:#28543a!important;color:#f3fff5!important;
+ border:1px solid #5b9b6d!important;
+}
+html[data-theme="dark"] body #resultModalContent .q,
+html[data-theme="dark"] body #resultModalContent .q *{color:#eaf4ed!important}
+html[data-theme="dark"] body #resultModalContent .q.good>strong{color:#9be0ae!important}
+html[data-theme="dark"] body #resultModalContent .q.bad>strong{color:#ffb2b2!important}
+
 </style></head>
 <body>
 <header class="topbar"><a class="brand" href="../index.html"><img class="brand-mark" src="../assets/englisity-mark.svg" alt=""><span>Englisity<small>LISTENING PRACTICE</small></span></a><button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button><nav class="nav" id="navigation"><a href="../index.html">Home</a><a href="reading.html">Reading</a><a class="active" href="listening.html">Listening</a><a href="writing.html">Writing</a><a href="speaking.html">Speaking</a><a class="eng-vocab-nav" href="vocabulary.html">Vocabulary</a>

@@ -109,4 +109,15 @@ window.ATLAS_RESOURCES = [
     description: "Six practical ways to make daytime rest more refreshing and avoid common nap-time mistakes.",
     url: "articles/better-nap.html"
   }
+  ,
+  {
+    id: 12,
+    type: "article",
+    title: "Beyond Words: The Power of Learning a Language",
+    level: "C1",
+    topic: "Language & Culture",
+    date: "2026-11-04",
+    description: "Discover how learning another language can deepen cultural understanding, widen opportunities and change how you experience the world.",
+    url: "articles/beyond-words.html"
+  }
 ];

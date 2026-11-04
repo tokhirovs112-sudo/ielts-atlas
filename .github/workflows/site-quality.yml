@@ -24,5 +24,9 @@ jobs:
           for file in js/*.js; do
             node --check "$file"
           done
+      - name: Test daily streak behaviour
+        run: node scripts/test-streak.js
+        env:
+          TZ: Asia/Tashkent
       - name: Check local HTML references
         run: python scripts/check-site.py

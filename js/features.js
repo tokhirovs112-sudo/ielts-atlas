@@ -6,38 +6,61 @@
   const read = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } };
   const save = (key, value) => localStorage.setItem(key, JSON.stringify(value));
   const localDateKey = (date = new Date()) => [date.getFullYear(), String(date.getMonth()+1).padStart(2,"0"), String(date.getDate()).padStart(2,"0")].join("-");
+  // Use local calendar dates for streaks, but UTC arithmetic for date shifting.
+  // This avoids daylight-saving and month/year-boundary errors.
   function shiftDateKey(key, amount) {
-    const [year, month, day] = String(key).split("-").map(Number);
-    const date = new Date(year, month - 1, day);
-    date.setDate(date.getDate() + amount);
-    return localDateKey(date);
+    const match = /^(\\d{4})-(\\d{2})-(\\d{2})$/.exec(String(key || ""));
+    if (!match) return null;
+    const year = Number(match[1]);
+    const month = Number(match[2]);
+    const day = Number(match[3]);
+    const date = new Date(Date.UTC(year, month - 1, day));
+    if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) {
+      return null;
+    }
+    date.setUTCDate(date.getUTCDate() + amount);
+    return date.toISOString().slice(0, 10);
+  }
+
+  function readStreak() {
+    const stored = read(STREAK_KEY, {});
+    const currentValue = Number(stored && stored.current);
+    const longestValue = Number(stored && stored.longest);
+    const current = Number.isFinite(currentValue) ? Math.max(0, Math.floor(currentValue)) : 0;
+    const longest = Number.isFinite(longestValue) ? Math.max(current, 0, Math.floor(longestValue)) : current;
+    const lastActive = stored && typeof stored.lastActive === "string" &&
+      /^\\d{4}-\\d{2}-\\d{2}$/.test(stored.lastActive) ? stored.lastActive : null;
+    return { current, longest, lastActive };
   }
 
   function getCurrentStreak() {
-    const stored = read(STREAK_KEY, { current:0, longest:0, lastActive:null });
-    const streak = {
-      current: Math.max(0, Number(stored.current) || 0),
-      longest: Math.max(0, Number(stored.longest) || 0),
-      lastActive: typeof stored.lastActive === "string" ? stored.lastActive : null
-    };
+    const streak = readStreak();
     const today = localDateKey();
-    if (streak.lastActive !== today && streak.lastActive !== shiftDateKey(today, -1)) {
+    const yesterday = shiftDateKey(today, -1);
+    if (streak.lastActive !== today && streak.lastActive !== yesterday) {
       return { ...streak, current:0 };
     }
     return streak;
   }
 
+  // A successful learning session records at most one active day, regardless
+  // of how many times the event fires or how many quizzes are passed that day.
   function recordStreakActivity() {
-    const stored = read(STREAK_KEY, { current:0, longest:0, lastActive:null });
+    const stored = readStreak();
     const today = localDateKey();
-    if (stored.lastActive === today) { const current = getCurrentStreak(); updateStreakPill(); renderDashboard(); return current; }
+    if (stored.lastActive === today) {
+      const current = getCurrentStreak();
+      updateStreakPill();
+      renderDashboard();
+      return current;
+    }
 
     const current = stored.lastActive === shiftDateKey(today, -1)
-      ? Math.max(0, Number(stored.current) || 0) + 1
+      ? stored.current + 1
       : 1;
     const next = {
       current,
-      longest: Math.max(Math.max(0, Number(stored.longest) || 0), current),
+      longest: Math.max(stored.longest, current),
       lastActive: today
     };
     save(STREAK_KEY, next);
@@ -48,6 +71,7 @@
 
   window.EnglisityProgress = window.EnglisityProgress || {};
   window.EnglisityProgress.recordActivity = recordStreakActivity;
+  window.EnglisityProgress.getStreak = getCurrentStreak;
   const page = location.pathname.split("/").pop() || "index.html";
   const labels = { "index.html":"Home", "reading.html":"Reading", "listening.html":"Listening", "writing.html":"Writing", "speaking.html":"Speaking", "vocabulary.html":"Vocabulary", "articles.html":"Articles", "podcasts.html":"Podcasts" };
   const progress = read(KEY, { visits:{}, completed:{}, minutes:0 });

@@ -40,7 +40,7 @@ const QUESTIONS = [
 {q:"Choose the correct phrase: “Students should ______ discussions rather than remain silent.”",o:["engage in","aware of","contribute to","play a role on"],a:0,why:"Engage in means take part in an activity. “Engage in discussions” is correct."},
 {q:"Complete the sentence: “People are becoming more ______ the effects of air pollution.”",o:["aware of","aware to","aware for","aware with"],a:0,why:"The standard phrase is aware of + noun phrase: aware of the effects."}
 ];
-const STORE="englisity-vocab-learning-v2", STREAK="englisity-quiz-streak-v1", STATS="englisity-vocab-stats-v1";
+const STORE="englisity-vocab-learning-v2", STATS="englisity-vocab-stats-v1";
 const read=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}};
 const write=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
 const fresh=()=>({saved:[],known:[],reviews:{}});
@@ -163,10 +163,10 @@ function showResult(){
  const retry=document.createElement("button");retry.type="button";retry.className="vocab-btn primary";retry.textContent="Practise another set";retry.addEventListener("click",startQuiz);result.append(retry);$("quizArea").replaceChildren(result);
  $("quizProgress").textContent=passed?"Session passed":"Session not passed";
  if(passed){
-  const date=today(),streak=read(STREAK,{current:0,longest:0,lastActive:null});
-  if(streak.lastActive!==date){const yesterday=addDays(-1);streak.current=streak.lastActive===yesterday?(streak.current||0)+1:1;streak.longest=Math.max(streak.longest||0,streak.current);streak.lastActive=date;write(STREAK,streak)}
+  const date=today();
   const stats=read(STATS,{passed:0,days:[]});stats.days=stats.days||[];if(!stats.days.includes(date)){stats.passed=(stats.passed||0)+1;stats.days.push(date)}write(STATS,stats);
-  window.dispatchEvent(new CustomEvent("englisity:quiz-passed",{detail:{score,streak}}));
+  // features.js owns streak storage and increments it once per local calendar day.
+  window.dispatchEvent(new CustomEvent("englisity:quiz-passed",{detail:{score}}));
  }
 }
 startQuiz();

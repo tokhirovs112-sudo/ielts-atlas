@@ -1,4 +1,3 @@
-
 window.ATLAS_RESOURCES = [
   {
     id: 1,
@@ -90,7 +89,6 @@ window.ATLAS_RESOURCES = [
     description: "Discover the science of entering flow states.",
     url: "https://youtu.be/znwUCNrjpD4?si=L9llabQd4boc-Fo0"
   },
-  
   {
     id: 7,
     type: "article",
@@ -100,6 +98,15 @@ window.ATLAS_RESOURCES = [
     date: "2026-10-21",
     description: "Practical ideas for understanding motivation and building better habits.",
     url: "articles/motivation.html"
+  },
+  {
+    id: 11,
+    type: "article",
+    title: "The Art of a Better Nap",
+    level: "B2",
+    topic: "Sleep & Well-being",
+    date: "2026-11-04",
+    description: "Six practical ways to make daytime rest more refreshing and avoid common nap-time mistakes.",
+    url: "articles/better-nap.html"
   }
 ];
-

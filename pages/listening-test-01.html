@@ -68,6 +68,34 @@ html[data-theme="dark"] body .part-four-line input{background:#20332d!important;
 .answer-evidence p{margin:8px 0 2px;line-height:1.65;color:#405c49}
 html[data-theme="dark"] body .answer-evidence{background:#172722!important;border-color:#496355!important;color:#edf5ef!important}
 html[data-theme="dark"] body .answer-evidence p{color:#d7e7db!important}
+
+/* Part 3: one continuous passage and a capped multi-select group */
+.part-three-passage{margin:12px 0 24px;padding:14px 16px;border:1px solid #dce5dd;border-radius:10px;background:#fbfdfb;color:#263d30;font-size:16px;line-height:2.5}
+.part-three-inline-q{display:inline-flex;align-items:center;gap:5px;margin:0 3px;padding:2px 4px;border:0;border-radius:0;background:transparent;vertical-align:middle;white-space:nowrap}
+.part-three-inline-q label{display:inline!important;margin:0!important;font-weight:750!important}
+.part-three-inline-q input{width:145px;min-width:110px;max-width:170px;padding:6px 8px}
+.part-three-answer-markers{display:flex;gap:8px;margin:12px 0 8px}
+.part-three-answer-marker{display:inline-flex;align-items:center;justify-content:center;min-width:42px;padding:7px 10px;border-radius:8px;background:#f2f6f2}
+.part-three-choice-box{margin:10px 0 22px;padding:12px;border:1px solid #dce5dd;border-radius:10px;background:#f8fbf8}
+.part-three-checkbox-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.part-three-checkbox-option{display:flex!important;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid #dce5dd;border-radius:9px;background:#fff;color:#203c30;cursor:pointer;line-height:1.5}
+.part-three-checkbox-option input{width:auto!important;min-width:16px;margin:3px 0 0;padding:0!important;accent-color:#276c73;flex:0 0 auto}
+.part-three-checkbox-option span{flex:1}
+.part-three-checkbox-option b{display:inline-block;min-width:20px;color:#24543b}
+.part-three-checkbox-option:has(input:checked){background:#edf5ef;border-color:#6c9c78;box-shadow:inset 0 0 0 1px rgba(108,156,120,.12)}
+.part-three-checkbox-option:has(input:disabled){opacity:.55;cursor:not-allowed}
+.part-three-checkbox-option:focus-within{outline:2px solid #8eae96;outline-offset:2px}
+.part-three-help{margin:10px 0 0;color:#68756b;font-size:12px}
+html[data-theme="dark"] body .part-three-passage{background:#1a2826!important;border-color:#40564b!important;color:#edf5ef!important}
+html[data-theme="dark"] body .part-three-inline-q input{background:#20332d!important;border-color:#496355!important;color:#e7eee9!important}
+html[data-theme="dark"] body .part-three-answer-marker{background:#20332d!important;color:#e7eee9!important}
+html[data-theme="dark"] body .part-three-choice-box{background:#172722!important;border-color:#40564b!important;color:#e7eee9!important}
+html[data-theme="dark"] body .part-three-checkbox-option{background:#20332d!important;border-color:#496355!important;color:#e7eee9!important}
+html[data-theme="dark"] body .part-three-checkbox-option b{color:#a9dfb8!important}
+html[data-theme="dark"] body .part-three-checkbox-option:has(input:checked){background:#315b46!important;border-color:#91d5a7!important;color:#fff!important}
+html[data-theme="dark"] body .part-three-checkbox-option:has(input:checked) span,html[data-theme="dark"] body .part-three-checkbox-option:has(input:checked) b{color:#fff!important}
+html[data-theme="dark"] body .part-three-help{color:#b4c4ba!important}
+@media(max-width:700px){.part-three-passage{padding:11px 12px;font-size:15px;line-height:2.8}.part-three-inline-q input{width:125px;min-width:100px}.part-three-checkbox-options{grid-template-columns:1fr}}
 </style></head>
 <body>
 <header class="topbar"><a class="brand" href="../index.html"><img class="brand-mark" src="../assets/englisity-mark.svg" alt=""><span>Englisity<small>LISTENING PRACTICE</small></span></a><button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button><nav class="nav" id="navigation"><a href="../index.html">Home</a><a href="reading.html">Reading</a><a class="active" href="listening.html">Listening</a><a href="writing.html">Writing</a><a href="speaking.html">Speaking</a><a class="eng-vocab-nav" href="vocabulary.html">Vocabulary</a>
@@ -214,26 +242,28 @@ prompts.forEach((list,g)=>{
       '<h3>Questions 21–24</h3>'+
       '<p><strong>Complete the sentences below.</strong></p>'+
       '<p><em>Write <strong>NO MORE THAN THREE WORDS OR A NUMBER</strong> for each answer.</em></p>'+
-      '<div class="part-three-sentences">'+
-        '<div class="q part-three-sentence" id="question-21" data-n="21"><label for="a21"><strong>21.</strong> Jenna and Marco must complete their project by</label><input id="a21" autocomplete="off" aria-label="Answer 21" placeholder="Your answer"></div>'+
-        '<div class="q part-three-sentence" id="question-22" data-n="22"><label for="a22"><strong>22.</strong> The project will be a study of the increase in</label><input id="a22" autocomplete="off" aria-label="Answer 22" placeholder="Your answer"></div>'+
-        '<div class="q part-three-sentence" id="question-23" data-n="23"><label for="a23"><strong>23.</strong> The project will be assessed by</label><input id="a23" autocomplete="off" aria-label="Answer 23" placeholder="Your answer"></div>'+
-        '<div class="q part-three-sentence" id="question-24" data-n="24"><label for="a24"><strong>24.</strong> Jenna and Marco agree they need a</label><input id="a24" autocomplete="off" aria-label="Answer 24" placeholder="Your answer"><span>for the project.</span></div>'+
+      '<div class="part-three-passage">'+
+        'Jenna and Marco must complete their project by <span class="q part-three-inline-q" id="question-21" data-n="21"><label for="a21">21.</label><input id="a21" autocomplete="off" aria-label="Answer 21" placeholder="Your answer"></span>. '+
+        'The project will be a study of the increase in <span class="q part-three-inline-q" id="question-22" data-n="22"><label for="a22">22.</label><input id="a22" autocomplete="off" aria-label="Answer 22" placeholder="Your answer"></span>. '+
+        'It will be assessed by <span class="q part-three-inline-q" id="question-23" data-n="23"><label for="a23">23.</label><input id="a23" autocomplete="off" aria-label="Answer 23" placeholder="Your answer"></span>. '+
+        'Jenna and Marco agree that they need a <span class="q part-three-inline-q" id="question-24" data-n="24"><label for="a24">24.</label><input id="a24" autocomplete="off" aria-label="Answer 24" placeholder="Your answer"></span> for the project.'+
       '</div>'+
       '<h3>Questions 25–27</h3>'+
       '<p><strong>What THREE things do Marco and Jenna have to do now for the project?</strong></p>'+
-      '<p><em>Choose THREE letters, A–G.</em></p>'+
-      '<div class="feature-options part-three-option-box"><strong>Options</strong><div class="feature-option-grid part-three-option-grid">'+
-        '<span><b>A</b> interview some people</span>'+
-        '<span><b>B</b> hand out questionnaires</span>'+
-        '<span><b>C</b> choose their subjects</span>'+
-        '<span><b>D</b> take photographs</span>'+
-        '<span><b>E</b> use statistical software</span>'+
-        '<span><b>F</b> do some work in the library</span>'+
-        '<span><b>G</b> contact some local companies</span>'+
-      '</div></div>'+
-      '<div class="matching-list part-three-matching">'+[25,26,27].map(n=>'<div class="q letter-question" id="question-'+n+'" data-n="'+n+'"><label for="a'+n+'">'+n+'.</label><select class="qcombobox" id="a'+n+'" aria-label="Choose one of the three letters for question '+n+'"><option value="">Choose A–G</option>'+["A","B","C","D","E","F","G"].map(letter=>'<option value="'+letter+'">'+letter+'</option>').join('')+'</select></div>').join('')+'</div>'+
-      '<p class="part-three-help">Choose three different letters. You can enter them in any order.</p>'+
+      '<p><em>Choose up to THREE letters, A–G.</em></p>'+
+      '<div class="part-three-answer-markers">'+[25,26,27].map(n=>'<div class="q part-three-answer-marker" id="question-'+n+'" data-n="'+n+'"><strong>'+n+'.</strong></div>').join('')+'</div>'+
+      '<div class="part-three-choice-box">'+
+        '<div class="part-three-checkbox-options">'+
+          '<label class="part-three-checkbox-option"><input class="part-three-choice-input" type="checkbox" name="partThreeChoice" value="A"><span><b>A</b> interview some people</span></label>'+
+          '<label class="part-three-checkbox-option"><input class="part-three-choice-input" type="checkbox" name="partThreeChoice" value="B"><span><b>B</b> hand out questionnaires</span></label>'+
+          '<label class="part-three-checkbox-option"><input class="part-three-choice-input" type="checkbox" name="partThreeChoice" value="C"><span><b>C</b> choose their subjects</span></label>'+
+          '<label class="part-three-checkbox-option"><input class="part-three-choice-input" type="checkbox" name="partThreeChoice" value="D"><span><b>D</b> take photographs</span></label>'+
+          '<label class="part-three-checkbox-option"><input class="part-three-choice-input" type="checkbox" name="partThreeChoice" value="E"><span><b>E</b> use statistical software</span></label>'+
+          '<label class="part-three-checkbox-option"><input class="part-three-choice-input" type="checkbox" name="partThreeChoice" value="F"><span><b>F</b> do some work in the library</span></label>'+
+          '<label class="part-three-checkbox-option"><input class="part-three-choice-input" type="checkbox" name="partThreeChoice" value="G"><span><b>G</b> contact some local companies</span></label>'+
+        '</div>'+
+        '<p class="part-three-help" id="partThreeSelectionStatus" aria-live="polite">0 of 3 selected.</p>'+
+      '</div>'+
       '<h3>Questions 28–30</h3>'+
       '<p><em>Choose the correct letter, A, B or C.</em></p>'+
       '<div class="part-three-mcqs">'+
@@ -291,6 +321,10 @@ prompts.forEach((list,g)=>{
 const results=document.createElement('section');results.id='results';results.className='panel';groups.append(results);
 
 function answerValue(n){
+ if(n>=25&&n<=27){
+  const selected=Array.from(document.querySelectorAll('.part-three-choice-input:checked')).map(input=>input.value);
+  return selected[n-25]||'';
+ }
  const first=document.getElementById('a'+n);
  if(!first)return '';
  if(first.type==='radio'){
@@ -300,6 +334,11 @@ function answerValue(n){
  return first.value||'';
 }
 function setAnswerValue(n,value){
+ if(n>=25&&n<=27){
+  const choice=Array.from(document.querySelectorAll('.part-three-choice-input')).find(input=>input.value===value);
+  if(choice)choice.checked=true;
+  return;
+ }
  const first=document.getElementById('a'+n);
  if(!first)return;
  if(first.type==='radio'){
@@ -308,23 +347,22 @@ function setAnswerValue(n,value){
  }else first.value=value;
 }
 function clearAnswerValue(n){
+ if(n>=25&&n<=27){
+  document.querySelectorAll('.part-three-choice-input').forEach(input=>input.checked=false);
+  updatePartThreeChoiceStatus();
+  return;
+ }
  const first=document.getElementById('a'+n);
  if(!first)return;
  if(first.type==='radio')document.querySelectorAll('input[name="a'+n+'"]').forEach(input=>input.checked=false);
  else first.value='';
 }
-function updatePartThreeLetterOptions(){
- const selects=[25,26,27].map(n=>document.getElementById('a'+n));
- const used=new Set();
- selects.forEach(select=>{
-  if(select.value&&used.has(select.value))select.value='';
-  if(select.value)used.add(select.value);
- });
- selects.forEach(select=>{
-  Array.from(select.options).forEach(option=>{
-   option.disabled=!!option.value&&used.has(option.value)&&option.value!==select.value;
-  });
- });
+function updatePartThreeChoiceStatus(){
+ const choices=Array.from(document.querySelectorAll('.part-three-choice-input'));
+ const selected=choices.filter(input=>input.checked);
+ choices.forEach(input=>{input.disabled=selected.length>=3&&!input.checked;});
+ const status=document.getElementById('partThreeSelectionStatus');
+ if(status)status.textContent=selected.length+' of 3 selected'+(selected.length===3?' — uncheck one to change your choices.':'.');
 }
 function answeredCount(){
  let count=0;
@@ -341,20 +379,27 @@ audio.addEventListener('ended',()=>{if(mode==='exam'){audio.controls=false;docum
 function norm(s){return String(s??'').toLowerCase().trim().replace(/[.,!?]/g,'').replace(/\s+/g,' ')}
 function save(){const d={};for(let n=1;n<=40;n++)d[n]=answerValue(n);localStorage.setItem('englisity-listening-01',JSON.stringify(d))}
 try{const d=JSON.parse(localStorage.getItem('englisity-listening-01')||'{}');Object.keys(d).forEach(n=>setAnswerValue(Number(n),d[n]));}catch(e){}
-updatePartThreeLetterOptions();
+updatePartThreeChoiceStatus();
+function updateQuestionNav(n){
+ if(Math.floor((n-1)/10)!==currentSection)return;
+ const button=document.getElementById('numbers-'+currentSection).querySelectorAll('button')[(n-1)%10];
+ if(button)button.classList.toggle('answered',!!answerValue(n).trim());
+}
 document.querySelectorAll('.q input, .q select').forEach(x=>{
  const update=()=>{
   const n=Number(x.name?x.name.slice(1):x.id.slice(1));
-  if(n>=25&&n<=27)updatePartThreeLetterOptions();
-  save();answeredCount();
-  if(Math.floor((n-1)/10)===currentSection){
-   const button=document.getElementById('numbers-'+currentSection).querySelectorAll('button')[(n-1)%10];
-   if(button)button.classList.toggle('answered',!!answerValue(n).trim());
-  }
+  save();answeredCount();updateQuestionNav(n);
  };
  if(x.tagName==='SELECT'||x.type==='radio')x.addEventListener('change',update);
  else if(x.type!=='hidden')x.addEventListener('input',update);
 });
+document.querySelectorAll('.part-three-choice-input').forEach(input=>{
+ input.addEventListener('change',()=>{
+  updatePartThreeChoiceStatus();
+  save();answeredCount();
+  [25,26,27].forEach(updateQuestionNav);
+ });
+});
 document.getElementById('submit').onclick=()=>{if(done)return;let score=0,rows=[];for(let n=1;n<=40;n++){const v=norm(answerValue(n)),k=key[Math.floor((n-1)/10)][(n-1)%10],ok=(Array.isArray(k)?k:[k]).some(a=>norm(a)===v);document.querySelector('[data-n="'+n+'"]').classList.add(ok?'good':'bad');if(ok)score++;const userAnswer=answerValue(n).trim();const safeUser=userAnswer.replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));const correctAnswer=Array.isArray(k)?(n>=25&&n<=27?k.join(', '):k[0]):k;const evidence=transcriptEvidence[n];const safeEvidence=evidence?evidence.replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])):'';const viewButton=n>=30?'<button type="button" class="review-transcript" data-view-question="'+n+'">View in test</button>':'';const evidenceBlock=evidence?'<details class="answer-evidence"><summary>🔍 Evidence</summary><p>'+safeEvidence+'</p></details>':'';rows.push('<div class="q '+(ok?'good':'bad')+'"><strong>Q'+n+' · '+(ok?'Correct':'Incorrect')+'</strong><br><span class="muted">Your answer: '+(safeUser||'Not answered')+'</span><br><span class="muted">Correct answer: '+correctAnswer+'</span>'+viewButton+evidenceBlock+'<br><button type="button" class="review-transcript" data-review-section="'+Math.floor((n-1)/10)+'">Review Part '+(Math.floor((n-1)/10)+1)+' transcript</button></div>')}done=true;document.getElementById('reviewLayout').classList.add('review-active');const r=document.getElementById('results');r.innerHTML='<h2>Result: '+score+'/40</h2><p class="muted">Raw score only; this is not an official IELTS band conversion. Questions 30–40 include transcript evidence and a shortcut back to the question in the test.</p><div class="grid">'+rows.join('')+'</div>';r.classList.add('show');r.querySelectorAll('[data-review-section]').forEach(btn=>btn.addEventListener('click',()=>{showSection(Number(btn.dataset.reviewSection));document.getElementById('transcript').hidden=false;document.getElementById('transcript').scrollIntoView({behavior:'smooth',block:'start'});}));r.querySelectorAll('[data-view-question]').forEach(btn=>btn.addEventListener('click',()=>{const n=Number(btn.dataset.viewQuestion);showSection(Math.floor((n-1)/10));const target=document.getElementById('question-'+n);if(target)target.scrollIntoView({behavior:'smooth',block:'center'});}));document.getElementById('transcriptContent').innerHTML=transcriptParts[currentSection]||'';document.getElementById('transcript').hidden=false;document.getElementById('reviewLayout').scrollIntoView({behavior:'smooth',block:'start'});save()};
-document.getElementById('reset').onclick=()=>{if(!confirm('Clear all answers and restart?'))return;for(let n=1;n<=40;n++){clearAnswerValue(n);const chosen=document.getElementById('chosen-'+n);if(chosen)chosen.textContent='—';}updatePartThreeLetterOptions();localStorage.removeItem('englisity-listening-01');showSection(currentSection);answeredCount();done=false;document.querySelectorAll('.q').forEach(x=>x.classList.remove('good','bad'));document.getElementById('results').classList.remove('show');document.getElementById('reviewLayout').classList.remove('review-active');document.getElementById('transcript').hidden=true;audio.pause();audio.currentTime=0;lastTime=0};
+document.getElementById('reset').onclick=()=>{if(!confirm('Clear all answers and restart?'))return;for(let n=1;n<=40;n++){clearAnswerValue(n);const chosen=document.getElementById('chosen-'+n);if(chosen)chosen.textContent='—';}updatePartThreeChoiceStatus();localStorage.removeItem('englisity-listening-01');showSection(currentSection);answeredCount();done=false;document.querySelectorAll('.q').forEach(x=>x.classList.remove('good','bad'));document.getElementById('results').classList.remove('show');document.getElementById('reviewLayout').classList.remove('review-active');document.getElementById('transcript').hidden=true;audio.pause();audio.currentTime=0;lastTime=0};
 </script><script src="../js/app.js"></script><script src="../js/features.js?v=listening-mock-02"></script></body></html>

@@ -44,6 +44,7 @@ To run the checks locally, use Node.js and Python 3:
 
 ```bash
 for file in js/*.js; do node --check "$file"; done
+node --check sw.js
 TZ=Asia/Tashkent node scripts/test-streak.js
 python scripts/check-site.py
 ```

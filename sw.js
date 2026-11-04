@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "englisity-pwa-v6";
+const CACHE_NAME = "englisity-pwa-v7";
 const APP_ROOT = new URL(self.registration.scope);
 
 const CORE_FILES = [

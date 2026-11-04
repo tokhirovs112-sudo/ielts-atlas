@@ -269,6 +269,61 @@ html[data-theme="dark"] body #results>.muted { color:#c5d7ca!important; }
   .review-layout.review-active { grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr); }
 }
 
+/* Fresh Listening test interface pass: strong visual separation and consistent controls. */
+body:has(#modeScreen){background:radial-gradient(ellipse at 50% 0%,#e7f1e9 0%,#f4f7f4 48%,#f4f7f4 100%)!important}
+body:has(#modeScreen) .wrap{max-width:1160px;margin:34px auto;padding-left:24px;padding-right:24px}
+#modeScreen{position:relative;overflow:hidden;border:1px solid #d5e5d9!important;border-radius:26px!important;background:linear-gradient(125deg,#fff 0%,#f5faf6 62%,#e8f3eb 100%)!important;box-shadow:0 18px 55px rgba(29,66,43,.09)!important}
+#modeScreen:after{content:"";position:absolute;right:-95px;top:-135px;width:330px;height:330px;border:1px solid #d5e8d9;border-radius:50%;box-shadow:0 0 0 28px #eaf4ec80,0 0 0 58px #eaf4ec50;pointer-events:none}
+#modeScreen>*{position:relative;z-index:1}
+#modeScreen h1{font-size:clamp(32px,4.5vw,48px)!important;letter-spacing:-1.5px!important;max-width:650px}
+#modeScreen>p.muted{font-size:15px!important;line-height:1.8!important}
+.mode-choice{min-height:150px!important;padding:23px!important;border-radius:17px!important;background:rgba(255,255,255,.88)!important;box-shadow:0 7px 22px rgba(25,61,39,.045)!important;transition:transform .18s,border-color .18s,box-shadow .18s!important}
+.mode-choice:hover{transform:translateY(-3px);border-color:#79a889!important;box-shadow:0 13px 28px rgba(25,61,39,.09)!important}
+.mode-choice strong{font-size:20px!important;letter-spacing:-.3px}
+.mode-choice span{font-size:13px!important;line-height:1.6}
+#testArea{display:grid;gap:18px}
+.audio-panel{padding:19px 22px!important;border:1px solid #d9e5dc!important;border-radius:18px!important;background:#fff!important;box-shadow:0 8px 24px rgba(25,61,39,.045)!important}
+.audio-panel .test-meta{margin-bottom:7px}
+.audio-panel h2{font-size:19px!important;letter-spacing:-.4px}
+.audio{height:42px!important;margin:12px 0 5px!important}
+.section-panel{padding:clamp(17px,3vw,30px)!important;border:1px solid #dce6de!important;border-radius:20px!important;background:#fff!important;box-shadow:0 8px 25px rgba(25,61,39,.04)!important}
+.section-heading{padding-bottom:15px;margin-bottom:19px;border-bottom:1px solid #edf1ed}
+.section-heading h2{font-size:23px!important;letter-spacing:-.6px}
+.question-content{font-size:15px;line-height:1.75}
+.question-content h3{margin:25px 0 11px!important;font-size:17px!important;letter-spacing:-.2px}
+.q{border-radius:11px!important;padding:11px 12px!important;background:#fbfdfb;border-color:#e2eae3!important}
+.q:focus-within{border-color:#80aa8b!important;box-shadow:0 0 0 3px rgba(89,145,104,.12)}
+.q input,.qcombobox{min-height:40px!important;background:#fff!important;color:#203c30!important;border-color:#cbd9ce!important}
+.feature-options,.part-three-choice-box,.part-three-passage,.part-four-option-box{border-radius:13px!important}
+.mcq-option,.part-three-checkbox-option{min-height:48px;border-radius:11px!important;transition:background .15s,border-color .15s}
+.actions{gap:9px;margin:20px 0 4px}
+.actions button{min-height:42px;padding:10px 16px!important;border-radius:10px!important;font-size:13px!important;transition:transform .15s,filter .15s}
+.actions button:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.bottom-bar{padding:10px 18px!important;background:rgba(255,255,255,.96)!important;border-top:1px solid #dce7de!important;box-shadow:0 -8px 30px rgba(25,50,32,.09)!important;backdrop-filter:blur(14px)}
+.section-tab{padding:9px 11px!important;font-weight:700!important}
+.section-tab.active{background:#e5f2e8!important;color:#205d35!important}
+.nav-numbers button{min-width:27px!important;min-height:28px!important;border:1px solid #e4ebe5!important;background:#f6f9f6!important;font-weight:650}
+.nav-numbers button.answered{background:#dcefe1!important;border-color:#b5d6bd!important;color:#205d35!important}
+.submit-area button{min-height:40px;padding:10px 17px!important;border-radius:10px!important}
+html[data-theme="dark"] body:has(#modeScreen){background:radial-gradient(ellipse at 50% 0%,#1d3328 0%,#111c19 55%,#111c19 100%)!important}
+html[data-theme="dark"] #modeScreen{background:linear-gradient(125deg,#182821,#1a2c23 62%,#20382b)!important;border-color:#3b5b47!important}
+html[data-theme="dark"] #modeScreen:after{border-color:#34543f;box-shadow:0 0 0 28px #213c2b80,0 0 0 58px #213c2b50}
+html[data-theme="dark"] #modeScreen h1,html[data-theme="dark"] #modeScreen h2{color:#edf5ef!important}
+html[data-theme="dark"] #modeScreen>p.muted{color:#bdcec2!important}
+html[data-theme="dark"] .mode-choice{background:#1c3026!important;border-color:#3d5a47!important;color:#edf5ef!important}
+html[data-theme="dark"] .mode-choice span{color:#b8cbbd!important}
+html[data-theme="dark"] .audio-panel,html[data-theme="dark"] .section-panel{background:#17251f!important;border-color:#3b5145!important;color:#e7eee9!important}
+html[data-theme="dark"] .section-heading{border-bottom-color:#33483b}
+html[data-theme="dark"] .q{background:#1a2a23!important;border-color:#3c5547!important;color:#e7eee9!important}
+html[data-theme="dark"] .q label,html[data-theme="dark"] .question-content,html[data-theme="dark"] .question-content p{color:#e7eee9!important}
+html[data-theme="dark"] .q input,html[data-theme="dark"] .qcombobox{background:#101c18!important;color:#edf5ef!important;border-color:#526b5b!important}
+html[data-theme="dark"] .bottom-bar{background:rgba(19,32,26,.97)!important;border-color:#3b5145!important}
+html[data-theme="dark"] .section-tab{color:#d4e3d8!important}
+html[data-theme="dark"] .section-tab.active{background:#294b38!important;color:#c8ebd0!important}
+html[data-theme="dark"] .nav-numbers button{background:#20332a!important;border-color:#40594a!important;color:#dcebe1!important}
+html[data-theme="dark"] .nav-numbers button.answered{background:#315b46!important;border-color:#6b9d78!important;color:#fff!important}
+@media(max-width:700px){body:has(#modeScreen) .wrap{padding-left:12px;padding-right:12px;margin:14px auto}.audio-panel{padding:14px!important}.section-panel{padding:14px!important}.section-heading h2{font-size:19px!important}.bottom-bar{padding:7px 5px!important}}
+
 </style></head>
 <body>
 <header class="topbar"><a class="brand" href="../index.html"><img class="brand-mark" src="../assets/englisity-mark.svg" alt=""><span>Englisity<small>LISTENING PRACTICE</small></span></a><button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button><nav class="nav" id="navigation"><a href="../index.html">Home</a><a href="reading.html">Reading</a><a class="active" href="listening.html">Listening</a><a href="writing.html">Writing</a><a href="speaking.html">Speaking</a><a class="eng-vocab-nav" href="vocabulary.html">Vocabulary</a>

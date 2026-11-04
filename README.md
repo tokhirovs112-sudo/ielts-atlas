@@ -32,6 +32,10 @@ No build step or package installation is required for the static site.
 
 A local server is recommended because service workers and some browser features do not behave the same when pages are opened directly from a file URL.
 
+## Project status
+
+Englisity is actively developed. The individual skill pages and resource library are available, while the complete three-passage Reading test is still being prepared. The project prioritizes clear instructions, responsive layouts, accessible controls, and readable light/dark themes.
+
 ## Quality checks
 
 The repository includes automated checks for JavaScript syntax, daily-streak behaviour, and broken local HTML asset references. On GitHub, these run through the **Site quality checks** workflow after pushes and pull requests.

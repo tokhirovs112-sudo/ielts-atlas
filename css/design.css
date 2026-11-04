@@ -767,9 +767,12 @@ html[data-theme="dark"] .question-feedback blockquote{
   color:#e1ebe4!important;
 }
 html[data-theme="dark"] #passageText p.is-highlighted{
-  background:#51451f!important;
-  outline-color:#a98c3b!important;
-  color:#fff4cf!important;
+  background:#203b31!important;
+  outline:1px solid #527b62!important;
+  outline-offset:2px;
+  border-radius:6px;
+  color:#e5f0e8!important;
+  box-shadow:inset 3px 0 0 #78ad8b!important;
 }
 html[data-theme="dark"] .vocab-popup{
   background:#1a2826!important;

@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "englisity-pwa-v5";
+const CACHE_NAME = "englisity-pwa-v6";
 const APP_ROOT = new URL(self.registration.scope);
 
 const CORE_FILES = [
@@ -77,14 +77,20 @@ self.addEventListener("fetch", event => {
   }
 
   if (/\.(?:css|js|svg|png|webmanifest)$/i.test(url.pathname)) {
+    // Prefer fresh assets while online, but keep a cached copy for offline use.
+    // Cache-first here can leave installed users stuck on old JavaScript/CSS.
     event.respondWith((async () => {
-      const cached = await caches.match(request);
-      if (cached) return cached;
-      const response = await fetch(request);
-      if (response && response.ok) {
-        const cache = await caches.open(CACHE_NAME);
-        await cache.put(request, response.clone());
+      const cache = await caches.open(CACHE_NAME);
+      try {
+        const response = await fetch(request);
+        if (response && response.ok) {
+          await cache.put(request, response.clone());
+        }
+        return response;
+      } catch (error) {
+        const cached = await caches.match(request);
+        if (cached) return cached;
+        throw error;
       }
-      return response;
     })());
   }

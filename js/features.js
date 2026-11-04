@@ -9,7 +9,7 @@
   // Use local calendar dates for streaks, but UTC arithmetic for date shifting.
   // This avoids daylight-saving and month/year-boundary errors.
   function shiftDateKey(key, amount) {
-    const match = /^(\\d{4})-(\\d{2})-(\\d{2})$/.exec(String(key || ""));
+    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(key || ""));
     if (!match) return null;
     const year = Number(match[1]);
     const month = Number(match[2]);
@@ -29,7 +29,7 @@
     const current = Number.isFinite(currentValue) ? Math.max(0, Math.floor(currentValue)) : 0;
     const longest = Number.isFinite(longestValue) ? Math.max(current, 0, Math.floor(longestValue)) : current;
     const lastActive = stored && typeof stored.lastActive === "string" &&
-      /^\\d{4}-\\d{2}-\\d{2}$/.test(stored.lastActive) ? stored.lastActive : null;
+      /^\d{4}-\d{2}-\d{2}$/.test(stored.lastActive) ? stored.lastActive : null;
     return { current, longest, lastActive };
   }
 

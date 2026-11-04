@@ -324,12 +324,50 @@ html[data-theme="dark"] .nav-numbers button{background:#20332a!important;border-
 html[data-theme="dark"] .nav-numbers button.answered{background:#315b46!important;border-color:#6b9d78!important;color:#fff!important}
 @media(max-width:700px){body:has(#modeScreen) .wrap{padding-left:12px;padding-right:12px;margin:14px auto}.audio-panel{padding:14px!important}.section-panel{padding:14px!important}.section-heading h2{font-size:19px!important}.bottom-bar{padding:7px 5px!important}}
 
+
+/* Final cleanup: remove excessive spacing and keep every text element readable. */
+#modeScreen .eyebrow,.audio-panel .eyebrow,.result-eyebrow{letter-spacing:.09em!important}
+.question-content{line-height:1.58!important}
+.question-content>p{margin:5px 0!important}
+.question-content h3{margin:17px 0 7px!important;line-height:1.3!important}
+.section-heading{margin-bottom:11px!important;padding-bottom:11px!important}
+.section-panel{padding:clamp(15px,2vw,22px)!important}
+#groups{gap:10px!important}
+.q{padding:9px 11px!important}
+.part-three-passage{padding:13px 15px!important;line-height:1.85!important;margin:9px 0 17px!important}
+.part-three-inline-q{gap:3px!important;margin:0 1px!important;padding:1px 2px!important}
+.part-three-inline-q input{width:116px!important;min-width:96px!important;max-width:130px!important;min-height:34px!important;padding:5px 7px!important}
+.part-three-sentences,.part-three-mcqs,.matching-list,.part-four-matching{gap:6px!important}
+.part-three-sentence{padding:8px 10px!important}
+.part-four-summary{gap:5px!important}
+.part-four-line{padding:8px 10px!important;line-height:1.55!important}
+.transcript-panel p{line-height:1.58!important;margin:6px 0!important}
+.map-note,.part-three-help,.part-four-help{line-height:1.5!important}
+html[data-theme="dark"] body .eyebrow,
+html[data-theme="dark"] body .audio-panel .eyebrow,
+html[data-theme="dark"] body .result-eyebrow{color:#a9d8b5!important}
+html[data-theme="dark"] body .muted,
+html[data-theme="dark"] body .question-content .muted{color:#bdcec2!important}
+html[data-theme="dark"] body .q label,
+html[data-theme="dark"] body .question-content,
+html[data-theme="dark"] body .question-content p,
+html[data-theme="dark"] body .part-three-sentence label,
+html[data-theme="dark"] body .part-four-line label,
+html[data-theme="dark"] body .part-four-line span{color:#edf5ef!important}
+@media(max-width:700px){
+ .part-three-passage{padding:10px 11px!important;line-height:1.9!important;font-size:14px!important}
+ .part-three-inline-q input{width:104px!important;min-width:88px!important}
+ .section-panel{padding:13px 11px!important}
+ .question-content{line-height:1.55!important}
+ .transcript-panel{padding:14px!important}
+}
+
 </style></head>
 <body>
 <header class="topbar"><a class="brand" href="../index.html"><img class="brand-mark" src="../assets/englisity-mark.svg" alt=""><span>Englisity<small>LISTENING PRACTICE</small></span></a><button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button><nav class="nav" id="navigation"><a href="../index.html">Home</a><a href="reading.html">Reading</a><a class="active" href="listening.html">Listening</a><a href="writing.html">Writing</a><a href="speaking.html">Speaking</a><a class="eng-vocab-nav" href="vocabulary.html">Vocabulary</a>
       <a href="articles.html">Articles</a><a href="podcasts.html">Podcasts</a></nav></header>
 <main class="wrap">
-<section class="panel" id="modeScreen"><div class="eyebrow">ENG L I S I T Y · LISTENING MOCK 01</div><h1>IELTS Listening Mock Test 01</h1><p class="muted">40 questions · 4 parts · approximately 30 minutes</p><p class="muted">Unofficial practice material. This is not an official IELTS test and is not endorsed by IELTS.</p><h2>Choose how to practise</h2><div class="mode-chooser"><button type="button" class="mode-choice" id="practice" onclick="window.startListeningMode&&window.startListeningMode('practice')"><strong>Practice mode</strong><span>Replay and seek through the recording. Check your answers when you finish.</span></button><button type="button" class="mode-choice" id="exam" onclick="window.startListeningMode&&window.startListeningMode('exam')"><strong>Exam mode</strong><span>One continuous play-through. No seeking backwards. Check answers after the recording.</span></button></div></section>
+<section class="panel" id="modeScreen"><div class="eyebrow">ENGLISITY · LISTENING MOCK 01</div><h1>IELTS Listening Mock Test 01</h1><p class="muted">40 questions · 4 parts · approximately 30 minutes</p><p class="muted">Unofficial practice material. This is not an official IELTS test and is not endorsed by IELTS.</p><h2>Choose how to practise</h2><div class="mode-chooser"><button type="button" class="mode-choice" id="practice" onclick="window.startListeningMode&&window.startListeningMode('practice')"><strong>Practice mode</strong><span>Replay and seek through the recording. Check your answers when you finish.</span></button><button type="button" class="mode-choice" id="exam" onclick="window.startListeningMode&&window.startListeningMode('exam')"><strong>Exam mode</strong><span>One continuous play-through. No seeking backwards. Check answers after the recording.</span></button></div></section>
 <div class="test-area" id="testArea" hidden>
 <section class="panel audio-panel"><div class="test-meta"><div><div class="eyebrow">LISTENING MOCK TEST 01</div><h2 id="modeTitle">Practice mode</h2></div><button class="alt" id="quitTest" type="button">Exit test</button></div><p class="muted" id="status">Use headphones and adjust your volume before starting.</p><audio id="audio" class="audio" controls preload="metadata"><source src="https://pub-a5eb8600f0df44d3a4aff4d53751151f.r2.dev/Listening%20Real%20Exam%201/Authentic%20Listening%20Mock%20Test%20150%20%40shohrukhposts.mp3" type="audio/mpeg"></audio><p class="muted" id="restriction"></p></section>
 <div class="review-layout" id="reviewLayout"><div id="groups"></div><section class="panel transcript-panel" id="transcript" hidden><h2>Listening transcript</h2><p class="muted">Review the transcript for the selected section alongside your answers.</p><div id="transcriptContent"></div></section></div><div class="actions"><button class="alt" id="reset" type="button">Reset answers</button></div>

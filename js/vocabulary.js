@@ -156,7 +156,7 @@ function renderQuestion(){
  area.append(title,options,feedback,submit);
 }
 function showResult(){
- locked=true;const passed=score>=4;const result=document.createElement("div");result.className="vocab-result";
+ locked=true;const passed=score>=4;const result=document.createElement("div");result.className="vocab-result "+(passed?"is-passed":"needs-practice");
  const h=document.createElement("h3");h.textContent="You scored "+score+"/5";
  const p=document.createElement("p");p.textContent=passed?"Good work. You passed this practice session. Your streak has been updated for today.":"You need 4/5 to pass this session. Review the explanations and try another set. Your streak has not changed.";
  result.append(h,p);

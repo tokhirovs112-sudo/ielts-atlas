@@ -310,6 +310,62 @@
     ]
   };
 
+  // Add new questions only when an equivalent question is not already listed.
+  // Matching ignores case, punctuation and repeated whitespace.
+  const normaliseQuestion = question =>
+    question.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().replace(/\\s+/g, " ");
+
+  const existingQuestions = new Set(
+    Object.values(questionSets).flat().flatMap(topic => topic.questions)
+      .map(normaliseQuestion)
+  );
+
+  function addUniqueTopic(part, topic, questions, extra = {}) {
+    const uniqueQuestions = questions.filter(question => {
+      const key = normaliseQuestion(question);
+      if (existingQuestions.has(key)) return false;
+      existingQuestions.add(key);
+      return true;
+    });
+
+    if (uniqueQuestions.length) {
+      questionSets[part].push({ topic, questions: uniqueQuestions, ...extra });
+    }
+  }
+
+  addUniqueTopic(1, "Home and accommodation", [
+    "Do you live in an apartment or a house?",
+    "Do you live alone or with roommates?",
+    "What do you like most about the place where you live?",
+    "Would you prefer to live in a house or an apartment in the future?"
+  ]);
+
+  addUniqueTopic(1, "Free time and leisure", [
+    "What do you usually do in your free time?",
+    "Do you prefer spending your leisure time alone or with other people?",
+    "Do you have more free time on weekdays or at weekends?"
+  ]);
+
+  addUniqueTopic(2, "People and relationships", [
+    "Describe a person you disliked at first but later became friends with."
+  ], {
+    cueCard: true,
+    prompts: [
+      "Who this person is",
+      "When and where you first met",
+      "Why you disliked them at first",
+      "And explain how you eventually became friends"
+    ]
+  });
+
+  addUniqueTopic(3, "Friendship and relationships", [
+    "Do you think friendship is important in people's lives?",
+    "Why do people need friends?",
+    "Do you think friendship is a psychological need?",
+    "How do friendships affect people's mental well-being?",
+    "Is it easier to make friends nowadays than in the past?"
+  ]);
+
   const partInfo = {
     1: {
       title: "Part 1 — Introduction and Interview",

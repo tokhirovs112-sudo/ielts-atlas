@@ -588,6 +588,7 @@
     document.querySelector('[data-save-draft="task2"]').addEventListener("click", () => {
       if (!currentTask2Id) return;
       localStorage.setItem("englisity-task2-" + currentTask2Id + "-draft", document.getElementById("task2Draft").value);
+      if (countWords(document.getElementById("task2Draft").value) >= 250) window.EnglisityProgress?.recordActivity?.();
       document.getElementById("task2Status").textContent = "Draft saved in this browser.";
     });
     document.querySelector('[data-clear-draft="task2"]').addEventListener("click", () => {
@@ -627,6 +628,7 @@
 
       document.querySelector('[data-save-draft="' + task + '"]').addEventListener("click", () => {
         localStorage.setItem(settings.draft, draftBox.value);
+        if (countWords(draftBox.value) >= settings.minimum) window.EnglisityProgress?.recordActivity?.();
         document.getElementById(settings.status).textContent = "Draft saved in this browser.";
       });
 

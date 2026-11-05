@@ -108,5 +108,15 @@ window.ATLAS_RESOURCES = [
     date: "2026-11-05",
     description: "Learn useful vocabulary and expressions for describing how money is produced. Take note of the process language and practise using it in IELTS Academic Writing Task 1 process diagrams.",
     url: "https://youtu.be/i77nE2gLbDY?si=Rh_Pr3KMHPTrxp6z"
+  },
+  {
+    id: 14,
+    type: "podcast",
+    title: "An Introduction to Performance Art",
+    level: "B2",
+    topic: "Arts & Culture",
+    date: "2026-11-05",
+    description: "Explore performance art, broaden your ideas about artistic expression, and collect useful vocabulary and natural language chunks. Note down phrases you can reuse when discussing art, creativity and culture.",
+    url: "https://youtu.be/6Z-YZ3A4mdk?si=YT8M29ontCqBQuAR"
   }
 ];

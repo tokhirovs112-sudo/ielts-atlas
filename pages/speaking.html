@@ -371,17 +371,17 @@
     "Is there any hobby you would like to take up in the future?"
   ]);
 
-  addUniqueTopic(2, "Health and well-being", [
+  appendUniqueQuestions(2, "Objects and possessions", [
     "Describe an article you have read about health."
-  ], {
-    cueCard: true,
-    prompts: [
-      "When and where you read it",
-      "What the article was about",
-      "What you learned from it",
-      "And explain why you found it interesting or useful"
-    ]
-  });
+  ]);
+  const articleCueCard = questionSets[2].find(item => item.topic === "Objects and possessions");
+  articleCueCard.cueCard = true;
+  articleCueCard.prompts = [
+    "When and where you read it",
+    "What the article was about",
+    "What you learned from it",
+    "And explain why you found it interesting or useful"
+  ];
 
   addUniqueTopic(3, "Healthy lifestyles", [
     "Do you think parents or teachers should be mainly responsible for teaching children about healthy lifestyles?",
@@ -391,17 +391,17 @@
     "How has people's attitude towards health changed compared with the past?"
   ]);
 
-  addUniqueTopic(2, "People and relationships", [
+  appendUniqueQuestions(2, "People", [
     "Describe a person you disliked at first but later became friends with."
-  ], {
-    cueCard: true,
-    prompts: [
-      "Who this person is",
-      "When and where you first met",
-      "Why you disliked them at first",
-      "And explain how you eventually became friends"
-    ]
-  });
+  ]);
+  const friendshipCueCard = questionSets[2].find(item => item.topic === "People");
+  friendshipCueCard.cueCard = true;
+  friendshipCueCard.prompts = [
+    "Who this person is",
+    "When and where you first met",
+    "Why you disliked them at first",
+    "And explain how you eventually became friends"
+  ];
 
   addUniqueTopic(3, "Friendship and relationships", [
     "Do you think friendship is important in people's lives?",

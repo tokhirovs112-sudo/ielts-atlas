@@ -118,5 +118,15 @@ window.ATLAS_RESOURCES = [
     date: "2026-11-05",
     description: "Explore performance art, broaden your ideas about artistic expression, and collect useful vocabulary and natural language chunks. Note down phrases you can reuse when discussing art, creativity and culture.",
     url: "https://youtu.be/6Z-YZ3A4mdk?si=YT8M29ontCqBQuAR"
+  },
+  {
+    id: 15,
+    type: "podcast",
+    title: "Is There Something Wrong With Democracy?",
+    level: "C1",
+    topic: "Politics & Society",
+    date: "2026-11-05",
+    description: "Explore the challenges facing modern democracy, consider different perspectives on political systems, and expand your vocabulary for discussing government, society, freedom and political participation. Note down useful expressions and practise using them in discussions and essays.",
+    url: "https://youtu.be/qdK5uK7B0Lo?si=kqrTDFTdUWPjiLpe"
   }
 ];

@@ -88,8 +88,7 @@ window.ATLAS_RESOURCES = [
     date: "2026-11-04",
     description: "Six practical ways to make daytime rest more refreshing and avoid common nap-time mistakes.",
     url: "articles/better-nap.html"
-  }
-  ,
+  },
   {
     id: 12,
     type: "article",
@@ -99,5 +98,15 @@ window.ATLAS_RESOURCES = [
     date: "2026-11-04",
     description: "Discover how learning another language can deepen cultural understanding, widen opportunities and change how you experience the world.",
     url: "articles/beyond-words.html"
+  },
+  {
+    id: 13,
+    type: "podcast",
+    title: "How Money Is Made",
+    level: "B2",
+    topic: "Business & Economics",
+    date: "2026-11-05",
+    description: "Learn useful vocabulary and expressions for describing how money is produced. Take note of the process language and practise using it in IELTS Academic Writing Task 1 process diagrams.",
+    url: "https://youtu.be/i77nE2gLbDY?si=Rh_Pr3KMHPTrxp6z"
   }
 ];

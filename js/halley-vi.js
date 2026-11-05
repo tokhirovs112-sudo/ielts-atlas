@@ -55,6 +55,7 @@ function submit(){
  root.querySelectorAll("input,select").forEach(x=>x.disabled=true);document.getElementById("checkAnswers").disabled=true;
  const result=document.getElementById("testResult");result.hidden=false;result.innerHTML='<strong>Your score: '+score+' / 13</strong><span>'+(score===13?"Excellent work — a perfect score!":score>=10?"Strong result. Review any missed questions below.":score>=7?"Good effort. Check the evidence for the questions you missed.":"Review the explanations and try the passage again.")+'</span>';
  if(timer)clearInterval(timer);if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+ window.EnglisityProgress?.recordActivity?.();
  result.scrollIntoView({behavior:"smooth",block:"center"});
 }
 document.getElementById("checkAnswers").addEventListener("click",submit);

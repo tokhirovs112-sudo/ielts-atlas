@@ -27,7 +27,7 @@
       type: el.type || "", value: el.value, checked: !!el.checked
     }));
     const slots = Array.from(document.querySelectorAll(".drop-slot")).map((el, index) => ({
-      index, text: el.textContent || "", word: el.dataset.word || "", className: el.className
+      index, text: el.textContent || "", word: el.dataset.word || "", value: el.dataset.value || "", className: el.className
     }));
     return { fields, slots };
   }
@@ -47,8 +47,11 @@
       if (!el) return;
       el.textContent = saved.text;
       if (saved.word) el.dataset.word = saved.word;
+      if (saved.value) el.dataset.value = saved.value;
       el.className = saved.className || el.className;
     });
+    const usedWords = new Set(slots.map(el => el.dataset.value).filter(Boolean));
+    document.querySelectorAll(".word-chip[data-value]").forEach(chip => chip.classList.toggle("used", usedWords.has(chip.dataset.value)));
     document.dispatchEvent(new Event("change", { bubbles: true }));
   }
 

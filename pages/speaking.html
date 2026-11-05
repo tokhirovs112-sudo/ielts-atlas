@@ -329,7 +329,7 @@
   </section>
 
   <section class="panel practice-screen" id="practiceSection" hidden>
-    <button class="back-button" id="backToQuestions">← Back to questions</button>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between"><button class="back-button" id="backToQuestions">← Back to questions</button><button class="back-button" id="exitSpeakingPractice" type="button">Exit practice</button></div>
     <div class="section-heading">
       <h2>Your speaking practice</h2>
       <p id="practiceSubtitle">Read the question, then record your answer.</p>
@@ -986,6 +986,7 @@
   let recordingUrl = null;
   let startTime = 0;
   let recordingTimer = null;
+  let discardOnStop = false;
 
   function formatTime(seconds) {
     return String(Math.floor(seconds / 60)).padStart(2, "0") + ":" +
@@ -1061,6 +1062,18 @@
       recorder.onstop = () => {
         clearInterval(recordingTimer);
         releaseMicrophone();
+        if (discardOnStop) {
+          discardOnStop = false;
+          chunks = [];
+          clearPreviousRecording();
+          status.textContent = "Recording discarded";
+          recorderMessage.textContent = "Your unfinished speaking practice was discarded.";
+          startButton.disabled = false;
+          stopButton.disabled = true;
+          againButton.disabled = false;
+          dot.classList.remove("recording");
+          return;
+        }
 
         if (!chunks.length) {
           status.textContent = "No recording captured";
@@ -1153,6 +1166,22 @@
 
   startButton.addEventListener("click", startRecording);
   stopButton.addEventListener("click", stopRecording);
+  document.getElementById("exitSpeakingPractice").addEventListener("click", () => {
+    if (!confirm("Your recording and unfinished practice will be deleted if you exit. Do you want to leave?")) return;
+    stopPart2Timer();
+    resetPrepTimer();
+    if (recorder && recorder.state === "recording") {
+      discardOnStop = true;
+      stopRecording();
+    } else {
+      clearPreviousRecording();
+      releaseMicrophone();
+      chunks = [];
+    }
+    selectedQuestion = null;
+    recorderQuestion.textContent = "No question selected yet.";
+    showScreen("parts");
+  });
   againButton.addEventListener("click", startRecording);
 
   window.addEventListener("beforeunload", () => {

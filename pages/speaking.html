@@ -340,6 +340,23 @@
     "Would you prefer to live in a house or an apartment in the future?"
   ]);
 
+  appendUniqueQuestions(1, "Home and accommodation", [
+    "What area do you live in?",
+    "Do you know all your neighbors?"
+  ]);
+
+  addUniqueTopic(1, "Watches", [
+    "Do you wear watches?",
+    "Has someone ever gifted you one?",
+    "Is it okay to spend money on brand watches?"
+  ]);
+
+  addUniqueTopic(1, "Clothes", [
+    "What type of clothes do you prefer to wear?",
+    "Why?",
+    "What do you think about wearing bright colors on other people?"
+  ]);
+
   addUniqueTopic(1, "Free time and leisure", [
     "What do you usually do in your free time?",
     "Do you prefer spending your leisure time alone or with other people?",
@@ -404,6 +421,20 @@
     "How has people's attitude towards health changed compared with the past?"
   ]);
 
+  appendUniqueQuestions(2, "Situations and challenges", [
+    "Describe a time when you sent someone a message and they took a long time to reply."
+  ]);
+  const delayedReplyCueCard = questionSets[2].find(item => item.topic === "Situations and challenges");
+  delayedReplyCueCard.cueCard = true;
+  delayedReplyCueCard.cuePromptsByQuestion = {
+    "Describe a time when you sent someone a message and they took a long time to reply.": [
+      "Who you sent the message to",
+      "When you sent it",
+      "Why you wanted a reply",
+      "And explain how you felt while waiting"
+    ]
+  };
+
   appendUniqueQuestions(2, "People", [
     "Describe a person you disliked at first but later became friends with."
   ]);
@@ -433,6 +464,11 @@
     "What makes an advertisement memorable?",
     "Do people trust advertisements featuring celebrities?",
     "How have advertisements changed over the years?"
+  ]);
+
+  addUniqueTopic(3, "Ethics in conversation", [
+    "Are you polite in conversation?",
+    "How can you teach people to be polite?"
   ]);
 
   addUniqueTopic(3, "Friendship and relationships", [

@@ -65,6 +65,7 @@
       .eng-exit-dialog p{margin:0 0 22px;line-height:1.65;color:var(--muted,#68756b)}
       .eng-exit-actions{display:flex;flex-wrap:wrap;gap:9px;justify-content:flex-end}
       .eng-exit-actions button{min-height:42px;padding:10px 14px;border:1px solid var(--border,#dce5dd);border-radius:10px;background:var(--surface-soft,#f4f7f4);color:var(--text,#203c30);font:inherit;font-weight:750;cursor:pointer}
+      .eng-exit-actions .stay{display:none}
       .eng-exit-actions .save-leave{background:#286b49;border-color:#286b49;color:#fff}
       .eng-exit-actions .discard-leave{background:#fff;border-color:#d8a5a5;color:#9d3030}
       html[data-theme="dark"] .eng-exit-dialog{background:#172722;border-color:#40564b;color:#edf5ef}

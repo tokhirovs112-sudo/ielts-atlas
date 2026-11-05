@@ -129,4 +129,14 @@ window.ATLAS_RESOURCES = [
     description: "Explore the challenges facing modern democracy, consider different perspectives on political systems, and expand your vocabulary for discussing government, society, freedom and political participation. Note down useful expressions and practise using them in discussions and essays.",
     url: "https://youtu.be/qdK5uK7B0Lo?si=kqrTDFTdUWPjiLpe"
   }
+  ,{
+    id: 16,
+    type: "podcast",
+    title: "Gen Z vs Boomers: Is “OK Boomer” Ageist?",
+    level: "C1",
+    topic: "Society & Culture",
+    date: "2026-11-05",
+    description: "Why has a two-word phrase become the centre of a generational debate? Explore the tension between Gen Z and Baby Boomers, question common stereotypes, and decide where humour ends and ageism begins. Collect thought-provoking expressions and learn to build arguments that make people think.",
+    url: "https://youtu.be/6EjeFnw0cZY?si=mfvgQixxryWGMuZA"
+  }
 ];

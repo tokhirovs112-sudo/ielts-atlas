@@ -9,7 +9,8 @@ const wordify=value=>esc(value).replace(/([\p{L}]+(?:['’\-][\p{L}]+)*)/gu,'<sp
 document.getElementById("passageText").innerHTML=passage.map((txt,i)=>'<p id="p'+(i+1)+'"><span class="para-number">'+(i+1)+'</span>'+wordify(txt)+'</p>').join("");
 document.getElementById("questionList").innerHTML=questions.map(q=>{
  const control=q.type==="text"?'<input class="answer-input" id="a'+q.n+'" type="text" autocomplete="off" placeholder="Your answer" aria-label="Answer to question '+q.n+'">':'<div class="answer-options">'+["TRUE","FALSE","NOT GIVEN"].map(v=>'<label><input type="radio" name="a'+q.n+'" value="'+v+'"> '+v+'</label>').join("")+'</div>';
- return '<section class="question-card" id="q'+q.n+'"><div class="question-number">Question '+q.n+'</div><p>'+esc(q.p)+(q.type==="text"?'':"")+'</p>'+control+'<div class="question-feedback" id="f'+q.n+'" hidden></div></section>';
+ const prompt=q.type==="text"?esc(q.p).replace("______",control):esc(q.p);
+ return '<section class="question-card" id="q'+q.n+'"><div class="question-number">Question '+q.n+'</div><p>'+prompt+'</p>'+(q.type==="text"?"":control)+'<div class="question-feedback" id="f'+q.n+'" hidden></div></section>';
 }).join("");
 document.getElementById("checkAnswers").addEventListener("click",()=>{
  let score=0;

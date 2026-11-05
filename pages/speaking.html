@@ -346,6 +346,51 @@
     "Do you have more free time on weekdays or at weekends?"
   ]);
 
+  // Add new questions to an existing category without repeating equivalent wording.
+  function appendUniqueQuestions(part, topicName, questions) {
+    const topic = questionSets[part].find(item =>
+      normaliseQuestion(item.topic) === normaliseQuestion(topicName)
+    );
+    if (!topic) {
+      addUniqueTopic(part, topicName, questions);
+      return;
+    }
+    questions.forEach(question => {
+      const key = normaliseQuestion(question);
+      if (!existingQuestions.has(key)) {
+        topic.questions.push(question);
+        existingQuestions.add(key);
+      }
+    });
+  }
+
+  appendUniqueQuestions(1, "Free time and leisure", [
+    "How much free time do you have during the week?",
+    "Did you have more free time when you were a child?",
+    "Do you prefer relaxing at home or going outside?",
+    "Is there any hobby you would like to take up in the future?"
+  ]);
+
+  addUniqueTopic(2, "Health and well-being", [
+    "Describe an article you have read about health."
+  ], {
+    cueCard: true,
+    prompts: [
+      "When and where you read it",
+      "What the article was about",
+      "What you learned from it",
+      "And explain why you found it interesting or useful"
+    ]
+  });
+
+  addUniqueTopic(3, "Healthy lifestyles", [
+    "Do you think parents or teachers should be mainly responsible for teaching children about healthy lifestyles?",
+    "How can parents encourage their children to develop healthy habits?",
+    "Do schools do enough to promote healthy lifestyles among students?",
+    "Why do some people find it difficult to maintain a healthy lifestyle?",
+    "How has people's attitude towards health changed compared with the past?"
+  ]);
+
   addUniqueTopic(2, "People and relationships", [
     "Describe a person you disliked at first but later became friends with."
   ], {

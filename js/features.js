@@ -72,6 +72,16 @@
   window.EnglisityProgress = window.EnglisityProgress || {};
   window.EnglisityProgress.recordActivity = recordStreakActivity;
   window.EnglisityProgress.getStreak = getCurrentStreak;
+  window.addEventListener("storage", event => {
+    if (event.key === STREAK_KEY) {
+      updateStreakPill();
+      renderDashboard();
+    }
+  });
+  window.addEventListener("pageshow", () => {
+    updateStreakPill();
+    renderDashboard();
+  });
   const page = location.pathname.split("/").pop() || "index.html";
   const labels = { "index.html":"Home", "reading.html":"Reading", "listening.html":"Listening", "writing.html":"Writing", "speaking.html":"Speaking", "vocabulary.html":"Vocabulary", "articles.html":"Articles", "podcasts.html":"Podcasts" };
   const progress = read(KEY, { visits:{}, completed:{}, minutes:0 });

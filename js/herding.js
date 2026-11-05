@@ -18,7 +18,8 @@ document.getElementById("checkAnswers").addEventListener("click",()=>{
   const val=q.type==="text"?(document.getElementById("a"+q.n).value||"").trim().toLowerCase():(document.querySelector('input[name="a'+q.n+'"]:checked')?.value||"");
   const ok=val===q.a.toLowerCase();if(ok)score++;
   const f=document.getElementById("f"+q.n);f.hidden=false;f.className="question-feedback "+(ok?"correct":"incorrect");
-  f.innerHTML='<strong>'+(ok?"Correct":"Not quite")+'</strong><p>Correct answer: <b>'+esc(q.a)+'</b></p><p>'+esc(q.why)+'</p><p class="extract-label">Evidence in the passage:</p><blockquote>'+esc(q.e)+'</blockquote><a class="view-in-test" href="#p'+(q.n<=6?(q.n===1?1:q.n===2?2:q.n===3?2:q.n===4?2:q.n===5?2:3):q.n===7?5:q.n===8?6:q.n===9?7:q.n===10?7: q.n===11?8:q.n===12?8:10))+'" data-para="p'+(q.n<=6?(q.n===1?1:q.n===2?2:q.n===3?2:q.n===4?2:q.n===5?2:3):q.n===7?5:q.n===8?6:q.n===9?7:q.n===10?7:q.n===11?8:q.n===12?8:10)+'">View in the passage ↗</a>';
+  const para=q.n===1?1:q.n<=5?2:q.n===6?3:q.n===7?5:q.n===8?6:q.n<=10?7:q.n<=12?8:10;
+  f.innerHTML='<strong>'+(ok?"Correct":"Not quite")+'</strong><p>Correct answer: <b>'+esc(q.a)+'</b></p><p>'+esc(q.why)+'</p><p class="extract-label">Evidence in the passage:</p><blockquote>'+esc(q.e)+'</blockquote><a class="view-in-test" href="#p'+para+'" data-para="p'+para+'">View in the passage ↗</a>';
  });
  const result=document.getElementById("testResult");result.hidden=false;result.innerHTML='<strong>Your score: '+score+' / 13</strong><span>'+(score===13?"Excellent work!":score>=9?"Good effort. Review the explanations for mistakes.":"Review the evidence and try again.")+'</span>';result.scrollIntoView({behavior:"smooth",block:"center"});
 });

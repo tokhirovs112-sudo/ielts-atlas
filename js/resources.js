@@ -139,4 +139,14 @@ window.ATLAS_RESOURCES = [
     description: "Why has a two-word phrase become the centre of a generational debate? Explore the tension between Gen Z and Baby Boomers, question common stereotypes, and decide where humour ends and ageism begins. Collect thought-provoking expressions and learn to build arguments that make people think.",
     url: "https://youtu.be/6EjeFnw0cZY?si=mfvgQixxryWGMuZA"
   }
+  ,{
+    id: 17,
+    type: "podcast",
+    title: "The Teenage Women Changing the Face of Boxing",
+    level: "B2",
+    topic: "Sports & Society",
+    date: "2026-11-05",
+    description: "Meet the young women challenging expectations and making their mark in boxing. Learn useful vocabulary, note down interesting expressions, and try using them in your own sentences.",
+    url: "https://youtu.be/LBQfQu5n_w0?si=Ww3MQ5bN8JNa6fnk"
+  }
 ];

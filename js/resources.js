@@ -140,6 +140,15 @@ window.ATLAS_RESOURCES = [
     url: "https://youtu.be/6EjeFnw0cZY?si=mfvgQixxryWGMuZA"
   }
   ,{
+    id: 18,
+    type: "article",
+    title: "Advantages and Disadvantages of Artificial Intelligence",
+    level: "B2",
+    topic: "Technology & Society",
+    date: "2026-11-05",
+    description: "AI can transform healthcare, education and everyday work—but what happens when we trust it too much? Explore its opportunities, risks and impact on human thinking.",
+    url: "articles/ai-advantages-disadvantages.html"
+  }  ,{
     id: 17,
     type: "podcast",
     title: "The Teenage Women Changing the Face of Boxing",

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="490" viewBox="0 0 900 490">
+<rect width="900" height="490" fill="#fff"/>
+<text x="450" y="35" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" fill="#222">The number of cars per 1000 in 5 countries and the average</text>
+<g font-family="Arial,sans-serif" font-size="14" fill="#333">
+<line x1="80" y1="420" x2="830" y2="420" stroke="#d8d8d8"/><text x="65" y="425" text-anchor="end">0</text><line x1="80" y1="361.6666666666667" x2="830" y2="361.6666666666667" stroke="#d8d8d8"/><text x="65" y="366.6666666666667" text-anchor="end">200</text><line x1="80" y1="303.33333333333337" x2="830" y2="303.33333333333337" stroke="#d8d8d8"/><text x="65" y="308.33333333333337" text-anchor="end">400</text><line x1="80" y1="245" x2="830" y2="245" stroke="#d8d8d8"/><text x="65" y="250" text-anchor="end">600</text><line x1="80" y1="186.66666666666669" x2="830" y2="186.66666666666669" stroke="#d8d8d8"/><text x="65" y="191.66666666666669" text-anchor="end">800</text><line x1="80" y1="128.33333333333331" x2="830" y2="128.33333333333331" stroke="#d8d8d8"/><text x="65" y="133.33333333333331" text-anchor="end">1000</text><line x1="80" y1="70" x2="830" y2="70" stroke="#d8d8d8"/><text x="65" y="75" text-anchor="end">1200</text>
+</g>
+<line x1="80" y1="70" x2="80" y2="420" stroke="#777"/><line x1="80" y1="420" x2="830" y2="420" stroke="#777"/>
+<g>
+<rect x="109" y="332.5" width="20" height="87.5" fill="#2862a8"/><rect x="131" y="303.33333333333337" width="20" height="116.66666666666666" fill="#b51e2e"/><rect x="153" y="332.5" width="20" height="87.5" fill="#83ad2c"/><rect x="239" y="274.16666666666663" width="20" height="145.83333333333334" fill="#2862a8"/><rect x="261" y="259.58333333333337" width="20" height="160.41666666666666" fill="#b51e2e"/><rect x="283" y="265.4166666666667" width="20" height="154.58333333333331" fill="#83ad2c"/><rect x="369" y="215.83333333333331" width="20" height="204.16666666666669" fill="#2862a8"/><rect x="391" y="245" width="20" height="175" fill="#b51e2e"/><rect x="413" y="250.83333333333334" width="20" height="169.16666666666666" fill="#83ad2c"/><rect x="499" y="215.83333333333331" width="20" height="204.16666666666669" fill="#2862a8"/><rect x="521" y="215.83333333333331" width="20" height="204.16666666666669" fill="#b51e2e"/><rect x="543" y="215.83333333333331" width="20" height="204.16666666666669" fill="#83ad2c"/><rect x="629" y="157.5" width="20" height="262.5" fill="#2862a8"/><rect x="651" y="166.25" width="20" height="253.75" fill="#b51e2e"/><rect x="673" y="134.16666666666669" width="20" height="285.8333333333333" fill="#83ad2c"/><rect x="759" y="215.83333333333331" width="20" height="204.16666666666669" fill="#2862a8"/><rect x="781" y="221.66666666666669" width="20" height="198.33333333333331" fill="#b51e2e"/><rect x="803" y="192.5" width="20" height="227.5" fill="#83ad2c"/>
+</g>
+<g font-family="Arial,sans-serif" font-size="14" fill="#333" text-anchor="middle">
+<text x="140" y="447">Country 1</text><text x="270" y="447">Country 2</text><text x="400" y="447">Country 3</text><text x="530" y="447">Country 4</text><text x="660" y="447">Country 5</text><text x="790" y="447">Average of 5</text>
+</g>
+<g font-family="Arial,sans-serif" font-size="14" fill="#333">
+<rect x="845" y="95" width="13" height="13" fill="#2862a8"/><text x="865" y="107">2005</text>
+<rect x="845" y="120" width="13" height="13" fill="#b51e2e"/><text x="865" y="132">2009</text>
+<rect x="845" y="145" width="13" height="13" fill="#83ad2c"/><text x="865" y="157">2015</text>
+</g>
+</svg>

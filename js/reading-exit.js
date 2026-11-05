@@ -100,7 +100,7 @@
     }
     overlay.querySelector(".save-leave").addEventListener("click", () => leave(true));
     overlay.querySelector(".discard-leave").addEventListener("click", () => leave(false));
-    exitButton.addEventListener("click", () => { overlay.hidden = false; });
+    document.addEventListener("click", event => { if (event.target.closest("#exitTest")) { event.preventDefault(); event.stopPropagation(); overlay.hidden = false; } }, true);
     const paused = readPaused();
     if (paused?.id === testId && paused.answers) restoreAnswers(paused.answers);
     document.getElementById("checkAnswers")?.addEventListener("click", () => {

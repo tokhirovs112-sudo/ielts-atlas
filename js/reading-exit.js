@@ -103,6 +103,15 @@
     document.addEventListener("click", event => { if (event.target.closest("#exitTest")) { event.preventDefault(); event.stopPropagation(); overlay.hidden = false; } }, true);
     const paused = readPaused();
     if (paused?.id === testId && paused.answers) restoreAnswers(paused.answers);
+    const syncPausedAnswers = () => {
+      const current = readPaused();
+      if (current?.id !== testId) return;
+      current.answers = captureAnswers();
+      current.savedAt = Date.now();
+      try { localStorage.setItem(PAUSED_KEY, JSON.stringify(current)); } catch (_) {}
+    };
+    document.addEventListener("input", syncPausedAnswers);
+    document.addEventListener("change", syncPausedAnswers);
     document.getElementById("checkAnswers")?.addEventListener("click", () => {
       const current = readPaused();
       if (current?.id === testId) localStorage.removeItem(PAUSED_KEY);

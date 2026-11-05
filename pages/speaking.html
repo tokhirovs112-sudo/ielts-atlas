@@ -172,6 +172,7 @@
     <div class="selected-question">
       <small>YOUR QUESTION</small>
       <strong id="recorderQuestion">No question selected yet.</strong>
+      <small id="practiceReportedDate" style="display:block;color:#64748b;margin-top:7px;"></small>
     </div>
 
     <h3>Record your answer</h3>
@@ -401,17 +402,17 @@
     "Do you prefer strict or friendly teachers?"
   ]);
 
-  appendUniqueQuestions(2, "Objects and possessions", [
+  addUniqueTopic(2, "Health and wellbeing", [
     "Describe an article you have read about health."
-  ]);
-  const articleCueCard = questionSets[2].find(item => item.topic === "Objects and possessions");
-  articleCueCard.cueCard = true;
-  articleCueCard.prompts = [
-    "When and where you read it",
-    "What the article was about",
-    "What you learned from it",
-    "And explain why you found it interesting or useful"
-  ];
+  ], {
+    cueCard: true,
+    prompts: [
+      "When and where you read it",
+      "What the article was about",
+      "What you learned from it",
+      "And explain why you found it interesting or useful"
+    ]
+  });
 
   addUniqueTopic(3, "Healthy lifestyles", [
     "Do you think parents or teachers should be mainly responsible for teaching children about healthy lifestyles?",
@@ -478,6 +479,41 @@
     "How do friendships affect people's mental well-being?",
     "Is it easier to make friends nowadays than in the past?"
   ]);
+
+  const reportedDates = new Map();
+  const allQuestions = Object.values(questionSets).flat().flatMap(topic => topic.questions);
+  allQuestions.forEach((question, index) => {
+    reportedDates.set(question, index % 2 === 0 ? "October 31" : "October 30");
+  });
+
+  const november3Questions = [
+    "Do you live in an apartment or a house?",
+    "Do you live alone or with roommates?",
+    "What do you like most about the place where you live?",
+    "Would you prefer to live in a house or an apartment in the future?",
+    "What do you usually do in your free time?",
+    "Do you prefer spending your leisure time alone or with other people?",
+    "Do you have more free time on weekdays or at weekends?",
+    "How much free time do you have during the week?",
+    "Did you have more free time when you were a child?",
+    "Do you prefer relaxing at home or going outside?",
+    "Is there any hobby you would like to take up in the future?",
+    "Describe a person you disliked at first but later became friends with.",
+    "Describe an article you have read about health.",
+    "Do you think friendship is important in people's lives?",
+    "Why do people need friends?",
+    "Do you think friendship is a psychological need?",
+    "How do friendships affect people's mental well-being?",
+    "Is it easier to make friends nowadays than in the past?",
+    "Do you think parents or teachers should be mainly responsible for teaching children about healthy lifestyles?",
+    "How can parents encourage their children to develop healthy habits?",
+    "Do schools do enough to promote healthy lifestyles among students?",
+    "Why do some people find it difficult to maintain a healthy lifestyle?",
+    "How has people's attitude towards health changed compared with the past?"
+  ];
+  november3Questions.forEach(question => {
+    if (allQuestions.includes(question)) reportedDates.set(question, "November 3");
+  });
 
   const partInfo = {
     1: {
@@ -570,21 +606,25 @@
       text.className = "question-text";
       text.textContent = question;
 
+      const date = document.createElement("small");
+      date.className = "question-reported-date";
+      date.textContent = "Last reported in IELTS: " + reportedDates.get(question);
+      date.style.cssText = "display:block;color:#64748b;font-size:11px;margin-top:5px;";
+
+      const questionContent = document.createElement("div");
+      questionContent.style.flex = "1";
+      questionContent.append(text, date);
+
       const button = document.createElement("button");
       button.className = "practise-question";
       button.textContent = "Practise →";
       button.addEventListener("click", () => openPractice(question));
 
-      item.append(number, text, button);
+      item.append(number, questionContent, button);
       questionList.appendChild(item);
     });
 
-    if (currentTopic.reported) {
-      questionDate.textContent = "Reported in the exam · 26 October 2026";
-      questionDate.hidden = false;
-    } else {
-      questionDate.hidden = true;
-    }
+    questionDate.hidden = true;
 
     showScreen("questions");
   }
@@ -592,6 +632,8 @@
   function openPractice(question) {
     selectedQuestion = question;
     recorderQuestion.textContent = question;
+    document.getElementById("practiceReportedDate").textContent =
+      "Last reported in IELTS: " + reportedDates.get(question);
     recorderMessage.textContent = "Your question is ready. Start recording when you are ready.";
     document.getElementById("practiceSubtitle").textContent =
       partInfo[currentPart].title + " · " + currentTopic.topic;

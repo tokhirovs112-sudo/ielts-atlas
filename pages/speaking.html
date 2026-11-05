@@ -371,6 +371,19 @@
     "Is there any hobby you would like to take up in the future?"
   ]);
 
+  addUniqueTopic(1, "Headphones", [
+    "Do you use headphones?",
+    "How often do you use headphones?",
+    "What do you usually listen to using headphones?"
+  ]);
+
+  addUniqueTopic(1, "Teachers", [
+    "Do you have a favourite teacher?",
+    "What qualities make someone a good teacher?",
+    "Did you have a favourite teacher when you were a child?",
+    "Do you prefer strict or friendly teachers?"
+  ]);
+
   appendUniqueQuestions(2, "Objects and possessions", [
     "Describe an article you have read about health."
   ]);
@@ -396,12 +409,31 @@
   ]);
   const friendshipCueCard = questionSets[2].find(item => item.topic === "People");
   friendshipCueCard.cueCard = true;
-  friendshipCueCard.prompts = [
-    "Who this person is",
-    "When and where you first met",
-    "Why you disliked them at first",
-    "And explain how you eventually became friends"
-  ];
+  friendshipCueCard.cuePromptsByQuestion = {
+    "Describe a person you disliked at first but later became friends with.": [
+      "Who this person is",
+      "When and where you first met",
+      "Why you disliked them at first",
+      "And explain how you eventually became friends"
+    ],
+    "Describe an advertisement that featured a famous person.": [
+      "What the advertisement was about",
+      "Who the famous person in it was",
+      "Where and when you saw it",
+      "And explain what you thought about the advertisement"
+    ]
+  };
+  appendUniqueQuestions(2, "People", [
+    "Describe an advertisement that featured a famous person."
+  ]);
+
+  addUniqueTopic(3, "Advertising", [
+    "Why do companies use famous people in advertisements?",
+    "Do famous people make advertisements more effective?",
+    "What makes an advertisement memorable?",
+    "Do people trust advertisements featuring celebrities?",
+    "How have advertisements changed over the years?"
+  ]);
 
   addUniqueTopic(3, "Friendship and relationships", [
     "Do you think friendship is important in people's lives?",
@@ -536,7 +568,8 @@
       const promptList = document.getElementById("cueCardPrompts");
       promptList.innerHTML = "";
 
-      (currentTopic.prompts || []).forEach(prompt => {
+      const cuePrompts = currentTopic.cuePromptsByQuestion?.[question] || currentTopic.prompts || [];
+      cuePrompts.forEach(prompt => {
         const li = document.createElement("li");
         li.textContent = prompt;
         promptList.appendChild(li);

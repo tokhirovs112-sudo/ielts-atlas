@@ -613,6 +613,8 @@
           return;
         }
 
+        window.EnglisityProgress?.recordActivity?.();
+
         const audioBlob = new Blob(chunks, {
           type: recorder.mimeType || "audio/webm"
         });

@@ -25,7 +25,8 @@ f.innerHTML='<strong>'+(ok?"Correct":"Not quite")+'</strong><p>Correct answer: <
 });
 const result=document.getElementById("testResult");
 result.hidden=false;result.innerHTML='<strong>Your score: '+score+' / 13</strong><span>'+(score===13?"Excellent work!":score>=9?"Good effort. Review the explanations for mistakes.":"Review the evidence and try again.")+'</span>';
-result.scrollIntoView({behavior:"smooth",block:"center"});
+window.EnglisityProgress?.recordActivity?.();
+  result.scrollIntoView({behavior:"smooth",block:"center"});
 });
 document.getElementById("resetTest").addEventListener("click",()=>{
 root.querySelectorAll(".answer-input").forEach(x=>x.value="");

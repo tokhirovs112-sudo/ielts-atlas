@@ -94,7 +94,88 @@
     .speaking-review-grid label{display:flex;align-items:flex-start;gap:10px;line-height:1.6}
     .speaking-review-grid input{margin-top:5px;accent-color:#39856a;flex-shrink:0}
     @media(max-width:600px){.speaking-review-grid{grid-template-columns:1fr}}
-</style>
+
+    /* Speaking practice: recorder and question panels in dark mode */
+    html[data-theme="dark"] body .selected-question{
+      background:#1b2b3d!important;border-color:#3a5878!important;
+    }
+    html[data-theme="dark"] body .selected-question small{color:#a9c6e8!important}
+    html[data-theme="dark"] body .selected-question strong{color:#f0f5fc!important}
+    html[data-theme="dark"] body .recording-studio{
+      background:linear-gradient(145deg,#172536 0%,#1b3047 55%,#19283a 100%)!important;
+      border-color:#354d68!important;box-shadow:0 12px 34px rgba(0,0,0,.22)!important;
+    }
+    html[data-theme="dark"] body .recording-studio-heading h3,
+    html[data-theme="dark"] body .record-time{color:#edf4ff!important}
+    html[data-theme="dark"] body .recording-studio-heading p,
+    html[data-theme="dark"] body .helper,
+    html[data-theme="dark"] body .recorder-message{color:#b2c2d5!important}
+    html[data-theme="dark"] body .recording-eyebrow{color:#9fc4f0!important}
+    html[data-theme="dark"] body .studio-mic-icon{
+      background:#294563!important;color:#c4ddfb!important;
+    }
+    html[data-theme="dark"] body .recorder-display{
+      background:#111e2d!important;border-color:#3b526b!important;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important;
+    }
+    html[data-theme="dark"] body .record-status{color:#e2ebf6!important}
+    html[data-theme="dark"] body .record-dot{background:#71849b;box-shadow:0 0 0 4px #26374a}
+    html[data-theme="dark"] body .recorder-button{
+      background:#263a50!important;border-color:#49617b!important;color:#e5effb!important;
+    }
+    html[data-theme="dark"] body .recorder-button:hover:not(:disabled){background:#304a65!important}
+    html[data-theme="dark"] body .recorder-button.primary{
+      background:#2865a8!important;border-color:#4c8bd0!important;color:#fff!important;
+    }
+    html[data-theme="dark"] body .recorder-button.primary:hover:not(:disabled){background:#3478bf!important}
+    html[data-theme="dark"] body .recorder-button.stop{
+      background:#392832!important;border-color:#80505b!important;color:#ffb9c1!important;
+    }
+    html[data-theme="dark"] body .recorder-button.stop:hover:not(:disabled){background:#4a3039!important}
+    html[data-theme="dark"] body .recording-playback{
+      background:linear-gradient(145deg,#1c342c,#1a2b27)!important;border-color:#416b56!important;
+    }
+    html[data-theme="dark"] body .playback-heading h3{color:#e5f5eb!important}
+    html[data-theme="dark"] body .playback-check{background:#28543d!important;color:#b9edca!important}
+    html[data-theme="dark"] body .download-recording{color:#9fc9ff!important}
+    html[data-theme="dark"] body .timer-panel{
+      background:#172536!important;border-color:#3a526c!important;
+    }
+    html[data-theme="dark"] body .timer-display{color:#a9cefa!important}
+    html[data-theme="dark"] body .cue-card{
+      background:#1a293a!important;border-color:#394f68!important;
+    }
+    html[data-theme="dark"] body .cue-card h3{color:#e7f0fb!important}
+    html[data-theme="dark"] body .cue-card .cue-intro,
+    html[data-theme="dark"] body .cue-card ul,
+    html[data-theme="dark"] body .cue-card p{color:#c7d5e5!important}
+    html[data-theme="dark"] body .question-item{
+      background:#192838!important;border-color:#344b63!important;
+    }
+    html[data-theme="dark"] body .question-text{color:#e0eaf5!important}
+    html[data-theme="dark"] body .question-number{background:#294563!important;color:#c6e0ff!important}
+    html[data-theme="dark"] body .question-reported-date{color:#a9bfd8!important}
+    html[data-theme="dark"] body .practise-question{
+      background:#294563!important;color:#d8eaff!important;
+    }
+    html[data-theme="dark"] body .practise-question:hover{background:#355b82!important}
+    html[data-theme="dark"] body .date-label{background:#294563!important;color:#d8eaff!important}
+    html[data-theme="dark"] body .topic-button{
+      background:#192838!important;border-color:#344b63!important;color:#e5eef8!important;
+    }
+    html[data-theme="dark"] body .topic-button span{color:#b2c2d5!important}
+    html[data-theme="dark"] body .topic-button:hover{border-color:#668bb4!important}
+    html[data-theme="dark"] body .back-button{
+      background:#294563!important;color:#d8eaff!important;
+    }
+    html[data-theme="dark"] body .back-button:hover{background:#355b82!important}
+    html[data-theme="dark"] body .speaking-review-grid>div{
+      background:#1a2b2a!important;border-color:#3d5c50!important;
+    }
+    html[data-theme="dark"] body .speaking-review-grid h3{color:#d9eee2!important}
+    html[data-theme="dark"] body .speaking-review-grid label{color:#d1e0d7!important}
+
+  </style>
   <link rel="icon" type="image/svg+xml" href="../assets/englisity-mark.svg">
   <link rel="stylesheet" href="../css/design.css?v=20261103-site-wide-style-refresh-3">
 </head>

@@ -313,7 +313,7 @@
   // Add new questions only when an equivalent question is not already listed.
   // Matching ignores case, punctuation and repeated whitespace.
   const normaliseQuestion = question =>
-    question.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().replace(/\\s+/g, " ");
+    question.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().replace(/\s+/g, " ");
 
   const existingQuestions = new Set(
     Object.values(questionSets).flat().flatMap(topic => topic.questions)

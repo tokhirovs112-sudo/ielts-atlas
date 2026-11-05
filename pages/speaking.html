@@ -549,6 +549,15 @@
     "Do you know all your neighbors?"
   ]);
 
+  appendUniqueQuestions(1, "Home and accommodation", [
+    "Do you live with your family or alone?",
+    "How long have you lived in your current home?",
+    "Is there anything you would like to change about your home?",
+    "What can you see from the windows of your home?",
+    "Are there any shops or parks near your home?",
+    "Has your home changed since you were younger?"
+  ]);
+
   addUniqueTopic(1, "Watches", [
     "Do you wear watches?",
     "Has someone ever gifted you one?",
@@ -656,10 +665,19 @@
       "Who the famous person in it was",
       "Where and when you saw it",
       "And explain what you thought about the advertisement"
+    ],
+    "Describe a family member with whom you would like to work.": [
+      "Who this family member is",
+      "What kind of work you would like to do together",
+      "What skills or qualities this person has",
+      "And explain why you would like to work with them"
     ]
   };
   appendUniqueQuestions(2, "People", [
     "Describe an advertisement that featured a famous person."
+  ]);
+  appendUniqueQuestions(2, "People", [
+    "Describe a family member with whom you would like to work."
   ]);
 
   addUniqueTopic(3, "Advertising", [
@@ -681,6 +699,13 @@
     "Do you think friendship is a psychological need?",
     "How do friendships affect people's mental well-being?",
     "Is it easier to make friends nowadays than in the past?"
+  ]);
+
+  addUniqueTopic(3, "Family businesses and working with relatives", [
+    "What are the advantages of working with family members?",
+    "What are the disadvantages of running a family business?",
+    "Why do some people prefer working for family businesses?",
+    "Do you think family businesses are more successful than other businesses?"
   ]);
 
   const reportedDates = new Map();
@@ -716,6 +741,23 @@
   ];
   november3Questions.forEach(question => {
     if (allQuestions.includes(question)) reportedDates.set(question, "November 3");
+  });
+
+  const november5Questions = [
+    "Do you live with your family or alone?",
+    "How long have you lived in your current home?",
+    "Is there anything you would like to change about your home?",
+    "What can you see from the windows of your home?",
+    "Are there any shops or parks near your home?",
+    "Has your home changed since you were younger?",
+    "Describe a family member with whom you would like to work.",
+    "What are the advantages of working with family members?",
+    "What are the disadvantages of running a family business?",
+    "Why do some people prefer working for family businesses?",
+    "Do you think family businesses are more successful than other businesses?"
+  ];
+  november5Questions.forEach(question => {
+    if (allQuestions.includes(question)) reportedDates.set(question, "November 5");
   });
 
   const partInfo = {

@@ -615,8 +615,10 @@
   ]);
 
   appendUniqueQuestions(2, "Events and experiences", [
-    "Describe an article you have read about health.",
     "Describe a live competition that you watched."
+  ]);
+  appendUniqueQuestions(2, "Objects and possessions", [
+    "Describe an article you have read about health."
   ]);
   const eventsExperienceTopic = questionSets[2].find(item => item.topic === "Events and experiences");
   eventsExperienceTopic.cueCard = true;
@@ -627,17 +629,21 @@
       "What you did together",
       "And explain why you enjoyed it"
     ],
-    "Describe an article you have read about health.": [
-      "When and where you read it",
-      "What the article was about",
-      "What you learned from it",
-      "And explain why you found it interesting or useful"
-    ],
     "Describe a live competition that you watched.": [
       "What the competition was",
       "When and where you watched it",
       "Who was taking part",
       "And explain why you found it exciting or memorable"
+    ]
+  };
+  const objectsTopic = questionSets[2].find(item => item.topic === "Objects and possessions");
+  objectsTopic.cueCard = true;
+  objectsTopic.cuePromptsByQuestion = {
+    "Describe an article you have read about health.": [
+      "When and where you read it",
+      "What the article was about",
+      "What you learned from it",
+      "And explain why you found it interesting or useful"
     ]
   };
 

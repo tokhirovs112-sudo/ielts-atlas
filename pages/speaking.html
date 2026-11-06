@@ -708,6 +708,60 @@
     "Do you think family businesses are more successful than other businesses?"
   ]);
 
+  addUniqueTopic(1, "Shopping", [
+    "Do you like shopping?",
+    "How often do you go shopping?",
+    "Do you prefer shopping online or in shops?",
+    "What do you usually buy when you go shopping?",
+    "Do you enjoy shopping with friends or family?",
+    "Do you prefer shopping in small shops or large shopping centres?",
+    "Is shopping popular in your country?",
+    "Do you usually plan what to buy before going shopping?",
+    "What was the last thing you bought?",
+    "Do you think you spend too much money on shopping?"
+  ]);
+
+  addUniqueTopic(2, "Competitions and events", [
+    "Describe a live competition that you watched."
+  ], {
+    cueCard: true,
+    prompts: [
+      "What the competition was",
+      "When and where you watched it",
+      "Who was taking part",
+      "And explain why you found it exciting or memorable"
+    ]
+  });
+
+  addUniqueTopic(3, "Competitions", [
+    "Why do people enjoy watching live competitions?",
+    "What types of competitions are popular in your country?",
+    "Do people prefer watching competitions live or on television?",
+    "Why do some people enjoy taking part in competitions?",
+    "Do you think competition is important for children?",
+    "What are the advantages and disadvantages of competition?"
+  ]);
+
+  const november5CompetitionQuestions = [
+    "Do you like shopping?",
+    "How often do you go shopping?",
+    "Do you prefer shopping online or in shops?",
+    "What do you usually buy when you go shopping?",
+    "Do you enjoy shopping with friends or family?",
+    "Do you prefer shopping in small shops or large shopping centres?",
+    "Is shopping popular in your country?",
+    "Do you usually plan what to buy before going shopping?",
+    "What was the last thing you bought?",
+    "Do you think you spend too much money on shopping?",
+    "Describe a live competition that you watched.",
+    "Why do people enjoy watching live competitions?",
+    "What types of competitions are popular in your country?",
+    "Do people prefer watching competitions live or on television?",
+    "Why do some people enjoy taking part in competitions?",
+    "Do you think competition is important for children?",
+    "What are the advantages and disadvantages of competition?"
+  ];
+
   const reportedDates = new Map();
   const allQuestions = Object.values(questionSets).flat().flatMap(topic => topic.questions);
   allQuestions.forEach((question, index) => {
@@ -759,6 +813,10 @@
     "Do you think family businesses are more successful than other businesses?"
   ];
   november5Questions.forEach(question => {
+    if (allQuestions.includes(question)) reportedDates.set(question, "November 5");
+  });
+
+  november5CompetitionQuestions.forEach(question => {
     if (allQuestions.includes(question)) reportedDates.set(question, "November 5");
   });
 

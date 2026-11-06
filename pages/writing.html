@@ -119,6 +119,10 @@
       font: inherit;
     }
 
+    .task-sort-filter { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:12px 0 8px; }
+    .task-sort-filter label { color:#34445e; font-weight:700; }
+    .task-sort-filter select { min-width:190px; padding:10px 36px 10px 12px; border:1px solid #dce4ef; border-radius:10px; background:#fff; color:#25334d; font:inherit; }
+
     .task-category-tag {
       display: inline-block;
       width: fit-content;
@@ -317,8 +321,16 @@
           <option value="two-part">Two-part question</option>
         </select>
       </div>
+      <div class="task-sort-filter">
+        <label for="task2SortOrder">Sort by</label>
+        <select id="task2SortOrder">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="az">A–Z</option>
+        </select>
+      </div>
       <div class="task-library-grid" id="task2TaskGrid">
-        <button class="task-library-card" type="button" data-task2-category="causes-solutions" data-open-task2-detail="museum">
+        <button class="task-library-card" type="button" data-task2-category="causes-solutions" data-open-task2-detail="museum" data-sort-date="2026-10-31">
           <span class="task-library-card-content">
             <strong>Museums and historical sites</strong>
             <span class="task-category-tag">Causes and solutions</span>
@@ -326,7 +338,7 @@
             <span class="task-card-link">Open essay question →</span>
           </span>
         </button>
-        <button class="task-library-card" type="button" data-task2-category="agree-disagree" data-open-task2-detail="climate">
+        <button class="task-library-card" type="button" data-task2-category="agree-disagree" data-open-task2-detail="climate" data-sort-date="2026-10-30">
           <span class="task-library-card-content">
             <strong>Living with climate change</strong>
             <span class="task-category-tag">Agree / disagree</span>
@@ -334,7 +346,7 @@
             <span class="task-card-link">Open essay question →</span>
           </span>
         </button>
-        <button class="task-library-card" type="button" data-task2-category="discuss-both-views" data-open-task2-detail="family">
+        <button class="task-library-card" type="button" data-task2-category="discuss-both-views" data-open-task2-detail="family" data-sort-date="2026-10-31">
           <span class="task-library-card-content">
             <strong>Research into family history</strong>
             <span class="task-category-tag">Discuss both views</span>
@@ -342,7 +354,7 @@
             <span class="task-card-link">Open essay question →</span>
           </span>
         </button>
-        <button class="task-library-card" type="button" data-task2-category="agree-disagree" data-open-task2-detail="space-exploration">
+        <button class="task-library-card" type="button" data-task2-category="agree-disagree" data-open-task2-detail="space-exploration" data-sort-date="2026-11-03">
           <span class="task-library-card-content">
             <strong>Space exploration and life on Earth</strong>
             <span class="task-category-tag">Agree / disagree</span>
@@ -350,7 +362,7 @@
             <span class="task-card-link">Open essay question →</span>
           </span>
         </button>
-        <button class="task-library-card" type="button" data-task2-category="agree-disagree" data-open-task2-detail="future-classroom">
+        <button class="task-library-card" type="button" data-task2-category="agree-disagree" data-open-task2-detail="future-classroom" data-sort-date="2026-11-03">
           <span class="task-library-card-content">
             <strong>The future of traditional classrooms</strong>
             <span class="task-category-tag">Agree / disagree</span>
@@ -358,7 +370,7 @@
             <span class="task-card-link">Open essay question →</span>
           </span>
         </button>
-        <button class="task-library-card" type="button" data-task2-category="two-part" data-open-task2-detail="food-transport">
+        <button class="task-library-card" type="button" data-task2-category="two-part" data-open-task2-detail="food-transport" data-sort-date="2026-11-02">
           <span class="task-library-card-content">
             <strong>Food transportation around the world</strong>
             <span class="task-category-tag">Two-part question</span>
@@ -385,9 +397,17 @@
           <option value="process">Process diagram</option>
         </select>
       </div>
+      <div class="task-sort-filter">
+        <label for="task1SortOrder">Sort by</label>
+        <select id="task1SortOrder">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="az">A–Z</option>
+        </select>
+      </div>
 
       <div class="task-library-grid" id="task1TaskGrid">
-        <button class="task-library-card" type="button" data-task1-category="bar-chart" data-open-task-detail="cars-per-1000">
+        <button class="task-library-card" type="button" data-task1-category="bar-chart" data-open-task-detail="cars-per-1000" data-sort-date="2026-11-03">
           <img src="../images/task1/cars-per-1000.svg" alt="Bar chart showing cars per 1,000 people in five European countries and the average in 2005, 2009 and 2015">
           <span class="task-library-card-content">
             <strong>Cars per 1,000 people in five European countries</strong>
@@ -510,6 +530,31 @@
     const task2Workspace = document.getElementById("task2Workspace");
     const officialGuidance = document.getElementById("officialGuidance");
 
+    function setupTaskSorting(gridId, sortId) {
+      const grid = document.getElementById(gridId);
+      const sort = document.getElementById(sortId);
+      const cards = [...grid.querySelectorAll(".task-library-card")];
+      function applySort() {
+        const mode = sort.value;
+        const sorted = [...cards].sort((a, b) => {
+          if (mode === "az") {
+            const aTitle = a.querySelector("strong")?.textContent.trim() || "";
+            const bTitle = b.querySelector("strong")?.textContent.trim() || "";
+            return aTitle.localeCompare(bTitle, undefined, { sensitivity: "base" });
+          }
+          const aDate = a.dataset.sortDate || "";
+          const bDate = b.dataset.sortDate || "";
+          if (!aDate && !bDate) return 0;
+          if (!aDate) return 1;
+          if (!bDate) return -1;
+          return mode === "newest" ? bDate.localeCompare(aDate) : aDate.localeCompare(bDate);
+        });
+        sorted.forEach(card => grid.appendChild(card));
+      }
+      sort.addEventListener("change", applySort);
+      applySort();
+    }
+
     function setupCategoryFilter(selectId, gridId, cardSelector, emptyMessage) {
       const select = document.getElementById(selectId);
       const grid = document.getElementById(gridId);
@@ -536,6 +581,8 @@
 
     setupCategoryFilter("task1CategoryFilter", "task1TaskGrid", "[data-task1-category]", "No tasks in this category yet. More practice tasks will be added.");
     setupCategoryFilter("task2CategoryFilter", "task2TaskGrid", "[data-task2-category]", "No questions in this category yet. More essay questions will be added.");
+    setupTaskSorting("task1TaskGrid", "task1SortOrder");
+    setupTaskSorting("task2TaskGrid", "task2SortOrder");
 
     function hideAllViews() {
       [taskChooser, taskLibrary, task1Workspace, task2Library, task2Workspace].forEach(view => view.hidden = true);

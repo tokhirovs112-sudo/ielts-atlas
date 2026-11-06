@@ -614,17 +614,32 @@
     "Do you prefer strict or friendly teachers?"
   ]);
 
-  addUniqueTopic(2, "Health and wellbeing", [
-    "Describe an article you have read about health."
-  ], {
-    cueCard: true,
-    prompts: [
+  appendUniqueQuestions(2, "Events and experiences", [
+    "Describe an article you have read about health.",
+    "Describe a live competition that you watched."
+  ]);
+  const eventsExperienceTopic = questionSets[2].find(item => item.topic === "Events and experiences");
+  eventsExperienceTopic.cueCard = true;
+  eventsExperienceTopic.cuePromptsByQuestion = {
+    "Describe an enjoyable evening you spent with friends.": [
+      "When it happened",
+      "Where you spent the evening",
+      "What you did together",
+      "And explain why you enjoyed it"
+    ],
+    "Describe an article you have read about health.": [
       "When and where you read it",
       "What the article was about",
       "What you learned from it",
       "And explain why you found it interesting or useful"
+    ],
+    "Describe a live competition that you watched.": [
+      "What the competition was",
+      "When and where you watched it",
+      "Who was taking part",
+      "And explain why you found it exciting or memorable"
     ]
-  });
+  };
 
   addUniqueTopic(3, "Healthy lifestyles", [
     "Do you think parents or teachers should be mainly responsible for teaching children about healthy lifestyles?",
@@ -721,17 +736,7 @@
     "Do you think you spend too much money on shopping?"
   ]);
 
-  addUniqueTopic(2, "Competitions and events", [
-    "Describe a live competition that you watched."
-  ], {
-    cueCard: true,
-    prompts: [
-      "What the competition was",
-      "When and where you watched it",
-      "Who was taking part",
-      "And explain why you found it exciting or memorable"
-    ]
-  });
+
 
   addUniqueTopic(3, "Competitions", [
     "Why do people enjoy watching live competitions?",

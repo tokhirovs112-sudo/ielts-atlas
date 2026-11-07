@@ -102,7 +102,7 @@
   panel.id="articleLearning";panel.className="article-learning";panel.hidden=true;
   panel.setAttribute("aria-live","polite");
   end.insertAdjacentElement("afterend",panel);
-  let stage="comprehension",qIndex=0,answers=[],cardIndex=0,flipped=false,seen=new Set(),vocabAnswers=[],vIndex=0;
+  let stage="comprehension",qIndex=0,answers=[],cardIndex=0,flipped=false,seen=new Set(),vocabAnswers=[],vIndex=0;\n  const questionOrderCache={};
   const button=(label,cls="")=>`<button type="button" class="al-btn ${cls}">${label}</button>`;
   const progress=(n,total)=>`<div class="al-progress"><span style="width:${Math.round(n/total*100)}%"></span></div>`;
   function renderQuiz(){
@@ -110,7 +110,7 @@
     const idx=stage==="comprehension"?qIndex:vIndex;
     const current=list[idx];
     const selected=stage==="comprehension"?answers[idx]:vocabAnswers[idx];
-    panel.innerHTML=`<div class="al-kicker">${stage==="comprehension"?"Article comprehension":"Vocabulary check"}</div><h2 class="al-title">${stage==="comprehension"?"Check your understanding":"Test your vocabulary"}</h2><p class="al-muted">Question ${idx+1} of ${list.length}</p>${progress(idx+(selected!==undefined?1:0),list.length)}<div class="al-question">${current[0]}</div><div class="al-options">${current[1].map((o,i)=>`<button type="button" class="al-option ${selected===i?"selected":""}" data-choice="${i}">${String.fromCharCode(65+i)}. ${o}</button>`).join("")}</div>${selected!==undefined? `<div class="al-feedback">${stage==="comprehension"?current[3]:"Choose an answer, then continue."}</div>`:""}<div class="al-actions">${button(idx===list.length-1?"Finish":"Next question","")}</div>`;
+    panel.innerHTML=`<div class="al-kicker">${stage==="comprehension"?"Article comprehension":"Vocabulary check"}</div><h2 class="al-title">${stage==="comprehension"?"Check your understanding":"Test your vocabulary"}</h2><p class="al-muted">Question ${idx+1} of ${list.length}</p>${progress(idx+(selected!==undefined?1:0),list.length)}<div class="al-question">${current[0]}</div><div class="al-options">${displayed.options.map((o,i)=>`<button type="button" class="al-option ${selected===i?"selected":""}" data-choice="${i}">${String.fromCharCode(65+i)}. ${o}</button>`).join("")}</div>${selected!==undefined? `<div class="al-feedback">${stage==="comprehension"?current[3]:"Choose an answer, then continue."}</div>`:""}<div class="al-actions">${button(idx===list.length-1?"Finish":"Next question","")}</div>`;
     panel.querySelectorAll("[data-choice]").forEach(b=>b.addEventListener("click",()=>{const val=Number(b.dataset.choice);if(stage==="comprehension")answers[idx]=val;else vocabAnswers[idx]=val;renderQuiz();}));
     panel.querySelector(".al-btn").addEventListener("click",()=>{
       if(selected===undefined){panel.querySelector(".al-feedback")?.remove();const msg=document.createElement("div");msg.className="al-feedback";msg.textContent="Choose an option before continuing.";panel.querySelector(".al-actions").before(msg);return;}
@@ -119,7 +119,7 @@
     });
   }
   function showComprehensionResult(){
-    const score=answers.reduce((s,a,i)=>s+(a===data.quiz[i][2]?1:0),0);
+    const score=answers.reduce((s,a,i)=>s+(a===questionOrderCache["comprehension:"+i].correct?1:0),0);
     panel.innerHTML=`<div class="al-kicker">Comprehension complete</div><h2 class="al-title">You understood the article.</h2><div class="al-score">${score}/5</div><p class="al-muted">Your comprehension result is saved separately from your vocabulary result.</p><div class="al-actions">${button("Continue to vocabulary")}</div>`;
     panel.querySelector("button").addEventListener("click",()=>{stage="flashcards";renderCards();});
   }
@@ -134,8 +134,8 @@
     next.addEventListener("click",()=>{if(!flipped){flip();return;}if(cardIndex<data.vocab.length-1){cardIndex++;renderCards();}else if(seen.size===data.vocab.length){stage="vocabulary";vIndex=0;renderQuiz();}else{panel.querySelector(".al-muted").textContent="Flip every card before continuing to the vocabulary quiz."; }});
   }
   function showFinalResult(){
-    const score=vocabAnswers.reduce((s,a,i)=>s+(a===0?1:0),0);
-    const comp=answers.reduce((s,a,i)=>s+(a===data.quiz[i][2]?1:0),0);
+    const score=vocabAnswers.reduce((s,a,i)=>s+(a===questionOrderCache["vocabulary:"+i].correct?1:0),0);
+    const comp=answers.reduce((s,a,i)=>s+(a===questionOrderCache["comprehension:"+i].correct?1:0),0);
     const key="englisityArticleProgress";
     let saved={};try{saved=JSON.parse(localStorage.getItem(key)||"{}");}catch(_){}
     saved[slug]={completed:true,comprehension:comp,vocabulary:score,completedAt:new Date().toISOString()};

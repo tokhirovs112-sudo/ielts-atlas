@@ -102,13 +102,25 @@
   panel.id="articleLearning";panel.className="article-learning";panel.hidden=true;
   panel.setAttribute("aria-live","polite");
   end.insertAdjacentElement("afterend",panel);
-  let stage="comprehension",qIndex=0,answers=[],cardIndex=0,flipped=false,seen=new Set(),vocabAnswers=[],vIndex=0;\n  const questionOrderCache={};
+  let stage="comprehension",qIndex=0,answers=[],cardIndex=0,flipped=false,seen=new Set(),vocabAnswers=[],vIndex=0;
+  const questionOrderCache={};
   const button=(label,cls="")=>`<button type="button" class="al-btn ${cls}">${label}</button>`;
   const progress=(n,total)=>`<div class="al-progress"><span style="width:${Math.round(n/total*100)}%"></span></div>`;
   function renderQuiz(){
     const list=stage==="comprehension"?data.quiz:data.vocab.map(v=>[`What does “${v[0]}” mean?`,[v[1],...data.vocab.filter(x=>x!==v).slice(0,3).map(x=>x[1])],0,`“${v[0]}” means: ${v[1]}`]);
     const idx=stage==="comprehension"?qIndex:vIndex;
     const current=list[idx];
+    const cacheKey=`${stage}:${idx}`;
+    let displayed=questionOrderCache[cacheKey];
+    if(!displayed){
+      const order=current[1].map((_,i)=>i);
+      for(let i=order.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [order[i],order[j]]=[order[j],order[i]];
+      }
+      displayed={options:order.map(i=>current[1][i]),correct:order.indexOf(current[2])};
+      questionOrderCache[cacheKey]=displayed;
+    }
     const selected=stage==="comprehension"?answers[idx]:vocabAnswers[idx];
     panel.innerHTML=`<div class="al-kicker">${stage==="comprehension"?"Article comprehension":"Vocabulary check"}</div><h2 class="al-title">${stage==="comprehension"?"Check your understanding":"Test your vocabulary"}</h2><p class="al-muted">Question ${idx+1} of ${list.length}</p>${progress(idx+(selected!==undefined?1:0),list.length)}<div class="al-question">${current[0]}</div><div class="al-options">${displayed.options.map((o,i)=>`<button type="button" class="al-option ${selected===i?"selected":""}" data-choice="${i}">${String.fromCharCode(65+i)}. ${o}</button>`).join("")}</div>${selected!==undefined? `<div class="al-feedback">${stage==="comprehension"?current[3]:"Choose an answer, then continue."}</div>`:""}<div class="al-actions">${button(idx===list.length-1?"Finish":"Next question","")}</div>`;
     panel.querySelectorAll("[data-choice]").forEach(b=>b.addEventListener("click",()=>{const val=Number(b.dataset.choice);if(stage==="comprehension")answers[idx]=val;else vocabAnswers[idx]=val;renderQuiz();}));

@@ -99,7 +99,6 @@ window.ATLAS_RESOURCES = [
     description: "Discover how learning another language can deepen cultural understanding, widen opportunities and change how you experience the world.",
     url: "articles/beyond-words.html"
   },
-,
   {
     id: 14,
     type: "podcast",
@@ -188,5 +187,15 @@ window.ATLAS_RESOURCES = [
     date: "2026-11-09",
     description: "Learn how to describe your everyday activities, talk about your routine using natural English, and expand your vocabulary through real-life experiences.",
     url: "https://www.youtube.com/watch?v=bq6GBbh3uhU"
+  }
+  ,{
+    id: 23,
+    type: "podcast",
+    title: "Octopuses or Dolphins? Which Is Your Favourite?",
+    level: "A2",
+    topic: "Animals & Nature",
+    date: "2026-11-09",
+    description: "Compare two fascinating sea animals, share which one you like best, and learn useful vocabulary for talking about animals and the natural world.",
+    url: "https://www.youtube.com/watch?v=LMtpF7ZQqGA"
   }
 ]

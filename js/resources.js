@@ -178,4 +178,14 @@ window.ATLAS_RESOURCES = [
     description: "Learn how to talk about mistakes, share experiences, and build your vocabulary with useful words and expressions.",
     url: "https://www.youtube.com/watch?v=eK5Tsornvng"
   }
+  ,{
+    id: 21,
+    type: "podcast",
+    title: "What's Your Dream Job?",
+    level: "A2",
+    topic: "Jobs & Careers",
+    date: "2026-11-09",
+    description: "Listen to an easy English conversation about dream jobs and learn useful vocabulary for talking about careers and the work you would love to do.",
+    url: "https://www.youtube.com/watch?v=6Bzmb8uFQz4"
+  }
 ]

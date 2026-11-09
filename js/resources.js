@@ -168,4 +168,14 @@ window.ATLAS_RESOURCES = [
     description: "Learn about different types of weddings and discover how wedding traditions can vary from one country and culture to another.",
     url: "https://www.youtube.com/watch?v=z5H_dK2b7K0"
   }
+  ,{
+    id: 20,
+    type: "podcast",
+    title: "Talking About Mistakes",
+    level: "A2",
+    topic: "Learning & Personal Development",
+    date: "2026-11-09",
+    description: "Learn how to talk about mistakes, share experiences, and build your vocabulary with useful words and expressions.",
+    url: "https://www.youtube.com/watch?v=eK5Tsornvng"
+  }
 ]

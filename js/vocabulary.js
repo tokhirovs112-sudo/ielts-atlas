@@ -175,7 +175,7 @@ function renderQuestion(){
 }
 function showResult(){
  locked=true;const passed=score>=8;const result=document.createElement("div");result.className="vocab-result "+(passed?"is-passed":"needs-practice");
- const h=document.createElement("h3");h.textContent="You scored "+score+"/5";
+ const h=document.createElement("h3");h.textContent="You scored "+score+"/10";
  const p=document.createElement("p");p.textContent=passed?"Good work. You passed this practice session. Your streak has been updated for today.":"You need 8/10 to pass this session. Review the explanations and try another set. Your streak has not changed.";
  result.append(h,p);
  const retry=document.createElement("button");retry.type="button";retry.className="vocab-btn primary";retry.textContent="Practise another set";retry.addEventListener("click",startQuiz);result.append(retry);$("quizArea").replaceChildren(result);

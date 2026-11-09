@@ -2123,3 +2123,88 @@ html[data-theme="light"] dialog.pwa-install-dialog[open]{
   html[data-theme="dark"] dialog.pwa-install-dialog[open] .pwa-install-dialog-content{padding:27px 23px 23px!important}
   html[data-theme="dark"] dialog.pwa-install-dialog[open] h2{font-size:24px!important}
 }
+
+
+/* Englisity unified visual language — November 2026 */
+:root{
+  --blue:#276c73;
+  --blue-dark:#20565d;
+  --blue-soft:#e7f2ef;
+  --navy:#1d3037;
+  --background:#f5f7f4;
+  --surface:#fff;
+  --text:#26363a;
+  --muted:#718087;
+  --border:#e1e8e4;
+  --green:#39856a;
+  --green-soft:#e8f3ec;
+}
+body{background:var(--background);color:var(--text)}
+a{color:inherit}
+.topbar .nav a:hover,
+.topbar .nav a.active,
+.topbar .nav a[aria-current="page"]{background:var(--blue-soft);color:var(--blue-dark)}
+.page-hero,.vocab-hero,.library-hero{
+  background:linear-gradient(120deg,#e7f1eb,#f1f4eb 70%,#e4eee8)!important;
+  border:1px solid #dce9e1!important;
+  color:var(--navy)!important;
+  box-shadow:none!important;
+}
+.page-hero h1,.vocab-hero h1,.library-hero h1{color:#1d3435!important}
+.page-hero p,.vocab-hero p,.library-hero p{color:#5d706b!important}
+.page-hero .eyebrow,.vocab-hero .eyebrow,.vocab-kicker{color:#39796d!important}
+.breadcrumb,.page-hero .breadcrumb,.library-hero .crumb{color:#718780!important}
+.vocab-btn,.vocab-option,.vocab-item-actions button{
+  border-color:var(--border);
+  color:#315d51;
+}
+.vocab-btn.primary,.vocab-filter.active{
+  background:#276c73!important;
+  border-color:#276c73!important;
+  color:#fff!important;
+}
+.vocab-btn:focus-visible,.vocab-option:focus-visible,.vocab-search:focus-visible{
+  outline:3px solid #91c6b5!important;
+  outline-offset:3px!important;
+}
+.vocab-stat,.vocab-panel,.vocab-item,.study-card,.vocab-result{
+  border-color:var(--border)!important;
+  box-shadow:var(--shadow);
+}
+.vocab-stat strong,.vocab-panel h2,.word-heading h3,.study-word,.vocab-item h3,.quiz-question{
+  color:var(--navy)!important;
+}
+.vocab-stat span,.word-pos,.word-detail,.quiz-progress,.study-status{color:var(--muted)!important}
+.vocab-filter.active,.vocab-option.selected,.vocab-result{background:#edf5ef!important}
+.word-example{background:#f7faf7!important;border-left-color:#6c9c87!important;color:#344b43!important}
+.vocab-item-actions button.saved{background:#eaf4ed!important;border-color:#bcd9c5!important}
+.vocab-search,.toolbar input,.toolbar select,.task-category-filter select,.writing-editor textarea,textarea{
+  border-color:var(--border)!important;
+  background:#fbfdfb!important;
+  color:var(--text)!important;
+}
+.vocab-search:focus,.toolbar input:focus,.toolbar select:focus,.writing-editor textarea:focus,textarea:focus{
+  border-color:#7daea0!important;
+  outline:3px solid rgba(83,145,124,.13)!important;
+}
+.recording-studio{
+  border-color:#dce9e1!important;
+  background:linear-gradient(145deg,#f7faf7 0%,#edf4ef 55%,#fbfdfb 100%)!important;
+  box-shadow:var(--shadow)!important;
+}
+.recording-studio-heading h3,.record-time{color:var(--navy)!important}
+.recording-eyebrow,.studio-mic-icon{color:#39796d!important}
+.studio-mic-icon{background:#e8f2ed!important}
+.recorder-button.primary{background:#276c73!important;border-color:#276c73!important;color:#fff!important}
+.recorder-button:not(.primary),.back-button,.practise-question{
+  border-color:var(--border)!important;
+  background:#edf4ef!important;
+  color:#315d51!important;
+}
+.footer,.home-footer{background:#eef3ee!important;color:#718078!important;border-color:#dfe8e1!important}
+@media(max-width:700px){
+  .topbar .nav-container{width:92%;flex-wrap:wrap;gap:10px}
+  .topbar .nav{width:100%;flex-direction:column;align-items:stretch}
+  .topbar .nav.open{display:flex}
+  .topbar .nav a{border-radius:10px}
+}

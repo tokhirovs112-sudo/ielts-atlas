@@ -267,13 +267,16 @@
       let status=field.parentElement.querySelector(".eng-autosave");
       if(!status){status=document.createElement("div");status.className="eng-autosave";field.insertAdjacentElement("afterend",status);}
       field.addEventListener("input",()=>{
-        const key=field.id==="task1Draft"?"englisity-task1-draft":field.id==="task2Draft"?null:"atlas-writing-draft";
-        if(key){localStorage.setItem(key,field.value);status.textContent="Autosaved in this browser.";}
-        else {
-          const active=document.getElementById("task2TaskTitle")?.textContent || "";
-          const id=active==="Museums and historical sites"?"museum":active==="Living with climate change"?"climate":active==="Research into family history"?"family":null;
-          if(id){localStorage.setItem("englisity-task2-"+id+"-draft",field.value);status.textContent="Autosaved in this browser.";}
+        let key = "atlas-writing-draft";
+        if (field.id === "task1Draft") {
+          key = field.dataset.taskId
+            ? "englisity-task1-" + field.dataset.taskId + "-draft"
+            : "englisity-task1-draft";
+        } else if (field.id === "task2Draft" && field.dataset.taskId) {
+          key = "englisity-task2-" + field.dataset.taskId + "-draft";
         }
+        localStorage.setItem(key, field.value);
+        status.textContent = "Autosaved in this browser.";
       });
     });
   }

@@ -455,6 +455,33 @@
       </div>
 
       <div class="task-library-grid" id="task1TaskGrid">
+        <button class="task-library-card" type="button" data-task1-category="map" data-open-task-detail="shalton-village" data-sort-date="2026-11-08">
+          <img src="../images/task1/image_2026-11-09_15-50-02.png" alt="Maps showing Shalton village in 1910 and 2010">
+          <span class="task-library-card-content">
+            <strong>Changes in Shalton village (1910–2010)</strong>
+            <span class="task-category-tag">Map</span>
+            <span>1910 and 2010 · Last reported: November 8</span>
+            <span class="task-card-link">Open writing task →</span>
+          </span>
+        </button>
+        <button class="task-library-card" type="button" data-task1-category="bar-chart" data-open-task-detail="journeys-to-school" data-sort-date="2026-11-08">
+          <img src="../images/task1/image_2026-11-09_15-50-03.png" alt="Bar chart showing journeys to school by walking, bicycle, car and bus across four distance ranges">
+          <span class="task-library-card-content">
+            <strong>Journeys to school by distance</strong>
+            <span class="task-category-tag">Bar chart</span>
+            <span>Four transport modes and distance ranges · Last reported: November 8</span>
+            <span class="task-card-link">Open writing task →</span>
+          </span>
+        </button>
+        <button class="task-library-card" type="button" data-task1-category="map" data-open-task-detail="harbour-changes" data-sort-date="2026-11-08">
+          <img src="../images/task1/photo_2026-11-09_15-50-18.jpg" alt="Maps showing changes to a harbour between 1960 and now">
+          <span class="task-library-card-content">
+            <strong>Changes to a harbour (1960–now)</strong>
+            <span class="task-category-tag">Map</span>
+            <span>1960 and now · Last reported: November 8</span>
+            <span class="task-card-link">Open writing task →</span>
+          </span>
+        </button>
         <button class="task-library-card" type="button" data-task1-category="bar-chart" data-open-task-detail="cars-per-1000" data-sort-date="2026-11-03">
           <img src="../images/task1/cars-per-1000.svg" alt="Bar chart showing cars per 1,000 people in five European countries and the average in 2005, 2009 and 2015">
           <span class="task-library-card-content">
@@ -679,6 +706,27 @@
         image: "../images/task1/cars-per-1000.svg",
         alt: "Bar chart comparing the number of cars per 1,000 people in five European countries and the average in 2005, 2009 and 2015",
         reported: "November 3"
+      },
+      "shalton-village": {
+        title: "Changes in Shalton village (1910–2010)",
+        instruction: "The maps below show Shalton village in 1910 and 2010.",
+        image: "../images/task1/image_2026-11-09_15-50-02.png",
+        alt: "Maps showing Shalton village in 1910 and 2010",
+        reported: "November 8"
+      },
+      "journeys-to-school": {
+        title: "Journeys to school by distance",
+        instruction: "The bar chart below shows the percentages of journeys to school made by walking, bicycle, car and bus across four distance ranges.",
+        image: "../images/task1/image_2026-11-09_15-50-03.png",
+        alt: "Bar chart showing journeys to school by four transport modes across four distance ranges",
+        reported: "November 8"
+      },
+      "harbour-changes": {
+        title: "Changes to a harbour (1960–now)",
+        instruction: "The maps below show the changes to a harbour between 1960 and now.",
+        image: "../images/task1/photo_2026-11-09_15-50-18.jpg",
+        alt: "Maps showing changes to a harbour between 1960 and now",
+        reported: "November 8"
       }
     };
     let currentTask1Id = null;
@@ -695,8 +743,11 @@
       const reported = document.getElementById("task1ReportedDate");
       reported.textContent = task.reported ? "Last reported: " + task.reported : "";
       reported.hidden = !task.reported;
+      const task1DraftBox = document.getElementById("task1Draft");
+      task1DraftBox.dataset.taskId = taskId;
       const draftKey = "englisity-task1-" + taskId + "-draft";
-      document.getElementById("task1Draft").value = localStorage.getItem(draftKey) || "";
+      task1DraftBox.value = localStorage.getItem(draftKey) || "";
+      document.querySelector("#task1Workspace .eng-timer-reset")?.click();
       updateTask1WordCount();
       document.getElementById("task1Status").textContent = "";
       hideAllViews();
@@ -720,6 +771,7 @@
       reportedDate.textContent = task.reported ? "Last reported: " + task.reported : "";
       reportedDate.hidden = !task.reported;
       const draftBox = document.getElementById("task2Draft");
+      draftBox.dataset.taskId = taskId;
       draftBox.value = localStorage.getItem("englisity-task2-" + taskId + "-draft") || "";
       updateTask2WordCount();
       document.getElementById("task2Status").textContent = "";

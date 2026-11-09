@@ -773,6 +773,21 @@
     "What are the advantages and disadvantages of competition?"
   ];
 
+  // November 8 Part 2 cue card: keep it within the existing Places category.
+  appendUniqueQuestions(2, "Places", [
+    "Describe a website that sells second-hand items."
+  ]);
+  const placesTopic = questionSets[2].find(item => item.topic === "Places");
+  placesTopic.cueCard = true;
+  placesTopic.cuePromptsByQuestion = {
+    "Describe a website that sells second-hand items.": [
+      "What the website is",
+      "What kinds of things it sells",
+      "How you found out about it",
+      "And explain why you think it is popular"
+    ]
+  };
+
   const reportedDates = new Map();
   const allQuestions = Object.values(questionSets).flat().flatMap(topic => topic.questions);
   allQuestions.forEach((question, index) => {
@@ -829,6 +844,13 @@
 
   november5CompetitionQuestions.forEach(question => {
     if (allQuestions.includes(question)) reportedDates.set(question, "November 5");
+  });
+
+  const november8Questions = [
+    "Describe a website that sells second-hand items."
+  ];
+  november8Questions.forEach(question => {
+    if (allQuestions.includes(question)) reportedDates.set(question, "November 8");
   });
 
   const partInfo = {

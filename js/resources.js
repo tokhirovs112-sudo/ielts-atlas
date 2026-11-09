@@ -158,4 +158,14 @@ window.ATLAS_RESOURCES = [
     description: "Meet the young women challenging expectations and making their mark in boxing. Learn useful vocabulary, note down interesting expressions, and try using them in your own sentences.",
     url: "https://youtu.be/LBQfQu5n_w0?si=Ww3MQ5bN8JNa6fnk"
   }
-];
+  ,{
+    id: 19,
+    type: "podcast",
+    title: "What Are Weddings Like in Your Country?",
+    level: "A2",
+    topic: "Culture & Traditions",
+    date: "2026-11-09",
+    description: "Learn about different types of weddings and discover how wedding traditions can vary from one country and culture to another.",
+    url: "https://www.youtube.com/watch?v=z5H_dK2b7K0"
+  }
+]

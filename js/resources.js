@@ -198,4 +198,14 @@ window.ATLAS_RESOURCES = [
     description: "Compare two fascinating sea animals, share which one you like best, and learn useful vocabulary for talking about animals and the natural world.",
     url: "https://www.youtube.com/watch?v=LMtpF7ZQqGA"
   }
+  ,{
+    id: 24,
+    type: "podcast",
+    title: "How to Talk About Your Family Tree in English",
+    level: "A2",
+    topic: "Family & Relationships",
+    date: "2026-11-09",
+    description: "Learn how to describe your family tree in English, talk about family relationships, and build useful vocabulary for introducing relatives and explaining how family members are connected.",
+    url: "https://www.youtube.com/watch?v=W_yFHgHafKM"
+  }
 ]

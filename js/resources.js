@@ -99,16 +99,7 @@ window.ATLAS_RESOURCES = [
     description: "Discover how learning another language can deepen cultural understanding, widen opportunities and change how you experience the world.",
     url: "articles/beyond-words.html"
   },
-  {
-    id: 13,
-    type: "podcast",
-    title: "How Money Is Made",
-    level: "B2",
-    topic: "Business & Economics",
-    date: "2026-11-05",
-    description: "Learn useful vocabulary and expressions for describing how money is produced. Take note of the process language and practise using it in IELTS Academic Writing Task 1 process diagrams.",
-    url: "https://youtu.be/i77nE2gLbDY?si=Rh_Pr3KMHPTrxp6z"
-  },
+,
   {
     id: 14,
     type: "podcast",

@@ -208,4 +208,14 @@ window.ATLAS_RESOURCES = [
     description: "Learn how to describe your family tree in English, talk about family relationships, and build useful vocabulary for introducing relatives and explaining how family members are connected.",
     url: "https://www.youtube.com/watch?v=W_yFHgHafKM"
   }
+  ,{
+    id: 25,
+    type: "podcast",
+    title: "Talking About Games 🎲♟️",
+    level: "A2",
+    topic: "Games & Hobbies",
+    date: "2026-11-09",
+    description: "Learn useful vocabulary for talking about different games, explaining how you play them, and sharing which games you enjoy.",
+    url: "https://www.youtube.com/watch?v=oGEa-b4sn2Q"
+  }
 ]

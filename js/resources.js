@@ -188,4 +188,14 @@ window.ATLAS_RESOURCES = [
     description: "Listen to an easy English conversation about dream jobs and learn useful vocabulary for talking about careers and the work you would love to do.",
     url: "https://www.youtube.com/watch?v=6Bzmb8uFQz4"
   }
+  ,{
+    id: 22,
+    type: "podcast",
+    title: "How to Talk About Your Daily Routine",
+    level: "A2",
+    topic: "Daily Life",
+    date: "2026-11-09",
+    description: "Learn how to describe your everyday activities, talk about your routine using natural English, and expand your vocabulary through real-life experiences.",
+    url: "https://www.youtube.com/watch?v=bq6GBbh3uhU"
+  }
 ]

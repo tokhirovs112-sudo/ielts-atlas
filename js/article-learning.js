@@ -155,6 +155,7 @@
     panel.innerHTML=`<div class="al-kicker">Article completed</div><h2 class="al-title">Well done — learning session complete.</h2><div class="al-complete"><p class="al-muted">Comprehension score</p><div class="al-score">${comp}/5</div><p class="al-muted">Vocabulary score</p><div class="al-score">${score}/${data.vocab.length}</div></div><p class="al-muted">Your two results are recorded separately on this device.</p><div class="al-actions">${button("Back to Articles")}${button("Review vocabulary","secondary")}</div>`;
     const [back,review]=panel.querySelectorAll("button");back.addEventListener("click",()=>location.href="../pages/articles.html");review.addEventListener("click",()=>{stage="flashcards";cardIndex=0;renderCards();});
   }
-  end.innerHTML=`<p>Finished reading?</p><button class="button primary" id="finishedReadingBtn" type="button">Finished reading</button>`;
-  document.getElementById("finishedReadingBtn").addEventListener("click",()=>{end.hidden=true;panel.hidden=false;stage="comprehension";qIndex=0;answers=[];panel.scrollIntoView({behavior:"smooth",block:"start"});renderQuiz();});
+  const finishedButton = end.querySelector("#finishedReadingBtn");
+  if (!finishedButton) return;
+  finishedButton.addEventListener("click",()=>{end.hidden=true;panel.hidden=false;stage="comprehension";qIndex=0;answers=[];panel.scrollIntoView({behavior:"smooth",block:"start"});renderQuiz();});
 })();

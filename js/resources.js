@@ -218,4 +218,15 @@ window.ATLAS_RESOURCES = [
     description: "Learn useful vocabulary for talking about different games, explaining how you play them, and sharing which games you enjoy.",
     url: "https://www.youtube.com/watch?v=oGEa-b4sn2Q"
   }
+
+  ,{
+    id: 26,
+    type: "article",
+    title: "Hobbies That Keep You Mentally Sharp",
+    level: "C1",
+    topic: "Hobbies & Well-being",
+    date: "2026-11-10",
+    description: "Explore six enjoyable hobbies that challenge memory, concentration, creativity and problem-solving while keeping curiosity alive.",
+    url: "articles/hobbies-mentally-sharp.html"
+  }
 ]

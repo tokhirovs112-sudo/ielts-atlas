@@ -71,6 +71,27 @@
       ],
       vocab:[["accessible","Easy to reach, use or understand.","Knowing the local language can make a place more accessible."],["assumption","Something accepted as true without proof.","Language can reveal cultural assumptions."],["competence","The ability to do something successfully.","Language skills can support professional competence."],["contested","Disputed or questioned by different people.","Some claims about bilingualism remain contested."],["plateau","A period when progress becomes slower or stops.","Learners may reach a plateau after early progress."],["retrieve","To bring information back from memory or find it again.","Speaking requires learners to retrieve words quickly."]]
     },
+    "hobbies-mentally-sharp.html":{
+      quiz:[
+        ["According to the article, what is the most realistic benefit of mentally engaging hobbies?",["They guarantee protection against cognitive decline","They provide opportunities to practise mental skills while enjoying an activity","They replace sleep and physical activity","They improve every type of reasoning equally"],1,"The article presents hobbies as enjoyable opportunities to practise skills, not as guaranteed protection against cognitive decline."],
+        ["Why can learning another language be mentally demanding?",["It requires remembering vocabulary, recognising patterns and retrieving expressions in conversation","It involves memorising only grammar rules","It removes the need to interpret context","It guarantees that a learner will become fluent"],0,"Language learning combines memory, pattern recognition, interpretation and real-time retrieval."],
+        ["What limitation does the article mention about strategy games such as chess?",["They cannot develop concentration","They are useful only for children","Getting better at the game does not necessarily improve every kind of reasoning","They require no decision-making"],2,"Improvements often transfer most clearly to the tasks people practise, while wider benefits are less certain."],
+        ["How does cooking an unfamiliar dish engage the mind?",["It removes the need to make decisions","It involves planning, timing, memory and adjustments","It depends entirely on following exact instructions","It is described as a proven way to prevent cognitive decline"],1,"Cooking combines several practical mental tasks, including coordinating activities and solving unexpected problems."],
+        ["What does the article identify as the most useful hobby?",["The one that is considered most impressive by others","The one that is the most difficult","The one that produces measurable results immediately","The one a person enjoys enough to return to and keep learning"],3,"The conclusion emphasises curiosity and choosing an activity enjoyable enough to continue."]
+      ],
+      vocab:[
+        ["agile","Able to think or move quickly and easily.","The job requires an agile mind and the ability to solve unexpected problems."],
+        ["cognitive","Related to thinking, learning, memory, and understanding.","Sleep plays an important role in cognitive functioning."],
+        ["sustained","Continuing for a period without interruption.","Writing a research paper requires sustained concentration."],
+        ["retrieve","To bring information back into your memory or obtain something stored away.","I struggled to retrieve the name of the film we watched last week."],
+        ["coordination","The ability to make different movements or activities work together.","Learning the piano improved her hand coordination."],
+        ["nuanced","Showing subtle differences rather than treating something as simple or absolute.","The documentary offered a nuanced view of the political conflict."],
+        ["anticipate","To expect something and prepare for it before it happens.","An experienced chess player tries to anticipate the opponent's next move."],
+        ["estimate","To make an approximate calculation or judgement.","I estimated that the journey would take about forty minutes."],
+        ["experimentation","The process of trying different methods to discover what works.","Successful cooking often involves a little experimentation."],
+        ["obligation","Something you are required or feel expected to do.","I want exercise to be enjoyable rather than another obligation."]
+      ]
+    },
     "ai-advantages-disadvantages.html":{
       quiz:[
         ["Which benefit of AI does the article highlight?",["It removes the need for human judgement","It can process large amounts of information and support tasks","It guarantees every answer is correct","It eliminates inequality"],1,"The article discusses information processing, accessibility and support with repetitive tasks."],

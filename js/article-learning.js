@@ -157,5 +157,26 @@
   }
   const finishedButton = end.querySelector("#finishedReadingBtn");
   if (!finishedButton) return;
-  finishedButton.addEventListener("click",()=>{end.hidden=true;panel.hidden=false;stage="comprehension";qIndex=0;answers=[];panel.scrollIntoView({behavior:"smooth",block:"start"});renderQuiz();});
+
+  // Keep the launch control above page-level decorative layers and handle it
+  // during capture so unrelated bubbling handlers cannot cancel the click.
+  end.style.position = "relative";
+  end.style.zIndex = "20";
+  end.style.pointerEvents = "auto";
+  finishedButton.style.position = "relative";
+  finishedButton.style.zIndex = "21";
+  finishedButton.style.pointerEvents = "auto";
+
+  document.addEventListener("click", event => {
+    const trigger = event.target.closest("#finishedReadingBtn");
+    if (!trigger || !end.contains(trigger)) return;
+    event.preventDefault();
+    end.hidden = true;
+    panel.hidden = false;
+    stage = "comprehension";
+    qIndex = 0;
+    answers = [];
+    panel.scrollIntoView({behavior:"smooth",block:"start"});
+    renderQuiz();
+  }, true);
 })();

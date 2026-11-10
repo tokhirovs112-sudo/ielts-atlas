@@ -158,25 +158,35 @@
   const finishedButton = end.querySelector("#finishedReadingBtn");
   if (!finishedButton) return;
 
-  // Keep the launch control above page-level decorative layers and handle it
-  // during capture so unrelated bubbling handlers cannot cancel the click.
+  // Keep the launch control above decorative layers and bind directly to it.
+  // Direct binding avoids relying on document-level event delegation.
   end.style.position = "relative";
-  end.style.zIndex = "20";
+  end.style.zIndex = "100";
+  end.style.isolation = "isolate";
   end.style.pointerEvents = "auto";
   finishedButton.style.position = "relative";
-  finishedButton.style.zIndex = "21";
+  finishedButton.style.zIndex = "101";
   finishedButton.style.pointerEvents = "auto";
 
-  document.addEventListener("click", event => {
-    const trigger = event.target.closest("#finishedReadingBtn");
-    if (!trigger || !end.contains(trigger)) return;
+  let quizStarted = false;
+  finishedButton.addEventListener("click", event => {
     event.preventDefault();
-    end.hidden = true;
-    panel.hidden = false;
-    stage = "comprehension";
-    qIndex = 0;
-    answers = [];
-    panel.scrollIntoView({behavior:"smooth",block:"start"});
-    renderQuiz();
-  }, true);
+    if (quizStarted) return;
+
+    try {
+      stage = "comprehension";
+      qIndex = 0;
+      answers = [];
+      renderQuiz();
+      quizStarted = true;
+      end.hidden = true;
+      panel.hidden = false;
+      panel.scrollIntoView({behavior:"smooth",block:"start"});
+    } catch (error) {
+      console.error("Englisity article quiz could not start:", error);
+      panel.hidden = false;
+      panel.textContent = "The quiz could not be loaded. Please refresh this page and try again.";
+      panel.scrollIntoView({behavior:"smooth",block:"start"});
+    }
+  });
 })();

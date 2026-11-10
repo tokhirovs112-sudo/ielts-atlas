@@ -83,7 +83,9 @@
     }
   };
 
-  const slug = location.pathname.split("/").pop();
+  // Support both regular .html URLs and clean URLs served by the website.
+  const pathPart = location.pathname.replace(/\/+$/, "").split("/").pop() || "";
+  const slug = pathPart.toLowerCase().endsWith(".html") ? pathPart : pathPart + ".html";
   const data = articles[slug];
   const article = document.querySelector(".article-body");
   const end = document.querySelector(".article-end");

@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "englisity-pwa-v31";
+const CACHE_NAME = "englisity-pwa-v32";
 const APP_ROOT = new URL(self.registration.scope);
 
 const CORE_FILES = [
@@ -32,6 +32,7 @@ const CORE_FILES = [
   "pages/listening-test-01.html",
   "pages/listening-test-02.html",
   "js/listening-mini-player.js?v=20261111-1",
+  "js/word-lookup.js?v=20261111-lookup-1",
   "images/richlands-station-map.jpg",
   "pages/life-on-mars.html",
   "pages/beatrix-potter.html",

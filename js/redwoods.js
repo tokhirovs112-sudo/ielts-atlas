@@ -21,8 +21,10 @@ const key={A:"iv",B:"vii",C:"ii",D:"vi",E:"i",F:"iii"};
 const root=document.querySelector(".test-main"),passageNode=document.getElementById("passageText"),list=document.getElementById("headingList");
 let selected=null,dragged=null,submitted=false,timer=null,seconds=1200;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const wordify=value=>esc(value).replace(/([\p{L}]+(?:['’\-][\p{L}]+)*)/gu,'<span class="vocab-word" data-word="$1">$1</span>');
+const gate=document.getElementById("modeGate"),popup=document.getElementById("vocabPopup"),modeLabel=document.getElementById("modeLabel");let lookupId=0;
 function render(){
- passageNode.innerHTML=passage.map(([letter,body])=>'<p id="para'+letter+'"><span class="para-letter">'+letter+'</span><span class="drop-slot" data-para="'+letter+'" role="button" tabindex="0" aria-label="Drop heading for paragraph '+letter+'"><span class="slot-label">Drop heading</span><span class="slot-answer">No heading selected</span><span class="feedback"></span></span>'+esc(body)+'</p>').join("");
+ passageNode.innerHTML=passage.map(([letter,body])=>'<p id="para'+letter+'"><span class="para-letter">'+letter+'</span><span class="drop-slot" data-para="'+letter+'" role="button" tabindex="0" aria-label="Drop heading for paragraph '+letter+'"><span class="slot-label">Drop heading</span><span class="slot-answer">No heading selected</span><span class="feedback"></span></span>'+wordify(body)+'</p>').join("");
  list.innerHTML=headings.map(([code,label])=>'<div class="heading-card" draggable="true" tabindex="0" role="button" data-heading="'+code+'" aria-label="Heading '+code+': '+esc(label)+'"><span class="heading-code">'+code+'</span><span>'+esc(label)+'</span></div>').join("");
 }
 function assignments(){const out={};document.querySelectorAll(".drop-slot").forEach(slot=>{if(slot.dataset.heading)out[slot.dataset.para]=slot.dataset.heading;});return out;}
@@ -55,9 +57,17 @@ document.getElementById("checkAnswers").addEventListener("click",()=>{
  Object.entries(textKey).forEach(([id,correct])=>{const field=document.getElementById(id),ok=field.value.trim().toLowerCase()===correct;if(ok)score++;field.disabled=true;field.insertAdjacentHTML("afterend",'<span class="answer-feedback">'+(ok?" ✓":" Correct: "+correct)+'</span>');});
  const result=document.getElementById("testResult");result.hidden=false;result.innerHTML="<strong>Your score: "+score+" / 13</strong><br>"+(score===13?"Excellent — all answers are correct.":"Review the correct answers shown above, then try again.");document.querySelectorAll(".heading-card").forEach(c=>c.draggable=false);if(timer)clearInterval(timer);window.EnglisityProgress?.recordActivity?.();result.scrollIntoView({behavior:"smooth",block:"center"});
 });
-document.getElementById("resetTest").addEventListener("click",()=>{submitted=false;selected=null;seconds=1200;if(timer)clearInterval(timer);document.getElementById("testResult").hidden=true;document.querySelectorAll(".match-question select").forEach(x=>{x.disabled=false;x.value="";});document.querySelectorAll(".completion-question input").forEach(x=>{x.disabled=false;x.value="";});document.querySelectorAll(".answer-feedback").forEach(x=>x.remove());render();refresh();startTimer();});
-function startTimer(){timer=setInterval(()=>{if(submitted){clearInterval(timer);return;}seconds=Math.max(0,seconds-1);document.getElementById("timerDisplay").textContent=String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0");if(seconds===0)clearInterval(timer);},1000);}
-render();refresh();startTimer();
+document.getElementById("resetTest").addEventListener("click",()=>{submitted=false;selected=null;seconds=1200;if(timer)clearInterval(timer);document.getElementById("testResult").hidden=true;document.querySelectorAll(".match-question select").forEach(x=>{x.disabled=false;x.value="";});document.querySelectorAll(".completion-question input").forEach(x=>{x.disabled=false;x.value="";});document.querySelectorAll(".answer-feedback").forEach(x=>x.remove());render();refresh();closePopup();seconds=1200;showTime();document.body.classList.remove("practice-mode","exam-mode");modeLabel.textContent="Choose a mode to begin";gate.hidden=false;});
+function showTime(){document.getElementById("timerDisplay").textContent=String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0");}
+function startTimer(autoSubmit=false){if(timer)clearInterval(timer);seconds=1200;showTime();timer=setInterval(()=>{if(submitted){clearInterval(timer);return;}seconds=Math.max(0,seconds-1);showTime();if(seconds===0){clearInterval(timer);if(autoSubmit)document.getElementById("checkAnswers").click();}},1000);}
+function closePopup(){lookupId++;popup.classList.remove("show");}
+function chooseMode(exam){gate.hidden=true;document.body.classList.remove("practice-mode","exam-mode");document.body.classList.add(exam?"exam-mode":"practice-mode");modeLabel.textContent=exam?"Exam mode · 20-minute timer":"Practice mode · Tap a word in the passage for its meaning";startTimer(exam);}
+document.getElementById("practiceModeButton").addEventListener("click",()=>chooseMode(false));
+document.getElementById("examModeButton").addEventListener("click",async()=>{try{await document.documentElement.requestFullscreen?.();}catch(e){}chooseMode(true);});
+passageNode.addEventListener("click",e=>{if(!document.body.classList.contains("practice-mode"))return;const w=e.target.closest(".vocab-word");if(!w||!window.EnglisityLookup)return;const r=w.getBoundingClientRect();const id=++lookupId;window.EnglisityLookup.show(popup,w.dataset.word,r.left,r.bottom+8,null,()=>id===lookupId);});
+document.addEventListener("pointerdown",e=>{if(!popup.contains(e.target)&&!e.target.closest(".vocab-word"))closePopup();});
+document.getElementById("checkAnswers").addEventListener("click",()=>{if(timer)clearInterval(timer);if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});});
+render();refresh();showTime();
 const layout=document.getElementById("resizableTest"),divider=document.getElementById("resizeDivider");let resizing=false;
 divider.addEventListener("pointerdown",e=>{resizing=true;divider.setPointerCapture(e.pointerId);e.preventDefault();});
 divider.addEventListener("pointermove",e=>{if(!resizing)return;const r=layout.getBoundingClientRect(),v=Math.max(30,Math.min(70,(e.clientX-r.left)/r.width*100));layout.style.setProperty("--passage-width",v+"%");});

@@ -84,7 +84,7 @@ function scoreDefinition(definition,context,preferredPos){
  const technical=/billiards?|bowling|phonetic|linguistic|botan(y|ical)|mycology|anatom(y|ical)|chemistry|computing|mathematics/i.test(definition.definition||"");
  return overlap*1.5+(definition.example?0.4:0)+(technical?-4:0);
 }
-async function lookupWord(word,x,y,context){
+async function lookupWord(word,x,y,context){if(window.EnglisityLookup){const _id=++definitionLookupId;return window.EnglisityLookup.show(popup,word,x,y,context,()=>_id===definitionLookupId);}
  const lookupId=++definitionLookupId;
  popup.innerHTML='<strong>'+esc(word)+'</strong><span>Finding the meaning that best fits this sentence…</span>';
  popup.style.left=Math.max(12,Math.min(window.innerWidth-350,x))+"px";

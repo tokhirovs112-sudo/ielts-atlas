@@ -2228,3 +2228,40 @@ a{color:inherit}
   outline: 3px solid #91c6b5 !important;
   outline-offset: 3px !important;
 }
+
+/* ===== Review fixes (2026-11-11) ===== */
+/* Restore homepage section centering and the skill-card grid that were lost
+   when the homepage's inline styles were removed. */
+.home-section{margin-inline:auto}
+.skill-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.skill-card{position:relative;display:flex;flex-direction:column;color:inherit;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease}
+.skill-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(35,59,47,.08)!important}
+.skill-icon{display:flex;align-items:center;justify-content:center}
+.skill-arrow{position:absolute}
+.skill-link{margin-top:auto;padding-top:14px;font-size:.85rem;font-weight:700;color:#2f6b57}
+@media(prefers-reduced-motion:reduce){.skill-card,.skill-card:hover{transition:none;transform:none}}
+
+/* The menu button is only needed on small screens. */
+@media(min-width:701px){.menu-toggle{display:none!important}}
+
+/* Compact activity dashboard: one row of stats instead of five tall cards. */
+.eng-dashboard-grid{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:12px!important}
+.eng-stat{padding:14px 16px!important}
+.eng-stat b{font-size:1.35rem!important}
+.eng-stat span{font-size:.8rem!important}
+@media(max-width:900px){.eng-dashboard-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:650px){.eng-dashboard-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}.eng-stat{padding:12px 14px!important}}
+
+/* Save buttons in the site's green instead of leftover blue. */
+html:not([data-theme="dark"]) .eng-save:not(.saved){border-color:#d4e3d8;color:#2f6b57}
+html:not([data-theme="dark"]) .eng-save:not(.saved):hover{background:#f1f7f2}
+
+/* Reading tips as a proper numbered list. */
+.practice-steps{margin:0 0 18px;padding-left:1.3em;line-height:1.8}
+.practice-steps li{padding-left:.25em}
+.skill-grid.skill-grid-new{grid-template-columns:repeat(4,minmax(0,1fr))}
+.skill-grid-new .skill-card-featured{grid-column:span 2}
+@media(max-width:1000px){.skill-grid.skill-grid-new{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:430px){.skill-grid.skill-grid-new{grid-template-columns:1fr}.skill-grid-new .skill-card-featured{grid-column:auto}}
+@media(max-width:650px){.eng-dashboard .eng-dashboard-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+html[data-theme="dark"] .skill-grid-new .skill-link,html[data-theme="dark"] .skill-grid-new .skill-arrow{color:#a7d9b7!important}

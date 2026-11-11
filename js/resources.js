@@ -12,7 +12,7 @@ window.ATLAS_RESOURCES = [
   {
     id: 2,
     type: "article",
-    title: "Why Do We Need Sleep?",
+    title: "Why Do We Need to Sleep?",
     level: "A2",
     topic: "Science",
     date: "2026-10-18",
@@ -42,21 +42,21 @@ window.ATLAS_RESOURCES = [
   {
     id: 8,
     type: "article",
-    title: "Climate change",
-    level: "B1",
+    title: "Are We Entering a Dangerous New Phase of Climate Change?",
+    level: "B2",
     topic: "Climate",
     date: "2026-10-22",
-    description: "Are we entering a dangerous climate phase?",
+    description: "Do extreme weather and breaking the 1.5°C limit signal a dangerous new phase of climate change?",
     url: "articles/climate.html"
   },
   {
     id: 9,
     type: "article",
-    title: "Social media and health",
+    title: "Health Scares for a New Generation Must Be Tackled with Solid Science",
     level: "C1",
     topic: "Health",
     date: "2026-10-23",
-    description: "Why rising young cancer rates need real answers.",
+    description: "Why rising bowel cancer rates in younger people need solid science, not social media scares.",
     url: "articles/cancer.html"
   },
   {

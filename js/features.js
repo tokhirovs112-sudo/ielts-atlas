@@ -198,7 +198,8 @@
     section.className = "eng-dashboard";
     section.id = "myDashboard";
     section.innerHTML = '<div class="home-section-heading"><span>YOUR ACTIVITY</span><h2>My learning dashboard</h2><p>A simple overview of your activity on this device.</p></div><div id="engDashboardContent"></div>';
-    hero.insertAdjacentElement("afterend",section);
+    const anchor = document.getElementById("learning-path") || hero;
+    anchor.insertAdjacentElement("afterend",section);
     renderDashboard();
   }
 

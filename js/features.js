@@ -112,7 +112,7 @@
 
   const nav = document.querySelector(".topbar");
   // Keep passage-test workspaces focused: do not inject the learning progress strip here.
-  if (nav && !document.body.classList.contains("passage-test-page")) {
+  if (nav && !document.body.classList.contains("passage-test-page") && !/^listening-test-/.test(page)) {
     const vocabLink = document.createElement("a");
     vocabLink.href = page === "index.html" ? "pages/vocabulary.html" : "../pages/vocabulary.html";
     vocabLink.textContent = "Vocabulary";

@@ -41,7 +41,10 @@ async function handleSubmit(request, env) {
   }
   if (clean.text.length < 10) return json({ error: "too-short" }, 400);
 
-  if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return json({ error: "not-configured" }, 503);
+  if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) {
+    const missing = ["TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID"].filter(k => !env[k]).join(", ");
+    return json({ error: "not-configured", detail: "Missing setting: " + missing }, 503);
+  }
 
   const title = type === "report" ? "⚑ <b>Problem report</b>" : "✎ <b>New exam questions</b>";
   const lines = [title];
@@ -62,9 +65,13 @@ async function handleSubmit(request, env) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: env.TELEGRAM_CHAT_ID, text: message, parse_mode: "HTML", disable_web_page_preview: true })
     });
-    if (!res.ok) return json({ error: "delivery-failed" }, 502);
+    if (!res.ok) {
+      // Pass on Telegram's reason (e.g. "chat not found", "Unauthorized") so problems are easy to fix.
+      const info = await res.json().catch(() => ({}));
+      return json({ error: "delivery-failed", detail: String(info.description || "Telegram HTTP " + res.status).slice(0, 200) }, 502);
+    }
   } catch (e) {
-    return json({ error: "delivery-failed" }, 502);
+    return json({ error: "delivery-failed", detail: "Could not reach Telegram" }, 502);
   }
   return json({ ok: true });
 }

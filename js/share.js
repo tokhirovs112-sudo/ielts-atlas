@@ -50,12 +50,14 @@
     box.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 
-  function fallback(form, type, data) {
+  function fallback(form, type, data, detail) {
     const text = readable(type, data);
+    const safeDetail = String(detail || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
     setStatus(form, "fallback",
       "<strong>We could not send this automatically.</strong> Please send it on Telegram instead: copy the message, then open the chat and paste it." +
       '<div class="fallback-actions"><button type="button" data-copy>Copy message</button>' +
-      '<a href="https://t.me/' + TELEGRAM + '" target="_blank" rel="noopener">Open Telegram @' + TELEGRAM + "</a></div>");
+      '<a href="https://t.me/' + TELEGRAM + '" target="_blank" rel="noopener">Open Telegram @' + TELEGRAM + "</a></div>" +
+      (safeDetail ? '<p class="share-detail">Technical detail: ' + safeDetail + "</p>" : ""));
     form.querySelector("[data-copy]").addEventListener("click", async e => {
       try { await navigator.clipboard.writeText(text); e.target.textContent = "✓ Copied"; }
       catch (err) { window.prompt("Copy this message:", text); }
@@ -89,10 +91,11 @@
           form.reset();
           if (type === "report" && fromPage) document.getElementById("rPage").value = fromPage;
         } else {
-          fallback(form, type, data);
+          const info = await res.json().catch(() => ({}));
+          fallback(form, type, data, info.detail || info.error || ("HTTP " + res.status));
         }
       } catch (err) {
-        fallback(form, type, data);
+        fallback(form, type, data, "Network error");
       } finally {
         button.disabled = false;
         button.textContent = label;

@@ -962,18 +962,32 @@
       topic.cuePromptsByQuestion = Object.assign(topic.cuePromptsByQuestion || {}, { [question]: novemberBatchCuePrompts[question] });
     }
   }));
-  // Part 2: no separate "Places and websites" / "Places" categories; move their cards.
-  function moveCueCard(question, fromTopic, toTopic) {
-    const from = questionSets[2].find(t => t.topic === fromTopic), to = questionSets[2].find(t => t.topic === toTopic);
-    if (!from || !to || !from.questions.includes(question)) return;
+  // Part 2: one "Places" category for every place card (the website card is not a place).
+  function moveCueCard(question, toTopic) {
+    const from = questionSets[2].find(t => t.questions.includes(question));
+    let to = questionSets[2].find(t => t.topic === toTopic);
+    if (!from) return;
+    if (!to) {
+      to = { topic: toTopic, questions: [] };
+      questionSets[2].splice(2, 0, to);
+    }
+    if (from === to) return;
     from.questions = from.questions.filter(q => q !== question);
     if (!to.questions.includes(question)) to.questions.push(question);
-    const prompts = from.cuePromptsByQuestion?.[question] || from.prompts;
+    const prompts = from.cuePromptsByQuestion?.[question] || (from.questions.length === 0 ? from.prompts : null);
     if (prompts) to.cuePromptsByQuestion = Object.assign(to.cuePromptsByQuestion || {}, { [question]: prompts });
   }
-  moveCueCard("Describe a place you enjoy visiting.", "Places and websites", "Events and experiences");
-  moveCueCard("Describe a website that sells second-hand items.", "Places", "Objects and possessions");
-  questionSets[2] = questionSets[2].filter(t => !["Places and websites", "Places"].includes(t.topic) || t.questions.length);
+  moveCueCard("Describe a website that sells second-hand items.", "Objects and possessions");
+  [
+    "Describe a place you enjoy visiting.",
+    "Describe a boring place.",
+    "Describe a tall building you like or dislike.",
+    "Describe a noisy place you have been to.",
+    "Describe a crowded place you have visited."
+  ].forEach(question => moveCueCard(question, "Places"));
+  questionSets[2] = questionSets[2].filter(t => t.questions.length);
+  const placesIndex = questionSets[2].findIndex(t => t.topic === "Places");
+  if (placesIndex > 2) questionSets[2].splice(2, 0, ...questionSets[2].splice(placesIndex, 1));
   // Parts 1 and 3 have many topics, so list them alphabetically.
   [1, 3].forEach(part => questionSets[part].sort((a, b) => a.topic.localeCompare(b.topic)));
 

@@ -336,10 +336,10 @@
     });
   }
   let reportLinkTimer=null;
-  new MutationObserver(()=>{clearTimeout(reportLinkTimer);reportLinkTimer=setTimeout(addResultReportLinks,150);}).observe(document.documentElement,{childList:true,subtree:true});
 
   document.addEventListener("DOMContentLoaded",()=>{
     addSiteLinks();
+    new MutationObserver(()=>{clearTimeout(reportLinkTimer);reportLinkTimer=setTimeout(addResultReportLinks,150);}).observe(document.body,{childList:true,subtree:true});
     addDashboard();scanBookmarks();addTimer();initAutosave();
     const observer=new MutationObserver(()=>scanBookmarks());
     observer.observe(document.body,{childList:true,subtree:true});

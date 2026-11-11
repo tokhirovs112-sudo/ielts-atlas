@@ -159,3 +159,39 @@
     }
   }
 })();
+// On phones the passage and questions are stacked, so offer a one-tap jump between them.
+(() => {
+  "use strict";
+  const passage = document.getElementById("passageText");
+  if (!passage || !document.getElementById("checkAnswers")) return;
+  const questions = Array.from(document.querySelectorAll(".test-column")).find(col => !col.contains(passage)) ||
+    document.getElementById("questionList");
+  if (!questions) return;
+  const style = document.createElement("style");
+  style.textContent = ".reading-jump{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:60;display:none;align-items:center;gap:6px;min-height:44px;padding:10px 16px;border:0;border-radius:999px;background:#1f6b55;color:#fff;font:inherit;font-size:.9rem;font-weight:700;box-shadow:0 6px 18px rgba(20,50,40,.25);cursor:pointer}.reading-jump.show{display:inline-flex}html[data-theme=\"dark\"] .reading-jump{background:#a7d9b7;color:#12261e}@media print{.reading-jump{display:none!important}}";
+  document.head.append(style);
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "reading-jump";
+  document.body.append(button);
+  let lastPassageY = 0;
+  const stacked = () => questions.getBoundingClientRect().top - passage.getBoundingClientRect().top > 400 &&
+    Math.abs(questions.getBoundingClientRect().left - passage.getBoundingClientRect().left) < 80;
+  const gateOpen = () => { const gate = document.getElementById("modeGate"); return !!gate && !gate.hidden && getComputedStyle(gate).display !== "none"; };
+  function update() {
+    if (!stacked() || gateOpen()) { button.classList.remove("show"); return; }
+    const inQuestions = questions.getBoundingClientRect().top < innerHeight * 0.5;
+    button.textContent = inQuestions ? "↑ Passage" : "Questions ↓";
+    button.setAttribute("aria-label", inQuestions ? "Back to the passage" : "Jump to the questions");
+    button.classList.add("show");
+  }
+  button.addEventListener("click", () => {
+    const inQuestions = questions.getBoundingClientRect().top < innerHeight * 0.5;
+    if (inQuestions) window.scrollTo({ top: lastPassageY || passage.getBoundingClientRect().top + scrollY - 80, behavior: "smooth" });
+    else { lastPassageY = scrollY; questions.scrollIntoView({ behavior: "smooth", block: "start" }); }
+  });
+  addEventListener("scroll", update, { passive: true });
+  addEventListener("resize", update);
+  document.addEventListener("click", () => setTimeout(update, 50));
+  update();
+})();

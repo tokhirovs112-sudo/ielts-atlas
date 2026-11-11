@@ -60,7 +60,7 @@ function submit(){
 }
 document.getElementById("checkAnswers").addEventListener("click",submit);
 document.getElementById("resetTest").addEventListener("click",()=>{
- submitted=false;root.querySelectorAll("input").forEach(x=>{x.disabled=false;if(x.type==="radio")x.checked=false;else x.value="";});
+ submitted=false;root.querySelectorAll("input,select").forEach(x=>{x.disabled=false;if(x.type==="radio")x.checked=false;else x.value="";});
  root.querySelectorAll(".question-feedback").forEach(x=>{x.hidden=true;x.innerHTML="";});
  document.getElementById("checkAnswers").disabled=false;document.getElementById("testResult").hidden=true;
  document.body.classList.remove("practice-mode","exam-mode");document.getElementById("modeGate").hidden=false;

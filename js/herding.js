@@ -20,7 +20,7 @@ document.getElementById("checkAnswers").addEventListener("click",()=>{
  let score=0,answered=0;
  questions.forEach(q=>{
   const val=q.type==="text"?(document.getElementById("a"+q.n).value||"").trim().toLowerCase():(document.querySelector('input[name="a'+q.n+'"]:checked')?.value||"");
-  const normalized=val.trim().replace(/\\s+/g," ").toLowerCase();const ok=normalized===q.a.toLowerCase();if(val)answered++;if(ok)score++;
+  const normalized=val.trim().replace(/\s+/g," ").toLowerCase();const ok=normalized===q.a.toLowerCase();if(val)answered++;if(ok)score++;
   const f=document.getElementById("f"+q.n);f.hidden=false;f.className="question-feedback "+(ok?"correct":"incorrect");
   const para=q.n===1?1:q.n<=5?2:q.n===6?3:q.n===7?5:q.n===8?6:q.n<=10?7:q.n<=12?8:10;
   f.innerHTML='<strong>'+(ok?"Correct":val?"Not quite":"Not answered")+'</strong><p>Correct answer: <b>'+esc(q.a)+'</b></p><p>'+esc(q.why)+'</p><p class="extract-label">Evidence in the passage:</p><blockquote>'+esc(q.e)+'</blockquote><a class="view-in-test" href="#p'+para+'" data-para="p'+para+'">View in the passage ↗</a>';
@@ -42,6 +42,6 @@ document.getElementById("practiceModeButton").addEventListener("click",()=>{gate
 document.getElementById("examModeButton").addEventListener("click",async()=>{gate.hidden=true;document.body.classList.add("exam-mode");document.getElementById("modeLabel").textContent="EXAM MODE · 20-minute timer";try{await document.documentElement.requestFullscreen?.();}catch(e){}window.examTimer=window.startReadingTimer(true);});
 document.getElementById("passageText").addEventListener("click",e=>{if(!document.body.classList.contains("practice-mode"))return;const w=e.target.closest(".vocab-word");if(!w)return;const r=w.getBoundingClientRect();const p=w.closest("p");const text=p?.innerText||"";lookup(w.dataset.word,r.left,r.bottom+8,text);});
 document.addEventListener("pointerdown",e=>{if(!popup.contains(e.target)&&!e.target.closest(".vocab-word"))closePopup();});
-document.getElementById("checkAnswers").addEventListener("click",()=>{if(window.examTimer)clearInterval(window.examTimer);root.querySelectorAll("input").forEach(x=>x.disabled=true);document.getElementById("checkAnswers").disabled=true;if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});},{once:true});
+document.getElementById("checkAnswers").addEventListener("click",()=>{if(window.examTimer)clearInterval(window.examTimer);root.querySelectorAll("input").forEach(x=>x.disabled=true);document.getElementById("checkAnswers").disabled=true;if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});});
 document.getElementById("resetTest").addEventListener("click",()=>{root.querySelectorAll("input").forEach(x=>x.disabled=false);document.getElementById("checkAnswers").disabled=false;document.body.classList.remove("practice-mode","exam-mode");gate.hidden=false;document.getElementById("modeLabel").textContent="Choose a mode to begin";if(window.examTimer)clearInterval(window.examTimer);if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});});
 })();

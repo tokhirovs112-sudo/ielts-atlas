@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Share the IELTS questions you got in your exam, or report a problem on Englisity. It takes a minute and helps other students practise.">
+  <meta property="og:site_name" content="Englisity">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Share questions or report a problem — Englisity">
+  <meta property="og:description" content="Share the IELTS questions you got in your exam, or report a problem on Englisity.">
+  <meta name="twitter:card" content="summary">
+  <title>Share questions or report a problem — Englisity</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/app.js?v=20261111-search-1" defer></script>
+  <link rel="icon" type="image/svg+xml" href="../assets/englisity-mark.svg">
+  <link rel="stylesheet" href="../css/design.css?v=20261111-review-3">
+  <style>
+    .share-wrap{max-width:760px;margin:0 auto;padding:28px 0 40px}
+    .share-wrap h1{margin:0 0 8px;font-size:clamp(26px,4.5vw,36px);color:#1f3d31}
+    .share-intro{margin:0 0 18px;color:#4d6157;line-height:1.6}
+    .share-tabs{display:flex;gap:8px;margin-bottom:16px}
+    .share-tab{flex:1;min-height:46px;padding:10px 14px;border:1px solid #cfe0d4;border-radius:12px;background:#f5faf6;color:#28543f;font:inherit;font-weight:800;cursor:pointer}
+    .share-tab[aria-selected="true"]{background:#1f6b55;border-color:#1f6b55;color:#fff}
+    .share-form{padding:24px;border:1px solid #dfe8e1;border-radius:18px;background:#fff}
+    .share-form[hidden]{display:none}
+    .share-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .share-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+    .share-field label{font-weight:700;color:#24463a;font-size:.95rem}
+    .share-field .hint{font-weight:400;color:#6b7d73;font-size:.85rem}
+    .share-field input,.share-field select,.share-field textarea{width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid #cddbd1;border-radius:10px;font:inherit;font-size:16px;background:#fff;color:#1f2f27}
+    .share-field textarea{min-height:170px;resize:vertical;line-height:1.5}
+    .share-field input:focus,.share-field select:focus,.share-field textarea:focus{outline:2px solid #7fb89a;border-color:#7fb89a}
+    .share-trap{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
+    .share-submit{min-height:48px;padding:12px 22px;border:0;border-radius:12px;background:#1f6b55;color:#fff;font:inherit;font-weight:800;cursor:pointer}
+    .share-submit[disabled]{opacity:.6;cursor:default}
+    .share-status{margin-top:14px;padding:14px 16px;border-radius:12px;line-height:1.55}
+    .share-status[hidden]{display:none}
+    .share-status.ok{background:#e6f5ec;color:#1d5a3b}
+    .share-status.fallback{background:#fff6e5;color:#6b4a12}
+    .share-status.error{background:#fbecec;color:#8a2d2d}
+    .share-status .fallback-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .share-status .fallback-actions a,.share-status .fallback-actions button{min-height:42px;padding:8px 14px;border-radius:10px;border:1px solid #d9c49a;background:#fff;color:#5a3d0c;font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
+    .share-privacy{margin:14px 0 0;color:#6b7d73;font-size:.85rem;line-height:1.55}
+    @media(max-width:640px){.share-row{grid-template-columns:1fr;gap:0}.share-form{padding:18px}}
+    html[data-theme="dark"] .share-wrap h1{color:#e6f2ea}
+    html[data-theme="dark"] .share-intro,html[data-theme="dark"] .share-privacy,html[data-theme="dark"] .share-field .hint{color:#b9cdbf}
+    html[data-theme="dark"] .share-form{background:#16271f;border-color:#3a5348}
+    html[data-theme="dark"] .share-field label{color:#e6f2ea}
+    html[data-theme="dark"] .share-field input,html[data-theme="dark"] .share-field select,html[data-theme="dark"] .share-field textarea{background:#0f1d17;color:#e6f2ea;border-color:#3d5a4b}
+    html[data-theme="dark"] .share-tab{background:#203a32;border-color:#456052;color:#e6f2ea}
+    html[data-theme="dark"] .share-tab[aria-selected="true"]{background:#a7d9b7;color:#12261e;border-color:#a7d9b7}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../index.html">
+      <img class="brand-mark" src="../assets/englisity-mark.svg" alt="">
+      <span>Englisity<small>SHARE &amp; REPORT</small></span>
+    </a>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <nav class="nav" id="navigation">
+      <a href="../index.html">Home</a>
+      <a href="reading.html">Reading</a>
+      <a href="listening.html">Listening</a>
+      <a href="writing.html">Writing</a>
+      <a href="speaking.html">Speaking</a>
+      <a class="eng-vocab-nav" href="vocabulary.html">Vocabulary</a>
+      <a href="articles.html">Articles</a>
+      <a href="podcasts.html">Podcasts</a>
+    </nav>
+  </header>
+
+  <main class="container share-wrap">
+    <h1 id="shareTitle">Share your exam questions</h1>
+    <p class="share-intro" id="shareIntro">Took IELTS recently? Write down the questions you remember. Every question you share helps the next students practise with real, recent questions.</p>
+
+    <div class="share-tabs" role="tablist" aria-label="Choose what to send">
+      <button class="share-tab" type="button" role="tab" id="tabQuestions" aria-controls="formQuestions" aria-selected="true">✎ Share exam questions</button>
+      <button class="share-tab" type="button" role="tab" id="tabReport" aria-controls="formReport" aria-selected="false">⚑ Report a problem</button>
+    </div>
+
+    <form class="share-form" id="formQuestions" data-type="questions" role="tabpanel" aria-labelledby="tabQuestions" novalidate>
+      <div class="share-row">
+        <div class="share-field">
+          <label for="qDate">Test date <span class="hint">(roughly is fine)</span></label>
+          <input id="qDate" name="testDate" type="date">
+        </div>
+        <div class="share-field">
+          <label for="qCity">City and country</label>
+          <input id="qCity" name="location" type="text" maxlength="80" placeholder="e.g. Tashkent, Uzbekistan">
+        </div>
+      </div>
+      <div class="share-row">
+        <div class="share-field">
+          <label for="qModule">Test type</label>
+          <select id="qModule" name="module">
+            <option value="">Not sure</option>
+            <option>Academic</option>
+            <option>General Training</option>
+          </select>
+        </div>
+        <div class="share-field">
+          <label for="qSection">Which part?</label>
+          <select id="qSection" name="section">
+            <option>Speaking</option>
+            <option>Writing Task 1</option>
+            <option>Writing Task 2</option>
+            <option>Reading</option>
+            <option>Listening</option>
+            <option>Several parts</option>
+          </select>
+        </div>
+      </div>
+      <div class="share-field">
+        <label for="qText">Your questions <span class="hint">(as much as you remember; exact wording helps most)</span></label>
+        <textarea id="qText" name="text" maxlength="4000" required placeholder="Speaking Part 1: hometown — Where is your hometown? ...&#10;Part 2: Describe a person who ...&#10;Part 3: ...&#10;Writing Task 2: Some people think ..."></textarea>
+      </div>
+      <div class="share-row">
+        <div class="share-field">
+          <label for="qName">Your name <span class="hint">(optional, to thank you)</span></label>
+          <input id="qName" name="name" type="text" maxlength="60" autocomplete="name">
+        </div>
+        <div class="share-field">
+          <label for="qContact">Telegram or email <span class="hint">(optional)</span></label>
+          <input id="qContact" name="contact" type="text" maxlength="100" placeholder="@username or email">
+        </div>
+      </div>
+      <div class="share-trap" aria-hidden="true"><label for="qWebsite">Website</label><input id="qWebsite" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+      <button class="share-submit" type="submit">Send questions</button>
+      <div class="share-status" role="status" aria-live="polite" hidden></div>
+    </form>
+
+    <form class="share-form" id="formReport" data-type="report" role="tabpanel" aria-labelledby="tabReport" novalidate hidden>
+      <div class="share-field">
+        <label for="rPage">Which page or test?</label>
+        <input id="rPage" name="page" type="text" maxlength="300" placeholder="e.g. Reading — Halley VI">
+      </div>
+      <div class="share-row">
+        <div class="share-field">
+          <label for="rKind">What is wrong?</label>
+          <select id="rKind" name="kind">
+            <option>Wrong answer in a test</option>
+            <option>Wrong or missing word definition</option>
+            <option>Audio or video does not work</option>
+            <option>Typo or mistake in a question</option>
+            <option>Something does not work</option>
+            <option>Suggestion</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="share-field">
+          <label for="rQuestion">Question number <span class="hint">(optional)</span></label>
+          <input id="rQuestion" name="question" type="text" maxlength="40" placeholder="e.g. 19">
+        </div>
+      </div>
+      <div class="share-field">
+        <label for="rText">Details</label>
+        <textarea id="rText" name="text" maxlength="4000" required placeholder="What happened, and what should it be?"></textarea>
+      </div>
+      <div class="share-field">
+        <label for="rContact">Telegram or email <span class="hint">(optional, if you would like a reply)</span></label>
+        <input id="rContact" name="contact" type="text" maxlength="100" placeholder="@username or email">
+      </div>
+      <div class="share-trap" aria-hidden="true"><label for="rWebsite">Website</label><input id="rWebsite" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+      <button class="share-submit" type="submit">Send report</button>
+      <div class="share-status" role="status" aria-live="polite" hidden></div>
+    </form>
+
+    <p class="share-privacy">Messages go privately to the Englisity team on Telegram. Your name and contact are optional and are only used to thank you or reply. Shared questions are checked before they are added to the site.</p>
+  </main>
+
+  <footer class="footer">
+    <strong>Englisity</strong>
+    <a href="about.html">About Englisity</a>
+  </footer>
+<script src="../js/share.js?v=20261111-1"></script>
+<script src="../js/features.js?v=20261111-share-1"></script>
+</body>
+</html>

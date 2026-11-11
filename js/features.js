@@ -284,7 +284,33 @@
 
   window.addEventListener("englisity:quiz-passed", recordStreakActivity);
 
+  // Footer links on every page: About, share exam questions, report a problem
+  // (the report link carries the current page so learners do not have to describe it).
+  function addSiteLinks(){
+    if(document.querySelector(".eng-site-links"))return;
+    const inSub=/\/(pages|articles)\//.test(location.pathname);
+    const base=inSub?"../pages/":"pages/";
+    const here=page.replace(/\.html$/,"");
+    const title=(document.title||"").replace(/\s*[—|-]\s*Englisity.*$/i,"").trim()||"This page";
+    const where=title+" ("+location.pathname+location.hash+")";
+    const links=document.createElement("nav");
+    links.className="eng-site-links";
+    links.setAttribute("aria-label","About and feedback");
+    links.innerHTML=(here==="about"?"":'<a href="'+base+'about.html">About Englisity</a>')+
+      (here==="share"?"":'<a href="'+base+'share.html">Share your exam questions</a><a href="'+base+'share.html?type=report&amp;page='+encodeURIComponent(where)+'" data-report-link>Report a problem</a>');
+    if(!links.children.length)return;
+    links.querySelector("[data-report-link]")?.addEventListener("click",e=>{
+      e.currentTarget.href=base+"share.html?type=report&page="+encodeURIComponent(title+" ("+location.pathname+location.hash+")");
+    });
+    const footer=document.querySelector("footer");
+    if(footer)footer.after(links);else document.body.appendChild(links);
+  }
+  const linkStyles=document.createElement("style");
+  linkStyles.textContent=".eng-site-links{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;max-width:1160px;margin:8px auto 24px;padding:0 16px;font-size:13.5px}.eng-site-links a{color:#4d6a5c;text-decoration:none;padding:6px 2px}.eng-site-links a:hover{color:#1f6b55;text-decoration:underline}html[data-theme=\"dark\"] .eng-site-links a{color:#b9cdbf}@media print{.eng-site-links{display:none}}";
+  document.head.appendChild(linkStyles);
+
   document.addEventListener("DOMContentLoaded",()=>{
+    addSiteLinks();
     addDashboard();scanBookmarks();addTimer();initAutosave();
     const observer=new MutationObserver(()=>scanBookmarks());
     observer.observe(document.body,{childList:true,subtree:true});

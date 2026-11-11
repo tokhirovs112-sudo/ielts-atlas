@@ -1,0 +1,11 @@
+# Files that are part of the project but must not be served as web pages.
+.git
+.github
+node_modules
+worker
+scripts
+wrangler.jsonc
+.assetsignore
+.dev.vars
+AGENTS.md
+site-quality.yml

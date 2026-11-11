@@ -146,10 +146,15 @@
     const text = normalizeSearchText(searchableText);
     const words = text.split(/\s+/).filter(Boolean);
     return terms.every(term => {
+      // Short searches such as "AI" must match a whole word (or its start),
+      // not letters inside other words like "daily" or "explain".
+      if (term.length <= 3) return words.some(word => word === term || (term.length === 3 && word.startsWith(term)));
       if (text.includes(term)) return true;
       const limit = term.length >= 8 ? 2 : term.length >= 4 ? 1 : 0;
       return words.some(word => {
-        if (word.startsWith(term) || term.startsWith(word)) return true;
+        // Prefix matches help with partial typing ("photo" → "photography"), but a
+        // very short word in the text (like "a" or "Z") must not match every query.
+        if (word.startsWith(term) || (word.length >= 4 && term.startsWith(word))) return true;
         return limit > 0 && editDistanceAtMost(term, word, limit) <= limit;
       });
     });

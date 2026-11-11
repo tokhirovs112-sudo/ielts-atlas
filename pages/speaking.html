@@ -343,7 +343,7 @@
     <div id="cueCardArea" class="cue-card" hidden>
       <h3>Part 2 cue card</h3>
       <p class="cue-intro" id="cueCardTitle"></p>
-      <p>You should say:</p>
+      <p id="cueShouldSay">You should say:</p>
       <ul id="cueCardPrompts"></ul>
       <p class="helper">You have one minute to prepare. You should speak for one to two minutes.</p>
       <div class="timer-panel">
@@ -895,11 +895,44 @@
   let currentTopic = null;
   let selectedQuestion = null;
 
+  let routingScreen = false;
   function showScreen(name) {
+    // Leaving the practice screen: stop timers and any recording in progress.
+    if (name !== "practice" && screens.practice && !screens.practice.hidden) leavePractice();
     Object.entries(screens).forEach(([key, element]) => {
       element.hidden = key !== name;
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
+    if (!routingScreen) syncSpeakingHash(name);
+  }
+  // Keep the current part/topic/question in the address so the Back button,
+  // reload and shared links work (#part2/0/1 = Part 2, first topic, second question).
+  function speakingHash(name) {
+    if (name === "topics" && currentPart) return "#part" + currentPart;
+    if (name === "questions" && currentPart && currentTopicIndex !== null) return "#part" + currentPart + "/" + currentTopicIndex;
+    if (name === "practice" && currentPart && currentTopicIndex !== null && currentTopic) {
+      const q = currentTopic.questions.indexOf(selectedQuestion);
+      return "#part" + currentPart + "/" + currentTopicIndex + (q >= 0 ? "/" + q : "");
+    }
+    return "";
+  }
+  function syncSpeakingHash(name) {
+    const hash = speakingHash(name);
+    if ((location.hash || "") !== hash) history.pushState(null, "", hash || location.pathname + location.search);
+  }
+  function routeSpeaking() {
+    routingScreen = true;
+    try {
+      const m = location.hash.match(/^#part([123])(?:\/(\d+))?(?:\/(\d+))?$/);
+      if (!m) { showScreen("parts"); return; }
+      const part = Number(m[1]);
+      selectPart(part);
+      const t = m[2] === undefined ? null : Number(m[2]);
+      if (t === null || !questionSets[part][t]) return;
+      selectTopic(t);
+      const q = m[3] === undefined ? null : Number(m[3]);
+      if (q !== null && currentTopic.questions[q] !== undefined) openPractice(currentTopic.questions[q]);
+    } finally { routingScreen = false; }
   }
 
   function selectPart(part) {
@@ -927,7 +960,9 @@
     showScreen("topics");
   }
 
+  let currentTopicIndex = null;
   function selectTopic(index) {
+    currentTopicIndex = index;
     currentTopic = questionSets[currentPart][index];
 
     questionTitle.textContent = currentTopic.topic;
@@ -972,6 +1007,16 @@
     showScreen("questions");
   }
 
+  // Standard "You should say" points for Part 2 questions that have none of their own.
+  const fallbackCuePrompts = {
+    "Describe a person who has influenced you": ["who this person is", "how you know this person", "what this person has done to influence you", "and explain how this influence has changed you."],
+    "Describe someone you enjoy spending time with": ["who this person is", "how you met this person", "what you usually do together", "and explain why you enjoy spending time with this person."],
+    "Describe a place you enjoy visiting": ["where this place is", "how often you go there", "what you do there", "and explain why you enjoy visiting this place."],
+    "Describe an activity you enjoy doing in your free time": ["what the activity is", "when and where you do it", "who you do it with", "and explain why you enjoy doing it."],
+    "Describe an object that is important to you": ["what the object is", "how you got it", "how long you have had it", "and explain why it is important to you."],
+    "Describe a difficult situation you successfully handled": ["what the situation was", "when it happened", "what you did to handle it", "and explain how you felt after you handled it."]
+  };
+
   function openPractice(question) {
     selectedQuestion = question;
     recorderQuestion.textContent = question;
@@ -981,7 +1026,8 @@
     document.getElementById("practiceSubtitle").textContent =
       partInfo[currentPart].title + " · " + currentTopic.topic;
 
-    const isCueCard = currentPart === 2 && currentTopic.cueCard;
+    // Every Part 2 question is a long turn, so always show the cue card and timers.
+    const isCueCard = currentPart === 2;
     cueCardArea.hidden = !isCueCard;
 
     if (isCueCard) {
@@ -989,7 +1035,8 @@
       const promptList = document.getElementById("cueCardPrompts");
       promptList.innerHTML = "";
 
-      const cuePrompts = currentTopic.cuePromptsByQuestion?.[question] || currentTopic.prompts || [];
+      const cuePrompts = currentTopic.cuePromptsByQuestion?.[question] || currentTopic.prompts || fallbackCuePrompts[question.replace(/\.$/, "")] || [];
+      document.getElementById("cueShouldSay").hidden = !cuePrompts.length;
       cuePrompts.forEach(prompt => {
         const li = document.createElement("li");
         li.textContent = prompt;
@@ -1004,7 +1051,7 @@
   }
 
   document.querySelectorAll("[data-part]").forEach(button => {
-    button.addEventListener("click", () => selectPart(button.dataset.part));
+    button.addEventListener("click", () => selectPart(Number(button.dataset.part)));
   });
 
   document.getElementById("backToParts").addEventListener("click", () => showScreen("parts"));
@@ -1259,6 +1306,19 @@
       recorderMessage.textContent = "Preparing your recording...";
     }
   }
+
+  function leavePractice() {
+    stopPart2Timer();
+    resetPrepTimer();
+    if (recorder && recorder.state === "recording") {
+      discardOnStop = true;
+      stopRecording();
+    } else {
+      releaseMicrophone();
+    }
+  }
+  window.addEventListener("popstate", routeSpeaking);
+  if (location.hash) routeSpeaking();
 
   startButton.addEventListener("click", startRecording);
   stopButton.addEventListener("click", stopRecording);

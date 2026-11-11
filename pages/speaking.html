@@ -793,6 +793,103 @@
     ]
   };
 
+  // November 10 questions (only questions whose meaning is not already listed).
+  appendUniqueQuestions(1, "Work and studies", [
+    "Why did you choose this subject?",
+    "What would you like to do in the future?"
+  ]);
+  appendUniqueQuestions(1, "Home and accommodation", [
+    "Can you describe your home?",
+    "What is your favourite room in your home?"
+  ]);
+  addUniqueTopic(1, "Hometown", [
+    "Where is your hometown?",
+    "What do you like most about your hometown?",
+    "Has your hometown changed much over the years?",
+    "Would you like to live in your hometown in the future?",
+    "What opportunities are available for young people in your hometown?",
+    "Do you think young people have enough opportunities nowadays?"
+  ]);
+  addUniqueTopic(1, "Cooking", [
+    "Can you cook?"
+  ]);
+  addUniqueTopic(1, "Saying thank you", [
+    "Do you often say thank you?",
+    "In what situations do people usually say thank you?",
+    "Is saying thank you common in your country?"
+  ]);
+  addUniqueTopic(1, "Shoes", [
+    "Do you like buying shoes?",
+    "How often do you buy new shoes?",
+    "What kind of shoes do you usually wear?",
+    "Do you prefer comfortable or fashionable shoes?"
+  ]);
+  addUniqueTopic(1, "Advertisements", [
+    "Do you often see advertisements?",
+    "What kinds of advertisements do you usually notice?",
+    "Where do you usually see advertisements?",
+    "Do you find advertisements interesting?",
+    "Have you ever bought something because of an advertisement?",
+    "Do you prefer advertisements on television or on social media?"
+  ]);
+
+  appendUniqueQuestions(2, "People", [
+    "Describe an intelligent person you know.",
+    "Describe a sportsperson who is good at their sport."
+  ]);
+  appendUniqueQuestions(2, "Events and experiences", [
+    "Describe an important event that you attended."
+  ]);
+  appendUniqueQuestions(2, "Situations and challenges", [
+    "Describe an important decision you made with the help of someone."
+  ]);
+  const november10CuePrompts = {
+    "Describe an intelligent person you know.": ["Who this person is", "How you know this person", "What this person does that shows they are intelligent", "And explain why you think this person is intelligent"],
+    "Describe a sportsperson who is good at their sport.": ["Who this person is", "What sport this person plays", "How you know about this person", "And explain why you think this person is good at their sport"],
+    "Describe an important event that you attended.": ["What the event was", "When and where it took place", "Who you attended it with", "And explain why this event was important to you"],
+    "Describe an important decision you made with the help of someone.": ["What the decision was", "Who helped you make it", "How this person helped you", "And explain how you felt about the decision afterwards"]
+  };
+  questionSets[2].forEach(topic => topic.questions.forEach(question => {
+    if (november10CuePrompts[question]) {
+      topic.cuePromptsByQuestion = Object.assign(topic.cuePromptsByQuestion || {}, { [question]: november10CuePrompts[question] });
+    }
+  }));
+
+  addUniqueTopic(3, "Intelligence", [
+    "Is being intelligent important for getting a good job?",
+    "What kinds of games can help people improve their intelligence?",
+    "Are intelligence tests useful when selecting employees?",
+    "Do you think intelligence is something people are born with or can develop?"
+  ]);
+  addUniqueTopic(3, "Sport and sportspeople", [
+    "Why do some people become professional sportspeople?",
+    "What qualities does a successful sportsperson need?",
+    "Do you think talented athletes need professional training?",
+    "How do sportspeople influence young people?",
+    "Should governments spend more money supporting professional sports?",
+    "Do you think athletes are paid too much money?"
+  ]);
+  appendUniqueQuestions(3, "Family businesses and working with relatives", [
+    "Do you think it is better to work with family members or with people who are not related to you?",
+    "Why do some people prefer running their own family businesses?"
+  ]);
+  addUniqueTopic(3, "Special events and celebrations", [
+    "Why do people enjoy attending special events?",
+    "What types of events are popular in your country?",
+    "Do you think traditional celebrations are still important nowadays?",
+    "How have the ways people celebrate special occasions changed?",
+    "Is it better to attend events with family members or friends?"
+  ]);
+  addUniqueTopic(3, "Decision-making", [
+    "Do you think people make better decisions alone or with the help of others?",
+    "Why do some people find it difficult to make decisions?",
+    "Why do people need other people's help when making personal decisions?",
+    "Do you think parents should make important decisions for their children?",
+    "Is it better to make decisions quickly or take a long time to think?",
+    "Do you think young people are good at making important decisions?",
+    "How has technology changed the way people make decisions?"
+  ]);
+
   const reportedDates = new Map();
   const allQuestions = Object.values(questionSets).flat().flatMap(topic => topic.questions);
   allQuestions.forEach((question, index) => {
@@ -856,6 +953,77 @@
   ];
   november8Questions.forEach(question => {
     if (allQuestions.includes(question)) reportedDates.set(question, "November 8");
+  });
+
+  // Reported on November 10: new questions plus existing ones asked again
+  // (repeats keep their original wording; only the date is updated).
+  const november10Questions = [
+    "Do you work or are you a student?",
+    "What do you enjoy most about your studies?",
+    "Why did you choose this subject?",
+    "What would you like to do in the future?",
+    "Do you live in an apartment or a house?",
+    "How long have you lived in your current home?",
+    "Can you describe your home?",
+    "What is your favourite room in your home?",
+    "Where is your hometown?",
+    "What do you like most about your hometown?",
+    "Has your hometown changed much over the years?",
+    "Would you like to live in your hometown in the future?",
+    "What opportunities are available for young people in your hometown?",
+    "Do you think young people have enough opportunities nowadays?",
+    "Can you cook?",
+    "Do you often say thank you?",
+    "In what situations do people usually say thank you?",
+    "Is saying thank you common in your country?",
+    "Do you like buying shoes?",
+    "How often do you buy new shoes?",
+    "What kind of shoes do you usually wear?",
+    "Do you prefer comfortable or fashionable shoes?",
+    "Do you often see advertisements?",
+    "What kinds of advertisements do you usually notice?",
+    "Where do you usually see advertisements?",
+    "Do you find advertisements interesting?",
+    "Have you ever bought something because of an advertisement?",
+    "Do you prefer advertisements on television or on social media?",
+    "Do you like shopping?",
+    "How often do you go shopping?",
+    "Do you prefer shopping online or in shops?",
+    "What do you usually buy when you go shopping?",
+    "Describe an intelligent person you know.",
+    "Describe a sportsperson who is good at their sport.",
+    "Describe a family member with whom you would like to work.",
+    "Describe an important event that you attended.",
+    "Describe an important decision you made with the help of someone.",
+    "Is being intelligent important for getting a good job?",
+    "What kinds of games can help people improve their intelligence?",
+    "Are intelligence tests useful when selecting employees?",
+    "Do you think intelligence is something people are born with or can develop?",
+    "Why do some people become professional sportspeople?",
+    "What qualities does a successful sportsperson need?",
+    "Do you think talented athletes need professional training?",
+    "How do sportspeople influence young people?",
+    "Should governments spend more money supporting professional sports?",
+    "Do you think athletes are paid too much money?",
+    "What are the advantages of working with family members?",
+    "What are the disadvantages of running a family business?",
+    "Do you think it is better to work with family members or with people who are not related to you?",
+    "Why do some people prefer running their own family businesses?",
+    "Why do people enjoy attending special events?",
+    "What types of events are popular in your country?",
+    "Do you think traditional celebrations are still important nowadays?",
+    "How have the ways people celebrate special occasions changed?",
+    "Is it better to attend events with family members or friends?",
+    "Do you think people make better decisions alone or with the help of others?",
+    "Why do some people find it difficult to make decisions?",
+    "Why do people need other people's help when making personal decisions?",
+    "Do you think parents should make important decisions for their children?",
+    "Is it better to make decisions quickly or take a long time to think?",
+    "Do you think young people are good at making important decisions?",
+    "How has technology changed the way people make decisions?"
+  ];
+  november10Questions.forEach(question => {
+    if (allQuestions.includes(question)) reportedDates.set(question, "November 10");
   });
 
   const partInfo = {

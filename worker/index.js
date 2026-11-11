@@ -76,10 +76,78 @@ async function handleSubmit(request, env) {
   return json({ ok: true });
 }
 
+// Audio needs HTTP Range support: players request parts of the file to seek,
+// and Safari on iPhone will not play audio without it. Static assets return
+// whole files only, so the Worker serves the requested byte range itself.
+async function serveAudio(request, env) {
+  if (request.method !== "GET" && request.method !== "HEAD") return new Response("Method not allowed", { status: 405 });
+  let asset = await env.ASSETS.fetch(new Request(request.url, { method: "GET" }));
+  if (!asset.ok || !asset.body) return asset;
+  let size = Number(asset.headers.get("Content-Length"));
+  if (!size) {
+    // Size not given: read the file once so we know its length (files are ~11 MB).
+    const buffer = await asset.arrayBuffer();
+    size = buffer.byteLength;
+    asset = new Response(buffer, asset);
+  }
+
+  const headers = new Headers();
+  headers.set("Content-Type", asset.headers.get("Content-Type") || "audio/mpeg");
+  headers.set("Accept-Ranges", "bytes");
+  headers.set("Cache-Control", "public, max-age=86400");
+  const etag = asset.headers.get("ETag");
+  if (etag) headers.set("ETag", etag);
+
+  const range = request.headers.get("Range");
+  const match = range && /^bytes=(\d*)-(\d*)$/.exec(range.trim());
+  if (!match || (!match[1] && !match[2])) {
+    headers.set("Content-Length", String(size));
+    if (request.method === "HEAD") { asset.body.cancel(); return new Response(null, { status: 200, headers }); }
+    return new Response(asset.body, { status: 200, headers });
+  }
+
+  let start, end;
+  if (match[1] === "") { start = Math.max(0, size - Number(match[2])); end = size - 1; }      // bytes=-500
+  else { start = Number(match[1]); end = match[2] === "" ? size - 1 : Math.min(Number(match[2]), size - 1); }
+  if (!(start <= end) || start >= size) {
+    asset.body.cancel();
+    headers.set("Content-Range", `bytes */${size}`);
+    return new Response(null, { status: 416, headers });
+  }
+  const length = end - start + 1;
+  headers.set("Content-Range", `bytes ${start}-${end}/${size}`);
+  headers.set("Content-Length", String(length));
+  if (request.method === "HEAD") { asset.body.cancel(); return new Response(null, { status: 206, headers }); }
+
+  // Stream only the requested bytes; stop reading once the range is complete.
+  const reader = asset.body.getReader();
+  let position = 0;
+  const sliced = new ReadableStream({
+    async pull(controller) {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) { controller.close(); return; }
+        const chunkStart = position;
+        position += value.byteLength;
+        if (position <= start) continue;
+        const from = Math.max(start - chunkStart, 0);
+        const to = Math.min(end + 1 - chunkStart, value.byteLength);
+        controller.enqueue(value.subarray(from, to));
+        if (position > end) { controller.close(); reader.cancel().catch(() => {}); }
+        return;
+      }
+    },
+    cancel() { reader.cancel().catch(() => {}); }
+  });
+  const body = typeof FixedLengthStream === "function" ? sliced.pipeThrough(new FixedLengthStream(length)) : sliced;
+  return new Response(body, { status: 206, headers });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/api/submit") return handleSubmit(request, env);
+    if (url.pathname.startsWith("/assets/audio/")) return serveAudio(request, env);
     return env.ASSETS.fetch(request);
   }
 };

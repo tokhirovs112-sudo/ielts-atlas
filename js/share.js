@@ -32,6 +32,14 @@
   const fromPage = params.get("page");
   if (fromPage) document.getElementById("rPage").value = fromPage.slice(0, 300);
   if (params.get("question")) document.getElementById("rQuestion").value = params.get("question").slice(0, 40);
+  // Optional pre-filled choices, e.g. ?section=Speaking or ?kind=Wrong%20or%20missing%20word%20definition
+  const pick = (id, value) => {
+    const select = document.getElementById(id);
+    if (value && Array.from(select.options).some(o => o.value === value)) select.value = value;
+  };
+  pick("qSection", params.get("section"));
+  pick("rKind", params.get("kind"));
+  if (params.get("text")) document.getElementById("rText").value = params.get("text").slice(0, 500);
   show(params.get("type") === "report" ? "report" : "questions");
 
   function readable(type, data) {

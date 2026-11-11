@@ -2272,3 +2272,17 @@ html[data-theme="dark"] .skill-grid-new .skill-link,html[data-theme="dark"] .ski
  body .eng-progress .eng-progress-actions{display:flex!important;flex-wrap:nowrap!important;gap:6px!important;width:100%}
  body .eng-progress .eng-progress-actions>*{flex:1 1 0!important;min-width:0;min-height:40px;padding:8px 6px!important;font-size:12.5px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;justify-content:center}
 }
+/* "Share your exam questions" prompts shown where they are most useful. */
+.share-prompt{display:flex;align-items:center;justify-content:space-between;gap:12px 18px;flex-wrap:wrap;margin:14px 0 18px;padding:14px 18px;border:1px solid #cfe3d6;border-radius:14px;background:#f1f8f3;color:#2c4a3d;line-height:1.5}
+.share-prompt p{margin:0;flex:1 1 320px;font-size:.95rem}
+.share-prompt a{display:inline-flex;align-items:center;min-height:42px;padding:8px 14px;border-radius:10px;background:#1f6b55;color:#fff!important;font-weight:800;font-size:.9rem;text-decoration:none;white-space:nowrap}
+.share-prompt a.secondary{background:transparent;color:#1f6b55!important;border:1px solid #9cc8ad}
+.share-prompt-actions{display:flex;flex-wrap:wrap;gap:8px}
+.home-share{margin-top:8px;margin-bottom:8px}
+.share-prompt-home{margin:0}
+html[data-theme="dark"] .share-prompt{background:#1a2f26;border-color:#3d5a4b;color:#e1eee4}
+html[data-theme="dark"] .share-prompt a{background:#a7d9b7;color:#12261e!important}
+html[data-theme="dark"] .share-prompt a.secondary{background:transparent;color:#a7d9b7!important;border-color:#5f8a73}
+/* Small "report a mistake" links next to results and definitions. */
+.eng-report-inline{display:inline-block;margin:10px 0 0;font-size:.85rem;font-weight:700;color:#8a5a12!important;text-decoration:underline;text-underline-offset:2px}
+html[data-theme="dark"] .eng-report-inline{color:#f0c987!important}

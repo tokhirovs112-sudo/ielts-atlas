@@ -190,7 +190,7 @@
   }
 
   const style = document.createElement("style");
-  style.textContent = ".vocab-popup{max-height:min(60vh,420px);overflow:auto}.elk-pos{display:inline-block;margin:6px 0 2px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#2f6b57}.elk-def{margin:0 0 4px}.elk-ex{margin:0 0 6px;color:#5d6b7c;font-style:italic;font-size:13px}.elk-note{margin:6px 0 0;color:#6b7a88;font-size:12px}.elk-base{color:#5d6b7c;font-size:13px;font-weight:600}.elk-local{margin:4px 0 8px;padding:8px 10px;border-radius:8px;background:#eef6f0}html[data-theme=\"dark\"] .elk-pos{color:#a7d9b7}html[data-theme=\"dark\"] .elk-local{background:#203a32}";
+  style.textContent = ".vocab-popup{max-height:min(60vh,420px);overflow:auto}.elk-pos{display:inline-block;margin:6px 0 2px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#2f6b57}.elk-def{margin:0 0 4px}.elk-ex{margin:0 0 6px;color:#5d6b7c;font-style:italic;font-size:13px}.elk-note{margin:6px 0 0;color:#6b7a88;font-size:12px}.elk-base{color:#5d6b7c;font-size:13px;font-weight:600}.elk-local{margin:4px 0 8px;padding:8px 10px;border-radius:8px;background:#eef6f0}html[data-theme=\"dark\"] .elk-pos{color:#a7d9b7}html[data-theme=\"dark\"] .elk-local{background:#203a32}.elk-report{display:inline-block;margin-top:8px;font-size:12px;font-weight:700;color:#8a5a12;text-decoration:underline}html[data-theme=\"dark\"] .elk-report{color:#f0c987}";
   document.head.append(style);
 
   async function show(popup, word, x, y, context, isCurrent, local) {
@@ -223,6 +223,13 @@
       else if (capitalised) html += "<p class='elk-def'>This looks like a name (a person, place or organisation), so it may not be in the dictionary. Use the sentence around it to understand who or what it is.</p>";
       else html += "<p class='elk-def'>No dictionary entry was found for this word. Try to guess its meaning from the sentence.</p>";
     }
+    const inSub = /\/(pages|articles)\//.test(location.pathname);
+    const title = (document.title || "").replace(/\s*[—|-]\s*Englisity.*$/i, "").trim() || "Reading test";
+    const reportHref = (inSub ? "../pages/" : "pages/") + "share.html?type=report" +
+      "&kind=" + encodeURIComponent("Wrong or missing word definition") +
+      "&page=" + encodeURIComponent(title + " (" + location.pathname + ")") +
+      "&text=" + encodeURIComponent("Word: " + word + "\nWhat is wrong: ");
+    html += "<a class='elk-report' href='" + esc(reportHref) + "' target='_blank' rel='noopener'>Wrong definition? Report it</a>";
     popup.innerHTML = html;
     place(popup, x, y);
   }

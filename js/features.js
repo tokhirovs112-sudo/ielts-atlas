@@ -309,6 +309,35 @@
   linkStyles.textContent=".eng-site-links{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;max-width:1160px;margin:8px auto 24px;padding:0 16px;font-size:13.5px}.eng-site-links a{color:#4d6a5c;text-decoration:none;padding:6px 2px}.eng-site-links a:hover{color:#1f6b55;text-decoration:underline}html[data-theme=\"dark\"] .eng-site-links a{color:#b9cdbf}@media print{.eng-site-links{display:none}}";
   document.head.appendChild(linkStyles);
 
+  // "Spot a mistake? Report it" next to test and quiz results, with this page filled in.
+  const REPORT_TARGETS=[
+    ["#testResult","inside"],
+    ["#results > h2","after"],
+    ["#articleLearning .al-score","after"],
+    ["#quizArea .vocab-result > h3","after"]
+  ];
+  function addResultReportLinks(){
+    if(page.replace(/\.html$/,"")==="share")return;
+    const inSub=/\/(pages|articles)\//.test(location.pathname);
+    const base=inSub?"../pages/":"pages/";
+    REPORT_TARGETS.forEach(([selector,where])=>{
+      document.querySelectorAll(selector).forEach(el=>{
+        if(!el.textContent.trim()||el.hidden)return;
+        const holder=where==="inside"?el:el.parentElement;
+        if(holder.querySelector(":scope > .eng-report-inline"))return;
+        const title=(document.title||"").replace(/\s*[—|-]\s*Englisity.*$/i,"").trim()||"This page";
+        const a=document.createElement("a");
+        a.className="eng-report-inline";
+        a.href=base+"share.html?type=report&kind="+encodeURIComponent("Wrong answer in a test")+"&page="+encodeURIComponent(title+" ("+location.pathname+location.hash+")");
+        a.textContent="Spot a mistake? Report it";
+        if(where==="inside"){holder.appendChild(document.createElement("br"));holder.appendChild(a);}
+        else el.insertAdjacentElement("afterend",a);
+      });
+    });
+  }
+  let reportLinkTimer=null;
+  new MutationObserver(()=>{clearTimeout(reportLinkTimer);reportLinkTimer=setTimeout(addResultReportLinks,150);}).observe(document.documentElement,{childList:true,subtree:true});
+
   document.addEventListener("DOMContentLoaded",()=>{
     addSiteLinks();
     addDashboard();scanBookmarks();addTimer();initAutosave();

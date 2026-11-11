@@ -917,6 +917,40 @@
         document.getElementById(settings.status).textContent = "Draft cleared.";
       });
     });
+
+    // Remember the open task in the address (#task1/<id>, #task2/<id>) so Back,
+    // reload and shared links return learners to the task they were writing.
+    (() => {
+      const views = [taskChooser, taskLibrary, task1Workspace, task2Library, task2Workspace];
+      let routing = false;
+      const currentHash = () => {
+        if (!task1Workspace.hidden && currentTask1Id) return "#task1/" + currentTask1Id;
+        if (!task2Workspace.hidden && currentTask2Id) return "#task2/" + currentTask2Id;
+        if (!taskLibrary.hidden) return "#task1";
+        if (!task2Library.hidden) return "#task2";
+        return "";
+      };
+      function sync() {
+        if (routing) return;
+        const hash = currentHash();
+        if ((location.hash || "") === hash) return;
+        history.pushState(null, "", hash || location.pathname + location.search);
+      }
+      function route() {
+        routing = true;
+        const [type, id] = decodeURIComponent(location.hash.slice(1)).split("/");
+        if (type === "task1" && id && task1Tasks[id]) showTaskDetail(id);
+        else if (type === "task1") showTaskLibrary();
+        else if (type === "task2" && id && task2Tasks[id]) showTask2Detail(id);
+        else if (type === "task2") showTask2Library();
+        else showTaskChooser();
+        routing = false;
+      }
+      const observer = new MutationObserver(() => queueMicrotask(sync));
+      views.forEach(view => observer.observe(view, { attributes: true, attributeFilter: ["hidden"] }));
+      addEventListener("popstate", route);
+      if (location.hash) route();
+    })();
   </script>
 
 <script src="../js/features.js?v=20261111-review-fixes-1"></script>

@@ -2208,3 +2208,23 @@ a{color:inherit}
   .topbar .nav.open{display:flex}
   .topbar .nav a{border-radius:10px}
 }
+
+
+/* Reading test submit button contrast — visible in light mode */
+.passage-test-page .test-actions .primary-action {
+  background: #276c73 !important;
+  color: #ffffff !important;
+  border: 1px solid #276c73 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+  box-shadow: 0 5px 14px rgba(39, 108, 115, .2) !important;
+}
+.passage-test-page .test-actions .primary-action:hover {
+  background: #20565d !important;
+  border-color: #20565d !important;
+  color: #ffffff !important;
+}
+.passage-test-page .test-actions .primary-action:focus-visible {
+  outline: 3px solid #91c6b5 !important;
+  outline-offset: 3px !important;
+}

@@ -68,6 +68,11 @@ const today=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+
 const addDays=(n)=>{const d=new Date();d.setDate(d.getDate()+n);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")};
 const escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function saveState(){write(STORE,state);updateStats()}
+const skillLabel=s=>s==="Both"?"Writing & Speaking":s;
+const canSpeak="speechSynthesis" in window&&typeof SpeechSynthesisUtterance!=="undefined";
+function speak(text){if(!canSpeak)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="en-GB";u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
+function speakButton(getText,label){const b=document.createElement("button");b.type="button";b.className="vocab-speak";b.textContent="🔊";b.title="Listen";b.setAttribute("aria-label",label||"Listen to pronunciation");b.addEventListener("click",e=>{e.stopPropagation();speak(typeof getText==="function"?getText():getText)});return b}
+function wordDetails(w){return '<p class="word-example-line">“'+escapeHTML(w.example)+'”</p><p><strong>Common combinations:</strong> '+escapeHTML(w.collocations)+'</p><p><strong>How to use it:</strong> '+escapeHTML(w.use)+'</p><p><strong>Watch out:</strong> '+escapeHTML(w.mistake)+'</p>'}
 function updateStats(){
  const due=state.saved.filter(id=>{const r=state.reviews[id];return !r||!r.due||r.due<=today()}).length;
  $("knownCount").textContent=state.known.length;
@@ -87,7 +92,8 @@ function updateDailySave(){
 }
 const dayNumber=Math.floor((new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate())-new Date(new Date().getFullYear(),0,0))/86400000);
 const daily=WORDS[dayNumber%WORDS.length];
-$("dailyWordText").textContent=daily.word;$("dailyPos").textContent=daily.pos+" · "+daily.skill;
+$("dailyWordText").textContent=daily.word;$("dailyPos").textContent=daily.pos+" · "+skillLabel(daily.skill);
+if(canSpeak)$("dailyWordText").after(speakButton(daily.word,"Listen to "+daily.word));
 $("dailyDefinition").textContent=daily.meaning;$("dailyExample").textContent="“"+daily.example+"”";
 $("dailyCollocations").innerHTML="<strong>Common combinations:</strong> "+escapeHTML(daily.collocations);
 $("dailyUsage").innerHTML="<strong>How to use it:</strong> "+escapeHTML(daily.use);
@@ -98,46 +104,60 @@ let activeFilter="All";
 function renderWords(){
  const query=$("wordSearch").value.trim().toLowerCase();
  const filtered=WORDS.filter(w=>{
-  const filterOK=activeFilter==="All"||(activeFilter==="Saved"?state.saved.includes(w.id):w.skill===activeFilter);
+  const filterOK=activeFilter==="All"||(activeFilter==="Saved"?state.saved.includes(w.id):(w.skill===activeFilter||w.skill==="Both"));
   return filterOK&&[w.word,w.meaning,w.collocations,w.example].join(" ").toLowerCase().includes(query);
  });
  $("wordCountLabel").textContent=filtered.length+" of "+WORDS.length+" words";
  const list=$("wordList");list.innerHTML="";
- if(!filtered.length){list.innerHTML='<div class="vocab-empty">No matching words. Try another search or filter.</div>';return}
+ if(!filtered.length){list.innerHTML='<div class="vocab-empty">'+(activeFilter==="Saved"&&!query?'Your review list is empty. Use “＋ Add to review” on any word, or mark words in the flashcards.':'No matching words. Try another search or filter.')+'</div>';return}
  filtered.forEach(w=>{
   const card=document.createElement("article");card.className="vocab-item";
-  const title=document.createElement("h3");title.textContent=w.word;
-  const meta=document.createElement("div");meta.className="item-meta";meta.textContent=w.pos+" · "+w.skill;
+  const title=document.createElement("h3");title.textContent=w.word;if(canSpeak)title.append(speakButton(w.word,"Listen to "+w.word));
+  const meta=document.createElement("div");meta.className="item-meta";meta.textContent=w.pos+" · "+skillLabel(w.skill);
   const p=document.createElement("p");p.textContent=w.meaning;
   const actions=document.createElement("div");actions.className="vocab-item-actions";
   const save=document.createElement("button");save.type="button";save.textContent=state.saved.includes(w.id)?"✓ Saved":"＋ Add to review";save.classList.toggle("saved",state.saved.includes(w.id));save.setAttribute("aria-pressed",String(state.saved.includes(w.id)));
   save.addEventListener("click",()=>state.saved.includes(w.id)?unsaveWord(w.id):saveWord(w.id));
-  const example=document.createElement("button");example.type="button";example.textContent="Show example";
-  const detail=document.createElement("p");detail.hidden=true;detail.style.marginTop="10px";detail.textContent="“"+w.example+"”  "+w.collocations;
-  example.addEventListener("click",()=>{detail.hidden=!detail.hidden;example.textContent=detail.hidden?"Show example":"Hide example"});
+  const example=document.createElement("button");example.type="button";example.textContent="Show details";example.setAttribute("aria-expanded","false");
+  const detail=document.createElement("div");detail.className="vocab-item-detail";detail.hidden=true;detail.innerHTML=wordDetails(w);
+  example.addEventListener("click",()=>{detail.hidden=!detail.hidden;example.textContent=detail.hidden?"Show details":"Hide details";example.setAttribute("aria-expanded",String(!detail.hidden))});
   actions.append(save,example);card.append(title,meta,p,actions,detail);list.append(card);
  });
 }
 $("wordSearch").addEventListener("input",renderWords);
 document.querySelectorAll("[data-filter]").forEach(b=>b.addEventListener("click",()=>{activeFilter=b.dataset.filter;document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x===b));renderWords()}));
 renderWords();updateStats();
+function shuffle(a){const x=a.slice();for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
 // Flashcards use a small spaced-review schedule. “Got it” moves the next review further away.
-let studyQueue=[],studyIndex=0,currentStudy=null,revealed=false;
+let studyQueue=[],studyIndex=0,currentStudy=null,revealed=false,sessionKnown=0,sessionAgain=new Set(),sessionTotal=0;
+function beginSession(queue,message){studyQueue=queue.slice();studyIndex=0;sessionKnown=0;sessionAgain=new Set();sessionTotal=studyQueue.length;renderStudy();if(message)$("studyMessage").textContent=message}
 function startStudy(){
  const due=state.saved.filter(id=>{const r=state.reviews[id];return !r||!r.due||r.due<=today()});
  const ids=due.length?due:state.saved.length?state.saved:WORDS.map(w=>w.id);
- studyQueue=ids.map(id=>WORDS.find(w=>w.id===id)).filter(Boolean);
- if(!studyQueue.length)studyQueue=WORDS.slice();
- studyIndex=0;renderStudy();
+ let queue=ids.map(id=>WORDS.find(w=>w.id===id)).filter(Boolean);
+ if(!queue.length)queue=WORDS.slice();
+ beginSession(queue);
 }
 function renderStudy(){
- currentStudy=studyQueue[studyIndex%studyQueue.length];revealed=false;
- $("studyCounter").textContent="Card "+(studyIndex+1)+" of "+studyQueue.length;
- $("studyWord").textContent=currentStudy.word;$("studyPrompt").textContent="Can you explain this expression and make your own sentence?";
- $("studyAnswer").hidden=true;$("studyAnswer").innerHTML="<p><strong>"+escapeHTML(currentStudy.meaning)+"</strong></p><p>Example: “"+escapeHTML(currentStudy.example)+"”</p><p>"+escapeHTML(currentStudy.collocations)+"</p><p>"+escapeHTML(currentStudy.mistake)+"</p>";
- $("revealStudy").hidden=false;$("revealStudy").disabled=false;$("againStudy").disabled=true;$("knowStudy").disabled=true;$("nextStudy").hidden=true;
+ if(studyIndex>=studyQueue.length){showStudyDone();return}
+ currentStudy=studyQueue[studyIndex];revealed=false;
+ $("studyCounter").textContent="Card "+(studyIndex+1)+" of "+studyQueue.length+(studyQueue.length>sessionTotal?" (including repeats)":"");
+ $("studyWord").textContent=currentStudy.word;if(canSpeak)$("studyWord").append(speakButton(()=>currentStudy.word,"Listen to this word"));
+ $("studyPrompt").hidden=false;$("studyPrompt").textContent="Can you explain this expression and make your own sentence?";
+ $("studyAnswer").hidden=true;$("studyAnswer").innerHTML="<p><strong>"+escapeHTML(currentStudy.meaning)+"</strong></p><p>Example: “"+escapeHTML(currentStudy.example)+"”</p><p><strong>Common combinations:</strong> "+escapeHTML(currentStudy.collocations)+"</p><p><strong>Watch out:</strong> "+escapeHTML(currentStudy.mistake)+"</p>";
+ $("revealStudy").hidden=false;$("revealStudy").disabled=false;$("againStudy").hidden=false;$("knowStudy").hidden=false;$("againStudy").disabled=true;$("knowStudy").disabled=true;$("nextStudy").hidden=true;
 }
-$("revealStudy").addEventListener("click",()=>{if(!currentStudy)return;revealed=true;$("studyAnswer").hidden=false;$("revealStudy").hidden=true;$("againStudy").disabled=false;$("knowStudy").disabled=false});
+function showStudyDone(){
+ currentStudy=null;
+ $("studyCounter").textContent="Session complete";
+ $("studyWord").textContent=sessionKnown+" of "+sessionTotal+" words known";
+ $("studyPrompt").hidden=false;
+ $("studyPrompt").textContent=sessionAgain.size?("Words to keep practising: "+[...sessionAgain].join(", ")+". They are in your review list for next time."):"Excellent. Each word will come back in a few days so it stays in your memory.";
+ $("studyAnswer").hidden=true;
+ ["revealStudy","againStudy","knowStudy","nextStudy"].forEach(id=>$(id).hidden=true);
+ $("studyMessage").textContent="Start another session with the buttons below.";
+}
+$("revealStudy").addEventListener("click",()=>{if(!currentStudy)return;revealed=true;$("studyAnswer").hidden=false;$("studyPrompt").hidden=true;$("revealStudy").hidden=true;$("againStudy").disabled=false;$("knowStudy").disabled=false;$("knowStudy").focus()});
 function markReview(known){
  if(!currentStudy||!revealed)return;
  const id=currentStudy.id;
@@ -145,21 +165,28 @@ function markReview(known){
  const old=state.reviews[id]||{level:0};
  if(known){old.level=Math.min((old.level||0)+1,4);state.known=[...new Set([...state.known,id])];old.due=addDays([1,3,7,14,30][old.level-1]||30)}
  else{old.level=0;old.due=today();state.known=state.known.filter(x=>x!==id)}
- state.reviews[id]=old;saveState();renderWords();$("studyMessage").textContent=known?"Saved. You will see this word again later.":"Added to your review list for another attempt.";
- $("againStudy").disabled=true;$("knowStudy").disabled=true;$("nextStudy").hidden=false;
+ state.reviews[id]=old;saveState();renderWords();
+ if(known){if(!sessionAgain.has(currentStudy.word))sessionKnown++;$("studyMessage").textContent="Nice. This word will come back in "+([1,3,7,14,30][old.level-1]||30)+" day"+(old.level===1?"":"s")+"."}
+ else{sessionAgain.add(currentStudy.word);studyQueue.splice(Math.min(studyIndex+4,studyQueue.length),0,currentStudy);$("studyMessage").textContent="No problem. You will see this word again in a few cards."}
+ $("againStudy").disabled=true;$("knowStudy").disabled=true;$("nextStudy").hidden=false;$("nextStudy").focus();
 }
 $("againStudy").addEventListener("click",()=>markReview(false));$("knowStudy").addEventListener("click",()=>markReview(true));
 $("nextStudy").addEventListener("click",()=>{studyIndex++;renderStudy()});
 $("study").querySelector(".vocab-actions")?.remove();
 $("study").insertAdjacentHTML("beforeend",'<div class="study-controls"><button class="vocab-btn" id="startAllStudy" type="button">Practise all words</button><button class="vocab-btn" id="startSavedStudy" type="button">Review my saved words</button></div>');
-$("startAllStudy").addEventListener("click",()=>{studyQueue=WORDS.slice();studyIndex=0;renderStudy();$("studyMessage").textContent="Full vocabulary practice started."});
-$("startSavedStudy").addEventListener("click",()=>{studyQueue=state.saved.map(id=>WORDS.find(w=>w.id===id)).filter(Boolean);if(!studyQueue.length){$("studyMessage").textContent="Your review list is empty. Save a few words from the vocabulary bank first.";return}studyIndex=0;renderStudy();$("studyMessage").textContent="Your saved-word review has started."});
+$("startAllStudy").addEventListener("click",()=>beginSession(shuffle(WORDS),"Full vocabulary practice started, in random order."));
+$("startSavedStudy").addEventListener("click",()=>{const q=state.saved.map(id=>WORDS.find(w=>w.id===id)).filter(Boolean);if(!q.length){$("studyMessage").textContent="Your review list is empty. Save a few words from the vocabulary bank first.";return}beginSession(q,"Your saved-word review has started.")});
 startStudy();
 // Quiz: five questions selected at random. Answer can be changed until checked.
-let quizSet=[],quizIndex=0,score=0,selected=null,checked=false,locked=false;
-function shuffle(a){const x=a.slice();for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
+let quizSet=[],quizIndex=0,score=0,selected=null,checked=false,locked=false,missed=[];
+function wordForQuestion(q){
+ const ans=String(q.o[q.a]).toLowerCase().replace(/^the /,"").trim();
+ const exact=WORDS.find(w=>w.word===ans);if(exact)return exact;
+ const why=q.why.toLowerCase();
+ return WORDS.filter(w=>new RegExp("\\b"+w.word.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"\\b").test(why)).sort((a,b)=>b.word.length-a.word.length)[0]||null;
+}
 function startQuiz(){
- const priority=QUESTIONS.filter(q=>q.recent);const regular=QUESTIONS.filter(q=>!q.recent);quizSet=shuffle([...shuffle(priority).slice(0,5),...shuffle(regular).slice(0,5)]);quizIndex=0;score=0;locked=false;renderQuestion();
+ const priority=QUESTIONS.filter(q=>q.recent);const regular=QUESTIONS.filter(q=>!q.recent);quizSet=shuffle([...shuffle(priority).slice(0,5),...shuffle(regular).slice(0,5)]);quizIndex=0;score=0;locked=false;missed=[];renderQuestion();
 }
 function renderQuestion(){
  selected=null;checked=false;
@@ -170,7 +197,9 @@ function renderQuestion(){
  q.o.forEach((option,i)=>{const b=document.createElement("button");b.type="button";b.className="vocab-option";b.textContent=String.fromCharCode(65+i)+". "+option;b.addEventListener("click",()=>{if(checked||locked)return;selected=i;options.querySelectorAll("button").forEach((x,j)=>x.classList.toggle("selected",j===i));submit.disabled=false});options.append(b)});
  const feedback=document.createElement("p");feedback.className="vocab-feedback";feedback.setAttribute("aria-live","polite");
  const submit=document.createElement("button");submit.type="button";submit.className="vocab-btn primary";submit.textContent=quizIndex===9?"Finish session":"Check answer";submit.disabled=true;
- submit.addEventListener("click",()=>{if(selected===null)return;if(checked){quizIndex++;if(quizIndex===10)showResult();else renderQuestion();return}checked=true;if(selected===q.a)score++;feedback.textContent=(selected===q.a?"That’s right. ":"Not quite. ")+q.why;submit.textContent=quizIndex===9?"See result":"Next question"});
+ submit.addEventListener("click",()=>{if(selected===null)return;if(checked){quizIndex++;if(quizIndex===10)showResult();else renderQuestion();return}checked=true;const right=selected===q.a;if(right)score++;else{const w=wordForQuestion(q);if(w&&!missed.includes(w))missed.push(w)}
+  options.querySelectorAll("button").forEach((x,j)=>{x.classList.toggle("is-correct",j===q.a);x.classList.toggle("is-wrong",j===selected&&!right);x.setAttribute("aria-disabled","true")});
+  feedback.className="vocab-feedback "+(right?"good":"bad");feedback.textContent=(right?"That’s right. ":"Not quite. The answer is "+String.fromCharCode(65+q.a)+". ")+q.why;submit.textContent=quizIndex===9?"See result":"Next question"});
  area.append(title,options,feedback,submit);
 }
 function showResult(){
@@ -178,6 +207,11 @@ function showResult(){
  const h=document.createElement("h3");h.textContent="You scored "+score+"/10";
  const p=document.createElement("p");p.textContent=passed?"Good work. You passed this practice session. Your streak has been updated for today.":"You need 8/10 to pass this session. Review the explanations and try another set. Your streak has not changed.";
  result.append(h,p);
+ const toAdd=missed.filter(w=>!state.saved.includes(w.id));
+ if(missed.length){const m=document.createElement("div");m.className="quiz-missed";m.innerHTML="<p><strong>Words to review:</strong> "+missed.map(w=>escapeHTML(w.word)).join(", ")+"</p>";
+  if(toAdd.length){const add=document.createElement("button");add.type="button";add.className="vocab-btn";add.textContent="＋ Add "+(toAdd.length===1?"this word":"these "+toAdd.length+" words")+" to my review list";add.addEventListener("click",()=>{toAdd.forEach(w=>{if(!state.saved.includes(w.id))state.saved.push(w.id);if(!state.reviews[w.id])state.reviews[w.id]={level:0,due:today()}});saveState();renderWords();add.disabled=true;add.textContent="✓ Added. Review them in the flashcards above."});m.append(add)}
+  else{const ok=document.createElement("p");ok.className="study-status";ok.textContent="These words are already in your review list.";m.append(ok)}
+  result.append(m)}
  const retry=document.createElement("button");retry.type="button";retry.className="vocab-btn primary";retry.textContent="Practise another set";retry.addEventListener("click",startQuiz);result.append(retry);$("quizArea").replaceChildren(result);
  $("quizProgress").textContent=passed?"Session passed":"Session not passed";
  if(passed){

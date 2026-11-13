@@ -989,6 +989,16 @@
   questionSets[2] = questionSets[2].filter(t => t.questions.length);
   const placesIndex = questionSets[2].findIndex(t => t.topic === "Places");
   if (placesIndex > 2) questionSets[2].splice(2, 0, ...questionSets[2].splice(placesIndex, 1));
+  // November 11 questions (only questions whose meaning is not already listed).
+  appendUniqueQuestions(1, "Parks", [
+    "Do you often visit parks?",
+    "What do people usually do in parks?"
+  ]);
+  addUniqueTopic(3, "Gardening and plants", [
+    "Why do some people enjoy growing plants?",
+    "What are the benefits of growing plants at home?",
+    "Should children learn how to grow plants?"
+  ]);
   // Parts 1 and 3 have many topics, so list them alphabetically.
   [1, 3].forEach(part => questionSets[part].sort((a, b) => a.topic.localeCompare(b.topic)));
 
@@ -1135,6 +1145,10 @@
     if (!allQuestions.includes(question)) return;
     const date = "November " + day;
     if (dateValue(date) > dateValue(reportedDates.get(question))) reportedDates.set(question, date);
+  });
+  // Reported on November 11 (new questions, and existing ones asked again).
+  ["Where is your hometown?", "What do you like most about your hometown?", "Are there any shops or parks near your home?", "Do you often visit parks?", "What do people usually do in parks?", "Describe a person who likes to grow plants.", "Why do some people enjoy growing plants?", "What are the benefits of growing plants at home?", "Should children learn how to grow plants?", "Is it important to have natural places in cities?"].forEach(question => {
+    if (allQuestions.includes(question) && dateValue("November 11") > dateValue(reportedDates.get(question))) reportedDates.set(question, "November 11");
   });
 
   const partInfo = {

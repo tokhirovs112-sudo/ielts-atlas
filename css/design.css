@@ -2323,3 +2323,6 @@ input[type="search"],input[type="text"],textarea{-webkit-appearance:none;appeara
   .topbar{padding-top:max(10px,env(safe-area-inset-top))}
   body{padding-bottom:env(safe-area-inset-bottom)}
 }
+/* The site has its own Dark button: stop Android browsers (Chrome, Samsung Internet) from force-darkening the light theme. */
+:root{color-scheme:only light}
+html[data-theme="dark"]{color-scheme:only dark}

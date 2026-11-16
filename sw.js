@@ -1,13 +1,13 @@
 "use strict";
 
-const CACHE_NAME = "englisity-pwa-v38";
+const CACHE_NAME = "englisity-pwa-v39";
 const APP_ROOT = new URL(self.registration.scope);
 
 const CORE_FILES = [
   "./",
   "index.html",
   "css/style.css",
-  "css/design.css?v=20261116-mobile-1",
+  "css/design.css?v=20261116-android-1",
   "css/mobile.css?v=20261103-responsive-pwa-2",
   "js/app.js?v=20261111-search-1",
   "js/features.js?v=20261111-visible-2",

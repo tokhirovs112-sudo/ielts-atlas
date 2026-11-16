@@ -59,7 +59,7 @@
     const style = document.createElement("style");
     style.textContent = `
       .eng-exit-overlay[hidden]{display:none}
-      .eng-exit-overlay{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;padding:20px;background:rgba(9,20,14,.68);backdrop-filter:blur(5px)}
+      .eng-exit-overlay{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;padding:20px;background:rgba(9,20,14,.68);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
       .eng-exit-dialog{width:min(480px,100%);padding:26px;border:1px solid var(--border,#dce5dd);border-radius:18px;background:var(--surface,#fff);color:var(--text,#203c30);box-shadow:0 24px 70px rgba(0,0,0,.25)}
       .eng-exit-dialog h2{margin:0 0 9px;font-size:23px;color:inherit}
       .eng-exit-dialog p{margin:0 0 22px;line-height:1.65;color:var(--muted,#68756b)}

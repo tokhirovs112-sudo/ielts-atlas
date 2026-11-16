@@ -27,7 +27,7 @@ const questions=[
 {n:26,type:"person",p:"The station may provide a sense of how to build in difficult locations elsewhere.",a:"D",para:"G",e:"you can really imagine Halley sitting on a planet in outer space ... could also give an idea of how we might actually colonise other places.",why:"Sam Jacob says Halley VI could offer ideas for building and living in places beyond Earth."}
 ];
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const wordify=s=>esc(s).replace(/([\p{L}]+(?:['’\-][\p{L}]+)*)/gu,'<span class="vocab-word" data-word="$1">$1</span>');
+const wordify=s=>esc(s).replace(/(&#?\w+;)|([\p{L}]+(?:['’\-][\p{L}]+)*)/gu,(m,ent,w)=>ent?ent:'<span class="vocab-word" data-word="'+w+'">'+w+'</span>');
 document.getElementById("passageText").innerHTML=passage.map(([id,txt])=>'<p id="para'+id+'"><span class="para-number">'+id+'</span>'+wordify(txt)+'</p>').join("");
 const groups=[
 {title:"Questions 14–18",kind:"MATCHING INFORMATION",instructions:"Reading Passage 2 has seven paragraphs, A–G. Which paragraph contains the following information? You may use any letter more than once.",questions:questions.slice(0,5),options:["A","B","C","D","E","F","G"]},

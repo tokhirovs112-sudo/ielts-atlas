@@ -18,7 +18,7 @@ button{cursor:pointer}
 .topbar{
   min-height:72px;padding:10px max(4%,calc((100% - 1240px)/2));
   background:rgba(250,252,249,.94);border-bottom:1px solid rgba(218,229,222,.9);
-  box-shadow:0 3px 18px rgba(28,52,46,.035);backdrop-filter:blur(16px);
+  box-shadow:0 3px 18px rgba(28,52,46,.035);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
 }
 .topbar .nav-container{width:100%;max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:24px}
 .brand{gap:10px;color:var(--navy);font-size:20px;font-weight:800;letter-spacing:-.8px;white-space:nowrap}
@@ -299,7 +299,7 @@ h1,h2,h3,.brand{font-family:var(--font-display),sans-serif}
 /* Final consistency and learning-progress refinements */
 :root{color-scheme:light}
 body{color:#263b32;background:#f7f8f5}
-.topbar{border-bottom:1px solid #e6ece5;background:rgba(255,255,255,.94);backdrop-filter:blur(14px)}
+.topbar{border-bottom:1px solid #e6ece5;background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
 .brand{color:#28483b}.brand small{color:#829187}
 .nav a{border-radius:9px;transition:background .18s ease,color .18s ease}
 .nav a:hover{background:#edf4ee;color:#276c5c}
@@ -1746,7 +1746,7 @@ a{transition:color .18s ease}
   background:rgba(250,251,247,.92)!important;
   border-bottom:1px solid rgba(218,229,218,.9)!important;
   box-shadow:0 4px 22px rgba(25,55,43,.045)!important;
-  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
 }
 .topbar .nav-container{max-width:1240px;margin:0 auto}
 .brand{color:#1b302b!important;font-size:19px!important;letter-spacing:-.045em!important}
@@ -2048,7 +2048,7 @@ html[data-theme="dark"] .home-bottom-cta>a{background:#28785e!important;color:#f
   background:#fbfcf8;color:#263b32;box-shadow:0 24px 80px rgba(10,28,22,.24);
   font-family:Inter,"Segoe UI",Arial,sans-serif;overflow:hidden;color-scheme:light;
 }
-.pwa-install-dialog::backdrop{background:rgba(9,22,18,.58);backdrop-filter:blur(5px)}
+.pwa-install-dialog::backdrop{background:rgba(9,22,18,.58);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
 .pwa-install-dialog-content{padding:30px 30px 26px}
 .pwa-install-kicker{margin:0 0 10px;color:#39856a;font-size:11px;font-weight:850;letter-spacing:1.8px}
 .pwa-install-dialog h2{margin:0 0 12px;color:#1d3830;font-size:clamp(22px,4vw,27px);line-height:1.2;letter-spacing:-.7px}
@@ -2067,7 +2067,7 @@ html[data-theme="dark"] .pwa-install-dialog{
   color-scheme:dark;background:linear-gradient(145deg,#203a32 0%,#172923 100%);
   border-color:#466653;color:#edf5ed;box-shadow:0 26px 90px rgba(0,0,0,.48)
 }
-html[data-theme="dark"] .pwa-install-dialog::backdrop{background:rgba(3,10,8,.72);backdrop-filter:blur(6px)}
+html[data-theme="dark"] .pwa-install-dialog::backdrop{background:rgba(3,10,8,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 html[data-theme="dark"] .pwa-install-kicker{color:#a9d2b4}
 html[data-theme="dark"] .pwa-install-dialog h2{color:#f0f6ef}
 html[data-theme="dark"] .pwa-install-instructions{color:#c2d1c4}
@@ -2286,3 +2286,40 @@ html[data-theme="dark"] .share-prompt a.secondary{background:transparent;color:#
 /* Small "report a mistake" links next to results and definitions. */
 .eng-report-inline{display:inline-block;margin:10px 0 0;font-size:.85rem;font-weight:700;color:#8a5a12!important;text-decoration:underline;text-underline-offset:2px}
 html[data-theme="dark"] .eng-report-inline{color:#f0c987!important}
+
+/* ===== Phone layout (Nov 2026): less scrolling before the content, iPhone fixes ===== */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+a,button,label,summary,[role="button"]{-webkit-tap-highlight-color:rgba(57,121,109,.12)}
+button,input,select,textarea{font-family:inherit}
+input[type="search"],input[type="text"],textarea{-webkit-appearance:none;appearance:none}
+@media(max-width:700px){
+  /* iPhone Safari zooms the page when a field's text is smaller than 16px. */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),select,textarea{font-size:16px!important}
+  /* Learning strip: one slim row instead of a tall card. */
+  .eng-progress{margin:8px 12px!important;padding:6px!important;gap:6px!important;border-radius:14px!important}
+  .eng-progress>div:first-child{display:none!important}
+  .eng-progress-actions{width:100%;gap:6px!important;flex-wrap:nowrap!important}
+  .eng-progress-actions>*{flex:1 1 0;min-width:0;min-height:38px;padding:8px 6px!important;font-size:12.5px!important;display:inline-flex!important;align-items:center;justify-content:center;white-space:nowrap}
+  /* Page intro: shorter on phones. */
+  .page-hero,.vocab-hero,.library-hero{margin:10px 0 16px!important;padding:20px 18px!important}
+  .page-hero h1,.vocab-hero h1,.library-hero h1{font-size:clamp(1.65rem,7.4vw,2.1rem)!important;letter-spacing:-.6px;margin-bottom:8px}
+  .page-hero p,.vocab-hero p,.library-hero p{font-size:.93rem!important;line-height:1.6!important;margin-top:6px}
+  .page-hero .breadcrumb{margin-bottom:4px}
+  /* Once you are inside a section, hide the big intro so the task is on screen straight away. */
+  body:has(#partSelection[hidden]) .page-hero,
+  body:has(#taskChooser[hidden]) .page-hero{display:none!important}
+  /* Speaking question list: full-width question text, button underneath. */
+  #questionList .question-item{display:grid!important;grid-template-columns:auto 1fr;gap:6px 12px;align-items:start!important;padding:14px!important}
+  #questionList .question-item .practise-question{grid-column:1/-1;width:100%;margin:4px 0 0!important;box-sizing:border-box;min-height:42px;justify-content:center;text-align:center}
+  blockquote.task-instructions{margin-left:0!important;margin-right:0!important;padding-left:14px!important}
+  /* Bigger, easier tap targets. */
+  .eng-save,.practise-question,.task-card-link{min-height:40px}
+  .eng-save{padding:9px 14px!important;font-size:13px!important}
+  /* Long words and links never push the page sideways. */
+  main,.article-body,.passage,.question-text{overflow-wrap:anywhere}
+  img,video,iframe{max-width:100%}
+}
+@media(max-width:700px) and (pointer:coarse){
+  .topbar{padding-top:max(10px,env(safe-area-inset-top))}
+  body{padding-bottom:env(safe-area-inset-bottom)}
+}

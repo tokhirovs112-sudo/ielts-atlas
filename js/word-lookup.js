@@ -111,7 +111,7 @@
     const el = lastWordElement && lastWordElement.dataset && lastWordElement.dataset.word === word ? lastWordElement : null;
     const block = el ? el.closest("p, li, td, label, div") : null;
     const text = block ? block.innerText || block.textContent || "" : "";
-    const sentences = text.split(/(?<=[.!?])\s+/);
+    const sentences = text.replace(/([.!?])\s+/g, "$1\u0000").split("\u0000");
     const re = new RegExp("(^|[^\\p{L}])" + word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "([^\\p{L}]|$)", "iu");
     return sentences.find(s => re.test(s)) || text.slice(0, 300);
   }

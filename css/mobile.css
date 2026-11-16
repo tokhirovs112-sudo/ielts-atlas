@@ -775,7 +775,7 @@
 
 .pwa-install-dialog::backdrop {
   background: rgba(10, 25, 20, .58);
-  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
 }
 
 .pwa-install-dialog-content {

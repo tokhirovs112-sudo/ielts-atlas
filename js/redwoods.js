@@ -21,7 +21,7 @@ const key={A:"iv",B:"vii",C:"ii",D:"vi",E:"i",F:"iii"};
 const root=document.querySelector(".test-main"),passageNode=document.getElementById("passageText"),list=document.getElementById("headingList");
 let selected=null,dragged=null,submitted=false,timer=null,seconds=1200;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const wordify=value=>esc(value).replace(/([\p{L}]+(?:['’\-][\p{L}]+)*)/gu,'<span class="vocab-word" data-word="$1">$1</span>');
+const wordify=value=>esc(value).replace(/(&#?\w+;)|([\p{L}]+(?:['’\-][\p{L}]+)*)/gu,(m,ent,w)=>ent?ent:'<span class="vocab-word" data-word="'+w+'">'+w+'</span>');
 const gate=document.getElementById("modeGate"),popup=document.getElementById("vocabPopup"),modeLabel=document.getElementById("modeLabel");let lookupId=0;
 function render(){
  passageNode.innerHTML=passage.map(([letter,body])=>'<p id="para'+letter+'"><span class="para-letter">'+letter+'</span><span class="drop-slot" data-para="'+letter+'" role="button" tabindex="0" aria-label="Drop heading for paragraph '+letter+'"><span class="slot-label">Drop heading</span><span class="slot-answer">No heading selected</span><span class="feedback"></span></span>'+wordify(body)+'</p>').join("");

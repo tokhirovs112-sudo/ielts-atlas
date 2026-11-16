@@ -9,7 +9,7 @@
 
   const style = document.createElement("style");
   style.textContent = [
-    ".mini-player{position:fixed;left:50%;top:calc(8px + env(safe-area-inset-top));transform:translateX(-50%);z-index:70;display:none;align-items:center;gap:8px;padding:6px 8px 6px 12px;border:1px solid #cfe0d4;border-radius:999px;background:#ffffffee;backdrop-filter:blur(6px);box-shadow:0 6px 20px rgba(20,50,40,.16);font-size:.88rem;color:#24463a;max-width:calc(100vw - 24px)}",
+    ".mini-player{position:fixed;left:50%;top:calc(8px + env(safe-area-inset-top));transform:translateX(-50%);z-index:70;display:none;align-items:center;gap:8px;padding:6px 8px 6px 12px;border:1px solid #cfe0d4;border-radius:999px;background:#ffffffee;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 6px 20px rgba(20,50,40,.16);font-size:.88rem;color:#24463a;max-width:calc(100vw - 24px)}",
     ".mini-player.show{display:flex}",
     ".mini-player time{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}",
     ".mini-player .mini-bar{width:90px;height:5px;display:block;border-radius:5px;background:#dce9df;overflow:hidden}",

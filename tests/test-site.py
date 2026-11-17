@@ -31,7 +31,7 @@ PAGES = ["index.html"] + sorted(glob.glob("pages/*.html")) + sorted(glob.glob("a
 READING_TESTS = ["beatrix-potter", "halley-vi", "herding", "keeping-healthy-at-work", "life-on-mars", "power-from-the-sea", "redwoods"]
 LISTENING_TESTS = ["listening-test-01", "listening-test-02", "listening-test-03"]
 DESKTOP = {"viewport": {"width": 1366, "height": 900}}
-IGNORED_CONSOLE = ("fonts.googleapis", "fonts.gstatic", "ERR_INTERNET_DISCONNECTED", "ERR_NAME_NOT_RESOLVED", "ERR_CONNECTION", "ERR_TUNNEL", "ERR_PROXY", "net::ERR_FAILED", "api.dictionaryapi.dev")
+IGNORED_CONSOLE = ("fonts.googleapis", "fonts.gstatic", "ERR_INTERNET_DISCONNECTED", "ERR_NAME_NOT_RESOLVED", "ERR_CONNECTION", "ERR_TUNNEL", "ERR_PROXY", "net::ERR_FAILED", "api.dictionaryapi.dev", "cloudflareinsights")
 
 
 # ---------------------------------------------------------------- helpers ---

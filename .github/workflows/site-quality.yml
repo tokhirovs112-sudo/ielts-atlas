@@ -4,6 +4,8 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * 1"   # Mondays: also check outside links (YouTube etc.)
 
 jobs:
   static-checks:
@@ -31,3 +33,35 @@ jobs:
           TZ: Asia/Tashkent
       - name: Check local HTML references
         run: python scripts/check-site.py
+      - name: Test the form and audio Worker
+        run: node tests/test-worker.mjs
+
+  browser-tests:
+    # Opens every page in a real browser (laptop, iPhone and Android sizes)
+    # and uses each feature like a student: tests, quizzes, timers, saving, forms, offline.
+    runs-on: ubuntu-latest
+    if: github.event_name != 'schedule'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install browser
+        run: |
+          pip install playwright==1.63.0
+          python -m playwright install --with-deps chromium
+      - name: Run site tests
+        env:
+          TZ: Asia/Tashkent
+        run: python tests/test-site.py
+
+  outside-links:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check YouTube and other outside links
+        run: python tests/check-external-links.py

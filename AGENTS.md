@@ -20,3 +20,9 @@ When adding a new article:
 5. Keep the learning script in the service worker's core cache so the feature remains available offline.
 
 When editing existing article pages or the shared learning script, preserve this feature and all existing article content. Never replace the static button with a JavaScript-generated button.
+
+# Tests — run before every push
+
+- `python tests/test-site.py` opens every page in a real browser (laptop, iPhone, Android sizes) and uses each feature: reading tests score full marks with their own answer keys, listening mocks score 40/40, every cue card has its points, every writing task opens, vocabulary, article quizzes, forms, streak and offline mode. Add a check here whenever a new feature is added.
+- `node tests/test-worker.mjs` tests the form endpoint and audio byte ranges in `worker/index.js`.
+- GitHub runs both on every push (Site quality checks) and checks outside links (YouTube etc.) every Monday.

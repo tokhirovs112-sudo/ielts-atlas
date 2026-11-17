@@ -71,6 +71,29 @@
 .vocab-result{padding:17px;border-radius:12px;background:#f3f7fd;color:#34445e;line-height:1.6}
 .vocab-empty{padding:18px;border:1px dashed #cbd5e1;border-radius:12px;color:#718096;text-align:center;grid-column:1/-1}
 @media(max-width:760px){.vocab-layout{grid-template-columns:1fr}.vocab-list{grid-template-columns:1fr}.vocab-hero{padding:27px 22px}.vocab-overview{gap:8px}.vocab-stat{padding:12px}.vocab-stat strong{font-size:21px}}
+.vocab-organiser{margin:14px 0 16px;display:grid;gap:12px}
+.vocab-status-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.vocab-status-tab{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 12px;border:1px solid #dfe7e2;border-radius:12px;background:#fff;color:#4d6359;font:inherit;font-size:13px;font-weight:600;cursor:pointer;text-align:left;min-height:56px}
+.vocab-status-tab b{font-size:20px;color:#183b34;line-height:1.1}
+.vocab-status-tab.active{background:#183b34;border-color:#183b34;color:#dcefe6}.vocab-status-tab.active b{color:#fff}
+.vocab-selects{display:flex;gap:10px;flex-wrap:wrap}
+.vocab-selects label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:700;color:#5f7369;flex:1 1 180px}
+.vocab-selects select{padding:10px 12px;border:1px solid #dfe7e2;border-radius:10px;background:#fff;color:#183b34;font:inherit;font-size:14px}
+.vocab-bank-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.vocab-bank-actions .study-status{flex:1 1 240px;margin:0}
+.vocab-item-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.vocab-status-badge{flex:none;font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:999px;background:#eef2ef;color:#5f7369;white-space:nowrap}
+.vocab-status-badge.is-learning{background:#fff4dc;color:#8a5a00}
+.vocab-status-badge.is-memorized{background:#e3f5ea;color:#1d6b43}
+.vocab-item.is-memorized{border-color:#cfe9d9}
+.vocab-item-actions button.primary{background:#183b34;border-color:#183b34;color:#fff}
+html[data-theme="dark"] .vocab-status-tab,html[data-theme="dark"] .vocab-selects select{background:#16231f;border-color:#2b3d37;color:#c9d8d1}
+html[data-theme="dark"] .vocab-status-tab b{color:#eef5f1}
+html[data-theme="dark"] .vocab-status-tab.active{background:#2f7d68;border-color:#2f7d68}
+html[data-theme="dark"] .vocab-status-badge{background:#22332e;color:#c9d8d1}
+html[data-theme="dark"] .vocab-status-badge.is-learning{background:#3a2f17;color:#f3cf7c}
+html[data-theme="dark"] .vocab-status-badge.is-memorized{background:#183d2c;color:#8fe0b2}
+@media(max-width:560px){.vocab-status-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.vocab-toolbar{flex-wrap:wrap}.vocab-toolbar .vocab-search{flex:1 1 100%;width:100%}.vocab-item-head{flex-wrap:wrap}.vocab-item-head h3{display:flex;align-items:center;gap:6px}}
 </style>
 <link rel="stylesheet" href="../css/design.css?v=20261116-android-1">
   
@@ -113,14 +136,14 @@ html[data-theme="dark"] .vocab-item .item-meta{color:#a7d9b7!important}
 </div></header>
 <main class="vocab-wrap">
 <section class="vocab-hero"><div class="eyebrow">LEARN · USE · REMEMBER</div><h1>Build vocabulary that stays with you.</h1><p>Learn useful IELTS words with their common combinations and typical mistakes. Practise with flashcards, test yourself with a quiz, and keep a personal review list of the words you find difficult.</p><div class="vocab-actions"><a class="vocab-btn primary" href="#study">Start flashcards</a><a class="vocab-btn" href="#dailyQuiz">Take the quiz</a><a class="vocab-btn" href="#wordBank">Browse all words</a></div></section>
-<section class="vocab-overview" aria-label="Your vocabulary progress"><div class="vocab-stat"><strong id="knownCount">0</strong><span>Words marked as known</span></div><div class="vocab-stat"><strong id="savedCount">0</strong><span>Words in your review list</span></div><div class="vocab-stat"><strong id="dueCount">0</strong><span>Words ready to review</span></div></section>
+<section class="vocab-overview" aria-label="Your vocabulary progress"><div class="vocab-stat"><strong id="knownCount">0</strong><span>Memorized</span></div><div class="vocab-stat"><strong id="savedCount">0</strong><span>Learning</span></div><div class="vocab-stat"><strong id="dueCount">0</strong><span>To review today</span></div></section>
 <div class="vocab-layout">
 <section class="vocab-panel" id="wordOfDay"><div class="vocab-kicker">A useful word to notice today</div><div class="word-heading"><div><h3 id="dailyWordText">Substantial</h3><span class="word-pos" id="dailyPos"></span></div><button class="vocab-btn" id="saveDaily" type="button">＋ Review later</button></div><p class="word-definition" id="dailyDefinition"></p><div class="word-example" id="dailyExample"></div><div class="word-detail" id="dailyCollocations"></div><div class="word-detail" id="dailyUsage"></div><div class="word-detail" id="dailyMistake"></div></section>
 <section class="vocab-panel" id="study"><div class="vocab-kicker">Active recall</div><h2>Flashcard practice</h2><p>Try to remember the meaning before revealing it. Press “Got it” only if you could explain the word and use it yourself; otherwise press “Practise again” and it will come back later in the session.</p><div class="study-card" id="studyCard"><div class="study-status" id="studyCounter">Ready when you are</div><div class="study-word" id="studyWord">Your next word</div><p id="studyPrompt">Start with a word from your review list, or practise the full vocabulary bank.</p><div id="studyAnswer" hidden></div></div><div class="study-controls"><button class="vocab-btn primary" id="revealStudy" type="button">Show meaning</button><button class="vocab-btn" id="againStudy" type="button" disabled>Practise again</button><button class="vocab-btn" id="knowStudy" type="button" disabled>Got it</button><button class="vocab-btn" id="nextStudy" type="button" hidden>Next word</button></div><p class="study-status" id="studyMessage" aria-live="polite">Your progress is stored in this browser only.</p></section>
 </div>
 <section class="vocab-panel" id="dailyQuiz" style="margin-top:18px"><div class="vocab-kicker">Check your understanding</div><h2>Vocabulary quiz</h2><p>Ten questions per session: five on the newest words and five from the word bank. Choose an answer, check it, and read the explanation. Score 8 or more to pass and keep your daily streak.</p><div class="quiz-progress" id="quizProgress">10 questions · Aim for at least 8 correct answers.</div><div id="quizArea"></div></section>
-<section class="vocab-panel" id="wordBank" style="margin-top:18px"><div class="vocab-kicker">Vocabulary bank</div><h2>Find the word you need</h2><p>Search by word or meaning. Filter by the skill where the expression is especially useful (words for both skills appear under Writing and Speaking). Save unfamiliar words to build your own review list.</p><div class="vocab-toolbar"><input class="vocab-search" id="wordSearch" type="search" placeholder="Search words or meanings…" aria-label="Search vocabulary"><span class="study-status" id="wordCountLabel" aria-live="polite"></span></div><div class="vocab-filters" role="group" aria-label="Filter vocabulary"><button class="vocab-filter active" data-filter="All" type="button">All</button><button class="vocab-filter" data-filter="Writing" type="button">Writing</button><button class="vocab-filter" data-filter="Speaking" type="button">Speaking</button><button class="vocab-filter" data-filter="Saved" type="button">My review list</button></div><div class="vocab-list" id="wordList"></div></section>
+<section class="vocab-panel" id="wordBank" style="margin-top:18px"><div class="vocab-kicker">Vocabulary bank</div><h2>Your words, organised</h2><p>Every word is <strong>New</strong>, <strong>Learning</strong> or <strong>Memorized</strong>. Tap “Start learning” on words you want to practise, or “I know it” on words you already know. Then filter by topic or skill, or search.</p><div class="vocab-toolbar"><input class="vocab-search" id="wordSearch" type="search" placeholder="Search words or meanings…" aria-label="Search vocabulary"><span class="study-status" id="wordCountLabel" aria-live="polite"></span></div><div class="vocab-filters" role="group" aria-label="Filter vocabulary"><button class="vocab-filter active" data-filter="All" type="button">All</button><button class="vocab-filter" data-filter="Writing" type="button">Writing</button><button class="vocab-filter" data-filter="Speaking" type="button">Speaking</button><button class="vocab-filter" data-filter="Saved" type="button">My review list</button></div><div class="vocab-list" id="wordList"></div></section>
 </main>
 <footer class="footer"><strong>Englisity</strong><a href="../index.html">Back home ↑</a></footer>
-<script src="../js/app.js?v=20261111-search-1"></script><script src="../js/features.js?v=20261111-visible-2"></script><script src="../js/vocabulary.js?v=20261111-new-words-1"></script>
+<script src="../js/app.js?v=20261111-search-1"></script><script src="../js/features.js?v=20261111-visible-2"></script><script src="../js/vocabulary.js?v=20261117-organise-1"></script>
 </body></html>

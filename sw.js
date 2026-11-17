@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "englisity-pwa-v39";
+const CACHE_NAME = "englisity-pwa-v40";
 const APP_ROOT = new URL(self.registration.scope);
 
 const CORE_FILES = [
@@ -20,8 +20,8 @@ const CORE_FILES = [
   "js/beatrix-potter.js",
   "js/halley-vi.js",
   "manifest.webmanifest",
-  "assets/englisity-mark.svg",
-  "assets/englisity-app-icon.png",
+  "assets/englisity-mark.svg?v=20261117-logo",
+  "assets/englisity-app-icon.png?v=20261117-logo",
   "pages/reading.html",
   "pages/listening.html",
   "pages/writing.html",

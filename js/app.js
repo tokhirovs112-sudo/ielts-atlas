@@ -353,7 +353,7 @@
     };
 
     addLink("manifest", new URL("manifest.webmanifest", appRoot).href);
-    addLink("apple-touch-icon", new URL("assets/englisity-app-icon.png", appRoot).href, { sizes: "180x180" });
+    addLink("apple-touch-icon", new URL("assets/englisity-app-icon.png?v=20261117-logo", appRoot).href, { sizes: "180x180" });
 
     if (!document.querySelector('link[data-englisity-mobile-css]')) {
       const mobileStyles = document.createElement("link");

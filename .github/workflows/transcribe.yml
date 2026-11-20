@@ -1,0 +1,28 @@
+name: Temporary transcription (Mock 04)
+on:
+  push:
+    branches: [tmp-transcribe-mock04]
+jobs:
+  transcribe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install faster-whisper==1.1.1
+      - name: Transcribe
+        run: |
+          python - <<'PY'
+          from faster_whisper import WhisperModel
+          m = WhisperModel("small.en", device="cpu", compute_type="int8")
+          segs, info = m.transcribe("tmp/audio.mp3", beam_size=5, vad_filter=False)
+          with open("transcript.txt", "w") as f:
+              for s in segs:
+                  f.write(f"[{int(s.start//60):02d}:{s.start%60:05.2f}] {s.text.strip()}\n")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: transcript
+          path: transcript.txt

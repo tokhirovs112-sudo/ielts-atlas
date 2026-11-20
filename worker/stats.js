@@ -17,7 +17,7 @@ const int = (v, lo, hi) => { const n = Math.round(Number(v)); return Number.isFi
 const dayOf = ms => new Date(ms + 5 * 3600 * 1000).toISOString().slice(0, 10);
 
 const SCHEMA = [
-  "CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, ts INTEGER NOT NULL, day TEXT NOT NULL, vid TEXT NOT NULL, sid TEXT, type TEXT NOT NULL, section TEXT, path TEXT, item TEXT, score INTEGER, total INTEGER, seconds INTEGER, device TEXT, country TEXT, referrer TEXT)",
+  "CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, ts INTEGER NOT NULL, day TEXT NOT NULL, vid TEXT NOT NULL, sid TEXT, type TEXT NOT NULL, section TEXT, path TEXT, item TEXT, score INTEGER, total INTEGER, seconds INTEGER, device TEXT, country TEXT, referrer TEXT, detail TEXT)",
   "CREATE INDEX IF NOT EXISTS idx_events_day ON events(day)",
   "CREATE INDEX IF NOT EXISTS idx_events_type_day ON events(type, day)",
   "CREATE INDEX IF NOT EXISTS idx_events_vid ON events(vid)"
@@ -26,6 +26,7 @@ let schemaReady = false;
 async function ensureSchema(db) {
   if (schemaReady) return;
   await db.batch(SCHEMA.map(s => db.prepare(s)));
+  try { await db.prepare("ALTER TABLE events ADD COLUMN detail TEXT").run(); } catch { /* already there */ }
   schemaReady = true;
 }
 
@@ -74,12 +75,13 @@ export async function handleTrack(request, env) {
     rows.push([now, day, vid, sid || null, e.type, section, clip(e.path, 120), clip(e.item, 160),
       e.type === "finish" ? int(e.score, 0, 1000) : null, e.type === "finish" ? int(e.total, 1, 1000) : null,
       e.type === "active" ? int(e.seconds, 1, 120) : null, device, country,
-      e.type === "view" && e.ref ? referrerHost(e.ref, selfHost) : null]);
+      e.type === "view" && e.ref ? referrerHost(e.ref, selfHost) : null,
+      e.type === "finish" && typeof e.wrong === "string" && /^[0-9,]{0,200}$/.test(e.wrong) ? e.wrong : null]);
   }
   if (!rows.length) return new Response(null, { status: 204 });
   try {
     await ensureSchema(env.STATS);
-    const stmt = env.STATS.prepare("INSERT INTO events (ts, day, vid, sid, type, section, path, item, score, total, seconds, device, country, referrer) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    const stmt = env.STATS.prepare("INSERT INTO events (ts, day, vid, sid, type, section, path, item, score, total, seconds, device, country, referrer, detail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     const batch = rows.map(r => stmt.bind(...r));
     // Keep the database small: drop events older than about 13 months now and then.
     if (Math.random() < 0.01) batch.push(env.STATS.prepare("DELETE FROM events WHERE ts < ?").bind(now - 400 * 86400 * 1000));
@@ -100,9 +102,10 @@ function samePassword(a, b) {
 
 export async function handleStats(request, env) {
   if (request.method !== "GET") return json({ error: "method" }, 405);
-  if (!env.STATS_PASSWORD) return json({ error: "not-configured", detail: "Add a secret called STATS_PASSWORD in Cloudflare (Worker → Settings → Variables and Secrets)." }, 503);
+  if (!env.STATS_PASSWORD) return json({ error: "not-configured", configured: false, detail: "Add a secret called STATS_PASSWORD in Cloudflare (Worker → Settings → Variables and Secrets)." }, 503);
   if (!env.STATS) return json({ error: "not-configured", detail: "The STATS database is not connected to the Worker." }, 503);
   const given = (request.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "");
+  if (!given) return json({ error: "password-needed", configured: true }, 401);
   if (!samePassword(given, env.STATS_PASSWORD)) {
     await new Promise(r => setTimeout(r, 400)); // slow down password guessing
     return json({ error: "wrong-password" }, 401);
@@ -115,7 +118,7 @@ export async function handleStats(request, env) {
   await ensureSchema(db);
   const q = (sql, ...args) => db.prepare(sql).bind(...args);
   const range = "day >= ?1";
-  const [totals, todayRow, weekRow, returning, perDay, sections, starts, finishes, opens, pages, devices, countries, referrers, newVisitors] = await db.batch([
+  const [totals, todayRow, weekRow, returning, perDay, sections, starts, finishes, opens, pages, devices, countries, referrers, newVisitors, liveNow, details] = await db.batch([
     q(`SELECT COUNT(DISTINCT vid) AS visitors, COUNT(DISTINCT sid) AS sessions, SUM(type='view') AS views, COALESCE(SUM(seconds),0) AS seconds FROM events WHERE ${range}`, from),
     q("SELECT COUNT(DISTINCT vid) AS visitors, COALESCE(SUM(seconds),0) AS seconds FROM events WHERE day = ?1", today),
     q("SELECT COUNT(DISTINCT vid) AS visitors FROM events WHERE day >= ?1", dayOf(now - 6 * 86400 * 1000)),
@@ -129,14 +132,28 @@ export async function handleStats(request, env) {
     q(`SELECT device, COUNT(DISTINCT vid) AS visitors FROM events WHERE ${range} GROUP BY device ORDER BY visitors DESC`, from),
     q(`SELECT country, COUNT(DISTINCT vid) AS visitors FROM events WHERE ${range} AND country IS NOT NULL GROUP BY country ORDER BY visitors DESC LIMIT 15`, from),
     q(`SELECT referrer, COUNT(DISTINCT vid) AS visitors FROM events WHERE ${range} AND referrer IS NOT NULL GROUP BY referrer ORDER BY visitors DESC LIMIT 15`, from),
-    q(`SELECT COUNT(*) AS n FROM (SELECT vid, MIN(day) AS first FROM events GROUP BY vid HAVING first >= ?1)`, from)
+    q(`SELECT COUNT(*) AS n FROM (SELECT vid, MIN(day) AS first FROM events GROUP BY vid HAVING first >= ?1)`, from),
+    q("SELECT COUNT(DISTINCT vid) AS n FROM events WHERE ts >= ?1", now - 5 * 60 * 1000),
+    q(`SELECT item, total, detail FROM events WHERE type='finish' AND detail IS NOT NULL AND ${range} ORDER BY ts DESC LIMIT 3000`, from)
   ]);
   const one = r => (r.results && r.results[0]) || {};
   const finishMap = Object.fromEntries((finishes.results || []).map(r => [r.item, r]));
   const tests = (starts.results || []).map(r => ({ item: r.item, started: r.started, people: r.people, finished: finishMap[r.item]?.finished || 0, avg_score: finishMap[r.item]?.avg_score ?? null, total: finishMap[r.item]?.total ?? null }));
   (finishes.results || []).forEach(r => { if (!tests.some(t => t.item === r.item)) tests.push({ item: r.item, started: 0, people: 0, finished: r.finished, avg_score: r.avg_score, total: r.total }); });
+  // Hardest questions: how often each question number was answered wrongly in finished tests.
+  const perTest = {};
+  for (const r of details.results || []) {
+    const t = perTest[r.item] || (perTest[r.item] = { finishes: 0, wrong: {} });
+    t.finishes++;
+    for (const n of String(r.detail).split(",").filter(Boolean)) t.wrong[n] = (t.wrong[n] || 0) + 1;
+  }
+  const hardest = [];
+  for (const [item, t] of Object.entries(perTest)) {
+    for (const [n, w] of Object.entries(t.wrong)) hardest.push({ item, question: +n, wrong: w, finishes: t.finishes, rate: Math.round(100 * w / t.finishes) });
+  }
+  hardest.sort((a, b) => b.rate - a.rate || b.wrong - a.wrong);
   return json({
-    days, from, today,
+    days, from, today, live_now: one(liveNow).n || 0, hardest: hardest.filter(h => h.finishes >= 3).slice(0, 25),
     totals: one(totals), today_: one(todayRow), last7: one(weekRow),
     returning: one(returning).n || 0, new_visitors: one(newVisitors).n || 0,
     per_day: perDay.results || [], sections: sections.results || [], tests,

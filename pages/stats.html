@@ -24,7 +24,7 @@
     .st-login{max-width:420px;margin:40px auto;padding:28px;border:1px solid #dfe8e1;border-radius:18px;background:#fff}
     .st-login h2{margin:0 0 8px;font-size:1.5rem;color:#183b34}.st-login p{color:#5a6f64;line-height:1.6}
     .st-login input{width:100%;box-sizing:border-box;margin:10px 0 12px;padding:12px;border:1px solid #cfdcd3;border-radius:10px;font:inherit;font-size:16px}
-    .st-msg{color:#9a3d2b;font-weight:600;min-height:1.4em;line-height:1.5}
+    .st-setup{font-size:14px;line-height:1.5;margin:4px 0 0}.st-setup.good{color:#1d6b43}.st-setup.bad{color:#9a3d2b;font-weight:600}.st-msg{color:#9a3d2b;font-weight:600;min-height:1.4em;line-height:1.5}
     .st-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}
     .st-card{padding:16px;border:1px solid #dfe8e1;border-radius:16px;background:#fff}
     .st-card span{display:block;color:#5a6f64;font-size:13px;font-weight:600}.st-card b{display:block;font-size:28px;color:#183b34;margin-top:4px}.st-card small{color:#7a8c82}
@@ -74,6 +74,7 @@
         <input id="pw" type="password" autocomplete="current-password" aria-label="Statistics password" required>
         <button type="submit">Show statistics</button></form>
       <p class="st-msg" id="loginMsg" aria-live="polite"></p>
+      <p class="st-setup" id="setupState"></p>
     </section>
     <section id="dash" hidden>
       <div class="st-head"><div><h1>Englisity statistics</h1><p id="rangeText"></p></div>
@@ -83,6 +84,7 @@
       <div class="st-panel"><h2>Visitors per day</h2><div class="st-chart" id="chart"></div><div class="st-axis" id="axis"></div></div>
       <div class="st-panel"><h2>Time spent by section</h2><p class="note">Active time only: reading, scrolling, typing or listening. Idle open tabs are not counted.</p><div id="sections"></div></div>
       <div class="st-panel"><h2>Tests</h2><p class="note">Started = chose a mode or began the quiz. Finished = submitted answers.</p><div id="tests"></div></div>
+      <div class="st-panel"><h2>Hardest questions</h2><p class="note">Questions answered wrongly most often in finished tests. A question almost everyone gets wrong may be very hard, or its answer key may need checking.</p><div id="hardest"></div></div>
       <div class="st-panel"><h2>Most opened speaking questions and writing tasks</h2><div id="opens"></div></div>
       <div class="st-grid2">
         <div class="st-panel"><h2>Top pages</h2><div id="pages"></div></div>
@@ -116,14 +118,15 @@ async function load(){
 function render(d){
  $("rangeText").textContent=d.days===1?"Today ("+d.today+")":"From "+d.from+" to "+d.today+" · times in Uzbekistan time";
  const t=d.totals||{},people=t.visitors||0;
- const cards=[["Visitors",people,"different people"],["New visitors",d.new_visitors,"first visit in this period"],["Came back",d.returning,people?Math.round(100*d.returning/people)+"% visited on 2+ days":"visited on 2+ days"],["Time practising",fmtMin(t.seconds),people?"about "+fmtMin((t.seconds||0)/Math.max(1,people))+" per visitor":""],
-  ["Today",(d.today_||{}).visitors||0,"visitors · "+fmtMin((d.today_||{}).seconds)],["Last 7 days",(d.last7||{}).visitors||0,"visitors"],["Page views",t.views||0,"pages opened"],["Visits",t.sessions||0,"separate visits"]];
+ const cards=[["On the site now",d.live_now||0,"active in the last 5 minutes"],["Visitors",people,"different people"],["New visitors",d.new_visitors,"first visit in this period"],["Came back",d.returning,people?Math.round(100*d.returning/people)+"% visited on 2+ days":"visited on 2+ days"],["Time practising",fmtMin(t.seconds),people?"about "+fmtMin((t.seconds||0)/Math.max(1,people))+" per visitor":""],
+  ["Today",(d.today_||{}).visitors||0,"visitors · "+fmtMin((d.today_||{}).seconds)],["Last 7 days",(d.last7||{}).visitors||0,"visitors"],["Page views",t.views||0,"pages opened"],["Visits",t.sessions||0,"separate visits"]];cards.splice(7,1);
  $("cards").innerHTML=cards.map(([a,b,c])=>'<div class="st-card"><span>'+esc(a)+'</span><b>'+esc(b)+'</b><small>'+esc(c)+'</small></div>').join("");
  const byDay=Object.fromEntries((d.per_day||[]).map(r=>[r.day,r]));const per=[];if(d.days>1){for(let t=new Date(d.from+"T00:00:00Z");t<=new Date(d.today+"T00:00:00Z");t.setUTCDate(t.getUTCDate()+1)){const k=t.toISOString().slice(0,10);per.push(byDay[k]||{day:k,visitors:0,views:0,seconds:0});}}else per.push(...(d.per_day||[]));const max=Math.max(1,...per.map(r=>r.visitors));
  $("chart").innerHTML=per.some(r=>r.visitors)?per.map(r=>'<div class="st-bar" style="height:'+Math.max(2,Math.round(160*r.visitors/max))+'px" title="'+esc(r.day)+': '+r.visitors+' visitors, '+r.views+' page views, '+fmtMin(r.seconds)+'"></div>').join(""):'<p class="st-empty">No visits yet in this period.</p>';
  $("axis").innerHTML=per.length?'<span>'+esc(per[0].day)+'</span><span>busiest day: '+max+' visitors</span><span>'+esc(per[per.length-1].day)+'</span>':"";
  $("sections").innerHTML=table(d.sections,[{key:"section",label:"Section",fmt:v=>SECTION[v]||v},{key:"seconds",label:"Time",num:true,bar:true,fmt:v=>fmtMin(v)},{key:"visitors",label:"People",num:true},{key:"views",label:"Page views",num:true}]);
  $("tests").innerHTML=table(d.tests,[{key:"item",label:"Test"},{key:"started",label:"Started",num:true,bar:true},{key:"finished",label:"Finished",num:true},{key:"avg_score",label:"Average score",num:true,fmt:(v,r)=>v==null?"–":v+(r.total?" / "+r.total:"")}],"No tests started yet.");
+ $("hardest").innerHTML=table(d.hardest,[{key:"item",label:"Test"},{key:"question",label:"Question",num:true,fmt:v=>"Q"+v},{key:"rate",label:"Wrong",num:true,bar:true,fmt:(v,r)=>v+"% ("+r.wrong+" of "+r.finishes+")"}],"Shown once a test has been finished at least 3 times.");
  $("opens").innerHTML=table(d.opens,[{key:"item",label:"Question or task",fmt:(v,r)=>(SECTION[r.section]||r.section)+" · "+v},{key:"opens",label:"Opened",num:true,bar:true},{key:"people",label:"People",num:true}],"Nothing opened yet.");
  $("pages").innerHTML=table(d.pages,[{key:"path",label:"Page",fmt:v=>String(v||"").replace(/^\/(pages|articles)\//,"").replace(/\.html$/,"")||"home"},{key:"views",label:"Views",num:true,bar:true},{key:"people",label:"People",num:true}]);
  $("refs").innerHTML=table(d.referrers,[{key:"referrer",label:"Came from"},{key:"visitors",label:"People",num:true,bar:true}],"No links from other sites yet (people typing the address or using a bookmark are not shown here).");
@@ -134,10 +137,10 @@ function render(d){
 $("loginForm").addEventListener("submit",e=>{e.preventDefault();pw=$("pw").value.trim();if(pw)load();});
 document.querySelectorAll("[data-days]").forEach(b=>b.addEventListener("click",()=>{days=+b.dataset.days;document.querySelectorAll("[data-days]").forEach(x=>x.classList.toggle("active",x===b));load();}));
 $("logout").addEventListener("click",()=>{try{sessionStorage.removeItem("englisity-stats-pw")}catch(e){}pw="";$("pw").value="";$("dash").hidden=true;$("login").hidden=false;});
-if(pw)load();
+if(pw)load();else if(location.protocol==="https:"||/^localhost$/.test(location.hostname))fetch("/api/stats",{cache:"no-store"}).then(r=>r.json()).then(d=>{$("setupState").textContent=d.configured===false?"⚠ The password is not set up yet. Add the secret STATS_PASSWORD in Cloudflare (Worker → Settings → Variables and Secrets), then reload this page.":d.configured?"✓ Password is set up. Enter it to see your statistics.":"";$("setupState").className="st-setup "+(d.configured===false?"bad":"good");}).catch(()=>{});
 })();
 </script>
-<script src="../js/features.js?v=20261120-stats-1"></script>
+<script src="../js/features.js?v=20261120-stats-2"></script>
 <!-- Cloudflare Web Analytics: counts visits, no cookies --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "ac91466da98a415b93a1320d7a491246"}'></script>
 </body>
 </html>

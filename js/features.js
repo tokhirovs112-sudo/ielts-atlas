@@ -404,7 +404,7 @@
     return {
       add,
       start(){add("start",{item:(section==="listening"?"Listening: ":section==="articles"?"Article quiz: ":"Reading: ")+testName});},
-      finish(score,total,name){add("finish",{item:name||((section==="listening"?"Listening: ":section==="articles"?"Article quiz: ":"Reading: ")+testName),score,total});},
+      finish(score,total,name,wrong){add("finish",Object.assign({item:name||((section==="listening"?"Listening: ":section==="articles"?"Article quiz: ":"Reading: ")+testName),score,total},wrong?{wrong}:{}));},
       view(){add("view",{ref:document.referrer||""});}
     };
   }catch(e){return NOOP;}})();
@@ -429,7 +429,12 @@
       [["#testResult",/(\d+)\s*\/\s*(\d+)/],["#results > h2",/(\d+)\s*\/\s*(\d+)/],[".al-complete",/(\d+)\s*\/\s*(\d+)/]].forEach(([sel,re])=>{
         const el=document.querySelector(sel);if(!el||el.hidden||!el.offsetParent)return;
         const m=el.textContent.match(re);if(!m)return;const key=sel+"|"+m[0]+"|"+el.textContent.length;
-        if(seen.has(key))return;seen.add(key);Track.finish(+m[1],+m[2]);
+        if(seen.has(key))return;seen.add(key);
+        // Which question numbers were wrong (helps the owner spot hard questions or a wrong answer key).
+        let wrong=[];
+        if(sel==="#testResult")wrong=[...document.querySelectorAll(".question-feedback.incorrect,[id^=f].incorrect")].map(f=>(f.id.match(/^f(\d+)$/)||[])[1]).filter(Boolean);
+        else if(sel==="#results > h2")wrong=[...document.querySelectorAll("#groups .q.bad[data-n]")].map(q=>q.dataset.n);
+        Track.finish(+m[1],+m[2],null,[...new Set(wrong)].slice(0,60).join(",")||undefined);
       });
       const vq=document.querySelector("#quizArea .vocab-result > h3");
       if(vq&&!seen.has("vq|"+vq.textContent)){const m=vq.textContent.match(/(\d+)\s*\/\s*(\d+)/);if(m){seen.add("vq|"+vq.textContent);Track.finish(+m[1],+m[2],"Vocabulary quiz");}}

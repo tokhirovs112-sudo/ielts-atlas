@@ -2326,3 +2326,5 @@ input[type="search"],input[type="text"],textarea{-webkit-appearance:none;appeara
 /* The site has its own Dark button: stop Android browsers (Chrome, Samsung Internet) from force-darkening the light theme. */
 :root{color-scheme:only light}
 html[data-theme="dark"]{color-scheme:only dark}
+/* Dark mode is applied in the page head before anything is drawn, so pages never flash white. */
+html[data-theme="dark"]{background:#111b1a}

@@ -199,6 +199,20 @@ def test_dark_mode_and_menu(browser, pw):
     check(page.evaluate("document.documentElement.dataset.theme") != "dark", "Light button does not switch back")
     no_problems(problems, "dark mode")
     ctx.close()
+    # No white flash: in dark mode, the page must already be dark when the browser starts drawing the body.
+    ctx = browser.new_context(**DESKTOP, service_workers="block")
+    ctx.add_init_script("""
+      try { localStorage.setItem('englisity-theme', 'dark'); } catch (e) {}
+      window.__themeAtBody = 'not seen';
+      new MutationObserver((list, obs) => { if (document.body) { window.__themeAtBody = document.documentElement.dataset.theme || 'none'; obs.disconnect(); } })
+        .observe(document, {childList: true, subtree: true});
+    """)
+    page = ctx.new_page()
+    for path in PAGES:
+        page.goto(BASE + path, wait_until="domcontentloaded")
+        seen = page.evaluate("window.__themeAtBody")
+        check(seen == "dark", f"{path}: dark mode flashes light while loading (theme when page started drawing: {seen})")
+    ctx.close()
     # Phone menu opens and shows the links.
     phone = {k: v for k, v in pw.devices["iPhone 13"].items() if k != "default_browser_type"}
     ctx = browser.new_context(**phone, service_workers="block")

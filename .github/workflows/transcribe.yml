@@ -12,15 +12,20 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install faster-whisper==1.1.1 requests "av==13.1.0"
-      - name: Transcribe
+      - name: Transcribe unclear parts with the large model
         run: |
+          sudo apt-get install -y -qq ffmpeg >/dev/null
+          for r in "380 30 q9" "340 25 q7" "175 40 q1to3"; do set -- $r; ffmpeg -v error -y -ss $1 -t $2 -i tmp/audio.mp3 -ar 16000 -ac 1 /tmp/$3.wav; done
           python - <<'PY'
           from faster_whisper import WhisperModel
-          m = WhisperModel("small.en", device="cpu", compute_type="int8")
-          segs, info = m.transcribe("tmp/audio.mp3", beam_size=5, vad_filter=False)
-          with open("transcript.txt", "w") as f:
+          m = WhisperModel("large-v3", device="cpu", compute_type="int8")
+          out = open("transcript.txt", "w")
+          for name in ["q9", "q7", "q1to3"]:
+              segs, _ = m.transcribe(f"/tmp/{name}.wav", beam_size=5, language="en", word_timestamps=True)
+              out.write(f"== {name}\n")
               for s in segs:
-                  f.write(f"[{int(s.start//60):02d}:{s.start%60:05.2f}] {s.text.strip()}\n")
+                  out.write(f"[{s.start:06.2f}] {s.text.strip()}\n")
+                  out.write("    words: " + " | ".join(w.word.strip() for w in s.words) + "\n")
           PY
       - name: Show transcript
         run: cat transcript.txt

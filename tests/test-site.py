@@ -28,7 +28,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 
 PAGES = ["index.html"] + sorted(glob.glob("pages/*.html")) + sorted(glob.glob("articles/*.html"))
-READING_TESTS = ["beatrix-potter", "dolls", "foot-pedal-irrigation", "halley-vi", "herding", "keeping-healthy-at-work", "life-on-mars", "power-from-the-sea", "redwoods"]
+READING_TESTS = ["beatrix-potter", "dolls", "foot-pedal-irrigation", "seeing-in-the-sea", "halley-vi", "herding", "keeping-healthy-at-work", "life-on-mars", "power-from-the-sea", "redwoods"]
 LISTENING_TESTS = ["listening-test-01", "listening-test-02", "listening-test-03", "listening-test-04"]
 DESKTOP = {"viewport": {"width": 1366, "height": 900}}
 IGNORED_CONSOLE = ("fonts.googleapis", "fonts.gstatic", "ERR_INTERNET_DISCONNECTED", "ERR_NAME_NOT_RESOLVED", "ERR_CONNECTION", "ERR_TUNNEL", "ERR_PROXY", "net::ERR_FAILED", "api.dictionaryapi.dev", "cloudflareinsights")
@@ -215,6 +215,8 @@ FILL = r"""(answers) => {
       if (o) { el.value = o.value; el.dispatchEvent(new Event('change', {bubbles: true})); } else missing.push(n + ':' + a);
     } else if (el && el.tagName === 'INPUT') {
       el.value = first; el.dispatchEvent(new Event('input', {bubbles: true}));
+    } else if (document.querySelector(`input[type=checkbox][data-q~="${n}"][value="${a}"]`)) {
+      const box = document.querySelector(`input[type=checkbox][data-q~="${n}"][value="${a}"]`); box.checked = true; box.dispatchEvent(new Event('change', {bubbles: true}));
     } else if (!(el && el.classList.contains('drop-slot'))) missing.push(n + ':' + a);
   }
   return missing;

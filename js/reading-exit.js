@@ -3,7 +3,7 @@
   const PAUSED_KEY = "englisity-reading-paused-test-v1";
   const page = location.pathname.split("/").pop() || "";
   const testId = page.replace(/\.html$/i, "");
-  const isReadingTest = !!document.getElementById("exitTest") && !!document.querySelector(".test-main, #herdingTest, #seaTest, #halleyTest, #marsTest, #beatrixTest");
+  const isReadingTest = !!document.getElementById("exitTest") && !!document.querySelector(".test-main, #herdingTest, #dollsTest, #seaTest, #halleyTest, #marsTest, #beatrixTest");
 
   function readPaused() {
     try { return JSON.parse(localStorage.getItem(PAUSED_KEY) || "null"); }

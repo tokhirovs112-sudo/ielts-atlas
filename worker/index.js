@@ -1,6 +1,9 @@
 // Englisity Worker: serves the static site and receives form messages.
 // POST /api/submit → forwards to Telegram (secrets: TELEGRAM_BOT_TOKEN,
-// TELEGRAM_CHAT_ID). Everything else is served from the static files.
+// TELEGRAM_CHAT_ID). /api/track and /api/stats: private usage statistics
+// (see worker/stats.js). Everything else is served from the static files.
+
+import { handleTrack, handleStats } from "./stats.js";
 
 const LIMITS = { text: 4000, testDate: 20, location: 80, module: 30, section: 40, page: 300, kind: 60, question: 40, name: 60, contact: 100, from: 300 };
 const LABELS = { testDate: "Test date", location: "Location", module: "Test type", section: "Part", page: "Page", kind: "Problem", question: "Question", name: "Name", contact: "Contact" };
@@ -147,6 +150,8 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/api/submit") return handleSubmit(request, env);
+    if (url.pathname === "/api/track") return handleTrack(request, env);
+    if (url.pathname === "/api/stats") return handleStats(request, env);
     if (url.pathname.startsWith("/assets/audio/")) return serveAudio(request, env);
     return env.ASSETS.fetch(request);
   }

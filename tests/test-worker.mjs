@@ -110,5 +110,20 @@ check("HEAD range request works", res.status === 206 && res.headers.get("Content
 res = await worker.fetch(new Request(SITE + "/assets/audio/missing.mp3"), env);
 check("Missing audio returns 404", res.status === 404);
 
+
+// --- Usage statistics endpoints ---
+const track = (body, extraEnv = {}, origin = SITE) => worker.fetch(new Request(SITE + "/api/track", { method: "POST", headers: { "Content-Type": "application/json", Origin: origin }, body: JSON.stringify(body) }), { ...env, ...extraEnv });
+res = await track({ vid: "abcdefgh1234", sid: "sess12345678", events: [{ type: "view", section: "home", path: "/" }] });
+check("Tracking without a database is ignored quietly", res.status === 204);
+res = await track({ vid: "abcdefgh1234", events: [] }, {}, "https://evil.example.com");
+check("Tracking from other websites is refused", res.status === 403);
+res = await track({ vid: "NOT VALID!", events: [] }, { STATS: {} });
+check("Bad visitor id is refused", res.status === 400);
+const stats = (pw, extraEnv = {}) => worker.fetch(new Request(SITE + "/api/stats?days=7", { headers: pw ? { Authorization: "Bearer " + pw } : {} }), { ...env, ...extraEnv });
+res = await stats("x");
+check("Stats page explains a missing password secret", res.status === 503 && /STATS_PASSWORD/.test((await res.json()).detail || ""));
+res = await stats("wrong", { STATS_PASSWORD: "right-password", STATS: {} });
+check("Wrong stats password is refused", res.status === 401);
+
 console.log(failures ? `Worker tests: ${failures} failed, ${passed} passed.` : `Worker tests passed (${passed} checks): form delivery, spam protection, error messages, audio ranges.`);
 process.exit(failures ? 1 : 0);

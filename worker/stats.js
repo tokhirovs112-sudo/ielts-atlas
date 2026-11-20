@@ -1,0 +1,146 @@
+// Private, cookie-free usage statistics for Englisity.
+// POST /api/track  ← small batches of anonymous events from the site (no names, no IP addresses stored).
+// GET  /api/stats  → totals for the owner's stats page; needs the STATS_PASSWORD secret.
+// Data lives in the D1 database bound as STATS.
+
+const TYPES = new Set(["view", "active", "start", "finish", "open"]);
+const ID = /^[a-z0-9]{8,40}$/;
+const SECTIONS = new Set(["home", "reading", "listening", "writing", "speaking", "vocabulary", "articles", "podcasts", "about", "share", "stats", "other"]);
+
+const json = (body, status = 200) => new Response(JSON.stringify(body), {
+  status,
+  headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }
+});
+const clip = (v, n) => (v == null ? null : String(v).slice(0, n));
+const int = (v, lo, hi) => { const n = Math.round(Number(v)); return Number.isFinite(n) ? Math.max(lo, Math.min(hi, n)) : null; };
+// Days follow Uzbekistan time (UTC+5), so "today" matches the owner's calendar.
+const dayOf = ms => new Date(ms + 5 * 3600 * 1000).toISOString().slice(0, 10);
+
+const SCHEMA = [
+  "CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, ts INTEGER NOT NULL, day TEXT NOT NULL, vid TEXT NOT NULL, sid TEXT, type TEXT NOT NULL, section TEXT, path TEXT, item TEXT, score INTEGER, total INTEGER, seconds INTEGER, device TEXT, country TEXT, referrer TEXT)",
+  "CREATE INDEX IF NOT EXISTS idx_events_day ON events(day)",
+  "CREATE INDEX IF NOT EXISTS idx_events_type_day ON events(type, day)",
+  "CREATE INDEX IF NOT EXISTS idx_events_vid ON events(vid)"
+];
+let schemaReady = false;
+async function ensureSchema(db) {
+  if (schemaReady) return;
+  await db.batch(SCHEMA.map(s => db.prepare(s)));
+  schemaReady = true;
+}
+
+function deviceOf(ua) {
+  ua = ua || "";
+  if (/iPad|Tablet/i.test(ua)) return "tablet";
+  if (/Mobi|iPhone|Android/i.test(ua)) return "phone";
+  return "computer";
+}
+
+function referrerHost(ref, selfHost) {
+  try {
+    const h = new URL(ref).hostname.replace(/^www\./, "");
+    if (!h || h === selfHost) return null;
+    if (/(^|\.)t\.me$|telegram/.test(h)) return "Telegram";
+    if (/instagram/.test(h)) return "Instagram";
+    if (/google\./.test(h)) return "Google";
+    if (/linkedin|lnkd\.in/.test(h)) return "LinkedIn";
+    if (/facebook|fb\.com/.test(h)) return "Facebook";
+    if (/youtube/.test(h)) return "YouTube";
+    return h.slice(0, 60);
+  } catch { return null; }
+}
+
+export async function handleTrack(request, env) {
+  if (request.method !== "POST") return json({ error: "method" }, 405);
+  const host = new URL(request.url).host;
+  const origin = request.headers.get("Origin");
+  if (origin && new URL(origin).host !== host) return json({ error: "forbidden" }, 403);
+  if (!env.STATS) return new Response(null, { status: 204 });
+  const raw = await request.text();
+  if (raw.length > 8000) return json({ error: "too-large" }, 413);
+  let data;
+  try { data = JSON.parse(raw); } catch { return json({ error: "bad-json" }, 400); }
+  const vid = String(data.vid || ""), sid = String(data.sid || "");
+  if (!ID.test(vid) || (sid && !ID.test(sid))) return json({ error: "bad-id" }, 400);
+  const events = Array.isArray(data.events) ? data.events.slice(0, 25) : [];
+  const now = Date.now(), day = dayOf(now);
+  const device = deviceOf(request.headers.get("User-Agent"));
+  const country = clip(request.cf?.country, 2);
+  const selfHost = host.split(":")[0];
+  const rows = [];
+  for (const e of events) {
+    if (!e || !TYPES.has(e.type)) continue;
+    const section = SECTIONS.has(e.section) ? e.section : "other";
+    rows.push([now, day, vid, sid || null, e.type, section, clip(e.path, 120), clip(e.item, 160),
+      e.type === "finish" ? int(e.score, 0, 1000) : null, e.type === "finish" ? int(e.total, 1, 1000) : null,
+      e.type === "active" ? int(e.seconds, 1, 120) : null, device, country,
+      e.type === "view" && e.ref ? referrerHost(e.ref, selfHost) : null]);
+  }
+  if (!rows.length) return new Response(null, { status: 204 });
+  try {
+    await ensureSchema(env.STATS);
+    const stmt = env.STATS.prepare("INSERT INTO events (ts, day, vid, sid, type, section, path, item, score, total, seconds, device, country, referrer) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    const batch = rows.map(r => stmt.bind(...r));
+    // Keep the database small: drop events older than about 13 months now and then.
+    if (Math.random() < 0.01) batch.push(env.STATS.prepare("DELETE FROM events WHERE ts < ?").bind(now - 400 * 86400 * 1000));
+    await env.STATS.batch(batch);
+  } catch (err) {
+    return json({ error: "store-failed", detail: String(err?.message || err).slice(0, 200) }, 500);
+  }
+  return new Response(null, { status: 204 });
+}
+
+function samePassword(a, b) {
+  a = String(a || ""); b = String(b || "");
+  if (!a || !b || a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
+export async function handleStats(request, env) {
+  if (request.method !== "GET") return json({ error: "method" }, 405);
+  if (!env.STATS_PASSWORD) return json({ error: "not-configured", detail: "Add a secret called STATS_PASSWORD in Cloudflare (Worker → Settings → Variables and Secrets)." }, 503);
+  if (!env.STATS) return json({ error: "not-configured", detail: "The STATS database is not connected to the Worker." }, 503);
+  const given = (request.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "");
+  if (!samePassword(given, env.STATS_PASSWORD)) {
+    await new Promise(r => setTimeout(r, 400)); // slow down password guessing
+    return json({ error: "wrong-password" }, 401);
+  }
+  const url = new URL(request.url);
+  const days = int(url.searchParams.get("days"), 1, 365) || 30;
+  const now = Date.now(), today = dayOf(now);
+  const from = dayOf(now - (days - 1) * 86400 * 1000);
+  const db = env.STATS;
+  await ensureSchema(db);
+  const q = (sql, ...args) => db.prepare(sql).bind(...args);
+  const range = "day >= ?1";
+  const [totals, todayRow, weekRow, returning, perDay, sections, starts, finishes, opens, pages, devices, countries, referrers, newVisitors] = await db.batch([
+    q(`SELECT COUNT(DISTINCT vid) AS visitors, COUNT(DISTINCT sid) AS sessions, SUM(type='view') AS views, COALESCE(SUM(seconds),0) AS seconds FROM events WHERE ${range}`, from),
+    q("SELECT COUNT(DISTINCT vid) AS visitors, COALESCE(SUM(seconds),0) AS seconds FROM events WHERE day = ?1", today),
+    q("SELECT COUNT(DISTINCT vid) AS visitors FROM events WHERE day >= ?1", dayOf(now - 6 * 86400 * 1000)),
+    q(`SELECT COUNT(*) AS n FROM (SELECT vid FROM events WHERE ${range} GROUP BY vid HAVING COUNT(DISTINCT day) > 1)`, from),
+    q(`SELECT day, COUNT(DISTINCT vid) AS visitors, SUM(type='view') AS views, COALESCE(SUM(seconds),0) AS seconds FROM events WHERE ${range} GROUP BY day ORDER BY day`, from),
+    q(`SELECT section, COUNT(DISTINCT vid) AS visitors, SUM(type='view') AS views, COALESCE(SUM(seconds),0) AS seconds FROM events WHERE ${range} GROUP BY section ORDER BY seconds DESC`, from),
+    q(`SELECT item, COUNT(*) AS started, COUNT(DISTINCT vid) AS people FROM events WHERE type='start' AND ${range} GROUP BY item ORDER BY started DESC LIMIT 40`, from),
+    q(`SELECT item, COUNT(*) AS finished, ROUND(AVG(score),1) AS avg_score, MAX(total) AS total FROM events WHERE type='finish' AND ${range} GROUP BY item ORDER BY finished DESC LIMIT 40`, from),
+    q(`SELECT section, item, COUNT(*) AS opens, COUNT(DISTINCT vid) AS people FROM events WHERE type='open' AND ${range} GROUP BY section, item ORDER BY opens DESC LIMIT 30`, from),
+    q(`SELECT path, COUNT(*) AS views, COUNT(DISTINCT vid) AS people FROM events WHERE type='view' AND ${range} GROUP BY path ORDER BY views DESC LIMIT 25`, from),
+    q(`SELECT device, COUNT(DISTINCT vid) AS visitors FROM events WHERE ${range} GROUP BY device ORDER BY visitors DESC`, from),
+    q(`SELECT country, COUNT(DISTINCT vid) AS visitors FROM events WHERE ${range} AND country IS NOT NULL GROUP BY country ORDER BY visitors DESC LIMIT 15`, from),
+    q(`SELECT referrer, COUNT(DISTINCT vid) AS visitors FROM events WHERE ${range} AND referrer IS NOT NULL GROUP BY referrer ORDER BY visitors DESC LIMIT 15`, from),
+    q(`SELECT COUNT(*) AS n FROM (SELECT vid, MIN(day) AS first FROM events GROUP BY vid HAVING first >= ?1)`, from)
+  ]);
+  const one = r => (r.results && r.results[0]) || {};
+  const finishMap = Object.fromEntries((finishes.results || []).map(r => [r.item, r]));
+  const tests = (starts.results || []).map(r => ({ item: r.item, started: r.started, people: r.people, finished: finishMap[r.item]?.finished || 0, avg_score: finishMap[r.item]?.avg_score ?? null, total: finishMap[r.item]?.total ?? null }));
+  (finishes.results || []).forEach(r => { if (!tests.some(t => t.item === r.item)) tests.push({ item: r.item, started: 0, people: 0, finished: r.finished, avg_score: r.avg_score, total: r.total }); });
+  return json({
+    days, from, today,
+    totals: one(totals), today_: one(todayRow), last7: one(weekRow),
+    returning: one(returning).n || 0, new_visitors: one(newVisitors).n || 0,
+    per_day: perDay.results || [], sections: sections.results || [], tests,
+    opens: opens.results || [], pages: pages.results || [], devices: devices.results || [],
+    countries: countries.results || [], referrers: referrers.results || []
+  });
+}

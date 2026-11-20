@@ -1,7 +1,7 @@
 {
   // Englisity: static site plus a small Worker for the share/report forms.
   // Secrets (set in the Cloudflare dashboard, never in this file):
-  //   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
+  //   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, STATS_PASSWORD (for the private stats page)
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "englisity",
   "main": "worker/index.js",
@@ -11,5 +11,8 @@
     "binding": "ASSETS",
     "run_worker_first": ["/api/*", "/assets/audio/*"]
   },
+  "d1_databases": [
+    { "binding": "STATS", "database_name": "englisity-stats", "database_id": "584a0d1d-5cef-40f1-8fb9-99ed2f8d0128" }
+  ],
   "observability": { "enabled": true }
 }

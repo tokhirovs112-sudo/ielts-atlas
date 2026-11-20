@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="only light">
+  <meta name="theme-color" content="#f5f7f4">
+  <script>try{if(localStorage.getItem("englisity-theme")==="dark"){document.documentElement.dataset.theme="dark";var m=document.querySelector('meta[name="theme-color"]');if(m)m.content="#111b1a"}}catch(e){}</script>
+  <meta name="description" content="Private Englisity usage statistics for the site owner.">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Statistics | Englisity</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/app.js?v=20261111-search-1" defer></script>
+  <link rel="icon" type="image/svg+xml" href="../assets/englisity-mark.svg?v=20261117-logo">
+  <link rel="stylesheet" href="../css/design.css?v=20261120-dark-1">
+  <style>
+    .st-wrap{max-width:1100px;margin:0 auto;padding:26px 0 40px}
+    .st-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+    .st-head h1{margin:0;font-size:clamp(26px,4vw,36px);color:#183b34}
+    .st-head p{margin:6px 0 0;color:#5a6f64}
+    .st-ranges{display:flex;gap:6px;flex-wrap:wrap}
+    .st-ranges button,.st-login button{min-height:40px;padding:8px 14px;border-radius:10px;border:1px solid #cfe0d4;background:#fff;color:#1f5a46;font:inherit;font-weight:700;cursor:pointer}
+    .st-ranges button.active,.st-login button{background:#1f6b55;border-color:#1f6b55;color:#fff}
+    .st-login{max-width:420px;margin:40px auto;padding:28px;border:1px solid #dfe8e1;border-radius:18px;background:#fff}
+    .st-login h2{margin:0 0 8px;font-size:1.5rem;color:#183b34}.st-login p{color:#5a6f64;line-height:1.6}
+    .st-login input{width:100%;box-sizing:border-box;margin:10px 0 12px;padding:12px;border:1px solid #cfdcd3;border-radius:10px;font:inherit;font-size:16px}
+    .st-msg{color:#9a3d2b;font-weight:600;min-height:1.4em;line-height:1.5}
+    .st-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}
+    .st-card{padding:16px;border:1px solid #dfe8e1;border-radius:16px;background:#fff}
+    .st-card span{display:block;color:#5a6f64;font-size:13px;font-weight:600}.st-card b{display:block;font-size:28px;color:#183b34;margin-top:4px}.st-card small{color:#7a8c82}
+    .st-panel{padding:18px;border:1px solid #dfe8e1;border-radius:16px;background:#fff;margin-bottom:14px}
+    .st-panel h2{margin:0 0 12px;font-size:1.08rem;color:#183b34}.st-panel p.note{margin:-6px 0 12px;color:#6a7d73;font-size:13.5px}
+    .st-grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.st-grid2 .st-panel{margin:0}
+    .st-chart{display:flex;align-items:flex-end;gap:3px;height:170px;padding-top:10px;border-bottom:1px solid #dfe8e1;overflow-x:auto}
+    .st-bar{flex:1 0 4px;min-width:4px;max-width:36px;background:#2f7d68;border-radius:4px 4px 0 0;position:relative}.st-bar:hover{background:#1f5a46}
+    .st-axis{display:flex;justify-content:space-between;color:#7a8c82;font-size:12px;margin-top:6px}
+    .st-table{width:100%;border-collapse:collapse;font-size:14px}.st-table th,.st-table td{text-align:left;padding:8px 6px;border-bottom:1px solid #eef2ef;vertical-align:top}
+    .st-table th{color:#5a6f64;font-weight:700;font-size:12.5px;text-transform:uppercase;letter-spacing:.3px}.st-table td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}.st-table th.n{text-align:right}
+    .st-meter{display:inline-block;height:8px;border-radius:5px;background:#2f7d68;vertical-align:middle;margin-right:6px}
+    .st-empty{color:#7a8c82;font-size:14px}
+    .st-actions{display:flex;gap:10px;align-items:center;justify-content:flex-end;margin-top:10px;color:#7a8c82;font-size:13px}
+    .st-actions button{border:0;background:none;color:#1f6b55;font:inherit;font-weight:700;cursor:pointer;text-decoration:underline}
+    @media(max-width:900px){.st-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.st-grid2{grid-template-columns:1fr}}
+    html[data-theme="dark"] .st-card,html[data-theme="dark"] .st-panel,html[data-theme="dark"] .st-login{background:#16271f;border-color:#2e463b}
+    html[data-theme="dark"] .st-head h1,html[data-theme="dark"] .st-card b,html[data-theme="dark"] .st-panel h2,html[data-theme="dark"] .st-login h2{color:#eef5f1}
+    html[data-theme="dark"] .st-table th,html[data-theme="dark"] .st-card span{color:#a9bfb4}html[data-theme="dark"] .st-table td{border-color:#24382f;color:#d6e3dc}
+    html[data-theme="dark"] .st-ranges button{background:#203a32;color:#e6f2ea;border-color:#456052}html[data-theme="dark"] .st-ranges button.active{background:#a7d9b7;color:#12261e}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../index.html">
+      <img class="brand-mark" src="../assets/englisity-mark.svg?v=20261117-logo" alt="">
+      <span>Englisity<small>STATISTICS</small></span>
+    </a>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <nav class="nav" id="navigation">
+      <a href="../index.html">Home</a>
+      <a href="reading.html">Reading</a>
+      <a href="listening.html">Listening</a>
+      <a href="writing.html">Writing</a>
+      <a href="speaking.html">Speaking</a>
+      <a class="eng-vocab-nav" href="vocabulary.html">Vocabulary</a>
+      <a href="articles.html">Articles</a>
+      <a href="podcasts.html">Podcasts</a>
+    </nav>
+  </header>
+
+  <main class="container st-wrap">
+    <section class="st-login" id="login">
+      <h2 class="st-login-title">Englisity statistics</h2>
+      <p>This page is private. Enter the statistics password you saved in Cloudflare.</p>
+      <form id="loginForm"><label for="pw" class="sr-only" style="position:absolute;left:-9999px">Password</label>
+        <input id="pw" type="password" autocomplete="current-password" aria-label="Statistics password" required>
+        <button type="submit">Show statistics</button></form>
+      <p class="st-msg" id="loginMsg" aria-live="polite"></p>
+    </section>
+    <section id="dash" hidden>
+      <div class="st-head"><div><h1>Englisity statistics</h1><p id="rangeText"></p></div>
+        <div class="st-ranges" role="group" aria-label="Time period">
+          <button type="button" data-days="1">Today</button><button type="button" data-days="7">7 days</button><button type="button" data-days="30" class="active">30 days</button><button type="button" data-days="90">90 days</button><button type="button" data-days="365">1 year</button></div></div>
+      <div class="st-cards" id="cards"></div>
+      <div class="st-panel"><h2>Visitors per day</h2><div class="st-chart" id="chart"></div><div class="st-axis" id="axis"></div></div>
+      <div class="st-panel"><h2>Time spent by section</h2><p class="note">Active time only: reading, scrolling, typing or listening. Idle open tabs are not counted.</p><div id="sections"></div></div>
+      <div class="st-panel"><h2>Tests</h2><p class="note">Started = chose a mode or began the quiz. Finished = submitted answers.</p><div id="tests"></div></div>
+      <div class="st-panel"><h2>Most opened speaking questions and writing tasks</h2><div id="opens"></div></div>
+      <div class="st-grid2">
+        <div class="st-panel"><h2>Top pages</h2><div id="pages"></div></div>
+        <div class="st-panel"><h2>Where visitors come from</h2><div id="refs"></div></div>
+        <div class="st-panel"><h2>Devices</h2><div id="devices"></div></div>
+        <div class="st-panel"><h2>Countries</h2><div id="countries"></div></div>
+      </div>
+      <div class="st-actions"><span id="updated"></span><button type="button" id="logout">Lock this page</button></div>
+    </section>
+  </main>
+<script>
+(()=>{
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmtMin=s=>{s=Math.round(s||0);if(s<60)return s+" sec";const m=Math.round(s/60);return m<60?m+" min":(m/60).toFixed(m<600?1:0)+" h"};
+const SECTION={home:"Home",reading:"Reading",listening:"Listening",writing:"Writing",speaking:"Speaking",vocabulary:"Vocabulary",articles:"Articles",podcasts:"Podcasts",about:"About",share:"Share / report",other:"Other"};
+const COUNTRY=c=>{try{return new Intl.DisplayNames(["en"],{type:"region"}).of(c)||c}catch(e){return c}};
+let days=30,pw="";
+try{pw=sessionStorage.getItem("englisity-stats-pw")||""}catch(e){}
+function table(rows,cols,empty){if(!rows||!rows.length)return '<p class="st-empty">'+(empty||"No data yet.")+'</p>';const max=Math.max(1,...rows.map(r=>+r[cols.find(c=>c.bar)?.key]||0));
+ return '<table class="st-table"><thead><tr>'+cols.map(c=>'<th'+(c.num?' class="n"':'')+'>'+c.label+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+cols.map(c=>{let v=c.fmt?c.fmt(r[c.key],r):r[c.key];if(c.bar)v='<span class="st-meter" style="width:'+Math.max(3,Math.round(80*(+r[c.key]||0)/max))+'px"></span>'+v;return '<td'+(c.num?' class="n"':'')+'>'+(c.raw?v:(c.bar?v:esc(v)))+'</td>'}).join('')+'</tr>').join('')+'</tbody></table>';}
+async function load(){
+ $("loginMsg").textContent="Loading…";
+ let res;try{res=await fetch("/api/stats?days="+days,{headers:{Authorization:"Bearer "+pw},cache:"no-store"});}catch(e){$("loginMsg").textContent="Could not reach the server. Check your connection.";return;}
+ const data=await res.json().catch(()=>({}));
+ if(res.status===401){try{sessionStorage.removeItem("englisity-stats-pw")}catch(e){}$("dash").hidden=true;$("login").hidden=false;$("loginMsg").textContent="Wrong password. Try again.";return;}
+ if(!res.ok){$("dash").hidden=true;$("login").hidden=false;$("loginMsg").textContent=(data.detail||"Statistics are not available right now ("+res.status+").");return;}
+ try{sessionStorage.setItem("englisity-stats-pw",pw)}catch(e){}
+ $("login").hidden=true;$("dash").hidden=false;$("loginMsg").textContent="";render(data);
+}
+function render(d){
+ $("rangeText").textContent=d.days===1?"Today ("+d.today+")":"From "+d.from+" to "+d.today+" · times in Uzbekistan time";
+ const t=d.totals||{},people=t.visitors||0;
+ const cards=[["Visitors",people,"different people"],["New visitors",d.new_visitors,"first visit in this period"],["Came back",d.returning,people?Math.round(100*d.returning/people)+"% visited on 2+ days":"visited on 2+ days"],["Time practising",fmtMin(t.seconds),people?"about "+fmtMin((t.seconds||0)/Math.max(1,people))+" per visitor":""],
+  ["Today",(d.today_||{}).visitors||0,"visitors · "+fmtMin((d.today_||{}).seconds)],["Last 7 days",(d.last7||{}).visitors||0,"visitors"],["Page views",t.views||0,"pages opened"],["Visits",t.sessions||0,"separate visits"]];
+ $("cards").innerHTML=cards.map(([a,b,c])=>'<div class="st-card"><span>'+esc(a)+'</span><b>'+esc(b)+'</b><small>'+esc(c)+'</small></div>').join("");
+ const byDay=Object.fromEntries((d.per_day||[]).map(r=>[r.day,r]));const per=[];if(d.days>1){for(let t=new Date(d.from+"T00:00:00Z");t<=new Date(d.today+"T00:00:00Z");t.setUTCDate(t.getUTCDate()+1)){const k=t.toISOString().slice(0,10);per.push(byDay[k]||{day:k,visitors:0,views:0,seconds:0});}}else per.push(...(d.per_day||[]));const max=Math.max(1,...per.map(r=>r.visitors));
+ $("chart").innerHTML=per.some(r=>r.visitors)?per.map(r=>'<div class="st-bar" style="height:'+Math.max(2,Math.round(160*r.visitors/max))+'px" title="'+esc(r.day)+': '+r.visitors+' visitors, '+r.views+' page views, '+fmtMin(r.seconds)+'"></div>').join(""):'<p class="st-empty">No visits yet in this period.</p>';
+ $("axis").innerHTML=per.length?'<span>'+esc(per[0].day)+'</span><span>busiest day: '+max+' visitors</span><span>'+esc(per[per.length-1].day)+'</span>':"";
+ $("sections").innerHTML=table(d.sections,[{key:"section",label:"Section",fmt:v=>SECTION[v]||v},{key:"seconds",label:"Time",num:true,bar:true,fmt:v=>fmtMin(v)},{key:"visitors",label:"People",num:true},{key:"views",label:"Page views",num:true}]);
+ $("tests").innerHTML=table(d.tests,[{key:"item",label:"Test"},{key:"started",label:"Started",num:true,bar:true},{key:"finished",label:"Finished",num:true},{key:"avg_score",label:"Average score",num:true,fmt:(v,r)=>v==null?"–":v+(r.total?" / "+r.total:"")}],"No tests started yet.");
+ $("opens").innerHTML=table(d.opens,[{key:"item",label:"Question or task",fmt:(v,r)=>(SECTION[r.section]||r.section)+" · "+v},{key:"opens",label:"Opened",num:true,bar:true},{key:"people",label:"People",num:true}],"Nothing opened yet.");
+ $("pages").innerHTML=table(d.pages,[{key:"path",label:"Page",fmt:v=>String(v||"").replace(/^\/(pages|articles)\//,"").replace(/\.html$/,"")||"home"},{key:"views",label:"Views",num:true,bar:true},{key:"people",label:"People",num:true}]);
+ $("refs").innerHTML=table(d.referrers,[{key:"referrer",label:"Came from"},{key:"visitors",label:"People",num:true,bar:true}],"No links from other sites yet (people typing the address or using a bookmark are not shown here).");
+ $("devices").innerHTML=table(d.devices,[{key:"device",label:"Device",fmt:v=>({phone:"Phone",computer:"Computer",tablet:"Tablet"})[v]||v},{key:"visitors",label:"People",num:true,bar:true}]);
+ $("countries").innerHTML=table(d.countries,[{key:"country",label:"Country",fmt:v=>COUNTRY(v)},{key:"visitors",label:"People",num:true,bar:true}]);
+ $("updated").textContent="Updated "+new Date().toLocaleTimeString();
+}
+$("loginForm").addEventListener("submit",e=>{e.preventDefault();pw=$("pw").value.trim();if(pw)load();});
+document.querySelectorAll("[data-days]").forEach(b=>b.addEventListener("click",()=>{days=+b.dataset.days;document.querySelectorAll("[data-days]").forEach(x=>x.classList.toggle("active",x===b));load();}));
+$("logout").addEventListener("click",()=>{try{sessionStorage.removeItem("englisity-stats-pw")}catch(e){}pw="";$("pw").value="";$("dash").hidden=true;$("login").hidden=false;});
+if(pw)load();
+})();
+</script>
+<script src="../js/features.js?v=20261120-stats-1"></script>
+<!-- Cloudflare Web Analytics: counts visits, no cookies --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "ac91466da98a415b93a1320d7a491246"}'></script>
+</body>
+</html>

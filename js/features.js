@@ -112,7 +112,7 @@
 
   const nav = document.querySelector(".topbar");
   // Keep passage-test workspaces focused: do not inject the learning progress strip here.
-  if (nav && !document.body.classList.contains("passage-test-page") && !/^listening-test-/.test(page)) {
+  if (nav && !document.body.classList.contains("passage-test-page") && !/^listening-test-/.test(page) && page.replace(/\.html$/, "") !== "stats") {
     const vocabLink = document.createElement("a");
     vocabLink.href = page === "index.html" ? "pages/vocabulary.html" : "../pages/vocabulary.html";
     vocabLink.textContent = "Vocabulary";
@@ -359,7 +359,85 @@
   }
   let reportLinkTimer=null;
 
+
+  // ---- Private usage statistics (no cookies, no names; owner-only stats page) ----
+  // Sends small anonymous events to /api/track on the live site only. Respects "Do Not Track".
+  const NOOP={add(){},start(){},finish(){},view(){}};
+  const Track=(()=>{try{
+    if(typeof navigator==="undefined"||typeof crypto==="undefined"||!crypto.getRandomValues)return NOOP;
+    let debug=false;try{debug=localStorage.getItem("englisity-track-debug")==="1";}catch(e){}
+    const live=debug||(location.protocol==="https:"&&!/^(localhost|127\.|0\.0\.0\.0)/.test(location.hostname));
+    const dnt=navigator.doNotTrack==="1"||window.doNotTrack==="1";
+    const slug=page.replace(/\.html$/,"");
+    const inArticle=/\/articles\//.test(location.pathname);
+    const SECTION_OF={index:"home",reading:"reading","passage-1":"reading","passage-2":"reading","passage-3":"reading","full-tests":"reading",listening:"listening",writing:"writing",speaking:"speaking",vocabulary:"vocabulary",articles:"articles",podcasts:"podcasts",about:"about",share:"share",stats:"stats"};
+    const section=inArticle?"articles":SECTION_OF[slug]||(document.getElementById("resizableTest")?"reading":/^listening-test/.test(slug)?"listening":"other");
+    const enabled=live&&!dnt&&section!=="stats";
+    const rid=()=>Array.from(crypto.getRandomValues(new Uint8Array(12)),b=>(b%36).toString(36)).join("");
+    let vid="",sid="";
+    try{vid=localStorage.getItem("englisity-vid")||"";if(!/^[a-z0-9]{8,40}$/.test(vid)){vid=rid();localStorage.setItem("englisity-vid",vid);}}catch(e){vid=rid();}
+    try{sid=sessionStorage.getItem("englisity-sid")||"";if(!/^[a-z0-9]{8,40}$/.test(sid)){sid=rid();sessionStorage.setItem("englisity-sid",sid);}}catch(e){sid=rid();}
+    const queue=[];
+    const testName=(document.title||"").replace(/\s*[—|-]\s*(IELTS Reading|IELTS Listening)?\s*\|?\s*Englisity.*$/i,"").replace(/\s*[—|]\s*IELTS Reading$/i,"").trim();
+    function flush(useBeacon){
+      if(!enabled||!queue.length)return;
+      const body=JSON.stringify({vid,sid,events:queue.splice(0,25)});
+      const url="/api/track";
+      if(useBeacon&&navigator.sendBeacon){navigator.sendBeacon(url,new Blob([body],{type:"application/json"}));}
+      else{fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body,keepalive:true}).catch(()=>{});}
+      if(queue.length)flush(useBeacon);
+    }
+    function add(type,extra){if(!enabled)return;queue.push(Object.assign({type,section,path:location.pathname.slice(0,120)},extra||{}));if(queue.length>=10)flush(false);}
+    // Active time: counted in 15-second steps while the page is visible and the student is
+    // reading, scrolling, typing or listening (audio playing). Idle open tabs are not counted.
+    let lastInput=Date.now(),activeSecs=0;
+    ["pointerdown","keydown","scroll","touchstart","wheel","input"].forEach(ev=>addEventListener(ev,()=>{lastInput=Date.now();},{passive:true,capture:true}));
+    setInterval(()=>{
+      if(document.visibilityState!=="visible")return;
+      const playing=[...document.querySelectorAll("audio,video")].some(a=>!a.paused&&!a.ended);
+      if(playing||Date.now()-lastInput<60000){activeSecs+=15;if(activeSecs>=60){add("active",{seconds:activeSecs});activeSecs=0;}}
+    },15000);
+    const leave=()=>{if(activeSecs){add("active",{seconds:activeSecs});activeSecs=0;}flush(true);};
+    addEventListener("pagehide",leave);
+    document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")leave();});
+    setInterval(()=>flush(false),60000);
+    return {
+      add,
+      start(){add("start",{item:(section==="listening"?"Listening: ":section==="articles"?"Article quiz: ":"Reading: ")+testName});},
+      finish(score,total,name){add("finish",{item:name||((section==="listening"?"Listening: ":section==="articles"?"Article quiz: ":"Reading: ")+testName),score,total});},
+      view(){add("view",{ref:document.referrer||""});}
+    };
+  }catch(e){return NOOP;}})();
+  window.EnglisityTrack=Track;
+  function initTracking(){
+    Track.view();
+    // Test started: mode buttons on reading/listening tests and the article quiz button.
+    document.addEventListener("click",e=>{
+      const b=e.target.closest("#practiceModeButton,#examModeButton,#practice,#exam,#finishedReadingBtn");
+      if(b)Track.start();
+      const sq=e.target.closest("#questionList .question-item button");
+      if(sq&&/speaking/.test(page)){const q=sq.closest(".question-item").querySelector(".question-text");if(q)Track.add("open",{item:q.textContent.trim().slice(0,160)});}
+      const vs=e.target.closest("#startAllStudy,#startDueStudy,#startSavedStudy,#practiseShown");
+      if(vs)Track.add("start",{item:"Vocabulary flashcards"});
+    },true);
+    // Writing task opened (via #task1/… or #task2/… links).
+    const openWriting=()=>{const m=location.hash.match(/^#(task[12])\/([\w-]+)/);if(!m||!/writing/.test(page))return;setTimeout(()=>{const t=document.getElementById(m[1]+"TaskTitle");const name=(t&&t.textContent.trim())||m[2];Track.add("open",{item:(m[1]==="task1"?"Task 1: ":"Task 2: ")+name});},400);};
+    addEventListener("hashchange",openWriting);openWriting();
+    // Test finished: read the score when the result appears (once per result).
+    const seen=new Set();
+    const check=()=>{
+      [["#testResult",/(\d+)\s*\/\s*(\d+)/],["#results > h2",/(\d+)\s*\/\s*(\d+)/],[".al-complete",/(\d+)\s*\/\s*(\d+)/]].forEach(([sel,re])=>{
+        const el=document.querySelector(sel);if(!el||el.hidden||!el.offsetParent)return;
+        const m=el.textContent.match(re);if(!m)return;const key=sel+"|"+m[0]+"|"+el.textContent.length;
+        if(seen.has(key))return;seen.add(key);Track.finish(+m[1],+m[2]);
+      });
+      const vq=document.querySelector("#quizArea .vocab-result > h3");
+      if(vq&&!seen.has("vq|"+vq.textContent)){const m=vq.textContent.match(/(\d+)\s*\/\s*(\d+)/);if(m){seen.add("vq|"+vq.textContent);Track.finish(+m[1],+m[2],"Vocabulary quiz");}}
+    };
+    let t=null;new MutationObserver(()=>{clearTimeout(t);t=setTimeout(check,300);}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["hidden"]});
+  }
   document.addEventListener("DOMContentLoaded",()=>{
+    try{initTracking();}catch(e){}
     addSiteFooter();
     new MutationObserver(()=>{clearTimeout(reportLinkTimer);reportLinkTimer=setTimeout(addResultReportLinks,150);}).observe(document.body,{childList:true,subtree:true});
     addDashboard();scanBookmarks();addTimer();initAutosave();

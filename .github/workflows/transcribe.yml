@@ -22,7 +22,5 @@ jobs:
               for s in segs:
                   f.write(f"[{int(s.start//60):02d}:{s.start%60:05.2f}] {s.text.strip()}\n")
           PY
-      - uses: actions/upload-artifact@v4
-        with:
-          name: transcript
-          path: transcript.txt
+      - name: Show transcript
+        run: cat transcript.txt

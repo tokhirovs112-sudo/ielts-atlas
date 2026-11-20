@@ -284,30 +284,52 @@
 
   window.addEventListener("englisity:quiz-passed", recordStreakActivity);
 
-  // Footer links on every page: About, share exam questions, report a problem
-  // (the report link carries the current page so learners do not have to describe it).
-  function addSiteLinks(){
-    if(document.querySelector(".eng-site-links"))return;
+  // Site footer on every page (like a normal website footer): practice links, learning links,
+  // About / Share questions / Report a problem, and contact. Hidden inside full tests so students are not distracted.
+  const ICON={
+    home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+    book:'<path d="M2 5.5C4.5 4 8 4 12 6c4-2 7.5-2 10-.5V19c-2.5-1.5-6-1.5-10 .5-4-2-7.5-2-10-.5z"/><path d="M12 6v13.5"/>',
+    headphones:'<path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1v-6h3zM3 19a2 2 0 0 0 2 2h1v-6H3z"/>',
+    pen:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+    mic:'<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v4M8 21h8"/>',
+    cards:'<rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/>',
+    news:'<path d="M4 4h13v16H6a2 2 0 0 1-2-2z"/><path d="M17 8h3v10a2 2 0 0 1-2 2M8 8h5M8 12h5M8 16h3"/>',
+    podcast:'<circle cx="12" cy="11" r="3"/><path d="M12 14v7M6.3 16.5a8 8 0 1 1 11.4 0"/>',
+    info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+    share:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M12 7v6M9 10h6"/>',
+    flag:'<path d="M4 21V4M4 4h12l-2 4 2 4H4"/>',
+    send:'<path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/>',
+    mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+    chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'
+  };
+  const icon=n=>'<svg class="sf-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+ICON[n]+'</svg>';
+  function addSiteFooter(){
+    if(document.querySelector(".site-footer"))return;
+    const inTest=!!document.querySelector("#resizableTest, #testArea, .test-main");
+    if(inTest)return;
     const inSub=/\/(pages|articles)\//.test(location.pathname);
-    const base=inSub?"../pages/":"pages/";
-    const here=page.replace(/\.html$/,"");
+    const root=inSub?"../":"";
+    const pg=root+"pages/";
     const title=(document.title||"").replace(/\s*[—|-]\s*Englisity.*$/i,"").trim()||"This page";
-    const where=title+" ("+location.pathname+location.hash+")";
-    const links=document.createElement("nav");
-    links.className="eng-site-links";
-    links.setAttribute("aria-label","About and feedback");
-    links.innerHTML=(here==="about"?"":'<a href="'+base+'about.html">About Englisity</a>')+
-      (here==="share"?"":'<a href="'+base+'share.html">Share your exam questions</a><a href="'+base+'share.html?type=report&amp;page='+encodeURIComponent(where)+'" data-report-link>Report a problem</a>');
-    if(!links.children.length)return;
-    links.querySelector("[data-report-link]")?.addEventListener("click",e=>{
-      e.currentTarget.href=base+"share.html?type=report&page="+encodeURIComponent(title+" ("+location.pathname+location.hash+")");
-    });
-    const footer=document.querySelector("footer");
-    if(footer)footer.after(links);else document.body.appendChild(links);
+    const reportHref=()=>pg+"share.html?type=report&page="+encodeURIComponent(title+" ("+location.pathname+location.hash+")");
+    const link=(href,ic,text,ext)=>'<a href="'+href+'"'+(ext?' target="_blank" rel="noopener"':'')+'>'+icon(ic)+'<span>'+text+'</span></a>';
+    const col=(h,items)=>'<div class="sf-col"><h2>'+h+'</h2>'+items.join("")+'</div>';
+    const f=document.createElement("footer");
+    f.className="site-footer";
+    f.innerHTML='<div class="sf-inner"><div class="sf-grid">'+
+      col("Practice",[link(root+"index.html","home","Home"),link(pg+"reading.html","book","Reading"),link(pg+"listening.html","headphones","Listening"),link(pg+"writing.html","pen","Writing"),link(pg+"speaking.html","mic","Speaking")])+
+      col("Learn",[link(pg+"vocabulary.html","cards","Vocabulary"),link(pg+"articles.html","news","Articles"),link(pg+"podcasts.html","podcast","Podcasts"),link(root+"index.html#myDashboard","chart","My progress")])+
+      col("Englisity",[link(pg+"about.html","info","About Englisity"),link(pg+"share.html","share","Share your exam questions"),'<a href="'+reportHref()+'" data-report-link>'+icon("flag")+'<span>Report a problem</span></a>'])+
+      col("Connect",[link("https://t.me/TokhirovEnglisity","send","Telegram channel",true),link("mailto:tokhirovs112@gmail.com","mail","Contact us")])+
+      '</div><div class="sf-bottom"><a class="sf-brand" href="'+root+'index.html"><img src="'+root+'assets/englisity-mark.svg?v=20261117-logo" alt="" width="28" height="28"><span>Englisity</span></a><span class="sf-copy">© '+new Date().getFullYear()+' Englisity · Free IELTS practice</span></div></div>';
+    f.querySelector("[data-report-link]").addEventListener("click",e=>{e.currentTarget.href=reportHref();});
+    document.querySelectorAll("footer.footer, footer.home-footer, .eng-site-links").forEach(el=>el.remove());
+    const scripts=document.body.querySelector(":scope > script");
+    document.body.insertBefore(f,scripts||null);
   }
-  const linkStyles=document.createElement("style");
-  linkStyles.textContent=".eng-site-links{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;max-width:1160px;margin:8px auto 24px;padding:0 16px;font-size:13.5px}.eng-site-links a{color:#4d6a5c;text-decoration:none;padding:6px 2px}.eng-site-links a:hover{color:#1f6b55;text-decoration:underline}html[data-theme=\"dark\"] .eng-site-links a{color:#b9cdbf}@media print{.eng-site-links{display:none}}";
-  document.head.appendChild(linkStyles);
+  const footerStyles=document.createElement("style");
+  footerStyles.textContent=".site-footer{margin-top:48px;background:#e6ede8;border-top:1px solid #d5e0d9;color:#203b31;font-size:15px}.sf-inner{max-width:1180px;margin:0 auto;padding:44px 24px 26px}.sf-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px}.sf-col h2{font-size:16px;font-weight:700;margin:0 0 14px;color:#183b34;letter-spacing:0}.sf-col a{display:flex;align-items:center;gap:10px;padding:7px 0;color:#2b4a3f;text-decoration:none;line-height:1.3}.sf-col a:hover{color:#1f6b55}.sf-col a:hover span{text-decoration:underline}.sf-icon{width:17px;height:17px;flex:none;color:#3d6656}.sf-bottom{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:32px;padding-top:22px;border-top:1px solid #d1ddd5}.sf-brand{display:flex;align-items:center;gap:10px;color:#183b34;font-weight:700;font-size:17px;text-decoration:none}.sf-brand img{border-radius:7px}.sf-copy{color:#4d6359;font-size:14px}html[data-theme=\"dark\"] .site-footer{background:#14211d;border-color:#22332d;color:#d6e3dc}html[data-theme=\"dark\"] .sf-col h2,html[data-theme=\"dark\"] .sf-brand{color:#eef5f1}html[data-theme=\"dark\"] .sf-col a{color:#c3d4cb}html[data-theme=\"dark\"] .sf-icon{color:#8fc2ab}html[data-theme=\"dark\"] .sf-bottom{border-color:#22332d}html[data-theme=\"dark\"] .sf-copy{color:#9fb5aa}@media(max-width:820px){.sf-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 18px}.sf-inner{padding:34px 20px 22px}}@media(max-width:380px){.sf-grid{grid-template-columns:1fr}}@media print{.site-footer{display:none}}";
+  document.head.appendChild(footerStyles);
 
   // "Spot a mistake? Report it" next to test and quiz results, with this page filled in.
   const REPORT_TARGETS=[
@@ -338,7 +360,7 @@
   let reportLinkTimer=null;
 
   document.addEventListener("DOMContentLoaded",()=>{
-    addSiteLinks();
+    addSiteFooter();
     new MutationObserver(()=>{clearTimeout(reportLinkTimer);reportLinkTimer=setTimeout(addResultReportLinks,150);}).observe(document.body,{childList:true,subtree:true});
     addDashboard();scanBookmarks();addTimer();initAutosave();
     const observer=new MutationObserver(()=>scanBookmarks());

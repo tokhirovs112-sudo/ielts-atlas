@@ -150,6 +150,27 @@ def test_every_page_laptop_and_phone(browser, pw):
         ctx.close()
 
 
+def test_site_footer(browser, pw):
+    """Normal pages end with the site footer (About, Share questions, Report a problem); full tests don't show it."""
+    ctx = browser.new_context(**DESKTOP, service_workers="block")
+    tests = set(READING_TESTS) | set(LISTENING_TESTS)
+    for path in PAGES:
+        page, problems = open_page(ctx, path, 400)
+        slug = os.path.splitext(os.path.basename(path))[0]
+        info = page.evaluate("""() => { const f = document.querySelector('.site-footer');
+          return {has: !!f, text: f ? f.innerText : '', last: f ? !f.nextElementSibling || f.nextElementSibling.tagName === 'SCRIPT' || !!document.querySelector('.site-footer ~ script') : false,
+                  old: document.querySelectorAll('footer.footer, footer.home-footer, .eng-site-links').length}; }""")
+        if slug in tests:
+            check(not info["has"], f"{path}: the site footer should not show inside a test")
+        else:
+            check(info["has"], f"{path}: missing the site footer")
+            for t in ("About Englisity", "Share your exam questions", "Report a problem", "Telegram channel"):
+                check(t in info["text"] or (slug == "about" and t == "About Englisity"), f"{path}: footer is missing '{t}'")
+            check(info["old"] == 0, f"{path}: the old small footer is still showing")
+        page.close()
+    ctx.close()
+
+
 def test_navigation_links(browser, pw):
     """Every menu link on every page opens a real page."""
     ctx = browser.new_context(**DESKTOP, service_workers="block")
@@ -594,8 +615,11 @@ def test_report_and_share_forms(browser, pw):
     # "Report a problem" links on test pages open the form with the page filled in.
     page.goto(BASE + "pages/beatrix-potter.html")
     page.wait_for_timeout(500)
+    choose_practice_mode(page)
+    page.click("#checkAnswers")
+    page.wait_for_timeout(600)
     link = page.evaluate("[...document.querySelectorAll('a[href*=\"share.html\"]')].map(a => a.getAttribute('href')).find(h => /report/.test(h)) || ''")
-    check(bool(link), "test page has no 'Report a problem' link")
+    check(bool(link), "test results have no 'Spot a mistake? Report it' link")
     if link:
         page.goto(BASE + "pages/" + link if not link.startswith("..") else BASE + "pages/" + link)
         page.wait_for_timeout(500)

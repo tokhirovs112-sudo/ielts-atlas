@@ -99,6 +99,33 @@ html[data-theme="dark"] .answer-options label:has(input:checked){background:#244
 .qnav{gap:10px}.qnav-btn{width:27px;flex-basis:27px}
 @media(max-width:900px){.full-test-page .topbar{position:relative!important;top:auto!important}}
 @media(max-width:600px){.ft-bar{padding:6px 8px;gap:6px}.ft-bar .reading-timer{padding:4px 9px;gap:6px}.ft-bar .reading-timer strong{font-size:16px}.ft-bar .timer-note{display:none}.part-tab strong{font-size:13px}.part-tab{padding:7px 9px;gap:5px;flex:1;justify-content:center}.part-tab span{display:none}.ft-meta{width:100%;justify-content:space-between}.ft-breakdown{grid-template-columns:1fr}}
+
+/* Dark mode: design.css restyles every button, so these need to be explicit. */
+html[data-theme="dark"] body #fullTest .part-tab{background:#1c2f28!important;border-color:#3a5247!important;color:#dbe8df!important}
+html[data-theme="dark"] body #fullTest .part-tab strong{color:#edf5ef!important}
+html[data-theme="dark"] body #fullTest .part-tab span{color:#9fb5a8!important}
+html[data-theme="dark"] body #fullTest .part-tab em{background:#2b4c3c!important;color:#cfeedd!important}
+html[data-theme="dark"] body #fullTest .part-tab.active{background:#3f8f62!important;border-color:#5fb383!important}
+html[data-theme="dark"] body #fullTest .part-tab.active strong,html[data-theme="dark"] body #fullTest .part-tab.active span{color:#fff!important}
+html[data-theme="dark"] body #fullTest .part-tab.active em{background:rgba(255,255,255,.22)!important;color:#fff!important}
+html[data-theme="dark"] body #fullTest .qnav-btn{background:#1c2f28!important;border-color:#3a5247!important;color:#dbe8df!important}
+html[data-theme="dark"] body #fullTest .qnav-btn.done{background:#2f5a45!important;border-color:#5fb383!important;color:#e6f7ec!important}
+html[data-theme="dark"] body #fullTest .qnav-btn.right{background:#2e8b57!important;border-color:#2e8b57!important;color:#fff!important}
+html[data-theme="dark"] body #fullTest .qnav-btn.wrong{background:#b9443f!important;border-color:#b9443f!important;color:#fff!important}
+html[data-theme="dark"] body #fullTest .qnav-label{color:#9fcdb6!important}
+html[data-theme="dark"] body #fullTest .ft-review{background:#3a2a1c!important;border-color:#8a5a2b!important;color:#ffd9b0!important}
+html[data-theme="dark"] body #fullTest .ft-breakdown button{background:#1c2f28!important;border-color:#3a5247!important}
+html[data-theme="dark"] body #fullTest .ft-breakdown span{color:#9fb5a8!important}html[data-theme="dark"] body #fullTest .ft-breakdown b{color:#edf5ef!important}html[data-theme="dark"] body #fullTest .ft-breakdown i{background:#5fb383!important}
+html[data-theme="dark"] body #fullTest .ft-band b{color:#8fd6aa!important}html[data-theme="dark"] body #fullTest .ft-band small{color:#9fb5a8!important}
+html[data-theme="dark"] body #fullTest .ft-next{background:#1c2f28!important;border-color:#5fb383!important;color:#a7d9b7!important}
+html[data-theme="dark"] body #fullTest .ft-warning{background:#3a2f15!important;border-color:#8a6d2b!important;color:#ffe3a3!important}
+html[data-theme="dark"] body #fullTest .ft-warning button{background:#2a2414!important;border-color:#8a6d2b!important;color:#ffe3a3!important}
+html[data-theme="dark"] body #fullTest .ft-box{background:#1c2f28!important;border-color:#3a5247!important;color:#dbe8df!important}html[data-theme="dark"] body #fullTest .ft-box b{color:#8fd6aa!important}
+html[data-theme="dark"] body #fullTest .restore-note{background:#1d2c3a!important;color:#b9d7f2!important}
+html[data-theme="dark"] body #fullTest .ft-yours{color:#ffc58f!important}
+html[data-theme="dark"] body #fullTest .reading-timer.warning{background:#3a2f15!important;color:#ffd27a!important;border-color:#8a6d2b!important}
+html[data-theme="dark"] body #fullTest .reading-timer.overtime{background:#3a1c1c!important;color:#ffb4ae!important;border-color:#8c4040!important}
+html[data-theme="dark"] body #fullTest .question-card.flash{animation:none;background:#3a3517!important}
 </style></head>
 <body class="passage-test-page full-test-page">
 <header class="topbar"><a class="brand" href="../index.html"><img class="brand-mark" src="../assets/englisity-mark.svg?v=20261117-logo" alt=""><span>Englisity<small>READING PRACTICE</small></span></a><button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation">☰</button><nav class="nav" id="navigation"><a href="../index.html">Home</a><a class="active" href="reading.html">Reading</a><a href="listening.html">Listening</a><a href="writing.html">Writing</a><a href="speaking.html">Speaking</a><a class="eng-vocab-nav" href="vocabulary.html">Vocabulary</a>

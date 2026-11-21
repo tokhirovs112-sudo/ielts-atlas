@@ -403,6 +403,22 @@ def test_full_reading_test(browser, pw):
         check(page.evaluate("document.querySelectorAll('.qnav-btn.right').length") == 2, "navigator does not colour correct answers")
         no_problems(problems, "full reading test")
         ctx.close()
+    # Dark mode: tabs, counters and navigator colours must stay readable.
+    ctx = browser.new_context(**DESKTOP, service_workers="block")
+    ctx.add_init_script("try { localStorage.setItem('englisity-theme', 'dark'); } catch (e) {}")
+    page, problems = open_page(ctx, "pages/full-test-01.html")
+    choose_practice_mode(page)
+    page.check('input[name="a1"][value="D"]')
+    page.wait_for_timeout(600)
+    info = page.evaluate("""() => { const st = s => getComputedStyle(document.querySelector(s));
+      return {active: st('.part-tab.active').backgroundColor, other: st('.part-tab:not(.active)').backgroundColor,
+              badgeBg: st('.part-tab:not(.active) em').backgroundColor, badgeFg: st('.part-tab:not(.active) em').color,
+              done: st('.qnav-btn.done').backgroundColor, plain: st('.qnav-btn:not(.done)').backgroundColor}; }""")
+    check(info["active"] != info["other"], f"dark mode: the active part tab looks the same as the others ({info})")
+    check(info["badgeBg"] != info["badgeFg"] and "237, 245, 239" not in info["badgeBg"], f"dark mode: part counters are unreadable ({info})")
+    check(info["done"] != info["plain"], f"dark mode: answered questions are not marked in the navigator ({info})")
+    no_problems(problems, "full reading test dark")
+    ctx.close()
 
 
 def test_listening_tests_full_marks(browser, pw):

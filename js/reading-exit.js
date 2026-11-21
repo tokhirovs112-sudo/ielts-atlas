@@ -3,7 +3,7 @@
   const PAUSED_KEY = "englisity-reading-paused-test-v1";
   const page = location.pathname.split("/").pop() || "";
   const testId = page.replace(/\.html$/i, "");
-  const isReadingTest = !!document.getElementById("exitTest") && !!document.querySelector(".test-main, #herdingTest, #dollsTest, #footPedalTest, #seaVisionTest, #seaTest, #halleyTest, #marsTest, #beatrixTest");
+  const isReadingTest = !!document.getElementById("exitTest") && !!document.querySelector(".test-main, #herdingTest, #dollsTest, #footPedalTest, #seaVisionTest, #fullTest, #seaTest, #halleyTest, #marsTest, #beatrixTest");
 
   function readPaused() {
     try { return JSON.parse(localStorage.getItem(PAUSED_KEY) || "null"); }
@@ -194,4 +194,171 @@
   addEventListener("resize", update);
   document.addEventListener("click", () => setTimeout(update, 50));
   update();
+})();
+// "Show in passage": highlight the exact evidence sentence (not just the paragraph),
+// scroll to it, and offer a one-tap way back to the question.
+(() => {
+  "use strict";
+  const passage = document.getElementById("passageText");
+  if (!passage) return;
+  const style = document.createElement("style");
+  style.textContent = `
+    .view-in-test{display:inline-flex!important;align-items:center;gap:7px;margin-top:8px!important;padding:8px 13px;border:1px solid #9fc8b3;border-radius:999px;background:#fff;color:#1f6b55!important;font-size:13px;font-weight:800!important;line-height:1.2;text-decoration:none!important;cursor:pointer;transition:background .15s,border-color .15s}
+    .view-in-test:hover,.view-in-test:focus-visible{background:#e8f4ed;border-color:#1f6b55;outline:none}
+    .view-in-test:before{content:"";width:15px;height:15px;flex:0 0 15px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z'/%3E%3C/svg%3E") center/contain no-repeat}
+    #passageText mark.evidence-mark{background:#ffe27a;color:inherit;border-radius:0;padding:2px 0;animation:evidencePulse 1.8s ease-out 1}
+    #passageText p.evidence-para{background:#fffbea;outline:1px dashed #e3c75a}
+    @keyframes evidencePulse{0%,35%{background:#f7c548}100%{background:#ffe27a}}
+    .evidence-chip{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:4px;padding:5px;border-radius:999px;background:#17352b;box-shadow:0 10px 28px rgba(10,30,22,.3);font-size:13px;max-width:calc(100vw - 24px)}
+    .evidence-chip[hidden]{display:none}
+    body.evidence-open .reading-jump{display:none!important}
+    .evidence-chip button{border:0;border-radius:999px;background:transparent;color:#fff;font:inherit;font-weight:800;padding:9px 14px;cursor:pointer;white-space:nowrap}
+    .evidence-chip .back{background:#fff;color:#17352b}
+    .evidence-chip .note{color:#cfe3d8;padding:0 8px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    html[data-theme="dark"] .view-in-test{background:#1c2f28;border-color:#3f6a57;color:#a7d9b7!important}
+    html[data-theme="dark"] #passageText mark.evidence-mark{background:#6b5a12;color:#fff8dc;animation:none}
+    html[data-theme="dark"] #passageText p.evidence-para{background:#2a2a1a;outline-color:#6b5a12}
+    @media(max-width:600px){.evidence-chip .note{display:none}}
+  `;
+  document.head.append(style);
+
+  const chip = document.createElement("div");
+  chip.className = "evidence-chip";
+  chip.hidden = true;
+  chip.innerHTML = '<span class="note"></span><button type="button" class="back"></button><button type="button" class="close" aria-label="Clear highlight">✕</button>';
+  document.body.append(chip);
+  let returnTo = null;
+
+  // Map passage text to a normalised string, remembering which text node each character came from.
+  const normChar = c => {
+    if (/[‘’ʼ`´]/.test(c)) return "'";
+    if (/[“”„]/.test(c)) return '"';
+    if (/[–—‑]/.test(c)) return "-";
+    if (/\s/.test(c)) return " ";
+    return c.toLowerCase();
+  };
+  function indexPassage() {
+    const map = [];
+    let text = "";
+    const walker = document.createTreeWalker(passage, NodeFilter.SHOW_TEXT, {
+      acceptNode: n => n.parentElement.closest(".para-number, .vocab-popup, .selection-toolbar, script, style, [hidden]") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT
+    });
+    let node, lastBlock = null;
+    while ((node = walker.nextNode())) {
+      const block = node.parentElement.closest("p, li, h3, h4, div");
+      if (block !== lastBlock && text && !text.endsWith(" ")) { text += " "; map.push(null); }
+      lastBlock = block;
+      const s = node.nodeValue;
+      for (let i = 0; i < s.length; i++) {
+        const c = normChar(s[i]);
+        if (c === " " && text.endsWith(" ")) continue;
+        text += c;
+        map.push([node, i]);
+      }
+    }
+    return { text, map };
+  }
+  const normalise = s => Array.from(String(s)).map(normChar).join("").replace(/\s+/g, " ").trim();
+
+  // Find [start, end] ranges in the passage for the evidence text.
+  function findRanges(evidence, text) {
+    const pieces = evidence.split(/\s*(?:…|\.\.\.)\s*/).map(p => normalise(p).replace(/^[.,;:'"\s]+|[.,;:'"\s]+$/g, "")).filter(p => p.length > 3);
+    const out = [];
+    let from = 0;
+    for (const piece of pieces) {
+      let at = text.indexOf(piece, from);
+      if (at < 0) at = text.indexOf(piece);
+      if (at < 0) {
+        // Try the longest run of leading words that still matches.
+        const words = piece.split(" ");
+        for (let n = words.length - 1; n >= 4 && at < 0; n--) {
+          const sub = words.slice(0, n).join(" ");
+          at = text.indexOf(sub);
+          if (at >= 0) { out.push([at, at + sub.length]); from = at + sub.length; }
+        }
+        continue;
+      }
+      out.push([at, at + piece.length]);
+      from = at + piece.length;
+    }
+    return out;
+  }
+
+  function clearMarks() {
+    passage.querySelectorAll("mark.evidence-mark").forEach(m => {
+      const p = m.parentNode;
+      while (m.firstChild) p.insertBefore(m.firstChild, m);
+      m.remove();
+      p.normalize();
+    });
+    passage.querySelectorAll(".evidence-para, .is-highlighted").forEach(p => p.classList.remove("evidence-para", "is-highlighted"));
+  }
+
+  function wrapRange(map, start, end) {
+    // Group character positions by text node, then wrap each node's slice.
+    const slices = new Map();
+    for (let i = start; i < end; i++) {
+      const at = map[i];
+      if (!at) continue;
+      const [node, offset] = at;
+      const s = slices.get(node);
+      if (s) s[1] = offset + 1; else slices.set(node, [offset, offset + 1]);
+    }
+    const marks = [];
+    slices.forEach(([a, b], node) => {
+      let target = node;
+      if (a > 0) target = target.splitText(a);
+      if (b - a < target.nodeValue.length) target.splitText(b - a);
+      const mark = document.createElement("mark");
+      mark.className = "evidence-mark";
+      target.parentNode.insertBefore(mark, target);
+      mark.append(target);
+      marks.push(mark);
+    });
+    return marks;
+  }
+
+  function findParagraph(key) {
+    if (!key) return null;
+    return document.getElementById("para" + key) || document.getElementById(key) || document.getElementById("p" + key);
+  }
+
+  function show(link) {
+    clearMarks();
+    const box = link.closest(".question-feedback") || link.parentElement;
+    const quote = box?.querySelector("blockquote")?.textContent || "";
+    let marks = [];
+    if (quote.trim()) {
+      const { text, map } = indexPassage();
+      findRanges(quote, text).forEach(([a, b]) => { marks = marks.concat(wrapRange(map, a, b)); });
+    }
+    const para = marks[0]?.closest("p") || findParagraph(link.dataset.para);
+    if (para && !marks.length) para.classList.add("evidence-para");
+    const target = marks[0] || para;
+    if (target) target.scrollIntoView({ behavior: "smooth", block: "center" });
+    const num = (box?.id || "").match(/^(?:f|feedback)(\d+)$/)?.[1] || (link.closest("[id^=q]")?.id || "").match(/\d+/)?.[0];
+    returnTo = box;
+    const label = para?.id ? (para.querySelector(".para-number")?.textContent || para.id.replace(/^para|^p/, "")) : "";
+    chip.querySelector(".note").textContent = marks.length ? "Evidence highlighted" + (label ? " · Paragraph " + label : "") : (label ? "Paragraph " + label : "");
+    chip.querySelector(".back").textContent = num ? "← Back to question " + num : "← Back to question";
+    chip.hidden = false;
+    document.body.classList.add("evidence-open");
+  }
+
+  document.addEventListener("click", event => {
+    const link = event.target.closest(".view-in-test");
+    if (!link) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    show(link);
+  }, true);
+  const hideChip = () => { chip.hidden = true; document.body.classList.remove("evidence-open"); };
+  chip.querySelector(".back").addEventListener("click", () => {
+    hideChip();
+    returnTo?.scrollIntoView({ behavior: "smooth", block: "center" });
+    returnTo?.querySelector(".view-in-test")?.focus({ preventScroll: true });
+  });
+  chip.querySelector(".close").addEventListener("click", () => { hideChip(); clearMarks(); });
+  document.getElementById("resetTest")?.addEventListener("click", () => { hideChip(); clearMarks(); });
+  window.EnglisityEvidence = { show, clear: () => { hideChip(); clearMarks(); } };
 })();

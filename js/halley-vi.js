@@ -27,7 +27,7 @@ const questions=[
 {n:26,type:"person",p:"The station may provide a sense of how to build in difficult locations elsewhere.",a:"D",para:"G",e:"you can really imagine Halley sitting on a planet in outer space ... could also give an idea of how we might actually colonise other places.",why:"Sam Jacob says Halley VI could offer ideas for building and living in places beyond Earth."}
 ];
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const wordify=s=>esc(s).replace(/(&#?\w+;)|([\p{L}]+(?:['’\-][\p{L}]+)*)/gu,(m,ent,w)=>ent?ent:'<span class="vocab-word" data-word="'+w+'">'+w+'</span>');
+const wordify=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])).replace(/(&#?\w+;)|([\p{L}]+(?:['’\-][\p{L}]+)*)/gu,(m,ent,w)=>ent?ent:'<span class="vocab-word" data-word="'+w+'">'+w+'</span>');
 document.getElementById("passageText").innerHTML=passage.map(([id,txt])=>'<p id="para'+id+'"><span class="para-number">'+id+'</span>'+wordify(txt)+'</p>').join("");
 const groups=[
 {title:"Questions 14–18",kind:"MATCHING INFORMATION",instructions:"Reading Passage 2 has seven paragraphs, A–G. Which paragraph contains the following information? You may use any letter more than once.",questions:questions.slice(0,5),options:["A","B","C","D","E","F","G"]},
@@ -50,7 +50,7 @@ function submit(){
  const val=(document.getElementById("a"+q.n)?.value||"");
  const ok=q.type==="text"?clean(val)===q.a:val===q.a;if(ok)score++;
  const f=document.getElementById("f"+q.n);f.hidden=false;f.className="question-feedback "+(ok?"correct":"incorrect");
- f.innerHTML='<strong>'+(ok?"Correct":"Not quite")+'</strong><p>Correct answer: <b>'+esc(q.a)+'</b></p><p>'+esc(q.why)+'</p><p><b>Evidence in the passage:</b></p><blockquote>'+esc(q.e)+'</blockquote><a class="view-in-test" href="#para'+q.para+'" data-para="'+q.para+'">View in passage ↗</a>';
+ f.innerHTML='<strong>'+(ok?"Correct":"Not quite")+'</strong><p>Correct answer: <b>'+esc(q.a)+'</b></p><p>'+esc(q.why)+'</p><p><b>Evidence in the passage:</b></p><blockquote>'+esc(q.e)+'</blockquote><a class="view-in-test" href="#para'+q.para+'" data-para="'+q.para+'">Show in passage</a>';
  });
  root.querySelectorAll("input,select").forEach(x=>x.disabled=true);document.getElementById("checkAnswers").disabled=true;
  const result=document.getElementById("testResult");result.hidden=false;result.innerHTML='<strong>Your score: '+score+' / 13</strong><span>'+(score===13?"Excellent work — a perfect score!":score>=10?"Strong result. Review any missed questions below.":score>=7?"Good effort. Check the evidence for the questions you missed.":"Review the explanations and try the passage again.")+'</span>';

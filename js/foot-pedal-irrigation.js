@@ -23,7 +23,7 @@ document.getElementById("checkAnswers").addEventListener("click",()=>{
   const normalized=val.trim().replace(/\s+/g," ").toLowerCase();const ok=[q.a].concat(q.alts||[]).some(x=>x.toLowerCase()===normalized);if(val)answered++;if(ok)score++;
   const f=document.getElementById("f"+q.n);f.hidden=false;f.className="question-feedback "+(ok?"correct":"incorrect");
   const para=q.para;
-  f.innerHTML='<strong>'+(ok?"Correct":val?"Not quite":"Not answered")+'</strong><p>Correct answer: <b>'+esc(q.a)+'</b></p><p>'+esc(q.why)+'</p><p class="extract-label">Evidence in the passage:</p><blockquote>'+esc(q.e)+'</blockquote><a class="view-in-test" href="#p'+para+'" data-para="p'+para+'">View in the passage ↗</a>';
+  f.innerHTML='<strong>'+(ok?"Correct":val?"Not quite":"Not answered")+'</strong><p>Correct answer: <b>'+esc(q.a)+'</b></p><p>'+esc(q.why)+'</p><p class="extract-label">Evidence in the passage:</p><blockquote>'+esc(q.e)+'</blockquote><a class="view-in-test" href="#p'+para+'" data-para="p'+para+'">Show in passage</a>';
  });
  const result=document.getElementById("testResult");result.hidden=false;result.innerHTML='<strong>Your score: '+score+' / 13</strong><span>'+(score===13?"Excellent work!":score>=9?"Good effort. Review the explanations for mistakes.":"Review the evidence and try again.")+'</span>';if(answered===questions.length)window.dispatchEvent(new Event("englisity:quiz-passed"));result.scrollIntoView({behavior:"smooth",block:"center"});
 });

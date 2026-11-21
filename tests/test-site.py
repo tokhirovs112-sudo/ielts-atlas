@@ -28,7 +28,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 
 PAGES = ["index.html"] + sorted(glob.glob("pages/*.html")) + sorted(glob.glob("articles/*.html"))
-READING_TESTS = ["beatrix-potter", "dolls", "foot-pedal-irrigation", "seeing-in-the-sea", "halley-vi", "herding", "keeping-healthy-at-work", "life-on-mars", "power-from-the-sea", "redwoods"]
+READING_TESTS = ["full-test-01", "beatrix-potter", "dolls", "foot-pedal-irrigation", "seeing-in-the-sea", "halley-vi", "herding", "keeping-healthy-at-work", "life-on-mars", "power-from-the-sea", "redwoods"]
 LISTENING_TESTS = ["listening-test-01", "listening-test-02", "listening-test-03", "listening-test-04"]
 DESKTOP = {"viewport": {"width": 1366, "height": 900}}
 IGNORED_CONSOLE = ("fonts.googleapis", "fonts.gstatic", "ERR_INTERNET_DISCONNECTED", "ERR_NAME_NOT_RESOLVED", "ERR_CONNECTION", "ERR_TUNNEL", "ERR_PROXY", "net::ERR_FAILED", "api.dictionaryapi.dev", "cloudflareinsights")
@@ -273,6 +273,10 @@ def test_reading_tests_full_marks(browser, pw):
         choose_practice_mode(page)
         page.click("#checkAnswers")
         page.wait_for_timeout(400)
+        if page.query_selector("#submitWarning") and page.is_visible("#submitWarning"):
+            check("blank" in page.inner_text("#submitWarning"), "the blank-answers warning does not say how many are blank")
+            page.click("#submitAnyway")
+            page.wait_for_timeout(400)
         got, total = score_of(page)
         check(got == 0 and total and total >= 10, f"empty answers should score 0, got {got}/{total}")
         answers = page.evaluate(READ_KEY)
@@ -315,6 +319,90 @@ def test_reading_tests_full_marks(browser, pw):
         no_problems(problems, slug)
         page.close()
     ctx.close()
+
+
+SHOW_ALL_EVIDENCE = r"""async () => {
+  const norm = s => String(s).toLowerCase().replace(/[‘’`´]/g, "'").replace(/[“”]/g, '"').replace(/[–—]/g, '-').replace(/\s+/g, ' ').trim();
+  const out = [];
+  for (const link of [...document.querySelectorAll('.view-in-test')]) {
+    const part = link.closest('.ft-questions');
+    if (part && part.hidden) document.querySelector('.part-tab[data-go="' + part.dataset.part + '"]').click();
+    link.click();
+    await new Promise(r => setTimeout(r, 30));
+    const marks = [...document.querySelectorAll('#passageText mark.evidence-mark')];
+    const quote = norm(link.closest('.question-feedback').querySelector('blockquote').textContent);
+    const text = norm(marks.map(m => m.textContent).join(' '));
+    const n = ((link.closest('.question-feedback').id || '').match(/(\d+)$/) || [])[1];
+    const chip = document.querySelector('.evidence-chip');
+    if (!marks.length) out.push(n + ': nothing highlighted');
+    else if (marks.some(m => m.offsetParent === null)) out.push(n + ': highlight is in a hidden passage');
+    else if (text.length < Math.min(25, quote.length * 0.5)) out.push(n + ': only "' + text.slice(0, 40) + '" highlighted');
+    else if (!quote.replace(/[^a-z0-9]/g, '').includes(text.replace(/[^a-z0-9]/g, '').slice(0, 30))) out.push(n + ': highlight does not match the evidence');
+    if (!chip || chip.hidden || !/Back to question \d+/.test(chip.innerText)) out.push(n + ': no "Back to question" button');
+  }
+  return out;
+}"""
+
+
+def test_show_in_passage(browser, pw):
+    """After submitting, every 'Show in passage' button highlights the exact evidence and offers a way back."""
+    ctx = browser.new_context(**DESKTOP, service_workers="block")
+    for slug in READING_TESTS:
+        R.current = "show in passage " + slug
+        page, problems = open_page(ctx, f"pages/{slug}.html")
+        choose_practice_mode(page)
+        page.click("#checkAnswers")
+        page.wait_for_timeout(300)
+        if page.query_selector("#submitAnyway") and page.is_visible("#submitAnyway"):
+            page.click("#submitAnyway")
+            page.wait_for_timeout(300)
+        count = page.evaluate("document.querySelectorAll('.view-in-test').length")
+        if slug != "redwoods":
+            check(count >= 10, f"only {count} 'Show in passage' buttons after submitting")
+        bad = page.evaluate(SHOW_ALL_EVIDENCE)
+        check(not bad, f"'Show in passage' problems: {bad[:8]}")
+        if count:
+            page.click(".evidence-chip .back")
+            page.wait_for_timeout(200)
+            check(page.evaluate("document.querySelector('.evidence-chip').hidden"), "'Back to question' does not close the bar")
+        no_problems(problems, slug)
+        page.close()
+    ctx.close()
+
+
+def test_full_reading_test(browser, pw):
+    """Full test: part tabs, 1-40 navigator, answers saved after reload, band score."""
+    for device in (DESKTOP, {k: v for k, v in pw.devices["iPhone 13"].items() if k != "default_browser_type"}):
+        ctx = browser.new_context(**device, service_workers="block")
+        page, problems = open_page(ctx, "pages/full-test-01.html")
+        choose_practice_mode(page)
+        visible = lambda: page.evaluate("[...document.querySelectorAll('.ft-passage')].filter(p => !p.hidden).map(p => p.querySelector('h2').textContent)")
+        check(visible() == ["Indoor Pollution"], f"Part 1 should show first, got {visible()}")
+        page.click('.part-tab[data-go="2"]')
+        check(visible() == ["Left or right?"], f"Part 3 tab shows {visible()}")
+        page.click('.qnav-btn[data-n="16"]')
+        page.wait_for_timeout(300)
+        check(visible() == ["Saving bugs to find new drugs"], f"navigator button 16 shows {visible()}")
+        check(page.evaluate("document.getElementById('a16').offsetParent !== null"), "question 16 is not visible after using the navigator")
+        page.select_option("#a16", "A")
+        page.fill("#a23", "ecology")
+        check("2 of 40" in page.inner_text("#answeredCount"), f"answered counter says {page.inner_text('#answeredCount')!r}")
+        check(page.evaluate("document.querySelector('.qnav-btn[data-n=\"16\"]').classList.contains('done')"), "navigator does not mark answered questions")
+        page.reload()
+        page.wait_for_timeout(500)
+        check(page.evaluate("document.getElementById('a16').value") == "A" and page.evaluate("document.getElementById('a23').value") == "ecology", "answers are not restored after reloading")
+        check(page.is_visible("#restoreNote"), "no 'answers restored' note after reloading")
+        choose_practice_mode(page)
+        page.click("#checkAnswers")
+        page.wait_for_timeout(300)
+        check(page.is_visible("#submitWarning") and "38" in page.inner_text("#submitWarning"), "no warning about the 38 blank answers")
+        page.click("#submitAnyway")
+        page.wait_for_timeout(400)
+        text = page.inner_text("#testResult")
+        check("2 / 40" in text and "Estimated band" in text and "Passage 2" in text, f"result is missing score, band or breakdown: {text[:200]!r}")
+        check(page.evaluate("document.querySelectorAll('.qnav-btn.right').length") == 2, "navigator does not colour correct answers")
+        no_problems(problems, "full reading test")
+        ctx.close()
 
 
 def test_listening_tests_full_marks(browser, pw):

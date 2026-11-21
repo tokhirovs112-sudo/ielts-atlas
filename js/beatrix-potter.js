@@ -21,7 +21,7 @@ const ok=q.t==="text"?val===q.a.toLowerCase():val===q.a;
 if(ok)score++;
 const f=document.getElementById("f"+q.n);
 f.hidden=false;f.className="question-feedback "+(ok?"correct":"incorrect");
-f.innerHTML='<strong>'+(ok?"Correct":"Not quite")+'</strong><p>Correct answer: <b>'+esc(q.a)+'</b></p><p>'+esc(q.x)+'</p><p class="extract-label">Evidence in the passage:</p><blockquote>'+esc(q.e)+'</blockquote><a class="view-in-test" href="#'+q.para+'" data-para="'+q.para+'">View in the test ↗</a>';
+f.innerHTML='<strong>'+(ok?"Correct":"Not quite")+'</strong><p>Correct answer: <b>'+esc(q.a)+'</b></p><p>'+esc(q.x)+'</p><p class="extract-label">Evidence in the passage:</p><blockquote>'+esc(q.e)+'</blockquote><a class="view-in-test" href="#'+q.para+'" data-para="'+q.para+'">Show in passage</a>';
 });
 const result=document.getElementById("testResult");
 result.hidden=false;result.innerHTML='<strong>Your score: '+score+' / 13</strong><span>'+(score===13?"Excellent work!":score>=9?"Good effort. Review the explanations for mistakes.":"Review the evidence and try again.")+'</span>';

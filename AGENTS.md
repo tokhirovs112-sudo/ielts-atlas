@@ -26,3 +26,8 @@ When editing existing article pages or the shared learning script, preserve this
 - `python tests/test-site.py` opens every page in a real browser (laptop, iPhone, Android sizes) and uses each feature: reading tests score full marks with their own answer keys, listening mocks score 40/40, every cue card has its points, every writing task opens, vocabulary, article quizzes, forms, streak and offline mode. Add a check here whenever a new feature is added.
 - `node tests/test-worker.mjs` tests the form endpoint and audio byte ranges in `worker/index.js`.
 - GitHub runs both on every push (Site quality checks) and checks outside links (YouTube etc.) every Monday.
+
+# Full Reading tests
+
+- Each full test is `pages/full-test-NN.html` + `js/full-test-NN-data.js` (passages, questions, answers, evidence) and shares the engine `js/full-test.js`. Every question's `e` (evidence) must be copied exactly from its paragraph so "Show in passage" can highlight it; `tests/test-site.py` checks this for every reading test.
+- "Show in passage" (exact-sentence highlight + "Back to question" bar) lives in `js/reading-exit.js` and works for every reading test that puts the evidence in a `<blockquote>` next to a `.view-in-test` link.

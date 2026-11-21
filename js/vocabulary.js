@@ -138,6 +138,23 @@ const WORDS = [
 {id:"provided",word:"provided",pos:"conjunction",topic:"Conclusion and linking",meaning:"Only if; on the condition that.",example:"Students can borrow laptops, provided that they return them on time.",collocations:"provided that · providing that · provided (that) + clause",use:"Useful for conditions in solutions: …provided that it is well funded.",mistake:"Provided that is used for conditions, not for giving things.",skill:"Both"},
 {id:"balance",word:"balance",pos:"noun",topic:"Conclusion and linking",meaning:"A situation where different things are equal or in the correct proportions.",example:"It is important to strike a balance between work and leisure.",collocations:"strike a balance · on balance · work-life balance",use:"On balance is a great phrase for giving your final opinion.",mistake:"On balance means after considering everything, not on equal terms.",skill:"Both"}
 ];
+// Twelve topics, in the order students see them. Older words are regrouped here so the data above stays untouched.
+const TOPIC_INFO=[
+ ["Opinions and stance","💬","Verbs for giving and reporting opinions."],
+ ["Cause and effect","🔗","Explain why things happen and what they lead to."],
+ ["Contrast and concession","⚖️","Show the other side and keep your argument clear."],
+ ["Addition and emphasis","➕","Add points and show what matters most."],
+ ["Examples and evidence","🔎","Support ideas with examples, data and research."],
+ ["Trends and change","📈","Describe rises, falls and changes, ideal for Task 1."],
+ ["Solutions and policy","🛠️","Suggest what governments and people should do."],
+ ["Evaluation and impact","🎯","Judge advantages, drawbacks and results."],
+ ["Common essay nouns","📝","Flexible nouns for any Task 2 topic."],
+ ["Conclusion and linking","🧩","Link ideas, refer back and finish strongly."],
+ ["Speaking and everyday phrases","🗣️","Natural expressions for the Speaking test."],
+ ["Describing people and things","🧑‍🤝‍🧑","Adjectives and nouns for people, places and objects."]
+];
+const TOPIC_OF={"counterparts":"Describing people and things","in-fact":"Speaking and everyday phrases","to-the-point-where":"Cause and effect","necessary-evil":"Speaking and everyday phrases","basically":"Speaking and everyday phrases","decisiveness":"Describing people and things","concentrate":"Speaking and everyday phrases","realize":"Speaking and everyday phrases","decry":"Opinions and stance","steward":"Common essay nouns","facetious":"Describing people and things","summarize":"Conclusion and linking","expediency":"Evaluation and impact","considerate":"Describing people and things","coordinate":"Solutions and policy","put-down":"Speaking and everyday phrases","inexplicable":"Describing people and things","substantial":"Trends and change","compelling":"Examples and evidence","broaden":"Speaking and everyday phrases","convenient":"Describing people and things","contribute-to":"Cause and effect","tend-to":"Speaking and everyday phrases","play-a-role-in":"Cause and effect","allocate":"Solutions and policy","drawback":"Evaluation and impact","maintain":"Opinions and stance","reliable":"Describing people and things","tackle":"Solutions and policy","significant":"Addition and emphasis","affordable":"Describing people and things","outweigh":"Evaluation and impact","widespread":"Describing people and things","engage-in":"Speaking and everyday phrases","aware-of":"Describing people and things","respectively":"Conclusion and linking","according-to":"Examples and evidence","regarding":"Conclusion and linking","in-terms-of":"Conclusion and linking","latter":"Conclusion and linking","former":"Conclusion and linking","lead-the-pack":"Trends and change","chief-among-them":"Addition and emphasis","moreover":"Addition and emphasis","contribute to":"Cause and effect","tend to":"Speaking and everyday phrases","play a role in":"Cause and effect","engage in":"Speaking and everyday phrases","aware of":"Describing people and things"};
+WORDS.forEach(w=>{if(TOPIC_OF[w.id])w.topic=TOPIC_OF[w.id]});
 const QUESTIONS = [
 {recent:true,q:"Choose the best word: “Young workers today earn less than their ______ did thirty years ago.”",o:["counterparts", "stewards", "coordinates", "put-downs"],a:0,why:"Counterparts are people in the same position in a different group or time — here, young workers in the past."},
 {recent:true,q:"Complete the answer naturally: “I don’t mind exams. ______, I quite enjoy them.”",o:["In fact", "Basically", "To the point where", "In terms of"],a:0,why:"In fact adds a stronger, more surprising piece of information to the previous idea."},
@@ -212,6 +229,7 @@ function updateStats(){
  document.querySelectorAll("[data-status-count]").forEach(el=>{const k=el.dataset.statusCount;el.textContent=k==="all"?WORDS.length:counts[k]});
 }
 function refresh(){saveState();renderWords();updateDailySave()}
+function afterChange(){renderTopicGrid();if(currentTopic)renderTopicDetail(currentTopic);updatePlan();fillStudyDeck()}
 function saveWord(id){
  if(!state.saved.includes(id))state.saved.push(id);
  if(!state.reviews[id])state.reviews[id]={level:0,due:today()};
@@ -243,8 +261,9 @@ $("dailyMistake").innerHTML="<strong>Watch out:</strong> "+escapeHTML(daily.mist
 $("saveDaily").addEventListener("click",()=>state.saved.includes(daily.id)?unsaveWord(daily.id):saveWord(daily.id));
 updateDailySave();
 const STATUS_LABEL={new:"New",learning:"Learning",memorized:"Memorized"};
-const TOPICS=[...new Set(WORDS.map(w=>w.topic||"Other"))];
-let activeStatus="all",activeTopic="all",activeSkill="all",shownWords=[];
+const TOPICS=TOPIC_INFO.map(t=>t[0]).filter(t=>WORDS.some(w=>w.topic===t)).concat([...new Set(WORDS.map(w=>w.topic||"Other"))].filter(t=>!TOPIC_INFO.some(i=>i[0]===t)));
+const topicSlug=t=>t.toLowerCase().replace(/[^a-z]+/g,"-").replace(/^-|-$/g,"");
+let activeStatus="all",activeTopic="all",activeSkill="all",shownWords=[],currentTopic=null;
 (function buildBankControls(){
  const old=document.querySelector("#wordBank .vocab-filters");
  const wrap=document.createElement("div");wrap.className="vocab-organiser";
@@ -257,7 +276,7 @@ let activeStatus="all",activeTopic="all",activeSkill="all",shownWords=[];
  wrap.querySelectorAll("[data-status]").forEach(b=>b.addEventListener("click",()=>{activeStatus=b.dataset.status;wrap.querySelectorAll("[data-status]").forEach(x=>{x.classList.toggle("active",x===b);x.setAttribute("aria-pressed",String(x===b))});renderWords()}));
  $("topicFilter").addEventListener("change",e=>{activeTopic=e.target.value;renderWords()});
  $("skillFilter").addEventListener("change",e=>{activeSkill=e.target.value;renderWords()});
- $("practiseShown").addEventListener("click",()=>{if(!shownWords.length)return;beginSession(shuffle(shownWords),"Practising "+shownWords.length+" word"+(shownWords.length===1?"":"s")+" from your list.");$("study").scrollIntoView({behavior:"smooth",block:"start"})});
+ $("practiseShown").addEventListener("click",()=>{if(!shownWords.length)return;beginSession(shuffle(shownWords),"Practising "+shownWords.length+" word"+(shownWords.length===1?"":"s")+" from your list.");go("flashcards",true)});
 })();
 const HINTS={all:"",new:"Words you have not started yet. Tap “Start learning” or “I know it”.",learning:"Words you are practising. Choose “Got it” in the flashcards twice to memorise a word.",memorized:"Words you know. They come back now and then for a quick check, so you don’t forget them."};
 function renderWords(){
@@ -277,7 +296,10 @@ function renderWords(){
  if(!filtered.length){
   const empty={new:"You have started every word in this list. Well done!",learning:"Nothing to learn here yet. Open “New” and tap “Start learning” on a few words.",memorized:"No memorized words here yet. Practise your Learning words with the flashcards, or tap “I know it” on words you already know."}[activeStatus];
   list.innerHTML='<div class="vocab-empty">'+(query||activeTopic!=="all"||activeSkill!=="all"||!empty?"No matching words. Try another search or filter.":empty)+'</div>';return}
- filtered.forEach(w=>{
+ filtered.forEach(w=>list.append(makeCard(w)));
+ afterChange();
+}
+function makeCard(w){
   const st=statusOf(w.id);
   const card=document.createElement("article");card.className="vocab-item is-"+st;
   const head=document.createElement("div");head.className="vocab-item-head";
@@ -294,8 +316,7 @@ function renderWords(){
   else{btn("↺ Learn again",()=>backToLearning(w.id))}
   const example=btn("Show details",()=>{detail.hidden=!detail.hidden;example.textContent=detail.hidden?"Show details":"Hide details";example.setAttribute("aria-expanded",String(!detail.hidden))});example.setAttribute("aria-expanded","false");
   const detail=document.createElement("div");detail.className="vocab-item-detail";detail.hidden=true;detail.innerHTML=wordDetails(w);
-  card.append(head,meta,p,actions,detail);list.append(card);
- });
+  card.append(head,meta,p,actions,detail);return card;
 }
 $("wordSearch").addEventListener("input",renderWords);
 renderWords();updateStats();
@@ -346,50 +367,96 @@ function markReview(known){
 }
 $("againStudy").addEventListener("click",()=>markReview(false));$("knowStudy").addEventListener("click",()=>markReview(true));
 $("nextStudy").addEventListener("click",()=>{studyIndex++;renderStudy()});
-$("study").querySelector(".vocab-actions")?.remove();
-$("study").insertAdjacentHTML("beforeend",'<div class="study-controls"><button class="vocab-btn" id="startDueStudy" type="button">Review today’s words</button><button class="vocab-btn" id="startSavedStudy" type="button">Practise my Learning words</button><button class="vocab-btn" id="startAllStudy" type="button">Practise all words</button></div>');
-$("startAllStudy").addEventListener("click",()=>beginSession(shuffle(WORDS),"Full vocabulary practice started, in random order."));
-$("startDueStudy").addEventListener("click",()=>{const q=state.saved.filter(isDue).map(id=>WORDS.find(w=>w.id===id)).filter(Boolean);if(!q.length){$("studyMessage").textContent="Nothing to review today. Come back tomorrow, or practise your Learning words.";return}beginSession(q,"Today’s review has started.")});
-$("startSavedStudy").addEventListener("click",()=>{const q=WORDS.filter(w=>statusOf(w.id)==="learning");if(!q.length){$("studyMessage").textContent="Your Learning list is empty. Tap “Start learning” on a few words in the vocabulary bank first.";return}beginSession(shuffle(q),"Practising your Learning words.")});
-startStudy();
+// Deck picker: choose what the flashcards and quiz use.
+function deckWords(key){
+ if(key==="due")return state.saved.filter(isDue).map(id=>WORDS.find(w=>w.id===id)).filter(Boolean);
+ if(key==="learning")return WORDS.filter(w=>statusOf(w.id)==="learning");
+ if(key==="new")return WORDS.filter(w=>statusOf(w.id)==="new");
+ if(key&&key.startsWith("topic:"))return WORDS.filter(w=>topicSlug(w.topic||"Other")===key.slice(6));
+ return WORDS.slice();
+}
+function deckOptions(includeDaily){
+ const due=deckWords("due").length,learning=deckWords("learning").length;
+ return (includeDaily?[["daily","Daily quiz (counts for your streak)"]]:[["due","Today’s review ("+due+")"]])
+  .concat([["learning","My Learning words ("+learning+")"],["all","All words ("+WORDS.length+")"]])
+  .concat(TOPICS.map(t=>["topic:"+topicSlug(t),"Topic: "+t+" ("+WORDS.filter(w=>w.topic===t).length+")"]));
+}
+function fillSelect(sel,opts){const v=sel.value;sel.innerHTML=opts.map(([k,l])=>'<option value="'+k+'">'+escapeHTML(l)+'</option>').join("");if(v&&opts.some(o=>o[0]===v))sel.value=v}
+function fillStudyDeck(){fillSelect($("studyDeck"),deckOptions(false));fillSelect($("quizDeck"),deckOptions(true))}
+var DECK_EMPTY={due:"Nothing to review today. Come back tomorrow, or choose your Learning words or a topic.",learning:"Your Learning list is empty. Open a topic and tap “Start learning” on a few words first."};
+function startDeck(key,quiet){
+ const words=deckWords(key);
+ if(!words.length){$("studyMessage").textContent=DECK_EMPTY[key]||"No words here yet.";return false}
+ const label=$("studyDeck").selectedOptions[0]?.textContent.replace(/ \(\d+\)$/,"")||"";
+ beginSession(key==="due"?words:shuffle(words),quiet?"":"Practising: "+label+".");
+ return true;
+}
+$("studyDeck").addEventListener("change",e=>startDeck(e.target.value));
+fillStudyDeck();
+(function firstDeck(){const key=deckWords("due").length?"due":deckWords("learning").length?"learning":"all";$("studyDeck").value=key;startDeck(key,true)})();
 // Quiz: five questions selected at random. Answer can be changed until checked.
 let quizSet=[],quizIndex=0,score=0,selected=null,checked=false,locked=false,missed=[];
 function wordForQuestion(q){
  const ans=String(q.o[q.a]).toLowerCase().replace(/^the /,"").trim();
+ if(q.wordId)return WORDS.find(w=>w.id===q.wordId)||null;
  const exact=WORDS.find(w=>w.word===ans);if(exact)return exact;
  const why=q.why.toLowerCase();
  return WORDS.filter(w=>new RegExp("\\b"+w.word.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"\\b").test(why)).sort((a,b)=>b.word.length-a.word.length)[0]||null;
 }
-function startQuiz(){
- const priority=QUESTIONS.filter(q=>q.recent);const regular=QUESTIONS.filter(q=>!q.recent);quizSet=shuffle([...shuffle(priority).slice(0,5),...shuffle(regular).slice(0,5)]).map(q=>{const order=shuffle(q.o.map((_,i)=>i));return {...q,o:order.map(i=>q.o[i]),a:order.indexOf(q.a)}});quizIndex=0;score=0;locked=false;missed=[];renderQuestion();
+let quizMode="daily";
+// Questions made from the word list: "which word means…" and gap-fills from the example sentence.
+function makeQuestions(words){
+ const pool=words.length>=4?words:WORDS;
+ return shuffle(words).slice(0,10).map((w,i)=>{
+  const others=shuffle(pool.filter(x=>x.id!==w.id&&x.word.toLowerCase()!==w.word.toLowerCase())).slice(0,3).map(x=>x.word);
+  if(others.length<3)others.push(...shuffle(WORDS.filter(x=>x.id!==w.id&&!others.includes(x.word))).slice(0,3-others.length).map(x=>x.word));
+  const re=new RegExp("\\b"+w.word.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"\\b","i");
+  const gap=i%2===1&&re.test(w.example);
+  const o=shuffle([w.word,...others]);
+  return {q:gap?"Complete the sentence: “"+w.example.replace(re,"______")+"”":"Which word or phrase means: “"+w.meaning+"”",o,a:o.indexOf(w.word),why:w.word+": "+w.meaning,wordId:w.id};
+ });
 }
+function startQuiz(){
+ quizMode=$("quizDeck")?.value||"daily";
+ if(quizMode==="daily"){
+  const priority=QUESTIONS.filter(q=>q.recent);const regular=QUESTIONS.filter(q=>!q.recent);quizSet=shuffle([...shuffle(priority).slice(0,5),...shuffle(regular).slice(0,5)]).map(q=>{const order=shuffle(q.o.map((_,i)=>i));return {...q,o:order.map(i=>q.o[i]),a:order.indexOf(q.a)}});
+  $("quizNote").textContent="Ten questions. Choose an answer, check it, and read the explanation. Score 8 or more to pass and keep your daily streak.";
+ }else{
+  const words=deckWords(quizMode);
+  if(!words.length){quizSet=[];$("quizArea").innerHTML='<div class="vocab-empty">'+escapeHTML(DECK_EMPTY[quizMode]||"No words here yet.")+'</div>';$("quizProgress").textContent="";return}
+  quizSet=makeQuestions(words);
+  $("quizNote").textContent=quizSet.length+" questions on the words you chose. This practice quiz does not change your streak.";
+ }
+ quizIndex=0;score=0;locked=false;missed=[];renderQuestion();
+}
+$("quizDeck").addEventListener("change",startQuiz);
 function renderQuestion(){
  selected=null;checked=false;
  const q=quizSet[quizIndex],area=$("quizArea");area.innerHTML="";
- $("quizProgress").textContent="Question "+(quizIndex+1)+" of 10 · "+score+" correct so far";
+ $("quizProgress").textContent="Question "+(quizIndex+1)+" of "+quizSet.length+" · "+score+" correct so far";
  const title=document.createElement("p");title.className="quiz-question";title.textContent=q.q;
  const options=document.createElement("div");options.className="quiz-options";
  q.o.forEach((option,i)=>{const b=document.createElement("button");b.type="button";b.className="vocab-option";b.textContent=String.fromCharCode(65+i)+". "+option;b.addEventListener("click",()=>{if(checked||locked)return;selected=i;options.querySelectorAll("button").forEach((x,j)=>x.classList.toggle("selected",j===i));submit.disabled=false});options.append(b)});
  const feedback=document.createElement("p");feedback.className="vocab-feedback";feedback.setAttribute("aria-live","polite");
- const submit=document.createElement("button");submit.type="button";submit.className="vocab-btn primary";submit.textContent=quizIndex===9?"Finish session":"Check answer";submit.disabled=true;
- submit.addEventListener("click",()=>{if(selected===null)return;if(checked){quizIndex++;if(quizIndex===10)showResult();else renderQuestion();return}checked=true;const right=selected===q.a;if(right)score++;else{const w=wordForQuestion(q);if(w&&!missed.includes(w))missed.push(w)}
+ const submit=document.createElement("button");submit.type="button";submit.className="vocab-btn primary";submit.textContent=quizIndex===quizSet.length-1?"Finish session":"Check answer";submit.disabled=true;
+ submit.addEventListener("click",()=>{if(selected===null)return;if(checked){quizIndex++;if(quizIndex===quizSet.length)showResult();else renderQuestion();return}checked=true;const right=selected===q.a;if(right)score++;else{const w=wordForQuestion(q);if(w&&!missed.includes(w))missed.push(w)}
   options.querySelectorAll("button").forEach((x,j)=>{x.classList.toggle("is-correct",j===q.a);x.classList.toggle("is-wrong",j===selected&&!right);x.setAttribute("aria-disabled","true")});
-  feedback.className="vocab-feedback "+(right?"good":"bad");feedback.textContent=(right?"That’s right. ":"Not quite. The answer is "+String.fromCharCode(65+q.a)+". ")+q.why;submit.textContent=quizIndex===9?"See result":"Next question"});
+  feedback.className="vocab-feedback "+(right?"good":"bad");feedback.textContent=(right?"That’s right. ":"Not quite. The answer is "+String.fromCharCode(65+q.a)+". ")+q.why;submit.textContent=quizIndex===quizSet.length-1?"See result":"Next question"});
  area.append(title,options,feedback,submit);
 }
 function showResult(){
- locked=true;const passed=score>=8;const result=document.createElement("div");result.className="vocab-result "+(passed?"is-passed":"needs-practice");
- const h=document.createElement("h3");h.textContent="You scored "+score+"/10";
- const p=document.createElement("p");p.textContent=passed?"Good work. You passed this practice session. Your streak has been updated for today.":"You need 8/10 to pass this session. Review the explanations and try another set. Your streak has not changed.";
+ locked=true;const total=quizSet.length,daily=quizMode==="daily",passed=score>=Math.ceil(total*0.8);const result=document.createElement("div");result.className="vocab-result "+(passed?"is-passed":"needs-practice");
+ const h=document.createElement("h3");h.textContent="You scored "+score+"/"+total;
+ const p=document.createElement("p");p.textContent=daily?(passed?"Good work. You passed this practice session. Your streak has been updated for today.":"You need 8/10 to pass this session. Review the explanations and try another set. Your streak has not changed."):(passed?"Great result! Keep these words fresh with the flashcards.":"Review the explanations, practise these words with the flashcards, then try again.");
  result.append(h,p);
  const toAdd=missed.filter(w=>!state.saved.includes(w.id));
  if(missed.length){const m=document.createElement("div");m.className="quiz-missed";m.innerHTML="<p><strong>Words to review:</strong> "+missed.map(w=>escapeHTML(w.word)).join(", ")+"</p>";
-  if(toAdd.length){const add=document.createElement("button");add.type="button";add.className="vocab-btn";add.textContent="＋ Add "+(toAdd.length===1?"this word":"these "+toAdd.length+" words")+" to my Learning list";add.addEventListener("click",()=>{toAdd.forEach(w=>{if(!state.saved.includes(w.id))state.saved.push(w.id);if(!state.reviews[w.id])state.reviews[w.id]={level:0,due:today()}});saveState();renderWords();add.disabled=true;add.textContent="✓ Added to Learning. Practise them in the flashcards above."});m.append(add)}
+  if(toAdd.length){const add=document.createElement("button");add.type="button";add.className="vocab-btn";add.textContent="＋ Add "+(toAdd.length===1?"this word":"these "+toAdd.length+" words")+" to my Learning list";add.addEventListener("click",()=>{toAdd.forEach(w=>{if(!state.saved.includes(w.id))state.saved.push(w.id);if(!state.reviews[w.id])state.reviews[w.id]={level:0,due:today()}});saveState();renderWords();add.disabled=true;add.textContent="✓ Added to Learning. Practise them in the Flashcards tab."});m.append(add)}
   else{const ok=document.createElement("p");ok.className="study-status";ok.textContent="These words are already in your Learning list.";m.append(ok)}
   result.append(m)}
  const retry=document.createElement("button");retry.type="button";retry.className="vocab-btn primary";retry.textContent="Practise another set";retry.addEventListener("click",startQuiz);result.append(retry);$("quizArea").replaceChildren(result);
  $("quizProgress").textContent=passed?"Session passed":"Session not passed";
- if(passed){
+ if(passed&&daily){
   const date=today();
   const stats=read(STATS,{passed:0,days:[]});stats.days=stats.days||[];if(!stats.days.includes(date)){stats.passed=(stats.passed||0)+1;stats.days.push(date)}write(STATS,stats);
   // features.js owns streak storage and increments it once per local calendar day.
@@ -397,4 +464,51 @@ function showResult(){
  }
 }
 startQuiz();
+
+// ---------- Topics ----------
+function topicInfo(t){return TOPIC_INFO.find(i=>i[0]===t)||[t,"📚",""]}
+function topicStats(t){const ws=WORDS.filter(w=>w.topic===t);return {total:ws.length,memorized:ws.filter(w=>statusOf(w.id)==="memorized").length,learning:ws.filter(w=>statusOf(w.id)==="learning").length}}
+function renderTopicGrid(){
+ $("topicGrid").innerHTML=TOPICS.map(t=>{const [,icon,desc]=topicInfo(t),st=topicStats(t),pct=Math.round(st.memorized/st.total*100);
+  return '<a class="topic-card" href="#topic/'+topicSlug(t)+'"><span class="topic-icon" aria-hidden="true">'+icon+'</span><strong>'+escapeHTML(t)+'</strong><span>'+escapeHTML(desc)+'</span><div class="topic-progress"><i style="width:'+pct+'%"></i></div><div class="topic-meta"><b>'+st.total+' words</b><b>'+st.memorized+' memorized</b></div></a>'}).join("");
+}
+function renderTopicDetail(t){
+ currentTopic=t;const [,icon,desc]=topicInfo(t),st=topicStats(t);
+ $("topicKicker").textContent=icon+" Topic";$("topicTitle").textContent=t;$("topicIntro").textContent=desc;
+ $("topicBar").style.width=Math.round(st.memorized/st.total*100)+"%";
+ $("topicProgressText").textContent=st.total+" words · "+st.memorized+" memorized · "+st.learning+" learning";
+ const list=$("topicWordList");list.innerHTML="";WORDS.filter(w=>w.topic===t).forEach(w=>list.append(makeCard(w)));
+}
+$("topicFlashcards").addEventListener("click",()=>{if(!currentTopic)return;$("studyDeck").value="topic:"+topicSlug(currentTopic);startDeck($("studyDeck").value);go("flashcards",true)});
+$("topicQuiz").addEventListener("click",()=>{if(!currentTopic)return;$("quizDeck").value="topic:"+topicSlug(currentTopic);startQuiz();go("quiz",true)});
+function updatePlan(){
+ const due=deckWords("due").length,learning=deckWords("learning").length,mem=WORDS.filter(w=>statusOf(w.id)==="memorized").length;
+ const tabCount=document.querySelector('[data-tab="flashcards"] .tab-count');
+ if(due&&!tabCount)document.querySelector('[data-tab="flashcards"]').insertAdjacentHTML("beforeend",'<span class="tab-count">'+due+'</span>');
+ else if(tabCount){if(due)tabCount.textContent=due;else tabCount.remove()}
+ if(due){$("planTitle").textContent=due+" word"+(due===1?"":"s")+" to review today";$("planText").textContent="A quick review now helps these words stay in your long-term memory. It takes about "+Math.max(1,Math.round(due/4))+" minute"+(due<8?"":"s")+".";$("planReview").hidden=false;$("planReview").textContent="Review "+due+" word"+(due===1?"":"s")}
+ else if(learning){$("planTitle").textContent="You’re all caught up";$("planText").textContent="No reviews due today. Practise your "+learning+" Learning word"+(learning===1?"":"s")+", take the daily quiz, or start a new topic.";$("planReview").hidden=true}
+ else{$("planTitle").textContent=mem?"Pick your next topic":"Start with a topic";$("planText").textContent="Choose a topic, tap “Start learning” on a few words you don’t know yet, then practise them with flashcards. "+WORDS.length+" words in "+TOPICS.length+" topics.";$("planReview").hidden=true}
+}
+$("planReview").addEventListener("click",e=>{e.preventDefault();$("studyDeck").value="due";startDeck("due");go("flashcards",true)});
+
+// ---------- Tabs (each has its own link, so Back works) ----------
+var OLD_LINKS={study:"flashcards",dailyQuiz:"quiz",wordBank:"words"};
+function go(name,push){
+ if(push){const h="#"+name;if(location.hash!==h){history.pushState(null,"",h)}}
+ route();
+}
+function route(){
+ let h=decodeURIComponent(location.hash.slice(1))||"today";h=OLD_LINKS[h]||h;
+ let view=h,topic=null;
+ if(h.startsWith("topic/")){topic=TOPICS.find(t=>topicSlug(t)===h.slice(6));view="topics";if(!topic)h="topics"}
+ if(!["today","topics","flashcards","quiz","words"].includes(view))view="today";
+ document.querySelectorAll(".vocab-view").forEach(v=>v.hidden=v.dataset.view!==view);
+ document.querySelectorAll("#vocabTabs a").forEach(a=>{const on=a.dataset.tab===view;a.classList.toggle("active",on);a.setAttribute("aria-selected",String(on))});
+ $("topicIndex").hidden=!!topic;$("topicDetail").hidden=!topic;
+ if(topic)renderTopicDetail(topic);else currentTopic=null;
+ const tabs=$("vocabTabs");if(tabs.getBoundingClientRect().top<0)tabs.scrollIntoView({block:"start"});
+}
+addEventListener("hashchange",route);
+afterChange();route();
 })();

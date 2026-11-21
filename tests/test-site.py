@@ -150,6 +150,15 @@ def test_every_page_laptop_and_phone(browser, pw):
         ctx.close()
 
 
+def test_app_icon_links(browser, pw):
+    """Every page links the manifest and the new E app icon in its HTML, so phones and installed apps pick up the current logo."""
+    for path in PAGES:
+        html = open(path, encoding="utf-8").read()
+        check('rel="manifest"' in html, f"{path}: no manifest link in the HTML")
+        check('rel="apple-touch-icon"' in html and "englisity-app-icon.png" in html, f"{path}: no apple-touch-icon link to the E logo")
+        check('rel="icon"' in html and "englisity-mark.svg" in html, f"{path}: no favicon link to the E logo")
+
+
 def test_site_footer(browser, pw):
     """Normal pages end with the site footer (About, Share questions, Report a problem); full tests don't show it."""
     ctx = browser.new_context(**DESKTOP, service_workers="block")
@@ -640,6 +649,9 @@ def test_vocabulary(browser, pw):
     if page.query_selector("#dailyQuiz"):
         opts = page.locator("#dailyQuiz button, #dailyQuiz input[type=radio]")
         check(opts.count() >= 2, "daily vocabulary quiz has no options")
+    words = re.findall(r'word:"([^"]+)"', open("js/vocabulary.js", encoding="utf-8").read().split("const QUESTIONS")[0])
+    dupes = sorted({w for w in words if [x.lower() for x in words].count(w.lower()) > 1})
+    check(not dupes, f"vocabulary has duplicate words: {dupes}")
     no_problems(problems, "vocabulary")
     ctx.close()
 

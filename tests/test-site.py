@@ -150,6 +150,22 @@ def test_every_page_laptop_and_phone(browser, pw):
         ctx.close()
 
 
+def test_consistent_design(browser, pw):
+    """Every hub page uses the shared hero with a clickable breadcrumb, one brand tagline, and the listening count is right."""
+    hubs = ["reading", "listening", "writing", "speaking", "vocabulary", "articles", "podcasts", "about", "share", "passage-1", "passage-2", "passage-3", "full-tests"]
+    for name in hubs:
+        html = open(f"pages/{name}.html", encoding="utf-8").read()
+        check('class="page-hero' in html, f"{name}: does not use the shared page hero")
+        check('<nav class="breadcrumb"' in html and 'href="../index.html">Home</a>' in html, f"{name}: no clickable breadcrumb")
+    for path in PAGES:
+        html = open(path, encoding="utf-8").read()
+        m = re.search(r'<a class="brand"[^>]*>.*?<small>([^<]*)</small>', html, re.S)
+        check(not m or m.group(1) == "LEARN WITH PURPOSE", f"{path}: brand tagline is '{m.group(1) if m else ''}'")
+    html = open("pages/listening.html", encoding="utf-8").read()
+    n = len(set(re.findall(r'href="(listening-test-\d+\.html)"', html)))
+    check(f">{n} TESTS AVAILABLE<" in html, f"listening hub count does not say {n} tests")
+
+
 def test_app_icon_links(browser, pw):
     """Every page links the manifest and the new E app icon in its HTML, so phones and installed apps pick up the current logo."""
     for path in PAGES:

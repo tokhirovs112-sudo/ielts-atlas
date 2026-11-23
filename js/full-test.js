@@ -21,16 +21,16 @@ document.getElementById("passageText").innerHTML = T.parts.map((part, pi) =>
   '<section class="ft-passage" data-part="' + pi + '"' + (pi ? " hidden" : "") + '>' +
   '<div class="ft-passage-label">READING ' + esc(part.label.toUpperCase()) + ' · ' + esc(part.range.toUpperCase()) + '</div>' +
   '<h2>' + esc(part.title) + '</h2>' + (part.subtitle ? '<p class="passage-subtitle">' + esc(part.subtitle) + '</p>' : "") +
-  part.paras.map(([id, txt]) => '<p id="para' + pi + id + '" data-label="' + id + '"><span class="para-number">' + id + '</span>' + wordify(txt) + '</p>').join("") +
+  part.paras.map(([id, txt]) => '<p id="para' + pi + id + '" data-label="' + id + '">' + (part.hideLabels ? "" : '<span class="para-number">' + id + '</span>') + wordify(txt) + '</p>').join("") +
   '</section>').join("");
 
-const kindOf = g => g.pick ? "MULTIPLE CHOICE · CHOOSE TWO" : g.summary ? "SUMMARY COMPLETION" : g.box ? "MATCHING" : g.questions[0].type === "mcq" ? "MULTIPLE CHOICE" : "MATCHING INFORMATION";
+const kindOf = g => g.kind ? g.kind : g.pick ? "MULTIPLE CHOICE · CHOOSE TWO" : g.summary ? "SUMMARY COMPLETION" : g.box ? "MATCHING" : g.questions[0].type === "mcq" ? "MULTIPLE CHOICE" : "MATCHING INFORMATION";
 function renderControl(q) {
   if (q.type === "text") return '<input class="answer-input" id="a' + q.n + '" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="' + q.n + '" aria-label="Answer to question ' + q.n + '">';
   if (q.type === "mcq") return '<div class="answer-options" role="radiogroup" aria-label="Question ' + q.n + '">' + q.opts.map(([l, t]) =>
-    '<label><input type="radio" name="a' + q.n + '" value="' + l + '"><b>' + l + '</b><span>' + esc(t) + '</span></label>').join("") + '</div>';
+    '<label><input type="radio" name="a' + q.n + '" value="' + l + '"><b>' + l + '</b>' + (t ? '<span>' + esc(t) + '</span>' : "") + '</label>').join("") + '</div>';
   return '<select class="answer-select" id="a' + q.n + '" aria-label="Choose answer for question ' + q.n + '"><option value="">Choose…</option>' +
-    q.letters.split("").map(v => '<option value="' + v + '">' + v + '</option>').join("") + '</select>';
+    (q.choices || q.letters.split("").map(v => [v, v])).map(([v, l]) => '<option value="' + v + '">' + esc(l) + '</option>').join("") + '</select>';
 }
 function renderQuestion(q) {
   const control = renderControl(q);
@@ -45,7 +45,7 @@ function renderPick(g) {
     '</div><p class="pick-status" id="pickStatus' + g.pick + '">0 of 2 selected</p>' + nums.map(n => '<div class="question-feedback" id="f' + n + '" hidden></div>').join("") + '<span id="q' + nums[1] + '" class="pick-anchor"></span></section>';
 }
 function renderGroup(g, pi) {
-  const box = g.box ? '<div class="ft-box"><div class="ft-box-title">' + (g.box.length > 6 ? "List of effects" : "List of endings") + '</div>' + g.box.map(([l, t]) => '<div><b>' + l + '</b> ' + esc(t) + '</div>').join("") + '</div>' : "";
+  const box = g.box ? '<div class="ft-box"><div class="ft-box-title">' + (g.boxTitle || (g.box.length > 6 ? "List of effects" : "List of endings")) + '</div>' + g.box.map(([l, t]) => '<div><b>' + l + '</b> ' + esc(t) + '</div>').join("") + '</div>' : "";
   const letters = !g.box && !g.pick && g.questions[0].type === "select" ? '<div class="notice">Choose a paragraph letter, ' + g.questions[0].letters[0] + '–' + g.questions[0].letters.slice(-1) + ', from Reading ' + esc(T.parts[pi].label) + '.</div>' : "";
   return '<section class="question-section"><div class="section-kicker">' + kindOf(g) + '</div><h3>' + esc(g.title) + '</h3><p class="test-instructions">' + esc(g.instructions) + '</p>' +
     box + letters + (g.summary ? '<div class="notice"><b>' + esc(g.summary) + '</b></div>' : "") +

@@ -253,11 +253,13 @@
     .self-review-list{display:grid;gap:10px;padding-left:0;list-style:none}
     .self-review-list label{display:flex;align-items:flex-start;gap:10px;line-height:1.6}
     .self-review-list input{margin-top:5px;accent-color:#39856a;flex-shrink:0}
+.task-also-reported{font-size:14px;color:#5d706b;border-left:3px solid #cfe3d6;padding-left:12px}
+html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
 </style>
   <link rel="icon" type="image/svg+xml" href="../assets/englisity-mark.svg?v=20261117-logo">
   <link rel="manifest" href="../manifest.webmanifest">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/englisity-app-icon.png?v=20261117-logo">
-  <link rel="stylesheet" href="../css/design.css?v=20261122-consistent-1">
+  <link rel="stylesheet" href="../css/design.css?v=20261123-1">
 </head>
 
 <body>
@@ -356,11 +358,11 @@
             <span class="task-card-link">Open essay question →</span>
           </span>
         </button>
-        <button class="task-library-card" type="button" data-task2-category="agree-disagree" data-open-task2-detail="climate" data-sort-date="2026-10-30">
+        <button class="task-library-card" type="button" data-task2-category="agree-disagree" data-open-task2-detail="climate" data-sort-date="2026-11-19">
           <span class="task-library-card-content">
             <strong>Living with climate change</strong>
             <span class="task-category-tag">Agree / disagree</span>
-            <span class="task-reported-date">Last reported: October 30</span>
+            <span class="task-reported-date">Last reported: November 19</span>
             <span class="task-card-link">Open essay question →</span>
           </span>
         </button>
@@ -556,11 +558,19 @@
             <span class="task-card-link">Open essay question →</span>
           </span>
         </button>
-        <button class="task-library-card" type="button" data-task2-category="agree-disagree" data-open-task2-detail="international-cooperation" data-sort-date="2026-11-16">
+        <button class="task-library-card" type="button" data-task2-category="discuss-both-views" data-open-task2-detail="art-and-talent" data-sort-date="2026-11-20">
+          <span class="task-library-card-content">
+            <strong>Can anyone create art, or only the talented?</strong>
+            <span class="task-category-tag">Discuss both views</span>
+            <span class="task-reported-date">Last reported: November 20</span>
+            <span class="task-card-link">Open essay question →</span>
+          </span>
+        </button>
+        <button class="task-library-card" type="button" data-task2-category="agree-disagree" data-open-task2-detail="international-cooperation" data-sort-date="2026-11-21">
           <span class="task-library-card-content">
             <strong>Solving world problems through international cooperation</strong>
             <span class="task-category-tag">Agree / disagree</span>
-            <span class="task-reported-date">Last reported: November 16</span>
+            <span class="task-reported-date">Last reported: November 21</span>
             <span class="task-card-link">Open essay question →</span>
           </span>
         </button>
@@ -626,6 +636,33 @@
             <strong>Changes to a harbour (1960–now)</strong>
             <span class="task-category-tag">Map</span>
             <span>1960 and now · Last reported: November 8</span>
+            <span class="task-card-link">Open writing task →</span>
+          </span>
+        </button>
+        <button class="task-library-card" type="button" data-task1-category="bar-chart" data-open-task-detail="dairy-production-2012" data-sort-date="2026-11-19">
+          <img src="../images/task1/dairy-production-2012.png" alt="Bar charts showing the top three producers of milk, cheese, butter and milk powder in 2012, in metric tons" loading="lazy">
+          <span class="task-library-card-content">
+            <strong>Dairy production: top three producers (2012)</strong>
+            <span class="task-category-tag">Bar chart</span>
+            <span>Milk, cheese, butter and milk powder · Last reported: November 19</span>
+            <span class="task-card-link">Open writing task →</span>
+          </span>
+        </button>
+        <button class="task-library-card" type="button" data-task1-category="table" data-open-task-detail="medical-care-europe" data-sort-date="2026-11-20">
+          <img src="../images/task1/medical-care-europe.png" alt="Table showing physicians and hospital beds per 1,000 people and the average hospital stay in Austria, France and Sweden in 1980, 1990 and 2000" loading="lazy">
+          <span class="task-library-card-content">
+            <strong>Medical care in three European countries (1980–2000)</strong>
+            <span class="task-category-tag">Table</span>
+            <span>Austria, France and Sweden · Last reported: November 20</span>
+            <span class="task-card-link">Open writing task →</span>
+          </span>
+        </button>
+        <button class="task-library-card" type="button" data-task1-category="bar-chart" data-open-task-detail="skilled-migrants-australia" data-sort-date="2026-11-21">
+          <img src="../images/task1/skilled-migrants-australia.png" alt="Bar chart showing the number of accountants, cooks, software engineers and computer programmers who migrated to Australia each year from 2009 to 2012, in thousands" loading="lazy">
+          <span class="task-library-card-content">
+            <strong>Skilled migrants to Australia (2009–2012)</strong>
+            <span class="task-category-tag">Bar chart</span>
+            <span>Four occupations over four years · Last reported: November 21</span>
             <span class="task-card-link">Open writing task →</span>
           </span>
         </button>
@@ -718,6 +755,7 @@
       </div>
       <blockquote id="task2Prompt" class="task-instructions"></blockquote>
       <p id="task2ReportedDate" class="task-instructions" hidden></p>
+      <p id="task2AlsoReported" class="task-instructions task-also-reported" hidden></p>
       <div class="writing-editor">
         <label for="task2Draft"><strong>Your essay</strong></label>
         <textarea id="task2Draft" placeholder="Write your introduction, body paragraphs and conclusion here..."></textarea>
@@ -906,6 +944,27 @@
         image: "../images/task1/global-warming-suggestions.png",
         alt: "Table ranking the top five suggestions for reducing global warming given by consumers and by researchers",
         reported: "November 11"
+      },
+      "dairy-production-2012": {
+        title: "Dairy production: top three producers (2012)",
+        instruction: "The charts below give information about the world’s top three producers of four different dairy products (milk, cheese, butter and milk powder) in 2012.",
+        image: "../images/task1/dairy-production-2012.png",
+        alt: "Bar charts showing the top three producers of milk, cheese, butter and milk powder in 2012, in metric tons",
+        reported: "November 19"
+      },
+      "medical-care-europe": {
+        title: "Medical care in three European countries (1980–2000)",
+        instruction: "The table shows information about medical care in three European countries between 1980 and 2000.",
+        image: "../images/task1/medical-care-europe.png",
+        alt: "Table showing physicians and hospital beds per 1,000 people and the average hospital stay in Austria, France and Sweden in 1980, 1990 and 2000",
+        reported: "November 20"
+      },
+      "skilled-migrants-australia": {
+        title: "Skilled migrants to Australia (2009–2012)",
+        instruction: "The bar chart below gives information on the number of workers in different occupations who migrated to Australia between 2009 and 2012.",
+        image: "../images/task1/skilled-migrants-australia.png",
+        alt: "Bar chart showing the number of accountants, cooks, software engineers and computer programmers who migrated to Australia each year from 2009 to 2012, in thousands",
+        reported: "November 21"
       }
     };
     let currentTask1Id = null;
@@ -949,6 +1008,9 @@
       const reportedDate = document.getElementById("task2ReportedDate");
       reportedDate.textContent = task.reported ? "Last reported: " + task.reported : "";
       reportedDate.hidden = !task.reported;
+      const alsoBox = document.getElementById("task2AlsoReported");
+      alsoBox.hidden = !task.alsoReported;
+      alsoBox.innerHTML = task.alsoReported ? "<strong>Also reported with this wording:</strong> " + task.alsoReported.replace(/[&<>]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;"}[c])) : "";
       const draftBox = document.getElementById("task2Draft");
       draftBox.dataset.taskId = taskId;
       draftBox.value = localStorage.getItem("englisity-task2-" + taskId + "-draft") || "";
@@ -978,7 +1040,7 @@
       climate: {
         title: "Living with climate change",
         question: "Some people think that instead of preventing climate change, we need to find a way to live with it. To what extent do you agree or disagree?",
-        reported: "October 30"
+        reported: "November 19"
       },
       family: {
         title: "Research into family history",
@@ -1103,7 +1165,13 @@
       "international-cooperation": {
         title: "Solving world problems through international cooperation",
         question: "Most of the urgent problems facing the world today can only be solved through international cooperation. To what extent do you agree or disagree?",
-        reported: "November 16"
+        alsoReported: "As we face more and more global problems that affect the entire planet, good relationships between countries are becoming more important than ever before. To what extent do you agree or disagree?",
+        reported: "November 21"
+      },
+      "art-and-talent": {
+        title: "Can anyone create art, or only the talented?",
+        question: "Some people believe that anyone can create art, such as painting, while others think that only those born with natural talent are capable of doing so. Discuss both views and give your own opinion.",
+        reported: "November 20"
       },
       "ambition-in-society": {
         title: "Is ambition a positive quality?",

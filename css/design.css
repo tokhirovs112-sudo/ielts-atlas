@@ -2394,3 +2394,5 @@ html[data-theme="dark"] body .mode-choice span span{color:#b5c9bc}
 html[data-theme="dark"] body .mode-feature{color:#9fd8b6!important}
 @media(max-width:640px){html body .mode-choices{grid-template-columns:1fr}html body .mode-choice{min-height:0}html body .mode-gate{padding:12px!important;overflow:auto}}
 @media(max-width:760px){html body main.vocab-wrap,html body main.listening-library{width:auto!important}}
+html body .word-count-guidance{background:#eef6f0!important;border-color:#d6e7dc!important}
+html[data-theme="dark"] body .word-count-guidance{background:#1c2f28!important;border-color:#33493f!important}

@@ -588,6 +588,12 @@ def test_writing(browser, pw):
         check(len(q) > 40 and q.endswith(("?", ".")), f"Task 2 '{tid}' question looks incomplete: {q[:60]!r}")
         questions.add(re.sub(r"[^a-z]", "", q.lower()))
     check(len(questions) == len(ids["t2"]), "two Task 2 cards show the same question")
+    page.goto(BASE + "pages/writing.html#task2/international-cooperation")
+    page.wait_for_timeout(300)
+    check(page.is_visible("#task2AlsoReported") and "relationships between countries" in page.inner_text("#task2AlsoReported"), "the second wording of a repeated question is not shown")
+    page.goto(BASE + "pages/writing.html#task2/climate")
+    page.wait_for_timeout(300)
+    check(not page.is_visible("#task2AlsoReported"), "'Also reported' box shows on a question without a second wording")
     # Draft, word count, autosave and timer.
     tid = ids["t2"][0]
     page.goto(BASE + f"pages/writing.html#task2/{tid}")

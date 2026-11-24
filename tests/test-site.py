@@ -667,7 +667,7 @@ def test_vocabulary(browser, pw):
     page.click('[data-tab="topics"]')
     page.wait_for_timeout(200)
     cards = page.locator(".topic-card")
-    check(cards.count() == 12, f"expected 12 topic cards, found {cards.count()}")
+    check(cards.count() == 13, f"expected 13 topic cards, found {cards.count()}")
     total = page.evaluate("[...document.querySelectorAll('.topic-card .topic-meta b:first-child')].reduce((a, b) => a + parseInt(b.textContent), 0)")
     check(total == c["all"], f"topic cards cover {total} words but there are {c['all']}")
     page.click(".topic-card >> nth=5")

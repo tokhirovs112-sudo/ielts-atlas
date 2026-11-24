@@ -166,6 +166,29 @@ def test_consistent_design(browser, pw):
     check(f">{n} TESTS AVAILABLE<" in html, f"listening hub count does not say {n} tests")
 
 
+def test_dark_hover(browser, pw):
+    """In dark mode, hovering tabs and buttons never turns them into light boxes with unreadable light text."""
+    js = """(el) => { const c = getComputedStyle(el), p = s => (s.match(/\\d+(\\.\\d+)?/g) || []).map(Number);
+      const [r, g, b, a = 1] = p(c.backgroundColor), [fr, fg, fb] = p(c.color);
+      return a > 0.5 && (r * 299 + g * 587 + b * 114) / 1000 > 200 && (fr * 299 + fg * 587 + fb * 114) / 1000 > 170; }"""
+    ctx = browser.new_context(**DESKTOP, service_workers="block")
+    ctx.add_init_script("try { localStorage.setItem('englisity-theme', 'dark'); } catch (e) {}")
+    for path, sel in [("pages/vocabulary.html#topics", ".vocab-tabs a, .topic-card"), ("pages/reading.html", "nav.nav a, main a"), ("pages/full-tests.html", "main a")]:
+        R.current = "dark hover " + path
+        page, problems = open_page(ctx, path)
+        bad = []
+        for el in page.query_selector_all(sel)[:30]:
+            if not el.is_visible():
+                continue
+            el.hover()
+            page.wait_for_timeout(200)
+            if el.evaluate(js):
+                bad.append(el.inner_text().strip()[:25])
+        check(not bad, f"{path}: light hover box with light text on {bad}")
+        page.close()
+    ctx.close()
+
+
 def test_app_icon_links(browser, pw):
     """Every page links the manifest and the new E app icon in its HTML, so phones and installed apps pick up the current logo."""
     for path in PAGES:

@@ -666,6 +666,10 @@ def test_vocabulary(browser, pw):
     # Topics: every word belongs to one of the 12 topics; a topic page lists its words and starts its own flashcards and quiz.
     page.click('[data-tab="topics"]')
     page.wait_for_timeout(200)
+    page.evaluate("window.scrollTo(0, 900)")
+    page.wait_for_timeout(300)
+    gap = page.evaluate("Math.round(document.getElementById('vocabTabs').getBoundingClientRect().top - Math.max(0, document.querySelector('.topbar').getBoundingClientRect().bottom))")
+    check(gap >= 0, f"the vocabulary tab bar covers the site header when scrolling ({gap}px)")
     cards = page.locator(".topic-card")
     check(cards.count() == 13, f"expected 13 topic cards, found {cards.count()}")
     total = page.evaluate("[...document.querySelectorAll('.topic-card .topic-meta b:first-child')].reduce((a, b) => a + parseInt(b.textContent), 0)")

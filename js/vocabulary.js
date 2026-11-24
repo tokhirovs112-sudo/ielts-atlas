@@ -585,5 +585,8 @@ function route(){
  const tabs=$("vocabTabs");if(tabs.getBoundingClientRect().top<0)tabs.scrollIntoView({block:"start"});
 }
 addEventListener("hashchange",route);
+// Keep the tab bar just below the site header when the header stays on screen.
+function placeTabs(){const h=document.querySelector(".topbar");const pos=h?getComputedStyle(h).position:"";const top=(pos==="sticky"||pos==="fixed")?Math.round(h.getBoundingClientRect().height):0;$("vocabTabs").style.top=top+"px"}
+addEventListener("resize",placeTabs);placeTabs();
 afterChange();route();
 })();

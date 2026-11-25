@@ -267,7 +267,77 @@
       color:#bdcada!important;
     }
 
-  </style>
+  
+/* Full speaking mock tests */
+.mock-head{display:block;margin:14px 0 16px}
+html body #mockSection .mock-primary{background:#276c5c;color:#fff;border-color:#276c5c}html body #mockSection .mock-secondary{background:#fff;color:#276c5c;border-color:#276c5c}
+html body #mockSection .mock-steps .mock-rec{background:transparent!important}.mock-head h2{margin:10px 0 8px;color:#17352b}.mock-head p{margin:0;color:#5d706b;line-height:1.65;max-width:760px}
+html[data-theme="dark"] .mock-head h2{color:#eef6f0}html[data-theme="dark"] .mock-head p{color:#b5c9bc}
+#mockSection p.mock-q{color:#17352b!important}#mockSection .mock-cue .cue li{color:#334}
+html[data-theme="dark"] #mockSection p.mock-q{color:#eef6f0!important}html[data-theme="dark"] #mockSection .mock-cue .cue li{color:#cfe0d6}
+.mock-banner{display:flex;align-items:center;gap:16px;margin-top:16px;padding:18px 20px;border:1px solid #bcd9c7;border-radius:16px;background:linear-gradient(120deg,#eaf5ee,#f6fbf7);color:inherit;text-decoration:none;transition:border-color .15s,transform .15s}
+.mock-banner:hover{border-color:#5fa883;transform:translateY(-1px)}
+.mock-banner-icon{display:grid;place-items:center;flex:0 0 48px;height:48px;border-radius:14px;background:#276c5c;font-size:24px}
+.mock-banner>span:nth-child(2){flex:1;display:flex;flex-direction:column;gap:4px}
+.mock-banner strong{font-size:17px;color:#17352b}.mock-banner>span:nth-child(2)>span{color:#5d706b;font-size:14px;line-height:1.5}
+.mock-banner .card-link{white-space:nowrap}
+.mock-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:8px}
+.mock-card{display:flex;flex-direction:column;gap:7px;padding:16px;border:1px solid #dfe9e1;border-radius:14px;background:#fff;color:inherit;text-decoration:none;transition:border-color .15s,transform .15s}
+.mock-card:hover{border-color:#7fb397;transform:translateY(-2px)}
+.mock-num{font-size:11px;font-weight:900;letter-spacing:.08em;color:#39796d;text-transform:uppercase}.mock-num em{font-style:normal;color:#2e8b57;margin-left:6px}
+.mock-card strong{font-size:16px;color:#17352b;line-height:1.35}
+.mock-card>span{font-size:13px;color:#5d706b;line-height:1.5}
+.mock-card .mock-date{font-size:12px;color:#7a8b84}
+.mock-kicker{font-size:11px;font-weight:900;letter-spacing:.12em;color:#39796d;margin-bottom:6px}
+.mock-outline{list-style:none;padding:0;margin:8px 0 18px;display:grid;gap:8px}
+.mock-outline li{display:flex;flex-direction:column;gap:3px;padding:12px 14px;border:1px solid #e1eae3;border-radius:12px;background:#fbfdfb}
+.mock-outline b{color:#17352b}.mock-outline span{color:#5d706b;font-size:14px}
+.mock-options{display:grid;gap:8px;margin-bottom:16px}
+.mock-toggle{display:flex;gap:10px;align-items:flex-start;padding:11px 13px;border:1px solid #e1eae3;border-radius:12px;cursor:pointer;font-size:14px;color:#425b4b}
+.mock-toggle input{margin-top:3px;width:17px;height:17px;accent-color:#276c5c}
+.mock-primary,.mock-secondary{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:13px 20px;border-radius:12px;font:inherit;font-weight:800;font-size:15px;cursor:pointer;text-decoration:none;border:1px solid #276c5c}
+.mock-primary{background:#276c5c;color:#fff}.mock-primary:hover{background:#1f5a4b}.mock-primary:disabled{opacity:.6;cursor:wait}
+.mock-secondary{background:#fff;color:#276c5c}.mock-secondary:hover{background:#eef6f0}
+.mock-small{font-size:13px;color:#718078;margin-top:10px}
+.mock-steps{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:14px}
+.mock-steps span{padding:6px 12px;border-radius:999px;background:#eef3ef;color:#718078;font-size:12.5px;font-weight:800}
+.mock-steps span.on{background:#276c5c;color:#fff}.mock-steps span.done{background:#dcefe3;color:#1f5a45}
+.mock-steps .mock-rec{margin-left:auto;background:transparent;color:#8a9a93;font-weight:700}
+.mock-steps .mock-rec.live{color:#c0392b;animation:mockPulse 1.6s infinite}
+@keyframes mockPulse{50%{opacity:.45}}
+.mock-stage{padding:clamp(18px,3vw,30px);border:1px solid #dfe9e1;border-radius:18px;background:#fff}
+.mock-label{font-size:12px;font-weight:900;letter-spacing:.06em;color:#39796d;text-transform:uppercase;margin-bottom:12px}
+.mock-lead{color:#5d706b;margin:0 0 8px;font-size:15px}
+.mock-q{font-size:clamp(20px,2.6vw,26px);line-height:1.4;font-weight:750;color:#17352b;margin:0 0 12px}
+.mock-hint{color:#718078;font-size:14px;margin:0}
+.mock-clock{margin-top:16px;font-variant-numeric:tabular-nums;font-weight:900;font-size:18px;color:#39796d}
+.mock-clock.big{font-size:40px;text-align:center}.mock-clock.low{color:#c0392b}
+.mock-cue .cue{padding:18px;border:2px solid #17352b;border-radius:12px;background:#fffef8;margin-bottom:14px}
+.mock-cue .cue strong{display:block;font-size:19px;color:#17352b;margin-bottom:8px;line-height:1.4}
+.mock-cue .cue span{font-weight:700;color:#425b4b}.mock-cue .cue ul{margin:6px 0 0;padding-left:20px;line-height:1.7;color:#334}
+.mock-notes-label{display:block;font-weight:800;color:#425b4b;margin-bottom:6px}
+.mock-cue textarea{width:100%;min-height:110px;padding:12px;border:1px solid #d4e0d8;border-radius:10px;font:inherit;font-size:15px;resize:vertical;box-sizing:border-box}
+.mock-notes-view{padding:12px 14px;border-radius:10px;background:#f3f7f4;font-size:14px;color:#425b4b;white-space:pre-wrap}.mock-notes-view p{margin:4px 0 0}
+.mock-nav{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;margin-top:14px}
+.mock-end h2{margin:4px 0 14px;color:#17352b}
+.mock-times{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.mock-times div{padding:12px;border-radius:12px;background:#f1f7f3;text-align:center}.mock-times b{display:block;font-size:20px;color:#17352b;font-variant-numeric:tabular-nums}.mock-times span{font-size:12px;color:#718078}
+.mock-recording{display:flex;flex-direction:column;gap:8px;padding:14px;border:1px solid #dfe9e1;border-radius:12px;margin-bottom:14px}.mock-recording audio{width:100%}.mock-recording a{color:#276c5c;font-weight:800}
+.mock-check{padding:14px 16px;border-radius:12px;background:#f7fbf8;border:1px solid #e1eae3;margin-bottom:12px}.mock-check ul{margin:8px 0 0;padding-left:18px;line-height:1.65;color:#425b4b;font-size:14.5px}
+.mock-review{margin-bottom:6px}.mock-review summary{cursor:pointer;font-weight:800;color:#276c5c}.mock-review h4{margin:12px 0 4px;color:#17352b}.mock-review ol{margin:0;padding-left:20px;line-height:1.6;color:#425b4b}
+html[data-theme="dark"] .mock-banner{background:linear-gradient(120deg,#1a3029,#172722);border-color:#33493f}
+html[data-theme="dark"] .mock-banner strong,html[data-theme="dark"] .mock-card strong,html[data-theme="dark"] .mock-q,html[data-theme="dark"] .mock-outline b,html[data-theme="dark"] .mock-end h2,html[data-theme="dark"] .mock-times b,html[data-theme="dark"] .mock-review h4,html[data-theme="dark"] .mock-cue .cue strong{color:#eef6f0}
+html[data-theme="dark"] .mock-banner>span:nth-child(2)>span,html[data-theme="dark"] .mock-card>span,html[data-theme="dark"] .mock-outline span,html[data-theme="dark"] .mock-hint,html[data-theme="dark"] .mock-lead,html[data-theme="dark"] .mock-toggle,html[data-theme="dark"] .mock-check ul,html[data-theme="dark"] .mock-review ol,html[data-theme="dark"] .mock-cue .cue ul,html[data-theme="dark"] .mock-cue .cue span{color:#b5c9bc}
+html[data-theme="dark"] .mock-card,html[data-theme="dark"] .mock-stage,html[data-theme="dark"] .mock-outline li,html[data-theme="dark"] .mock-toggle,html[data-theme="dark"] .mock-recording,html[data-theme="dark"] .mock-check{background:#1c2f28;border-color:#33493f}
+html[data-theme="dark"] .mock-cue .cue{background:#172722;border-color:#9fd8b6}
+html[data-theme="dark"] .mock-cue textarea{background:#172722;border-color:#3a5247;color:#e6f2ea}
+html[data-theme="dark"] .mock-notes-view,html[data-theme="dark"] .mock-times div{background:#24413a;color:#d4e4da}
+html[data-theme="dark"] .mock-steps span{background:#24413a;color:#9fb5a8}html[data-theme="dark"] .mock-steps span.on{background:#347b52;color:#fff}html[data-theme="dark"] .mock-steps span.done{background:#2b4c3c;color:#cfeedd}
+html[data-theme="dark"] body #mockSection .mock-secondary{background:#1c2f28!important;color:#a7d9b7!important;border-color:#5fb383!important}
+html[data-theme="dark"] body #mockSection .mock-primary{background:#347b52!important;color:#fff!important;border-color:#347b52!important}
+html[data-theme="dark"] .mock-kicker,html[data-theme="dark"] .mock-label,html[data-theme="dark"] .mock-num,html[data-theme="dark"] .mock-clock{color:#9fd8b6}
+@media(max-width:600px){.mock-banner{flex-wrap:wrap}.mock-times{grid-template-columns:repeat(2,1fr)}.mock-nav{flex-direction:column-reverse}.mock-nav>*{width:100%}.mock-steps .mock-rec{margin-left:0;width:100%}}
+</style>
   <link rel="icon" type="image/svg+xml" href="../assets/englisity-mark.svg?v=20261117-logo">
   <link rel="manifest" href="../manifest.webmanifest">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/englisity-app-icon.png?v=20261117-logo">
@@ -323,7 +393,14 @@
         <span class="card-link">Explore Part 3 →</span>
       </button>
     </div>
+    <a class="mock-banner" href="#mock">
+      <span class="mock-banner-icon" aria-hidden="true">🎙️</span>
+      <span><strong>Full speaking mock tests</strong><span>Parts 1, 2 and 3 in one go, timed like the real exam, with an examiner voice and a recording of your answers.</span></span>
+      <span class="card-link">Start a mock →</span>
+    </a>
   </section>
+
+  <section class="panel practice-screen" id="mockSection" hidden></section>
 
   <section class="panel practice-screen" id="topicSection" hidden>
     <button class="back-button" id="backToParts">← All speaking parts</button>
@@ -441,6 +518,7 @@
   <a href="../index.html">Back home ↑</a>
 </footer>
 
+<script src="../js/speaking-mock.js?v=20261125-2"></script>
 <script>
 (() => {
   const questionSets = {
@@ -1206,6 +1284,18 @@
     if (allQuestions.includes(question) && dateValue("November 18") > dateValue(reportedDates.get(question))) reportedDates.set(question, "November 18");
   });
 
+  // Merge topics that ended up with the same name (for example two "Gardening and plants" groups in Part 3).
+  [1, 2, 3].forEach(part => {
+    const seen = new Map();
+    questionSets[part] = questionSets[part].filter(t => {
+      const first = seen.get(t.topic);
+      if (!first) { seen.set(t.topic, t); return true; }
+      t.questions.forEach(q => { if (!first.questions.includes(q)) first.questions.push(q); });
+      if (t.cuePromptsByQuestion) first.cuePromptsByQuestion = Object.assign(first.cuePromptsByQuestion || {}, t.cuePromptsByQuestion);
+      return false;
+    });
+  });
+
   const partInfo = {
     1: {
       title: "Part 1 — Introduction and Interview",
@@ -1225,7 +1315,8 @@
     parts: document.getElementById("partSelection"),
     topics: document.getElementById("topicSection"),
     questions: document.getElementById("questionSection"),
-    practice: document.getElementById("practiceSection")
+    practice: document.getElementById("practiceSection"),
+    mock: document.getElementById("mockSection")
   };
 
   const topicGrid = document.getElementById("topicGrid");
@@ -1243,10 +1334,11 @@
   let currentTopic = null;
   let selectedQuestion = null;
 
-  let routingScreen = false;
+  let routingScreen = false, lastRoutedHash = null;
   function showScreen(name) {
     // Leaving the practice screen: stop timers and any recording in progress.
     if (name !== "practice" && screens.practice && !screens.practice.hidden) leavePractice();
+    if (name !== "mock") window.EnglisitySpeakingMock?.stop();
     Object.entries(screens).forEach(([key, element]) => {
       element.hidden = key !== name;
     });
@@ -1265,12 +1357,20 @@
     return "";
   }
   function syncSpeakingHash(name) {
+    if (name === "mock") return;
     const hash = speakingHash(name);
     if ((location.hash || "") !== hash) history.pushState(null, "", hash || location.pathname + location.search);
   }
   function routeSpeaking() {
     routingScreen = true;
     try {
+      lastRoutedHash = location.hash;
+      const mm = location.hash.match(/^#mock(?:\/(\d+))?$/);
+      if (mm && window.EnglisitySpeakingMock) {
+        showScreen("mock");
+        window.EnglisitySpeakingMock.show(mm[1] ? Number(mm[1]) : 0);
+        return;
+      }
       const m = location.hash.match(/^#part([123])(?:\/(\d+))?(?:\/(\d+))?$/);
       if (!m) { showScreen("parts"); return; }
       const part = Number(m[1]);
@@ -1665,7 +1765,21 @@
       releaseMicrophone();
     }
   }
+  // Shared with the full mock test (js/speaking-mock.js).
+  window.EnglisitySpeakingBank = window.EnglisitySpeakingBank || {};
+  Object.assign(window.EnglisitySpeakingBank, {
+    sets: questionSets,
+    reported: question => reportedDates.get(question) || "",
+    cuePrompts: question => {
+      const topic = questionSets[2].find(t => t.questions.includes(question));
+      return (topic && (topic.cuePromptsByQuestion?.[question] || topic.prompts)) || fallbackCuePrompts[question.replace(/\.$/, "")] || [];
+    }
+  });
+  window.EnglisitySpeakingMock?.init(screens.mock);
+
   window.addEventListener("popstate", routeSpeaking);
+  // Links such as #mock/3 change the hash; route once per change.
+  window.addEventListener("hashchange", () => { if (location.hash !== lastRoutedHash) routeSpeaking(); });
   if (location.hash) routeSpeaking();
 
   startButton.addEventListener("click", startRecording);
@@ -1687,6 +1801,7 @@
     showScreen("parts");
   });
   againButton.addEventListener("click", startRecording);
+
 
   window.addEventListener("beforeunload", () => {
     clearInterval(recordingTimer);

@@ -189,6 +189,46 @@ def test_dark_hover(browser, pw):
     ctx.close()
 
 
+def test_speaking_mocks(browser, pw):
+    """Speaking mock tests: every mock has 3 Part 1 topics, a cue card with prompts and 5 linked Part 3 questions; a full run reaches the end screen."""
+    for device in (DESKTOP, {k: v for k, v in pw.devices["iPhone 13"].items() if k != "default_browser_type"}):
+        ctx = browser.new_context(**device, service_workers="block")
+        page, problems = open_page(ctx, "pages/speaking.html")
+        page.click(".mock-banner")
+        page.wait_for_timeout(300)
+        check(page.evaluate("location.hash") == "#mock" and page.locator(".mock-card").count() == 16, f"expected 16 mock cards, found {page.locator('.mock-card').count()}")
+        info = page.evaluate("EnglisitySpeakingMock.list().map(m => [m.n, m.part1.length, m.part1.every(t => t.questions.length >= 3), m.prompts.length, m.part3.length])")
+        bad = [m for m in info if m[1] != 3 or not m[2] or m[3] < 3 or m[4] != 5]
+        check(not bad, f"mocks with missing questions (n, topics, enough, prompts, part3): {bad}")
+        page.click(".mock-card >> nth=0")
+        page.wait_for_timeout(200)
+        page.uncheck("#mockRecord")
+        page.click("#mockBegin")
+        page.wait_for_timeout(300)
+        seen = set()
+        for _ in range(40):
+            if page.query_selector(".mock-end"):
+                break
+            label = page.inner_text(".mock-steps span.on") if page.query_selector(".mock-steps span.on") else ""
+            seen.add(label)
+            if page.query_selector("#mockNotes"):
+                page.fill("#mockNotes", "notes")
+            page.click("#mockNext")
+            page.wait_for_timeout(120)
+        page.wait_for_timeout(500)
+        check(page.query_selector(".mock-end") is not None, "a full mock does not reach the end screen")
+        check({"Part 1", "Part 2", "Part 3"} <= seen, f"the mock skipped a part: saw {seen}")
+        check("Describe a time when you got up early." in page.text_content(".mock-review"), "end screen does not list the cue card")
+        page.go_back()
+        page.wait_for_timeout(300)
+        check(page.is_visible("#mockSection"), "Back button does not return to the mock start page")
+        page.goto(BASE + "pages/speaking.html#part2")
+        page.wait_for_timeout(300)
+        check(page.is_visible("#topicSection") and not page.is_visible("#mockSection"), "Part 2 link still shows the mock screen")
+        no_problems(problems, "speaking mocks")
+        ctx.close()
+
+
 def test_app_icon_links(browser, pw):
     """Every page links the manifest and the new E app icon in its HTML, so phones and installed apps pick up the current logo."""
     for path in PAGES:

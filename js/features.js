@@ -69,6 +69,25 @@
     return next;
   }
 
+  // A visitor has started learning once they have practised on any day, passed a quiz,
+  // saved a resource or added words to learn. Until then the streak strip and the
+  // empty dashboard are hidden, so a first visit starts with the content itself.
+  function hasStarted() {
+    const streak = readStreak();
+    if (streak.lastActive || streak.longest > 0) return true;
+    if ((read("englisity-vocab-stats-v1", {}).passed || 0) > 0) return true;
+    if (read(BOOKMARKS, []).length) return true;
+    const words = read("englisity-vocab-learning-v2", {});
+    return !!(words && ((words.saved && words.saved.length) || (words.known && words.known.length)));
+  }
+  function syncStartedState() {
+    const started = hasStarted();
+    document.querySelectorAll(".eng-progress").forEach(el => { el.hidden = !started; });
+    const dash = document.getElementById("myDashboard");
+    if (dash) dash.hidden = !started && location.hash !== "#myDashboard";
+  }
+  window.addEventListener("hashchange", () => syncStartedState());
+
   window.EnglisityProgress = window.EnglisityProgress || {};
   window.EnglisityProgress.recordActivity = recordStreakActivity;
   window.EnglisityProgress.getStreak = getCurrentStreak;
@@ -91,21 +110,21 @@
   const styles = document.createElement("style");
   styles.textContent = `
     .eng-progress{max-width:1160px;margin:18px auto;padding:18px 22px;background:#fff;border:1px solid #e5eaf3;border-radius:16px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
-    .eng-progress strong{color:#14213d}.eng-progress small{display:block;color:#718096;margin-top:3px}
+    .eng-progress strong{color:#1c352c}.eng-progress small{display:block;color:var(--ink-759287,#759287);margin-top:3px}
     .eng-streak-pill{display:inline-flex;align-items:center;padding:8px 11px;border-radius:999px;background:#fff4df;color:#9a5b08;font-size:13px;font-weight:800;white-space:nowrap}
-    .eng-progress a,.eng-progress button{border:1px solid #dce5f2;background:#f7f9fd;color:#2457a6;padding:9px 12px;border-radius:9px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+    .eng-progress a,.eng-progress button{border:1px solid #e0eee9;background:#f7f9fd;color:#3e8c6f;padding:9px 12px;border-radius:9px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
     .eng-progress-actions{display:flex;gap:8px;flex-wrap:wrap}
     .eng-dashboard{max-width:1160px;margin:0 auto 36px;padding:0 24px}
     .eng-dashboard-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
     .eng-stat,.eng-bookmarks{background:#fff;border:1px solid #e5eaf3;border-radius:15px;padding:18px}
-    .eng-stat b{display:block;font-size:24px;color:#14213d}.eng-stat span,.eng-bookmarks p{color:#718096;font-size:13px}
-    .eng-bookmarks{grid-column:1/-1}.eng-bookmark-list{display:flex;flex-wrap:wrap;gap:9px}.eng-bookmark-list a{padding:8px 11px;border-radius:9px;background:#edf2ff;color:#2457a6;font-size:13px;font-weight:700}
-    .eng-save{border:1px solid #dce5f2;background:#fff;color:#2457a6;border-radius:8px;padding:7px 10px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;margin-top:12px}
+    .eng-stat b{display:block;font-size:24px;color:#1c352c}.eng-stat span,.eng-bookmarks p{color:var(--ink-759287,#759287);font-size:13px}
+    .eng-bookmarks{grid-column:1/-1}.eng-bookmark-list{display:flex;flex-wrap:wrap;gap:9px}.eng-bookmark-list a{padding:8px 11px;border-radius:9px;background:#edf2ff;color:#3e8c6f;font-size:13px;font-weight:700}
+    .eng-save{border:1px solid #e0eee9;background:#fff;color:#3e8c6f;border-radius:8px;padding:7px 10px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;margin-top:12px}
     .eng-save.saved{background:#eaf7ef;border-color:#bce4cb;color:#187344}
     .eng-timer{margin-top:16px;padding:14px;border-radius:12px;background:#f6f8fc;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .eng-timer output{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;color:#14213d;min-width:62px}
-    .eng-timer button{border:1px solid #dce5f2;background:#fff;border-radius:8px;padding:7px 10px;cursor:pointer}
-    .eng-autosave{font-size:12px;color:#718096;margin-top:7px}
+    .eng-timer output{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;color:#1c352c;min-width:62px}
+    .eng-timer button{border:1px solid #e0eee9;background:#fff;border-radius:8px;padding:7px 10px;cursor:pointer}
+    .eng-autosave{font-size:12px;color:var(--ink-759287,#759287);margin-top:7px}
     @media(max-width:650px){.eng-dashboard-grid{grid-template-columns:1fr}.eng-dashboard{padding:0 16px}.eng-progress{margin:14px 12px}}
   `;
   document.head.appendChild(styles);
@@ -124,6 +143,7 @@
     strip.innerHTML = '<div><strong>My learning</strong><small>Progress is saved on this device.</small></div><div class="eng-progress-actions"><span class="eng-streak-pill" id="engStreakPill">🔥 0-day streak</span><a href="' + (page === "index.html" ? "#myDashboard" : "../index.html#myDashboard") + '">Dashboard</a><a href="' + (page === "index.html" ? "pages/vocabulary.html" : "../pages/vocabulary.html") + '">Daily practice</a></div>';
     updateStreakPill();
     nav.insertAdjacentElement("afterend", strip);
+    syncStartedState();
   }
 
   function bookmarkButton(element, title, url) {
@@ -134,7 +154,10 @@
     button.type = "button";
     button.className = "eng-save" + (list.some(x=>x.url===id) ? " saved" : "");
     button.textContent = list.some(x=>x.url===id) ? "Saved" : "Save resource";
-    button.addEventListener("click", () => {
+    button.addEventListener("click", event => {
+      // The button sits inside a clickable card (writing tasks): save only, don't open the task.
+      event.stopPropagation();
+      event.preventDefault();
       let items = read(BOOKMARKS, []);
       if (items.some(x=>x.url===id)) {
         items = items.filter(x=>x.url!==id);
@@ -159,7 +182,16 @@
     });
     document.querySelectorAll(".task-library-card").forEach(card => {
       const title = card.querySelector("strong")?.textContent?.trim() || card.textContent.trim();
-      bookmarkButton(card,title,location.pathname + "#" + (card.dataset.task1Category || card.dataset.task2Category || title.toLowerCase().replace(/[^a-z0-9]+/g,"-")));
+      const t1 = card.dataset.openTaskDetail, t2 = card.dataset.openTask2Detail;
+      const oldId = location.pathname + "#" + (card.dataset.task1Category || card.dataset.task2Category || title.toLowerCase().replace(/[^a-z0-9]+/g,"-"));
+      const id = t1 ? location.pathname + "#task1/" + t1 : t2 ? location.pathname + "#task2/" + t2 : oldId;
+      // Move a bookmark saved with the old shared address to this task's own address.
+      if (id !== oldId) {
+        const items = read(BOOKMARKS, []);
+        const old = items.find(x => x.url === oldId && x.title === title);
+        if (old) { old.url = id; save(BOOKMARKS, items); }
+      }
+      bookmarkButton(card,title,id);
     });
   }
 
@@ -169,6 +201,7 @@
     const streak = getCurrentStreak();
     pill.textContent = "🔥 " + streak.current + "-day streak";
     pill.title = "Longest streak: " + (streak.longest || 0) + " days";
+    syncStartedState();
   }
 
   function renderDashboard() {
@@ -194,6 +227,7 @@
     const anchor = document.getElementById("learning-path") || hero;
     anchor.insertAdjacentElement("afterend",section);
     renderDashboard();
+    syncStartedState();
   }
 
   function addTimer() {
@@ -365,7 +399,9 @@
     const inArticle=/\/articles\//.test(location.pathname);
     const SECTION_OF={index:"home",reading:"reading","passage-1":"reading","passage-2":"reading","passage-3":"reading","full-tests":"reading",listening:"listening",writing:"writing",speaking:"speaking",vocabulary:"vocabulary",articles:"articles",podcasts:"podcasts",about:"about",share:"share",stats:"stats"};
     const section=inArticle?"articles":SECTION_OF[slug]||(document.getElementById("resizableTest")?"reading":/^listening-test/.test(slug)?"listening":"other");
-    const enabled=live&&!dnt&&section!=="stats";
+    let ignored=false;try{ignored=localStorage.getItem("englisity-track-ignore")==="1";}catch(e){}
+    // Not counted: "Do Not Track", automated browsers (bots, link previews) and the owner's own devices.
+    const enabled=live&&!dnt&&!navigator.webdriver&&!ignored&&section!=="stats";
     const rid=()=>Array.from(crypto.getRandomValues(new Uint8Array(12)),b=>(b%36).toString(36)).join("");
     let vid="",sid="";
     try{vid=localStorage.getItem("englisity-vid")||"";if(!/^[a-z0-9]{8,40}$/.test(vid)){vid=rid();localStorage.setItem("englisity-vid",vid);}}catch(e){vid=rid();}

@@ -31,3 +31,14 @@ When editing existing article pages or the shared learning script, preserve this
 
 - Each full test is `pages/full-test-NN.html` + `js/full-test-NN-data.js` (passages, questions, answers, evidence) and shares the engine `js/full-test.js`. Every question's `e` (evidence) must be copied exactly from its paragraph so "Show in passage" can highlight it; `tests/test-site.py` checks this for every reading test.
 - "Show in passage" (exact-sentence highlight + "Back to question" bar) lives in `js/reading-exit.js` and works for every reading test that puts the evidence in a `<blockquote>` next to a `.view-in-test` link.
+
+# Home page "Latest questions and tests"
+
+- `index.html` has a "Latest questions and tests" list (`#latest`): five items, newest first, each with its date in `<time datetime="YYYY-MM-DD">`. Whenever new questions or tests go live, add a line at the top and remove the oldest one. `tests/test-site.py` checks the order.
+- The Writing page's "Latest reported questions" list is built automatically from the four newest task cards (`data-sort-date`), and the Speaking page's "questions reported up to …" line from the newest date in the question bank, so they need no manual update.
+- Speaking dates have no year: October–December are 2026 and January–September are 2027 (`monthIndex` in `pages/speaking.html`).
+
+# Phones and readability
+
+- `tests/test-site.py` also checks every page on iPhone and Android sizes: tap targets at least 24px, no text under 9px, form fields at 16px (so iPhones don't zoom), no sentence squeezed into a narrow column, a short header when a phone is turned sideways, and text contrast of at least 4:1 in light and dark mode (plus no white boxes in dark mode).
+- Grey helper text uses `var(--ink-XXXXXX,#XXXXXX)`: darker in light mode, the original shade in dark mode (defined at the end of `css/design.css`). Use these variables for new grey text instead of a lighter grey.

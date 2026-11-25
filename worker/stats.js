@@ -112,29 +112,33 @@ export async function handleStats(request, env) {
   }
   const url = new URL(request.url);
   const days = int(url.searchParams.get("days"), 1, 365) || 30;
+  // The owner's own device can be left out, so testing the site does not hide what students do.
+  const exclude = ID.test(url.searchParams.get("exclude") || "") ? url.searchParams.get("exclude") : "";
   const now = Date.now(), today = dayOf(now);
   const from = dayOf(now - (days - 1) * 86400 * 1000);
   const db = env.STATS;
   await ensureSchema(db);
   const q = (sql, ...args) => db.prepare(sql).bind(...args);
-  const range = "day >= ?1";
-  const [totals, todayRow, weekRow, returning, perDay, sections, starts, finishes, opens, pages, devices, countries, referrers, newVisitors, liveNow, details] = await db.batch([
-    q(`SELECT COUNT(DISTINCT vid) AS visitors, COUNT(DISTINCT sid) AS sessions, SUM(type='view') AS views, COALESCE(SUM(seconds),0) AS seconds FROM events WHERE ${range}`, from),
-    q("SELECT COUNT(DISTINCT vid) AS visitors, COALESCE(SUM(seconds),0) AS seconds FROM events WHERE day = ?1", today),
-    q("SELECT COUNT(DISTINCT vid) AS visitors FROM events WHERE day >= ?1", dayOf(now - 6 * 86400 * 1000)),
-    q(`SELECT COUNT(*) AS n FROM (SELECT vid FROM events WHERE ${range} GROUP BY vid HAVING COUNT(DISTINCT day) > 1)`, from),
-    q(`SELECT day, COUNT(DISTINCT vid) AS visitors, SUM(type='view') AS views, COALESCE(SUM(seconds),0) AS seconds FROM events WHERE ${range} GROUP BY day ORDER BY day`, from),
-    q(`SELECT section, COUNT(DISTINCT vid) AS visitors, SUM(type='view') AS views, COALESCE(SUM(seconds),0) AS seconds FROM events WHERE ${range} GROUP BY section ORDER BY seconds DESC`, from),
-    q(`SELECT item, COUNT(*) AS started, COUNT(DISTINCT vid) AS people FROM events WHERE type='start' AND ${range} GROUP BY item ORDER BY started DESC LIMIT 40`, from),
-    q(`SELECT item, COUNT(*) AS finished, ROUND(AVG(score),1) AS avg_score, MAX(total) AS total FROM events WHERE type='finish' AND ${range} GROUP BY item ORDER BY finished DESC LIMIT 40`, from),
-    q(`SELECT section, item, COUNT(*) AS opens, COUNT(DISTINCT vid) AS people FROM events WHERE type='open' AND ${range} GROUP BY section, item ORDER BY opens DESC LIMIT 30`, from),
-    q(`SELECT path, COUNT(*) AS views, COUNT(DISTINCT vid) AS people FROM events WHERE type='view' AND ${range} GROUP BY path ORDER BY views DESC LIMIT 25`, from),
-    q(`SELECT device, COUNT(DISTINCT vid) AS visitors FROM events WHERE ${range} GROUP BY device ORDER BY visitors DESC`, from),
-    q(`SELECT country, COUNT(DISTINCT vid) AS visitors FROM events WHERE ${range} AND country IS NOT NULL GROUP BY country ORDER BY visitors DESC LIMIT 15`, from),
-    q(`SELECT referrer, COUNT(DISTINCT vid) AS visitors FROM events WHERE ${range} AND referrer IS NOT NULL GROUP BY referrer ORDER BY visitors DESC LIMIT 15`, from),
-    q(`SELECT COUNT(*) AS n FROM (SELECT vid, MIN(day) AS first FROM events GROUP BY vid HAVING first >= ?1)`, from),
-    q("SELECT COUNT(DISTINCT vid) AS n FROM events WHERE ts >= ?1", now - 5 * 60 * 1000),
-    q(`SELECT item, total, detail FROM events WHERE type='finish' AND detail IS NOT NULL AND ${range} ORDER BY ts DESC LIMIT 3000`, from)
+  const range = "day >= ?1 AND vid IS NOT ?2";
+  const [totals, todayRow, weekRow, returning, perDay, sections, starts, finishes, opens, pages, devices, countries, referrers, newVisitors, liveNow, details, flow] = await db.batch([
+    q(`SELECT COUNT(DISTINCT vid) AS visitors, COUNT(DISTINCT sid) AS sessions, SUM(type='view') AS views, COALESCE(SUM(seconds),0) AS seconds FROM events WHERE ${range}`, from, exclude),
+    q("SELECT COUNT(DISTINCT vid) AS visitors, COALESCE(SUM(seconds),0) AS seconds FROM events WHERE day = ?1 AND vid IS NOT ?2", today, exclude),
+    q("SELECT COUNT(DISTINCT vid) AS visitors FROM events WHERE day >= ?1 AND vid IS NOT ?2", dayOf(now - 6 * 86400 * 1000), exclude),
+    q(`SELECT COUNT(*) AS n FROM (SELECT vid FROM events WHERE ${range} GROUP BY vid HAVING COUNT(DISTINCT day) > 1)`, from, exclude),
+    q(`SELECT day, COUNT(DISTINCT vid) AS visitors, SUM(type='view') AS views, COALESCE(SUM(seconds),0) AS seconds FROM events WHERE ${range} GROUP BY day ORDER BY day`, from, exclude),
+    q(`SELECT section, COUNT(DISTINCT vid) AS visitors, SUM(type='view') AS views, COALESCE(SUM(seconds),0) AS seconds FROM events WHERE ${range} GROUP BY section ORDER BY seconds DESC`, from, exclude),
+    q(`SELECT item, COUNT(*) AS started, COUNT(DISTINCT vid) AS people FROM events WHERE type='start' AND ${range} GROUP BY item ORDER BY started DESC LIMIT 40`, from, exclude),
+    q(`SELECT item, COUNT(*) AS finished, ROUND(AVG(score),1) AS avg_score, MAX(total) AS total FROM events WHERE type='finish' AND ${range} GROUP BY item ORDER BY finished DESC LIMIT 40`, from, exclude),
+    q(`SELECT section, item, COUNT(*) AS opens, COUNT(DISTINCT vid) AS people FROM events WHERE type='open' AND ${range} GROUP BY section, item ORDER BY opens DESC LIMIT 30`, from, exclude),
+    q(`SELECT path, COUNT(*) AS views, COUNT(DISTINCT vid) AS people FROM events WHERE type='view' AND ${range} GROUP BY path ORDER BY views DESC LIMIT 25`, from, exclude),
+    q(`SELECT device, COUNT(DISTINCT vid) AS visitors FROM events WHERE ${range} GROUP BY device ORDER BY visitors DESC`, from, exclude),
+    q(`SELECT country, COUNT(DISTINCT vid) AS visitors FROM events WHERE ${range} AND country IS NOT NULL GROUP BY country ORDER BY visitors DESC LIMIT 15`, from, exclude),
+    q(`SELECT referrer, COUNT(DISTINCT vid) AS visitors FROM events WHERE ${range} AND referrer IS NOT NULL GROUP BY referrer ORDER BY visitors DESC LIMIT 15`, from, exclude),
+    q(`SELECT COUNT(*) AS n FROM (SELECT vid, MIN(day) AS first FROM events WHERE vid IS NOT ?2 GROUP BY vid HAVING first >= ?1)`, from, exclude),
+    q("SELECT COUNT(DISTINCT vid) AS n FROM events WHERE ts >= ?1 AND vid IS NOT ?2", now - 5 * 60 * 1000, exclude),
+    q(`SELECT item, total, detail FROM events WHERE type='finish' AND detail IS NOT NULL AND ${range} ORDER BY ts DESC LIMIT 3000`, from, exclude),
+    // Page-by-page flow of each visit, to see where visitors leave and how fast.
+    q(`SELECT sid, path, type, seconds FROM events WHERE ${range} AND sid IS NOT NULL AND type IN ('view','active') ORDER BY sid, ts, id LIMIT 20000`, from, exclude)
   ]);
   const one = r => (r.results && r.results[0]) || {};
   const finishMap = Object.fromEntries((finishes.results || []).map(r => [r.item, r]));
@@ -152,8 +156,31 @@ export async function handleStats(request, env) {
     for (const [n, w] of Object.entries(t.wrong)) hardest.push({ item, question: +n, wrong: w, finishes: t.finishes, rate: Math.round(100 * w / t.finishes) });
   }
   hardest.sort((a, b) => b.rate - a.rate || b.wrong - a.wrong);
+  // Where visits end: the last page of each visit, and whether the visitor left it within 15 seconds.
+  const exitMap = {};
+  let visits = 0, quickBounces = 0;
+  const closeVisit = v => {
+    if (!v || !v.last) return;
+    visits++;
+    const e = exitMap[v.last] || (exitMap[v.last] = { path: v.last, views: 0, left: 0, quick: 0 });
+    e.left++;
+    if (v.lastSecs < 15) e.quick++;
+    if (v.views === 1 && v.lastSecs < 15) quickBounces++;
+  };
+  let cur = null;
+  for (const r of flow.results || []) {
+    if (!cur || cur.sid !== r.sid) { closeVisit(cur); cur = { sid: r.sid, last: null, lastSecs: 0, views: 0 }; }
+    if (r.type === "view") {
+      cur.views++; cur.last = r.path; cur.lastSecs = 0;
+      const e = exitMap[r.path] || (exitMap[r.path] = { path: r.path, views: 0, left: 0, quick: 0 });
+      e.views++;
+    } else if (r.type === "active" && r.path === cur.last) cur.lastSecs += r.seconds || 0;
+  }
+  closeVisit(cur);
+  const exits = Object.values(exitMap).filter(e => e.left).sort((a, b) => b.quick - a.quick || b.left - a.left).slice(0, 25);
   return json({
-    days, from, today, live_now: one(liveNow).n || 0, hardest: hardest.filter(h => h.finishes >= 3).slice(0, 25),
+    days, from, today, excluded: !!exclude, live_now: one(liveNow).n || 0,
+    exits, visits, quick_bounces: quickBounces, hardest: hardest.filter(h => h.finishes >= 3).slice(0, 25),
     totals: one(totals), today_: one(todayRow), last7: one(weekRow),
     returning: one(returning).n || 0, new_visitors: one(newVisitors).n || 0,
     per_day: perDay.results || [], sections: sections.results || [], tests,

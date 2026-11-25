@@ -14,7 +14,7 @@
   <link rel="icon" type="image/svg+xml" href="../assets/englisity-mark.svg?v=20261117-logo">
   <link rel="manifest" href="../manifest.webmanifest">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/englisity-app-icon.png?v=20261117-logo">
-  <link rel="stylesheet" href="../css/design.css?v=20261123-1">
+  <link rel="stylesheet" href="../css/design.css?v=20261125-phone">
   <style>
     .st-wrap{max-width:1100px;margin:0 auto;padding:26px 0 40px}
     .st-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
@@ -47,7 +47,9 @@
     html[data-theme="dark"] .st-head h1,html[data-theme="dark"] .st-card b,html[data-theme="dark"] .st-panel h2,html[data-theme="dark"] .st-login h2{color:#eef5f1}
     html[data-theme="dark"] .st-table th,html[data-theme="dark"] .st-card span{color:#a9bfb4}html[data-theme="dark"] .st-table td{border-color:#24382f;color:#d6e3dc}
     html[data-theme="dark"] .st-ranges button{background:#203a32;color:#e6f2ea;border-color:#456052}html[data-theme="dark"] .st-ranges button.active{background:#a7d9b7;color:#12261e}
-  </style>
+  .st-self{margin:0 0 14px;padding:12px 14px;border:1px solid #dce9df;border-radius:12px;background:#f6fbf7}.st-self label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}.st-self input{margin-top:3px;width:17px;height:17px;accent-color:#276c5c}.st-self b{display:block;color:#17352b}.st-self small{display:block;color:#5d706b;margin-top:2px;line-height:1.5}
+html[data-theme="dark"] .st-self{background:#1c2f28;border-color:#33493f}html[data-theme="dark"] .st-self b{color:#eef6f0}html[data-theme="dark"] .st-self small{color:#b5c9bc}
+</style>
 </head>
 <body>
   <header class="topbar">
@@ -83,8 +85,10 @@
         <div class="st-ranges" role="group" aria-label="Time period">
           <button type="button" data-days="1">Today</button><button type="button" data-days="7">7 days</button><button type="button" data-days="30" class="active">30 days</button><button type="button" data-days="90">90 days</button><button type="button" data-days="365">1 year</button></div></div>
       <div class="st-cards" id="cards"></div>
+      <div class="st-self" id="selfBox"><label><input type="checkbox" id="countMe"> <span><b>Count my own visits from this device</b><small>Leave this off so your own testing does not hide what students do. Your past visits from this device are also left out of the numbers.</small></span></label></div>
       <div class="st-panel"><h2>Visitors per day</h2><div class="st-chart" id="chart"></div><div class="st-axis" id="axis"></div></div>
       <div class="st-panel"><h2>Time spent by section</h2><p class="note">Active time only: reading, scrolling, typing or listening. Idle open tabs are not counted.</p><div id="sections"></div></div>
+      <div class="st-panel"><h2>Where visitors leave</h2><p class="note">The last page of each visit. “Left within 15 seconds” means the visitor closed the site almost straight away, often a sign the page did not give them what they expected.</p><div id="exits"></div></div>
       <div class="st-panel"><h2>Tests</h2><p class="note">Started = chose a mode or began the quiz. Finished = submitted answers.</p><div id="tests"></div></div>
       <div class="st-panel"><h2>Hardest questions</h2><p class="note">Questions answered wrongly most often in finished tests. A question almost everyone gets wrong may be very hard, or its answer key may need checking.</p><div id="hardest"></div></div>
       <div class="st-panel"><h2>Most opened speaking questions and writing tasks</h2><div id="opens"></div></div>
@@ -105,16 +109,21 @@ const fmtMin=s=>{s=Math.round(s||0);if(s<60)return s+" sec";const m=Math.round(s
 const SECTION={home:"Home",reading:"Reading",listening:"Listening",writing:"Writing",speaking:"Speaking",vocabulary:"Vocabulary",articles:"Articles",podcasts:"Podcasts",about:"About",share:"Share / report",other:"Other"};
 const COUNTRY=c=>{try{return new Intl.DisplayNames(["en"],{type:"region"}).of(c)||c}catch(e){return c}};
 let days=30,pw="";
+const myVid=(()=>{try{return localStorage.getItem("englisity-vid")||""}catch(e){return ""}})();
+const ignoring=()=>{try{return localStorage.getItem("englisity-track-ignore")==="1"}catch(e){return false}};
 try{pw=sessionStorage.getItem("englisity-stats-pw")||""}catch(e){}
 function table(rows,cols,empty){if(!rows||!rows.length)return '<p class="st-empty">'+(empty||"No data yet.")+'</p>';const max=Math.max(1,...rows.map(r=>+r[cols.find(c=>c.bar)?.key]||0));
  return '<table class="st-table"><thead><tr>'+cols.map(c=>'<th'+(c.num?' class="n"':'')+'>'+c.label+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+cols.map(c=>{let v=c.fmt?c.fmt(r[c.key],r):r[c.key];if(c.bar)v='<span class="st-meter" style="width:'+Math.max(3,Math.round(80*(+r[c.key]||0)/max))+'px"></span>'+v;return '<td'+(c.num?' class="n"':'')+'>'+(c.raw?v:(c.bar?v:esc(v)))+'</td>'}).join('')+'</tr>').join('')+'</tbody></table>';}
 async function load(){
  $("loginMsg").textContent="Loading…";
- let res;try{res=await fetch("/api/stats?days="+days,{headers:{Authorization:"Bearer "+pw},cache:"no-store"});}catch(e){$("loginMsg").textContent="Could not reach the server. Check your connection.";return;}
+ let res;try{res=await fetch("/api/stats?days="+days+(ignoring()&&myVid?"&exclude="+encodeURIComponent(myVid):""),{headers:{Authorization:"Bearer "+pw},cache:"no-store"});}catch(e){$("loginMsg").textContent="Could not reach the server. Check your connection.";return;}
  const data=await res.json().catch(()=>({}));
  if(res.status===401){try{sessionStorage.removeItem("englisity-stats-pw")}catch(e){}$("dash").hidden=true;$("login").hidden=false;$("loginMsg").textContent="Wrong password. Try again.";return;}
  if(!res.ok){$("dash").hidden=true;$("login").hidden=false;$("loginMsg").textContent=(data.detail||"Statistics are not available right now ("+res.status+").");return;}
  try{sessionStorage.setItem("englisity-stats-pw",pw)}catch(e){}
+ // The first time the owner opens the statistics on a device, that device stops being counted.
+ try{if(localStorage.getItem("englisity-track-ignore")===null){localStorage.setItem("englisity-track-ignore","1");setTimeout(load,0);return;}}catch(e){}
+ $("countMe").checked=!ignoring();
  $("login").hidden=true;$("dash").hidden=false;$("loginMsg").textContent="";render(data);
 }
 function render(d){
@@ -130,19 +139,22 @@ function render(d){
  $("tests").innerHTML=table(d.tests,[{key:"item",label:"Test"},{key:"started",label:"Started",num:true,bar:true},{key:"finished",label:"Finished",num:true},{key:"avg_score",label:"Average score",num:true,fmt:(v,r)=>v==null?"–":v+(r.total?" / "+r.total:"")}],"No tests started yet.");
  $("hardest").innerHTML=table(d.hardest,[{key:"item",label:"Test"},{key:"question",label:"Question",num:true,fmt:v=>"Q"+v},{key:"rate",label:"Wrong",num:true,bar:true,fmt:(v,r)=>v+"% ("+r.wrong+" of "+r.finishes+")"}],"Shown once a test has been finished at least 3 times.");
  $("opens").innerHTML=table(d.opens,[{key:"item",label:"Question or task",fmt:(v,r)=>(SECTION[r.section]||r.section)+" · "+v},{key:"opens",label:"Opened",num:true,bar:true},{key:"people",label:"People",num:true}],"Nothing opened yet.");
+ const pageName=v=>String(v||"").replace(/^\/(pages|articles)\//,"").replace(/\.html$/,"")||"home";
+ $("exits").innerHTML=(d.visits?'<p class="note">'+d.visits+' visits in this period · '+(d.quick_bounces||0)+' left from the first page within 15 seconds.</p>':'')+table(d.exits,[{key:"path",label:"Page",fmt:pageName},{key:"views",label:"Views",num:true},{key:"left",label:"Visits ended here",num:true},{key:"quick",label:"Left within 15 s",num:true,bar:true}],"Not enough visits yet.");
  $("pages").innerHTML=table(d.pages,[{key:"path",label:"Page",fmt:v=>String(v||"").replace(/^\/(pages|articles)\//,"").replace(/\.html$/,"")||"home"},{key:"views",label:"Views",num:true,bar:true},{key:"people",label:"People",num:true}]);
  $("refs").innerHTML=table(d.referrers,[{key:"referrer",label:"Came from"},{key:"visitors",label:"People",num:true,bar:true}],"No links from other sites yet (people typing the address or using a bookmark are not shown here).");
  $("devices").innerHTML=table(d.devices,[{key:"device",label:"Device",fmt:v=>({phone:"Phone",computer:"Computer",tablet:"Tablet"})[v]||v},{key:"visitors",label:"People",num:true,bar:true}]);
  $("countries").innerHTML=table(d.countries,[{key:"country",label:"Country",fmt:v=>COUNTRY(v)},{key:"visitors",label:"People",num:true,bar:true}]);
  $("updated").textContent="Updated "+new Date().toLocaleTimeString();
 }
+$("countMe").addEventListener("change",e=>{try{localStorage.setItem("englisity-track-ignore",e.target.checked?"0":"1")}catch(x){}load();});
 $("loginForm").addEventListener("submit",e=>{e.preventDefault();pw=$("pw").value.trim();if(pw)load();});
 document.querySelectorAll("[data-days]").forEach(b=>b.addEventListener("click",()=>{days=+b.dataset.days;document.querySelectorAll("[data-days]").forEach(x=>x.classList.toggle("active",x===b));load();}));
 $("logout").addEventListener("click",()=>{try{sessionStorage.removeItem("englisity-stats-pw")}catch(e){}pw="";$("pw").value="";$("dash").hidden=true;$("login").hidden=false;});
 if(pw)load();else if(location.protocol==="https:"||/^localhost$/.test(location.hostname))fetch("/api/stats",{cache:"no-store"}).then(r=>r.json()).then(d=>{$("setupState").textContent=d.configured===false?"⚠ The password is not set up yet. Add the secret STATS_PASSWORD in Cloudflare (Worker → Settings → Variables and Secrets), then reload this page.":d.configured?"✓ Password is set up. Enter it to see your statistics.":"";$("setupState").className="st-setup "+(d.configured===false?"bad":"good");}).catch(()=>{});
 })();
 </script>
-<script src="../js/features.js?v=20261122-1"></script>
+<script src="../js/features.js?v=20261125-phone"></script>
 <!-- Cloudflare Web Analytics: counts visits, no cookies --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "ac91466da98a415b93a1320d7a491246"}'></script>
 </body>
 </html>

@@ -580,13 +580,17 @@ function route(){
  if(!["today","topics","flashcards","quiz","words"].includes(view))view="today";
  document.querySelectorAll(".vocab-view").forEach(v=>v.hidden=v.dataset.view!==view);
  document.querySelectorAll("#vocabTabs a").forEach(a=>{const on=a.dataset.tab===view;a.classList.toggle("active",on);a.setAttribute("aria-selected",String(on))});
+ const act=document.querySelector("#vocabTabs a.active");if(act){const t=$("vocabTabs");if(act.offsetLeft<t.scrollLeft||act.offsetLeft+act.offsetWidth>t.scrollLeft+t.clientWidth)t.scrollLeft=act.offsetLeft-12;fadeTabs()}
  $("topicIndex").hidden=!!topic;$("topicDetail").hidden=!topic;
  if(topic)renderTopicDetail(topic);else currentTopic=null;
  const tabs=$("vocabTabs");if(tabs.getBoundingClientRect().top<0)tabs.scrollIntoView({block:"start"});
 }
 addEventListener("hashchange",route);
 // Keep the tab bar just below the site header when the header stays on screen.
-function placeTabs(){const h=document.querySelector(".topbar");const pos=h?getComputedStyle(h).position:"";const top=(pos==="sticky"||pos==="fixed")?Math.round(h.getBoundingClientRect().height):0;$("vocabTabs").style.top=top+"px"}
+function placeTabs(){const h=document.querySelector(".topbar");const pos=h?getComputedStyle(h).position:"";const top=(pos==="sticky"||pos==="fixed")?Math.round(h.getBoundingClientRect().height):0;$("vocabTabs").style.top=top+"px";fadeTabs()}
+// If the tabs do not fit, fade the right edge so it is clear there is more to scroll to.
+function fadeTabs(){const t=$("vocabTabs");t.classList.toggle("can-scroll",t.scrollWidth>t.clientWidth+2&&t.scrollLeft+t.clientWidth<t.scrollWidth-2)}
+$("vocabTabs").addEventListener("scroll",fadeTabs,{passive:true});
 addEventListener("resize",placeTabs);placeTabs();
 afterChange();route();
 })();

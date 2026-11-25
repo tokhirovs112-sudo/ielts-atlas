@@ -362,3 +362,29 @@
   document.getElementById("resetTest")?.addEventListener("click", () => { hideChip(); clearMarks(); });
   window.EnglisityEvidence = { show, clear: () => { hideChip(); clearMarks(); } };
 })();
+// Touch screens: say "tap" instead of "click" in the test instructions.
+(() => {
+  "use strict";
+  if (!window.matchMedia || !matchMedia("(pointer: coarse)").matches) return;
+  const ends = { s: "s", ed: "ped", ing: "ping", S: "S", ED: "PED", ING: "PING" };
+  const swap = t => t
+    .replace(/\bCLICK(S|ED|ING)?\b/g, (m, end) => "TAP" + (ends[end] || ""))
+    .replace(/\b([Cc])lick(s|ed|ing)?\b/g, (m, c, end) => (c === "C" ? "Tap" : "tap") + (ends[end] || ""));
+  const fix = root => {
+    if (!root) return;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = walker.nextNode())) { const v = swap(node.nodeValue); if (v !== node.nodeValue) node.nodeValue = v; }
+  };
+  const LIVE = "#modeLabel, .mode-label, .passage-tools";
+  document.querySelectorAll(".mode-card, .mode-gate, .test-instructions, " + LIVE).forEach(fix);
+  // Mode labels change when a mode is chosen, so keep watching them.
+  const observer = new MutationObserver(list => {
+    for (const m of list) {
+      const el = m.target.nodeType === 3 ? m.target.parentElement : m.target;
+      const box = el && el.closest && el.closest(LIVE);
+      if (box) fix(box);
+    }
+  });
+  document.querySelectorAll(LIVE).forEach(el => observer.observe(el, { childList: true, characterData: true, subtree: true }));
+})();

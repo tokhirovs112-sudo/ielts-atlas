@@ -23,71 +23,71 @@
   <script src="../js/resources.js?v=20261111-review-fixes-1" defer></script>
   <script src="../js/app.js?v=20261111-search-1" defer></script>
   <style>
-    .page-hero{background:linear-gradient(125deg,#101f3d,#244d83);color:#fff;padding:48px 42px;border-radius:22px;margin:28px 0}
-    .page-hero .eyebrow{color:#a9cbff;font-size:12px;font-weight:800;letter-spacing:1.5px;margin-bottom:14px}
+    .page-hero{background:linear-gradient(125deg,#19342a,#37705b);color:#fff;padding:48px 42px;border-radius:22px;margin:28px 0}
+    .page-hero .eyebrow{color:#baeedb;font-size:12px;font-weight:800;letter-spacing:1.5px;margin-bottom:14px}
     .page-hero h1{font-size:clamp(30px,5vw,44px);line-height:1.15;margin:0 0 15px;color:#fff}
-    .page-hero p{color:#d9e6f7;max-width:650px;line-height:1.7;margin:0}
-    .breadcrumb{color:#b9d3f7;font-size:13px;margin-bottom:12px}
+    .page-hero p{color:#dff1ea;max-width:650px;line-height:1.7;margin:0}
+    .breadcrumb{color:#c5ebdd;font-size:13px;margin-bottom:12px}
     .practice-screen[hidden]{display:none!important}
     .part-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
-    .part-card{width:100%;text-align:left;border:1px solid #e2e8f0;border-radius:16px;padding:23px;background:#fff;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s;color:#172b4d;font:inherit}
-    .part-card:hover,.topic-button:hover{transform:translateY(-2px);border-color:#8bb5e9;box-shadow:0 8px 24px rgba(20,50,90,.08)}
-    .part-number{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:#eaf2ff;color:#245a9b;font-weight:800;margin-bottom:16px}
+    .part-card{width:100%;text-align:left;border:1px solid #e2e8f0;border-radius:16px;padding:23px;background:#fff;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s;color:#224236;font:inherit}
+    .part-card:hover,.topic-button:hover{transform:translateY(-2px);border-color:#9ed6c2;box-shadow:0 8px 24px rgba(34,76,61,.08)}
+    .part-number{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:#eefbf6;color:#3c8369;font-weight:800;margin-bottom:16px}
     .part-card h3{margin:0 0 9px;font-size:19px}
-    .part-card p{color:#64748b;line-height:1.6;font-size:14px;margin:0 0 15px}
-    .card-link{color:#2863a8;font-size:14px;font-weight:700}
-    .back-button{border:0;background:#edf3fb;color:#245a9b;padding:10px 15px;border-radius:9px;cursor:pointer;font-weight:700;margin-bottom:20px}
-    .back-button:hover{background:#dceaff}
+    .part-card p{color:var(--ink-68877c,#68877c);line-height:1.6;font-size:14px;margin:0 0 15px}
+    .card-link{color:#428e72;font-size:14px;font-weight:700}
+    .back-button{border:0;background:#edf3fb;color:#3c8369;padding:10px 15px;border-radius:9px;cursor:pointer;font-weight:700;margin-bottom:20px}
+    .back-button:hover{background:#e3f8f0}
     .section-heading{margin-bottom:18px}
     .section-heading h2{margin-bottom:7px}
-    .section-heading p{color:#64748b;margin:0;line-height:1.6}
+    .section-heading p{color:var(--ink-68877c,#68877c);margin:0;line-height:1.6}
     .topic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-top:20px}
-    .topic-button{width:100%;background:#fff;border:1px solid #e2e8f0;padding:17px;border-radius:13px;text-align:left;cursor:pointer;color:#172b4d;font:inherit;transition:transform .2s,border-color .2s,box-shadow .2s}
+    .topic-button{width:100%;background:#fff;border:1px solid #e2e8f0;padding:17px;border-radius:13px;text-align:left;cursor:pointer;color:#224236;font:inherit;transition:transform .2s,border-color .2s,box-shadow .2s}
     .topic-button strong{display:block;margin-bottom:5px}
-    .topic-button span{color:#64748b;font-size:13px}
+    .topic-button span{color:var(--ink-68877c,#68877c);font-size:13px}
     .question-list{display:grid;gap:12px;margin-top:20px}
     .question-item{border:1px solid #e2e8f0;padding:17px;border-radius:12px;display:flex;align-items:center;gap:13px;background:#fff}
-    .question-number{background:#eaf2ff;color:#245a9b;font-weight:800;width:30px;height:30px;flex-shrink:0;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px}
-    .question-text{flex:1;line-height:1.55;color:#24364d}
-    .practise-question{border:0;background:#edf3fb;color:#245a9b;padding:9px 13px;border-radius:8px;cursor:pointer;font-weight:700;font-size:12px;white-space:nowrap}
-    .practise-question:hover{background:#dceaff}
-    .date-label{display:inline-block;color:#245a9b;background:#eaf2ff;padding:6px 10px;border-radius:7px;font-size:12px;font-weight:800;margin-bottom:12px}
-    .selected-question{background:#edf5ff;border:1px solid #c7dcf7;padding:18px;border-radius:12px;margin:18px 0}
-    .selected-question small{color:#52749d;font-weight:700;display:block;margin-bottom:8px}
-    .selected-question strong{color:#17365d;font-size:17px;line-height:1.5}
-    .cue-card{background:#f4f7fc;border:1px solid #dce6f3;border-radius:15px;padding:23px;margin:18px 0}
-    .cue-card h3{margin-top:0;color:#17365d}
+    .question-number{background:#eefbf6;color:#3c8369;font-weight:800;width:30px;height:30px;flex-shrink:0;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px}
+    .question-text{flex:1;line-height:1.55;color:#2c453c}
+    .practise-question{border:0;background:#edf3fb;color:#3c8369;padding:9px 13px;border-radius:8px;cursor:pointer;font-weight:700;font-size:12px;white-space:nowrap}
+    .practise-question:hover{background:#e3f8f0}
+    .date-label{display:inline-block;color:#3c8369;background:#eefbf6;padding:6px 10px;border-radius:7px;font-size:12px;font-weight:800;margin-bottom:12px}
+    .selected-question{background:#edf5ff;border:1px solid #d1ede3;padding:18px;border-radius:12px;margin:18px 0}
+    .selected-question small{color:var(--ink-618e7e,#618e7e);font-weight:700;display:block;margin-bottom:8px}
+    .selected-question strong{color:#254f40;font-size:17px;line-height:1.5}
+    .cue-card{background:#f4f7fc;border:1px solid #e1eee9;border-radius:15px;padding:23px;margin:18px 0}
+    .cue-card h3{margin-top:0;color:#254f40}
     .cue-card ul{padding-left:21px;line-height:1.9;margin-bottom:0}
-    .cue-card .cue-intro{font-weight:700;color:#24364d;line-height:1.6}
+    .cue-card .cue-intro{font-weight:700;color:#2c453c;line-height:1.6}
     .timer-panel{background:#f8fafc;border:1px solid #e2e8f0;border-radius:13px;padding:18px;margin:18px 0}
     .timer-controls,.recorder-actions{display:flex;flex-wrap:wrap;gap:10px;margin:15px 0}
-    .timer-display{font-size:25px;font-weight:800;color:#245a9b;font-variant-numeric:tabular-nums}
-    .recorder-button{border:1px solid #d5deea;background:#fff;color:#24466f;padding:11px 16px;border-radius:9px;cursor:pointer;font-weight:700}
-    .recorder-button.primary{background:#245a9b;border-color:#245a9b;color:#fff}
+    .timer-display{font-size:25px;font-weight:800;color:#3c8369;font-variant-numeric:tabular-nums}
+    .recorder-button{border:1px solid #d5deea;background:#fff;color:#336050;padding:11px 16px;border-radius:9px;cursor:pointer;font-weight:700}
+    .recorder-button.primary{background:#3c8369;border-color:#3c8369;color:#fff}
     .recorder-button:disabled{opacity:.45;cursor:not-allowed}
     @keyframes pulse{50%{opacity:.45}}
-    .helper{color:#64748b;font-size:13px;line-height:1.6;margin-top:15px}
+    .helper{color:var(--ink-68877c,#68877c);font-size:13px;line-height:1.6;margin-top:15px}
     @media(max-width:750px){.part-grid{grid-template-columns:1fr}.topic-grid{grid-template-columns:1fr}}
     @media(max-width:600px){.page-hero{padding:35px 24px}.question-item{align-items:flex-start;flex-wrap:wrap}.practise-question{margin-left:43px}}
   
     /* Speaking recorder: a distinct, calm recording workspace */
-    .recording-studio{margin:22px 0 8px;padding:clamp(20px,3vw,30px);border:1px solid #d8e4f3;border-radius:20px;background:linear-gradient(145deg,#f7faff 0%,#edf4fc 55%,#f8fbff 100%);box-shadow:0 12px 34px rgba(31,67,112,.07)}
+    .recording-studio{margin:22px 0 8px;padding:clamp(20px,3vw,30px);border:1px solid #ddeee8;border-radius:20px;background:linear-gradient(145deg,#f7faff 0%,#edf4fc 55%,#f8fbff 100%);box-shadow:0 12px 34px rgba(47,96,78,.07)}
     .recording-studio-heading{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:20px}
-    .recording-studio-heading h3{margin:5px 0 6px;color:#183657;font-size:22px}
-    .recording-studio-heading p{margin:0;color:#61758d;font-size:14px;line-height:1.6}
-    .recording-eyebrow{font-size:10px;font-weight:800;letter-spacing:1.5px;color:#5279a8}
-    .studio-mic-icon{display:grid;place-items:center;width:54px;height:54px;flex:0 0 54px;border-radius:17px;background:#e1edfc;color:#245a9b;font-size:25px}
+    .recording-studio-heading h3{margin:5px 0 6px;color:#254a3d;font-size:22px}
+    .recording-studio-heading p{margin:0;color:#65897c;font-size:14px;line-height:1.6}
+    .recording-eyebrow{font-size:10px;font-weight:800;letter-spacing:1.5px;color:#639784}
+    .studio-mic-icon{display:grid;place-items:center;width:54px;height:54px;flex:0 0 54px;border-radius:17px;background:#e6f7f1;color:#3c8369;font-size:25px}
     .recorder-display{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:66px;margin:0;padding:15px 18px;border:1px solid #dce6f2;border-radius:14px;background:rgba(255,255,255,.88);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
     .recorder-live-indicator{display:flex;align-items:center;gap:11px;min-width:0}
-    .record-dot{width:10px;height:10px;border-radius:50%;background:#9aa9bb;box-shadow:0 0 0 4px #edf1f6;flex-shrink:0}
+    .record-dot{width:10px;height:10px;border-radius:50%;background:#9db8ae;box-shadow:0 0 0 4px #edf1f6;flex-shrink:0}
     .record-dot.recording{background:#e34b58;box-shadow:0 0 0 5px rgba(227,75,88,.13);animation:pulse 1.2s infinite}
-    .record-status{font-size:14px;font-weight:700;color:#344b66}
-    .record-time{margin-left:auto;font-size:22px;font-weight:800;letter-spacing:.04em;color:#183657;font-variant-numeric:tabular-nums}
+    .record-status{font-size:14px;font-weight:700;color:#3e5c51}
+    .record-time{margin-left:auto;font-size:22px;font-weight:800;letter-spacing:.04em;color:#254a3d;font-variant-numeric:tabular-nums}
     .recorder-actions{display:flex;flex-wrap:wrap;gap:11px;margin:16px 0 0}
-    .recorder-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:11px 17px;border:1px solid #d2deec;border-radius:11px;background:#fff;color:#294967;cursor:pointer;font-weight:750;font-size:13px;transition:transform .16s ease,box-shadow .16s ease,background .16s ease}
-    .recorder-button:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 5px 14px rgba(35,72,116,.1)}
-    .recorder-button.primary{background:#245a9b;border-color:#245a9b;color:#fff;box-shadow:0 5px 13px rgba(36,90,155,.18)}
-    .recorder-button.primary:hover:not(:disabled){background:#1d4d87}
+    .recorder-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:11px 17px;border:1px solid #d7e7e1;border-radius:11px;background:#fff;color:#355b4d;cursor:pointer;font-weight:750;font-size:13px;transition:transform .16s ease,box-shadow .16s ease,background .16s ease}
+    .recorder-button:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 5px 14px rgba(51,100,82,.1)}
+    .recorder-button.primary{background:#3c8369;border-color:#3c8369;color:#fff;box-shadow:0 5px 13px rgba(60,131,105,.18)}
+    .recorder-button.primary:hover:not(:disabled){background:#32725a}
     .recorder-button.stop{background:#fff;border-color:#f0cbd0;color:#b83242}
     .recorder-button.stop:hover:not(:disabled){background:#fff5f6}
     .recorder-button:disabled{opacity:.42;cursor:not-allowed;box-shadow:none}
@@ -96,9 +96,9 @@
     .playback-heading h3{margin:4px 0 0;color:#244b3b;font-size:17px}
     .playback-check{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#dff2e6;color:#26734d;font-weight:900}
     .recording-playback audio{display:block;width:100%;margin:15px 0}
-    .download-recording{display:inline-flex;align-items:center;gap:7px;color:#245a9b;font-size:13px;font-weight:800;text-decoration:none}
+    .download-recording{display:inline-flex;align-items:center;gap:7px;color:#3c8369;font-size:13px;font-weight:800;text-decoration:none}
     .download-recording:hover{text-decoration:underline}
-    .recorder-message{margin:15px 2px 0;color:#61758d}
+    .recorder-message{margin:15px 2px 0;color:#65897c}
     @media(max-width:600px){.recording-studio{padding:18px;border-radius:16px}.recording-studio-heading h3{font-size:19px}.studio-mic-icon{width:46px;height:46px;flex-basis:46px}.recorder-actions{display:grid;grid-template-columns:1fr}.recorder-button{width:100%}.recorder-display{padding:13px}.record-time{font-size:20px}}
 
     .speaking-review-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
@@ -110,37 +110,37 @@
 
     /* Speaking practice: recorder and question panels in dark mode */
     html[data-theme="dark"] body .selected-question{
-      background:#1b2b3d!important;border-color:#3a5878!important;
+      background:#22362f!important;border-color:#466c5e!important;
     }
-    html[data-theme="dark"] body .selected-question small{color:#a9c6e8!important}
+    html[data-theme="dark"] body .selected-question small{color:#b6dbce!important}
     html[data-theme="dark"] body .selected-question strong{color:#f0f5fc!important}
     html[data-theme="dark"] body .recording-studio{
-      background:linear-gradient(145deg,#172536 0%,#1b3047 55%,#19283a 100%)!important;
-      border-color:#354d68!important;box-shadow:0 12px 34px rgba(0,0,0,.22)!important;
+      background:linear-gradient(145deg,#1d3029 0%,#243e35 55%,#20332c 100%)!important;
+      border-color:#3f5e53!important;box-shadow:0 12px 34px rgba(0,0,0,.22)!important;
     }
     html[data-theme="dark"] body .recording-studio-heading h3,
     html[data-theme="dark"] body .record-time{color:#edf4ff!important}
     html[data-theme="dark"] body .recording-studio-heading p,
     html[data-theme="dark"] body .helper,
-    html[data-theme="dark"] body .recorder-message{color:#b2c2d5!important}
-    html[data-theme="dark"] body .recording-eyebrow{color:#9fc4f0!important}
+    html[data-theme="dark"] body .recorder-message{color:#b9cec6!important}
+    html[data-theme="dark"] body .recording-eyebrow{color:#afe0ce!important}
     html[data-theme="dark"] body .studio-mic-icon{
-      background:#294563!important;color:#c4ddfb!important;
+      background:#35574b!important;color:#cff0e4!important;
     }
     html[data-theme="dark"] body .recorder-display{
-      background:#111e2d!important;border-color:#3b526b!important;
+      background:#172721!important;border-color:#456157!important;
       box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important;
     }
     html[data-theme="dark"] body .record-status{color:#e2ebf6!important}
-    html[data-theme="dark"] body .record-dot{background:#71849b;box-shadow:0 0 0 4px #26374a}
+    html[data-theme="dark"] body .record-dot{background:#75978a;box-shadow:0 0 0 4px #2d433b}
     html[data-theme="dark"] body .recorder-button{
-      background:#263a50!important;border-color:#49617b!important;color:#e5effb!important;
+      background:#2e483e!important;border-color:#537166!important;color:#e5effb!important;
     }
-    html[data-theme="dark"] body .recorder-button:hover:not(:disabled){background:#304a65!important}
+    html[data-theme="dark"] body .recorder-button:hover:not(:disabled){background:#3b5a4f!important}
     html[data-theme="dark"] body .recorder-button.primary{
-      background:#2865a8!important;border-color:#4c8bd0!important;color:#fff!important;
+      background:#428e72!important;border-color:#66b699!important;color:#fff!important;
     }
-    html[data-theme="dark"] body .recorder-button.primary:hover:not(:disabled){background:#3478bf!important}
+    html[data-theme="dark"] body .recorder-button.primary:hover:not(:disabled){background:#50a385!important}
     html[data-theme="dark"] body .recorder-button.stop{
       background:#392832!important;border-color:#80505b!important;color:#ffb9c1!important;
     }
@@ -150,38 +150,38 @@
     }
     html[data-theme="dark"] body .playback-heading h3{color:#e5f5eb!important}
     html[data-theme="dark"] body .playback-check{background:#28543d!important;color:#b9edca!important}
-    html[data-theme="dark"] body .download-recording{color:#9fc9ff!important}
+    html[data-theme="dark"] body .download-recording{color:#b2ecd7!important}
     html[data-theme="dark"] body .timer-panel{
-      background:#172536!important;border-color:#3a526c!important;
+      background:#1d3029!important;border-color:#446257!important;
     }
-    html[data-theme="dark"] body .timer-display{color:#a9cefa!important}
+    html[data-theme="dark"] body .timer-display{color:#b9ead8!important}
     html[data-theme="dark"] body .cue-card{
-      background:#1a293a!important;border-color:#394f68!important;
+      background:#20342d!important;border-color:#425f54!important;
     }
     html[data-theme="dark"] body .cue-card h3{color:#e7f0fb!important}
     html[data-theme="dark"] body .cue-card .cue-intro,
     html[data-theme="dark"] body .cue-card ul,
-    html[data-theme="dark"] body .cue-card p{color:#c7d5e5!important}
+    html[data-theme="dark"] body .cue-card p{color:#cddfd8!important}
     html[data-theme="dark"] body .question-item{
-      background:#192838!important;border-color:#344b63!important;
+      background:#1f322b!important;border-color:#3d5a4f!important;
     }
     html[data-theme="dark"] body .question-text{color:#e0eaf5!important}
-    html[data-theme="dark"] body .question-number{background:#294563!important;color:#c6e0ff!important}
-    html[data-theme="dark"] body .question-reported-date{color:#a9bfd8!important}
+    html[data-theme="dark"] body .question-number{background:#35574b!important;color:#d1f4e7!important}
+    html[data-theme="dark"] body .question-reported-date{color:#b2cfc4!important}
     html[data-theme="dark"] body .practise-question{
-      background:#294563!important;color:#d8eaff!important;
+      background:#35574b!important;color:#e0f7ef!important;
     }
-    html[data-theme="dark"] body .practise-question:hover{background:#355b82!important}
-    html[data-theme="dark"] body .date-label{background:#294563!important;color:#d8eaff!important}
+    html[data-theme="dark"] body .practise-question:hover{background:#447362!important}
+    html[data-theme="dark"] body .date-label{background:#35574b!important;color:#e0f7ef!important}
     html[data-theme="dark"] body .topic-button{
-      background:#192838!important;border-color:#344b63!important;color:#e5eef8!important;
+      background:#1f322b!important;border-color:#3d5a4f!important;color:#e5eef8!important;
     }
-    html[data-theme="dark"] body .topic-button span{color:#b2c2d5!important}
-    html[data-theme="dark"] body .topic-button:hover{border-color:#668bb4!important}
+    html[data-theme="dark"] body .topic-button span{color:#b9cec6!important}
+    html[data-theme="dark"] body .topic-button:hover{border-color:#76a493!important}
     html[data-theme="dark"] body .back-button{
-      background:#294563!important;color:#d8eaff!important;
+      background:#35574b!important;color:#e0f7ef!important;
     }
-    html[data-theme="dark"] body .back-button:hover{background:#355b82!important}
+    html[data-theme="dark"] body .back-button:hover{background:#447362!important}
     html[data-theme="dark"] body .speaking-review-grid>div{
       background:#1a2b2a!important;border-color:#3d5c50!important;
     }
@@ -196,42 +196,42 @@
     html[data-theme="dark"] body .panel:has(#questionList),
     html[data-theme="dark"] body .panel:has(#practiceSection),
     html[data-theme="dark"] body #practiceSection{
-      background:#121f2d!important;
-      border-color:#2c4055!important;
+      background:#172822!important;
+      border-color:#344d44!important;
       color:#e5edf7!important;
       box-shadow:0 8px 26px rgba(0,0,0,.18)!important;
     }
     html[data-theme="dark"] body .part-card{
-      background:#192838!important;
-      border-color:#344b63!important;
+      background:#1f322b!important;
+      border-color:#3d5a4f!important;
       color:#e5eef8!important;
     }
     html[data-theme="dark"] body .part-card h3{color:#f0f5fc!important}
-    html[data-theme="dark"] body .part-card p{color:#b2c2d5!important}
+    html[data-theme="dark"] body .part-card p{color:#b9cec6!important}
     html[data-theme="dark"] body .part-number{
-      background:#294563!important;color:#c6e0ff!important;
+      background:#35574b!important;color:#d1f4e7!important;
     }
-    html[data-theme="dark"] body .card-link{color:#a9cefa!important}
+    html[data-theme="dark"] body .card-link{color:#b9ead8!important}
     html[data-theme="dark"] body .section-heading h2,
     html[data-theme="dark"] body #practiceSection h2{
       color:#edf4fc!important;
     }
     html[data-theme="dark"] body .section-heading p,
     html[data-theme="dark"] body #practiceSubtitle{
-      color:#b6c6d8!important;
+      color:#bdd1ca!important;
     }
     html[data-theme="dark"] body .recording-studio{
-      background:#172536!important;
-      background-image:linear-gradient(145deg,#172536 0%,#1a2b3e 52%,#172536 100%)!important;
-      border:1px solid #3b526b!important;
+      background:#1d3029!important;
+      background-image:linear-gradient(145deg,#1d3029 0%,#21372f 52%,#1d3029 100%)!important;
+      border:1px solid #456157!important;
       color:#e5edf7!important;
     }
     html[data-theme="dark"] body .recording-studio *{
       text-shadow:none!important;
     }
     html[data-theme="dark"] body .recorder-display{
-      background:#0f1b29!important;
-      border:1px solid #40566e!important;
+      background:#14241e!important;
+      border:1px solid #49655b!important;
     }
     html[data-theme="dark"] body .recording-playback{
       background:#172c25!important;
@@ -241,30 +241,30 @@
     }
     html[data-theme="dark"] body .recording-playback audio{
       color-scheme:dark;
-      background:#172536!important;
+      background:#1d3029!important;
       border-radius:10px;
     }
     html[data-theme="dark"] body .recording-playback[hidden]{display:none!important}
     html[data-theme="dark"] body .cue-card,
     html[data-theme="dark"] body .timer-panel{
-      background:#172536!important;
+      background:#1d3029!important;
       background-image:none!important;
-      border-color:#3b526b!important;
-      color:#d5e1ee!important;
+      border-color:#456157!important;
+      color:#dae9e3!important;
     }
     html[data-theme="dark"] body .timer-panel .recorder-button{
-      background:#263a50!important;color:#e5effb!important;border-color:#49617b!important;
+      background:#2e483e!important;color:#e5effb!important;border-color:#537166!important;
     }
     html[data-theme="dark"] body .selected-question{
-      background:#1b2b3d!important;
+      background:#22362f!important;
       background-image:none!important;
-      border-color:#45617e!important;
+      border-color:#507366!important;
     }
     html[data-theme="dark"] body .selected-question strong{color:#f0f5fc!important}
     html[data-theme="dark"] body .selected-question small,
-    html[data-theme="dark"] body #practiceReportedDate{color:#a9c6e8!important}
+    html[data-theme="dark"] body #practiceReportedDate{color:#b6dbce!important}
     html[data-theme="dark"] body .recording-studio .recorder-message{
-      color:#bdcada!important;
+      color:#c3d4ce!important;
     }
 
   
@@ -298,18 +298,18 @@ html[data-theme="dark"] #mockSection p.mock-q{color:#eef6f0!important}html[data-
 .mock-primary,.mock-secondary{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:13px 20px;border-radius:12px;font:inherit;font-weight:800;font-size:15px;cursor:pointer;text-decoration:none;border:1px solid #276c5c}
 .mock-primary{background:#276c5c;color:#fff}.mock-primary:hover{background:#1f5a4b}.mock-primary:disabled{opacity:.6;cursor:wait}
 .mock-secondary{background:#fff;color:#276c5c}.mock-secondary:hover{background:#eef6f0}
-.mock-small{font-size:13px;color:#718078;margin-top:10px}
+.mock-small{font-size:13px;color:var(--ink-718078,#718078);margin-top:10px}
 .mock-steps{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:14px}
-.mock-steps span{padding:6px 12px;border-radius:999px;background:#eef3ef;color:#718078;font-size:12.5px;font-weight:800}
+.mock-steps span{padding:6px 12px;border-radius:999px;background:#eef3ef;color:var(--ink-718078,#718078);font-size:12.5px;font-weight:800}
 .mock-steps span.on{background:#276c5c;color:#fff}.mock-steps span.done{background:#dcefe3;color:#1f5a45}
-.mock-steps .mock-rec{margin-left:auto;background:transparent;color:#8a9a93;font-weight:700}
+.mock-steps .mock-rec{margin-left:auto;background:transparent;color:#66786e;font-weight:700}
 .mock-steps .mock-rec.live{color:#c0392b;animation:mockPulse 1.6s infinite}
 @keyframes mockPulse{50%{opacity:.45}}
 .mock-stage{padding:clamp(18px,3vw,30px);border:1px solid #dfe9e1;border-radius:18px;background:#fff}
 .mock-label{font-size:12px;font-weight:900;letter-spacing:.06em;color:#39796d;text-transform:uppercase;margin-bottom:12px}
 .mock-lead{color:#5d706b;margin:0 0 8px;font-size:15px}
 .mock-q{font-size:clamp(20px,2.6vw,26px);line-height:1.4;font-weight:750;color:#17352b;margin:0 0 12px}
-.mock-hint{color:#718078;font-size:14px;margin:0}
+.mock-hint{color:var(--ink-718078,#718078);font-size:14px;margin:0}
 .mock-clock{margin-top:16px;font-variant-numeric:tabular-nums;font-weight:900;font-size:18px;color:#39796d}
 .mock-clock.big{font-size:40px;text-align:center}.mock-clock.low{color:#c0392b}
 .mock-cue .cue{padding:18px;border:2px solid #17352b;border-radius:12px;background:#fffef8;margin-bottom:14px}
@@ -321,7 +321,7 @@ html[data-theme="dark"] #mockSection p.mock-q{color:#eef6f0!important}html[data-
 .mock-nav{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;margin-top:14px}
 .mock-end h2{margin:4px 0 14px;color:#17352b}
 .mock-times{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
-.mock-times div{padding:12px;border-radius:12px;background:#f1f7f3;text-align:center}.mock-times b{display:block;font-size:20px;color:#17352b;font-variant-numeric:tabular-nums}.mock-times span{font-size:12px;color:#718078}
+.mock-times div{padding:12px;border-radius:12px;background:#f1f7f3;text-align:center}.mock-times b{display:block;font-size:20px;color:#17352b;font-variant-numeric:tabular-nums}.mock-times span{font-size:12px;color:var(--ink-718078,#718078)}
 .mock-recording{display:flex;flex-direction:column;gap:8px;padding:14px;border:1px solid #dfe9e1;border-radius:12px;margin-bottom:14px}.mock-recording audio{width:100%}.mock-recording a{color:#276c5c;font-weight:800}
 .mock-check{padding:14px 16px;border-radius:12px;background:#f7fbf8;border:1px solid #e1eae3;margin-bottom:12px}.mock-check ul{margin:8px 0 0;padding-left:18px;line-height:1.65;color:#425b4b;font-size:14.5px}
 .mock-review{margin-bottom:6px}.mock-review summary{cursor:pointer;font-weight:800;color:#276c5c}.mock-review h4{margin:12px 0 4px;color:#17352b}.mock-review ol{margin:0;padding-left:20px;line-height:1.6;color:#425b4b}
@@ -341,7 +341,7 @@ html[data-theme="dark"] .mock-kicker,html[data-theme="dark"] .mock-label,html[da
   <link rel="icon" type="image/svg+xml" href="../assets/englisity-mark.svg?v=20261117-logo">
   <link rel="manifest" href="../manifest.webmanifest">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/englisity-app-icon.png?v=20261117-logo">
-  <link rel="stylesheet" href="../css/design.css?v=20261123-1">
+  <link rel="stylesheet" href="../css/design.css?v=20261125-phone">
 </head>
 <body>
 <header class="topbar">
@@ -371,8 +371,8 @@ html[data-theme="dark"] .mock-kicker,html[data-theme="dark"] .mock-label,html[da
     <div class="section-heading">
       <h2>Choose a speaking part</h2>
       <p>Select a part to explore topics and practise questions.</p>
+      <p class="speaking-fresh" id="speakingFresh" hidden></p>
     </div>
-    <div class="share-prompt"><p><strong>Took IELTS recently?</strong> Share the Speaking questions you got so other students can practise them.</p><a href="share.html?type=questions&amp;section=Speaking">Share your questions →</a></div>
     <div class="part-grid">
       <button class="part-card" data-part="1">
         <span class="part-number">01</span>
@@ -398,6 +398,7 @@ html[data-theme="dark"] .mock-kicker,html[data-theme="dark"] .mock-label,html[da
       <span><strong>Full speaking mock tests</strong><span>Parts 1, 2 and 3 in one go, timed like the real exam, with an examiner voice and a recording of your answers.</span></span>
       <span class="card-link">Start a mock →</span>
     </a>
+    <div class="share-prompt"><p><strong>Took IELTS recently?</strong> Share the Speaking questions you got so other students can practise them.</p><a href="share.html?type=questions&amp;section=Speaking">Share your questions →</a></div>
   </section>
 
   <section class="panel practice-screen" id="mockSection" hidden></section>
@@ -448,7 +449,7 @@ html[data-theme="dark"] .mock-kicker,html[data-theme="dark"] .mock-label,html[da
     <div class="selected-question">
       <small>YOUR QUESTION</small>
       <strong id="recorderQuestion">No question selected yet.</strong>
-      <small id="practiceReportedDate" style="display:block;color:#64748b;margin-top:7px;"></small>
+      <small id="practiceReportedDate" style="display:block;color:var(--ink-68877c,#68877c);margin-top:7px;"></small>
     </div>
 
     <section class="recording-studio" aria-label="Voice recording studio">
@@ -1259,7 +1260,8 @@ html[data-theme="dark"] .mock-kicker,html[data-theme="dark"] .mock-label,html[da
 
   // November 1–11 batch: dates follow the order of the reported list (1st → November 1,
   // 2nd → November 2, … 12th → November 1 again). A date never moves backwards.
-  const monthIndex = { October: 10, November: 11, December: 12 };
+  // Dates have no year: October–December are 2026, January–September are 2027 (so January comes after December).
+  const monthIndex = { October: 10, November: 11, December: 12, January: 13, February: 14, March: 15, April: 16, May: 17, June: 18, July: 19, August: 20, September: 21 };
   const dateValue = text => { const [m, d] = String(text || "").split(" "); return (monthIndex[m] || 0) * 100 + Number(d || 0); };
   const novemberBatchDates = [["Describe an activity you routinely do but that is a waste of time.", 1], ["Describe an enjoyable evening you spent with friends.", 2], ["Describe a boring place.", 3], ["Describe a person who likes to grow plants.", 4], ["Describe a tall building you like or dislike.", 5], ["Describe a time when you worked in a team.", 6], ["Describe a time when someone talked to you about something you were not interested in, but you kept listening.", 7], ["Describe an interview with a famous person that you watched.", 8], ["Describe a place you enjoy visiting.", 9], ["Describe a person you know who has a successful business.", 10], ["Describe a person who is very good at learning languages.", 11], ["Describe a friend from your childhood whom you remember very well.", 1], ["Describe a type of food eaten on special occasions.", 2], ["Describe a person in your life who really likes taking photos.", 3], ["Describe a movie that disappointed you.", 4], ["Describe a new law (for example, an environmental law) you would like to introduce in your country.", 5], ["Describe an advertisement that featured a famous person.", 6], ["Describe a person you know who likes learning history.", 7], ["Describe someone you know who wants to work in the medical field.", 8], ["Describe a person who did something difficult and succeeded.", 9], ["Describe a person who taught you a new skill when you were a child.", 10], ["Describe an animal character in a story or film.", 11], ["Describe a noisy place you have been to.", 1], ["Describe a time when you saved money to buy something special.", 2], ["Describe a live competition that you watched.", 3], ["Describe an ambition or a dream you have.", 4], ["Describe a crowded place you have visited.", 5], ["Describe a time when you changed your opinion about something important.", 6], ["Describe a person who has worked hard to improve their fitness.", 7], ["Describe a person you know who is well organised.", 8], ["Describe an older person you admire.", 9], ["Describe a time when you sent someone a message and they took a long time to reply.", 10], ["Describe a plan that you had to change recently.", 11], ["Describe a time when you got up early.", 1], ["Describe an interesting video.", 2], ["Describe a person you know who is good at making things (by hand or using technology).", 3], ["Describe an exciting book you have read.", 4], ["Describe a challenging technological problem you faced.", 5], ["Describe a person you know who you think is very happy.", 6], ["Describe a sportsperson who is good at their sport.", 7], ["Describe a time when you helped someone to solve a problem.", 8], ["Describe a short trip you often take but do not like.", 9], ["Describe a piece of local news that was interesting to you.", 10], ["Describe an important decision you made with the help of someone.", 11], ["What do you enjoy most about your studies?", 1], ["Do you work or are you a student?", 2], ["Is there anything you dislike about your studies?", 3], ["What subject are you studying?", 4], ["Do you think teachers are different now from when your parents were students?", 5], ["Did you have a favourite teacher when you were a child?", 6], ["Which do you prefer, primary school teachers or high school teachers?", 7], ["Do you think teaching is a good job?", 8], ["Can websites replace teachers?", 9], ["Who did you like the most when you were in high school?", 10], ["Were there any subjects you found difficult or disliked at secondary school?", 11], ["Do you remember your first day at secondary school?", 1], ["Would you recommend your secondary school to others? Why?", 2], ["Where is your hometown?", 3], ["How long have you lived in your hometown?", 4], ["What kind of place is your hometown?", 5], ["Do you know all your neighbors?", 6], ["Do you live in an apartment or a house?", 7], ["How long have you lived in your current home?", 8], ["Is there anything you would like to change about your home?", 9], ["What is your favourite room in your home?", 10], ["Do you live in a noisy or a quiet area?", 11], ["Do you know all your neighbors?", 1], ["Is the area where you live crowded with people and cars?", 2], ["Do you know how many people live in your area?", 3], ["Do you like going to parks?", 4], ["Are there any parks you would like to go to in the future?", 5], ["Did you like going to parks as a child?", 6], ["Would you like to see more parks in your city?", 7], ["Do you find headphones comfortable to wear?", 8], ["When would you not use headphones?", 9], ["Do you use headphones?", 10], ["What type of headphones do you use?", 11], ["Do your friends use social media apps?", 1], ["Do you usually use social media apps?", 2], ["What social media apps do you usually use?", 3], ["What do you usually do on social media apps?", 4], ["What are the most popular websites in your country?", 5], ["Have there been any changes to the websites you often visit?", 6], ["Do you usually get information from websites or from books?", 7], ["Would you like to have your own website?", 8], ["Have you ever used a study website?", 9], ["When do you wake up?", 10], ["Have you ever changed your routine?", 11], ["What part of the day do you like most?", 1], ["What is your daily routine?", 2], ["What do you usually do in the morning?", 3], ["Do you like getting up early in the morning?", 4], ["What do you usually do on weekend mornings?", 5], ["Do you spend your mornings doing the same things on weekdays and at weekends?", 6], ["What do you do to stay active when you feel tired?", 7], ["When do you feel tired?", 8], ["Do you often feel tired?", 9], ["Did your parents teach you to be tidy when you were young?", 10], ["Did you keep things tidy when you were a child?", 11], ["What do you think of people who do not keep things tidy?", 1], ["Do you keep your room or workspace tidy?", 2], ["What do you do when you feel bored?", 3], ["Do you often feel bored?", 4], ["What things are boring to you?", 5], ["Did you find school boring when you were a child?", 6], ["Have you learned about music at school?", 7], ["Do you know how to play any musical instruments?", 8], ["Do you think all children should have music lessons at school?", 9], ["Do you think it is easy to learn to play a musical instrument?", 10], ["Is singing popular among people around you?", 11], ["Do you listen to music while driving?", 1], ["Do your friends think you are good at singing?", 2], ["Do you like listening to other people sing?", 3], ["Do you think laughing is important in daily life?", 4], ["Why do people enjoy humorous things?", 5], ["Are you good at telling jokes?", 6], ["Do you like watching comedy programmes or movies?", 7], ["Have you ever learnt about outer space and stars?", 8], ["Do you like science fiction movies?", 9], ["Would you like to go into outer space in the future?", 10], ["Do you like science fiction movies?", 11], ["What is your favourite food?", 1], ["Has your favourite food changed since you were younger?", 2], ["Is it important for people to have meals with family or friends?", 3], ["Do you eat fruit every day? Why or why not?", 4], ["What kinds of fruit and vegetables do you dislike?", 5], ["Where do people usually buy vegetables?", 6], ["Was there any fruit you disliked when you were a child?", 7], ["What type of clothes do you prefer to wear?", 8], ["Will your style of clothes change in the future?", 9], ["Do you wear different clothes on weekdays and at weekends?", 10], ["Do you like buying designer clothes?", 11], ["How much money do you usually spend on shoes?", 1], ["Do you prefer comfortable or fashionable shoes?", 2], ["Have you ever bought shoes online?", 3], ["Do you like buying shoes?", 4], ["How often do you buy new shoes?", 4], ["Do you prefer shopping in small shops or large shopping centres?", 5], ["What are the advantages of online shopping?", 6], ["What are the disadvantages of online shopping?", 7], ["Do you compare prices in different shops before buying something?", 8], ["Do you think it is important to wear a watch?", 9], ["Is it okay to spend money on brand watches?", 10], ["Has someone ever gifted you one?", 11], ["Do you wear watches?", 1], ["What is the most popular colour in Uzbekistan?", 2], ["Do colours affect your mood?", 3], ["Did colour matter to you when you were a child?", 4], ["Is there a colour you dislike? Why?", 5], ["Do you prefer writing letters by hand or sending messages?", 6], ["Do people still keep handwritten letters today?", 7], ["Did you ever make things out of paper when you were a child?", 8], ["Do you recycle rubbish?", 9], ["What do you usually do during a long journey?", 10], ["Do you prefer travelling alone or with other people?", 11], ["Do you prefer to sit by the window when travelling?", 1], ["Did you have a long journey with your family as a child?", 2], ["Do you prefer being a driver or a passenger?", 3], ["Would you like to own an expensive car if you had the chance?", 4], ["Have you ever had a long car journey?", 5], ["Did you have a long journey with your family as a child?", 6], ["How did you learn about politeness when you were a child?", 7], ["Do you think being polite is important?", 8], ["Have you met anyone very polite recently?", 9], ["How did you learn about politeness when you were a child?", 10], ["Do you think it is important to remember people's names?", 11], ["Is it easy for you to remember people's names?", 1], ["How do you usually remember new names?", 2], ["What would you do if someone could not remember your name?", 3], ["What new opportunities have you had recently?", 4], ["Are new opportunities important to people?", 5], ["Would you like to have more new opportunities?", 6], ["Do you think young people have enough opportunities nowadays?", 7], ["Do you think young people are more willing to try new things than older people?", 8], ["Do you like trying new things?", 9], ["Is it important to keep trying new things in life?", 10], ["Why do you think some people enjoy learning science?", 11], ["Which area of science are you most interested in?", 1], ["What science subjects did you learn at school?", 2], ["Do you like science?", 3], ["Did you learn about recycling at school?", 4], ["Do you think there will be more rubbish in the future?", 5], ["Do you recycle rubbish?", 6], ["How good is the recycling service in your community?", 7], ["Do you often see advertisements?", 8], ["Where do you usually see advertisements?", 9], ["Do you prefer advertisements on television or on social media?", 10], ["What kinds of advertisements do you dislike?", 11], ["Is it good for children to learn teamwork at school?", 1], ["What skills should children learn before they start school?", 2], ["Is it easier for adults to learn from others than to learn by themselves?", 3], ["Is it good that many people now use the internet to learn skills?", 4], ["Why do children learn languages faster than adults?", 5], ["What are the best ways for adults to learn a new language?", 6], ["Can people learn a language well using websites?", 7], ["Which is more helpful, watching videos or reading books?", 8], ["Are there any differences between the videos young and old people like?", 9], ["What things do children like to make?", 10], ["Should all children take courses to learn how to make things?", 11], ["Is it necessary for children to learn about animals at school?", 1], ["Do you think all children should have music lessons at school?", 2], ["What competitions do children usually have at school besides art and music?", 3], ["What do families usually do to strengthen their relationships?", 4], ["Do people in your country prefer spending time with their friends or their family?", 5], ["Do children like to chat with elderly people?", 6], ["What happens if people do not listen carefully when others are talking?", 7], ["What topics do children usually talk about with each other?", 8], ["Is it easy for children to make friends?", 9], ["Is it good to make friends with people from older generations?", 10], ["Do you think friendship is important in people's lives?", 11], ["Why do people sometimes not reply to messages quickly?", 1], ["How has the way people communicate changed?", 2], ["How can people be polite when writing letters?", 3], ["Do young people like using social media?", 4], ["Do older people use social media in the same way as young people?", 5], ["Why do some older people find it difficult to use social media?", 6], ["What makes a good team leader?", 7], ["Why is teamwork important in the workplace?", 8], ["Are there any new businesses opening where you live?", 9], ["Why do some people like shopping at small shops?", 10], ["What might cause a business to fail?", 11], ["In which fields do companies succeed more easily?", 1], ["What qualities do people need to succeed in difficult tasks?", 2], ["Do people often face changes at work?", 3], ["What should people prepare before a job interview?", 4], ["Do managers need to be well organised?", 5], ["Is it important to like your job?", 6], ["Are big cities more interesting than small towns?", 7], ["Is it important to have natural places in cities?", 8], ["Is it necessary to have strict rules in natural places?", 9], ["Will people still live in tall buildings in the future?", 10], ["Why do many people prefer to buy land and build their own houses?", 11], ["Why should historical buildings be protected?", 1], ["What kinds of places are usually crowded in Uzbek cities?", 2], ["What are the benefits of travelling when there are fewer people?", 3], ["Do crowded cities need some quiet places?", 4], ["What places are noisy in your country?", 5], ["What do people usually do when they encounter noisy behaviour?", 6], ["Do children in your country often play outdoors?", 7], ["What leisure activities do old and young people prefer?", 8], ["Do you think a certain amount of stress is good for people?", 9], ["What effects can noise have on people, for example on their sleep?", 10], ["How has people's attitude towards health changed compared with the past?", 11], ["What should people do to stay healthy and fit today?", 1], ["Does the government have a role in building healthy communities?", 2], ["Why do some people want to be doctors?", 3], ["Why are children attracted to biology?", 4], ["Is the healthcare system in your country good?", 5], ["Which is more important, money or happiness?", 6], ["Should schools teach students how to manage money from a young age?", 7], ["Why is it not easy to save money?", 8], ["Should parents teach children to be generous with money?", 9], ["Why do some people like shopping at small shops?", 10], ["Do people usually cook special-occasion food at home or eat out?", 11], ["How are eating habits today different from those in the past?", 1], ["How does food reflect a country's culture?", 2], ["Why do people like the newest tech products?", 3], ["How does technology affect education?", 4], ["What changes has technology brought to film production?", 5], ["Do you think it is better to seek emotional support from AI than from a real person?", 6], ["Should governments regulate video content online?", 7], ["Can people learn a language well using websites?", 8], ["Why do people enjoy humorous things?", 9], ["What kinds of movies do people in Uzbekistan like to watch?", 10], ["Why do some movies cost a lot to produce?", 11], ["How can the arts spread positive emotions in society?", 2], ["What things do children like to make?", 3], ["Do creative workers need a quiet environment to work for long periods?", 4], ["Do people like to read the novel before watching the film?", 5], ["What kinds of books do people like to read nowadays?", 6], ["How are the books young people read different from those older people read?", 7], ["Why do some professions have so many rules, such as rules about uniforms?", 8], ["What rules do children usually have to follow?", 9], ["Should people be punished for breaking environmental rules?", 10], ["Is it necessary to have strict rules in natural places?", 11], ["Do you think there will be more rubbish in the future?", 1], ["Should governments spend more money supporting professional sports?", 2], ["Does the government have a role in building healthy communities?", 3], ["Should governments regulate video content online?", 4], ["Should people be punished for breaking environmental rules?", 5], ["Why do some professions have so many rules, such as rules about uniforms?", 6], ["In what situations do people need to speak a foreign language?", 7], ["Would you travel to a foreign country because of its history?", 8], ["What are the benefits of travelling abroad?", 9], ["What are the benefits of travelling when there are fewer people?", 10], ["What are the benefits of travelling when there are fewer people?", 11], ["What are the common ways that people travel?", 1], ["What types of competitions are popular in your country?", 2], ["What competitions do children usually have at school besides art and music?", 3], ["Should governments spend more money supporting professional sports?", 4], ["What types of competitions are popular in your country?", 5], ["Should students have physical education and do sports at school?", 6], ["What qualities does a successful sportsperson need?", 7], ["Why do some people dislike following a routine?", 8], ["Is it good or bad to have ambitious people in a team?", 9], ["What do most young people in your country dream of?", 10], ["Is ambition important for young people?", 11], ["At what age do most children begin to make their own decisions?", 1], ["What decisions do ordinary people make every day?", 2], ["Why do people sometimes change their decisions?", 3], ["What decisions do ordinary people make every day?", 4], ["Do you think people make better decisions alone or with the help of others?", 5], ["Why do many young people refuse to take advice from adults?", 6], ["Should parents teach their children to be well organised?", 7], ["What can people do to become more organised?", 8], ["What do you do when you feel bored?", 9], ["Why do people sometimes feel bored?", 10], ["What things make students happy at school?", 11], ["Is it important to like your job?", 1], ["Why are some people unwilling to ask for help? Is that common in Uzbekistan?", 2], ["Should people help others?", 3], ["Should parents teach their children to help others?", 4], ["Would you travel to a foreign country because of its history?", 5], ["Why do some people find it difficult to learn history?", 6], ["Do people know more about ancient history or modern history?", 7], ["How does food reflect a country's culture?", 8], ["Why should historical buildings be protected?", 9], ["Is it necessary for children to learn about animals at school?", 10], ["Should children go to the zoo to see animals?", 11], ["Do people in Uzbekistan usually keep pets? Why?", 1], ["Is it important to have natural places in cities?", 2], ["Is it necessary to have strict rules in natural places?", 3], ["Do children in your country often play outdoors?", 4], ["Why do some famous people often give interviews? Is it all for entertainment?", 5], ["Why do companies use famous people in advertisements?", 6], ["What kinds of advertisements are most common in your country?", 7], ["Do famous people make advertisements more effective?", 8], ["Do people share interviews with their friends after watching them?", 9], ["Do people still read newspapers nowadays?", 10], ["Do people volunteer to help in their communities?", 11], ["Do people pay more attention to local news or national news?", 1], ["Why do people get up early?", 2], ["What are the benefits of arriving on time?", 3], ["If everyone went to bed early, would everyone get up early?", 4], ["Why do some people dislike following a routine?", 5], ["Do people often face changes at work?", 6], ["What kinds of plans do people often make?", 7], ["Do people like it when plans change at the last minute?", 8]];
   novemberBatchDates.forEach(([question, day]) => {
@@ -1292,6 +1294,15 @@ html[data-theme="dark"] .mock-kicker,html[data-theme="dark"] .mock-label,html[da
   ["Are big cities more interesting than small towns?", "Are new opportunities important to people?", "Are there any differences between the videos young and old people like?", "Are there any dress requirements for parties?", "Are there any new businesses opening where you live?", "Are there any parks you would like to go to in the future?", "Are you good at telling jokes?", "Can people learn a language well using websites?", "Can websites replace teachers?", "Can you give an example of a business that succeeded in the entertainment industry?", "Describe a boring place.", "Describe a crowded place you have visited.", "Describe a friend from your childhood whom you remember very well.", "Describe a home that you often visit but would not like to live in.", "Describe a live competition that you watched.", "Describe a movie that disappointed you.", "Describe a natural place that you enjoy spending time in.", "Describe a new law (for example, an environmental law) you would like to introduce in your country.", "Describe a noisy place you have been to.", "Describe a party you went to recently.", "Describe a person in your life who really likes taking photos.", "Describe a person who did something difficult and succeeded.", "Describe a person who has worked hard to improve their fitness.", "Describe a person who is very good at learning languages.", "Describe a person who likes to grow plants.", "Describe a person who taught you a new skill when you were a child.", "Describe a person you know who has a successful business.", "Describe a person you know who is good at making things (by hand or using technology).", "Describe a person you know who is well organised.", "Describe a person you know who likes learning history.", "Describe a person you know who you think is very happy.", "Describe a place you have travelled to that you would like to recommend to others.", "Describe a plan that you had to change recently.", "Describe a popular person in your country.", "Describe a public building you would like to visit (for example, a library or a sports centre).", "Describe a short trip you often take but do not like.", "Describe a sportsperson who is good at their sport.", "Describe a tall building you like or dislike.", "Describe a time when someone talked to you about something you were not interested in, but you kept listening.", "Describe a time when you got up early.", "Describe a time when you helped someone to solve a problem.", "Describe a time when you received good service in a shop.", "Describe a time when you saved money to buy something special.", "Describe a time when you sent someone a message and they took a long time to reply.", "Describe a time when you worked in a team.", "Describe a type of food eaten on special occasions.", "Describe an activity you routinely do but that is a waste of time.", "Describe an advertisement that featured a famous person.", "Describe an ambition or a dream you have.", "Describe an animal character in a story or film.", "Describe an enjoyable evening you spent with friends.", "Describe an exciting book you have read.", "Describe an interesting video.", "Describe an interview with a famous person that you watched.", "Did colour matter to you when you were a child?", "Did you dislike eating any vegetables when you were little?", "Did you enjoy travelling by car when you were a child?", "Did you ever make things out of paper when you were a child?", "Did you find school boring when you were a child?", "Did you have a long journey with your family as a child?", "Did you keep things tidy when you were a child?", "Did you learn about recycling at school?", "Did you like going to parks as a child?", "Did your parents teach you to be tidy when you were young?", "Do children in your country often play outdoors?", "Do children like to chat with elderly people?", "Do colours affect your mood?", "Do creative workers need a quiet environment to work for long periods?", "Do crowded cities need some quiet places?", "Do famous people make advertisements more effective?", "Do managers need to be well organised?", "Do many people in your country grow plants for food?", "Do people in Uzbekistan give plants as gifts?", "Do people in Uzbekistan usually keep pets? Why?", "Do people in your country like to visit other people's homes?", "Do people in your country prefer spending time with their friends or their family?", "Do people in your country prefer to celebrate in public places or at home?", "Do people know more about ancient history or modern history?", "Do people like it when plans change at the last minute?", "Do people like to read the novel before watching the film?", "Do people often face changes at work?", "Do people prefer living in flats or in detached houses?", "Do people share interviews with their friends after watching them?", "Do people still keep handwritten letters today?", "Do people usually cook special-occasion food at home or eat out?", "Do staff need to receive training before they serve customers?", "Do you compare prices in different shops before buying something?", "Do you eat fruit every day? Why or why not?", "Do you find headphones comfortable to wear?", "Do you go to sleep early or stay up late?", "Do you have a favourite teacher?", "Do you keep plants at home?", "Do you keep your room or workspace tidy?", "Do you know all your neighbors?", "Do you know anything about growing plants?", "Do you know how many people live in your area?", "Do you know how to play any musical instruments?", "Do you like buying designer clothes?", "Do you like buying shoes?", "Do you like getting up early in the morning?", "Do you like going to parks?", "Do you like listening to other people sing?", "Do you like science fiction movies?", "Do you like science?", "Do you like watching comedy programmes or movies?", "Do you listen to music while driving?", "Do you live in a noisy or a quiet area?", "Do you live in an apartment or a house?", "Do you often feel bored?", "Do you often feel tired?", "Do you often see advertisements?", "Do you prefer advertisements on television or on social media?", "Do you prefer being a driver or a passenger?", "Do you prefer comfortable or fashionable shoes?", "Do you prefer shopping in small shops or large shopping centres?", "Do you prefer to sit by the window when travelling?", "Do you prefer travelling alone or with other people?", "Do you prefer writing letters by hand or sending messages?", "Do you recycle paper?", "Do you recycle rubbish?", "Do you remember your first day at secondary school?", "Do you see a lot of advertising on trains or other transport?", "Do you spend your mornings doing the same things on weekdays and at weekends?", "Do you think a certain amount of stress is good for people?", "Do you think all children should have music lessons at school?", "Do you think being polite is important?", "Do you think friendship is important in people's lives?", "Do you think it is easy to learn to play a musical instrument?", "Do you think it is important to remember people's names?", "Do you think it is important to wear a watch?", "Do you think laughing is important in daily life?", "Do you think teachers are different now from when your parents were students?", "Do you think teaching is a good job?", "Do you think there will be more rubbish in the future?", "Do you use headphones?", "Do you usually get information from websites or from books?", "Do you usually use social media apps?", "Do you wear different clothes on weekdays and at weekends?", "Do you wear watches?", "Do you work or are you a student?", "Do your friends like the public buildings in your city?", "Do your friends think you are good at singing?", "Do your friends use social media apps?", "Does the government have a role in building healthy communities?", "Have there been any changes to the websites you often visit?", "Have you ever bought shoes online?", "Have you ever changed your routine?", "Have you ever had a long car journey?", "Have you ever learnt about outer space and stars?", "Have you ever used a study website?", "Have you learned about music at school?", "Have you met anyone very polite recently?", "Have you watched any science fiction movies about space?", "How are eating habits today different from those in the past?", "How are the books young people read different from those older people read?", "How can companies improve their customer service?", "How can people be polite when writing letters?", "How can the arts spread positive emotions in society?", "How did you learn about politeness when you were a child?", "How do people prepare for a holiday?", "How do you feel after staying up late the night before?", "How do you feel when you wake up early?", "How do you usually remember new names?", "How does food reflect a country's culture?", "How good is the recycling service in your community?", "How has people's attitude towards health changed compared with the past?", "How has the way people communicate changed?", "How long have you lived in your current home?", "How long have you lived in your hometown?", "How many hours do you normally sleep at night?", "How much money do you usually spend on shoes?", "How often do you buy new shoes?", "If everyone went to bed early, would everyone get up early?", "In what situations do people need to speak a foreign language?", "In what situations should people not take photos?", "In which fields do companies succeed more easily?", "Is ambition important for young people?", "Is it easier for adults to learn from others than to learn by themselves?", "Is it easy for children to make friends?", "Is it easy for you to remember people's names?", "Is it good for children to learn teamwork at school?", "Is it good or bad to have ambitious people in a team?", "Is it good that many people now use the internet to learn skills?", "Is it good to make friends with people from older generations?", "Is it important to have natural places in cities?", "Is it important to like your job?", "Is it necessary for children to learn about animals at school?", "Is it necessary to have strict rules in natural places?", "Is singing popular among people around you?", "Is the area where you live crowded with people and cars?", "Is there a colour you dislike? Why?", "Is there anything you would like to change about your home?", "Should all children take courses to learn how to make things?", "Should children go to the zoo to see animals?", "Should governments invest in hosting big sports events?", "Should governments regulate video content online?", "Should managers at a company be popular?", "Should parents teach children to be generous with money?", "Should parents teach their children to be well organised?", "Should parents teach their children to help others?", "Should people be punished for breaking environmental rules?", "Should people help others?", "Should schools teach students how to manage money from a young age?", "Should students have physical education and do sports at school?", "Were there any subjects you found difficult or disliked at secondary school?", "What are the advantages of online shopping?", "What are the benefits of arriving on time?", "What are the benefits of growing plants at home?", "What are the benefits of travelling abroad?", "What are the benefits of travelling when there are fewer people?", "What are the best ways for adults to learn a new language?", "What are the characteristics of good customer service?", "What are the common ways that people travel?", "What are the disadvantages of online shopping?", "What are the most popular sports in your country?", "What are the most popular websites in your country?", "What can happen when people travel at crowded times?", "What can people do to become more organised?", "What changes has technology brought to film production?", "What competitions do children usually have at school besides art and music?", "What do families usually do to strengthen their relationships?", "What do most young people in your country dream of?", "What do people do when they feel bored?", "What do people usually do when they encounter noisy behaviour?", "What do you dislike, or find boring or difficult, about your work?", "What do you do to stay active when you feel tired?", "What do you do when you feel bored?", "What do you enjoy most about your studies?", "What do you think of people who do not keep things tidy?", "What do you usually do during a long journey?", "What do you usually do in the morning?", "What do you usually do on social media apps?", "What do you usually do on weekend mornings?", "What effects can noise have on people, for example on their sleep?", "What happens if people do not listen carefully when others are talking?", "What influence does tourism have on local people?", "What is the most popular colour in Uzbekistan?", "What is your daily routine?", "What is your favourite room in your home?", "What kind of place is your hometown?", "What kinds of advertisements are most common in your country?", "What kinds of advertisements do you dislike?", "What kinds of books do people like to read nowadays?", "What kinds of fruit and vegetables do you dislike?", "What kinds of gifts do people bring when they visit others?", "What kinds of movies do people in Uzbekistan like to watch?", "What kinds of photos do people often take?", "What kinds of places are usually crowded in Uzbek cities?", "What kinds of plans do people often make?", "What kinds of plants do people like to grow at home?", "What kinds of teachers are popular among students?", "What leisure activities do old and young people prefer?", "What makes a good team leader?", "What might cause a business to fail?", "What new opportunities have you had recently?", "What part of the day do you like most?", "What places are noisy in your country?", "What plants did you grow when you were young?", "What qualities do people need to succeed in difficult tasks?", "What qualities does a successful sportsperson need?", "What rules do children usually have to follow?", "What science subjects did you learn at school?", "What should people do to stay healthy and fit today?", "What should people prepare before a job interview?", "What skills should children learn before they start school?", "What social media apps do you usually use?", "What subject are you studying?", "What things are boring to you?", "What things do children like to make?", "What things make students happy at school?", "What topics do children usually talk about with each other?", "What type of clothes do you prefer to wear?", "What type of headphones do you use?", "What types of competitions are popular in your country?", "What would you do if someone could not remember your name?", "When do people usually choose to go on vacation?", "When do you feel tired?", "When do you wake up?", "When would you not use headphones?", "Where do people usually buy vegetables?", "Where is your hometown?", "Which area of science are you most interested in?", "Which do you prefer, primary school teachers or high school teachers?", "Which historical buildings are worth preserving?", "Which is more helpful, watching videos or reading books?", "Which is more important, money or happiness?", "Who did you like the most when you were in high school?", "Why are some children popular at school?", "Why are some people unwilling to ask for help? Is that common in Uzbekistan?", "Why do children learn languages faster than adults?", "Why do companies use famous people in advertisements?", "Why do many people prefer to buy land and build their own houses?", "Why do people enjoy humorous things?", "Why do people get up early?", "Why do people hold family parties in your country?", "Why do people like taking photos?", "Why do people sometimes feel bored?", "Why do people sometimes not reply to messages quickly?", "Why do some famous people often give interviews? Is it all for entertainment?", "Why do some movies cost a lot to produce?", "Why do some people dislike following a routine?", "Why do some people find it difficult to learn history?", "Why do some people like shopping at small shops?", "Why do some people wear expensive watches?", "Why do some professions have so many rules, such as rules about uniforms?", "Why do you think some people enjoy learning science?", "Why is it not easy to save money?", "Why is teamwork important in the workplace?", "Why should historical buildings be protected?", "Will people still live in tall buildings in the future?", "Will your style of clothes change in the future?", "Would you like to go into outer space in the future?", "Would you like to have more new opportunities?", "Would you like to have your own website?", "Would you like to own an expensive car if you had the chance?", "Would you like to receive a watch as a gift?", "Would you like to see more parks in your city?", "Would you recommend your secondary school to others? Why?", "Would you travel to a foreign country because of its history?"].forEach(question => {
     if (allQuestions.includes(question) && dateValue("November 24") > dateValue(reportedDates.get(question))) reportedDates.set(question, "November 24");
   });
+
+  // "Questions reported up to …" under the part chooser, from the newest date in the bank.
+  (function showLatestReportedDate() {
+    const latest = [...reportedDates.values()].reduce((newest, date) => dateValue(date) > dateValue(newest) ? date : newest, "");
+    const note = document.getElementById("speakingFresh");
+    if (!note || !latest) return;
+    note.textContent = "Updated with questions reported up to " + latest + ".";
+    note.hidden = false;
+  })();
 
 
   // Merge topics that ended up with the same name (for example two "Gardening and plants" groups in Part 3).
@@ -1445,7 +1456,7 @@ html[data-theme="dark"] .mock-kicker,html[data-theme="dark"] .mock-label,html[da
       const date = document.createElement("small");
       date.className = "question-reported-date";
       date.textContent = "Last reported in IELTS: " + reportedDates.get(question);
-      date.style.cssText = "display:block;color:#64748b;font-size:11px;margin-top:5px;";
+      date.style.cssText = "display:block;color:var(--ink-68877c,#68877c);font-size:12px;margin-top:5px;";
 
       const questionContent = document.createElement("div");
       questionContent.style.flex = "1";
@@ -1824,7 +1835,7 @@ html[data-theme="dark"] .mock-kicker,html[data-theme="dark"] .mock-label,html[da
   });
 })();
 </script>
-<script src="../js/features.js?v=20261122-1"></script>
+<script src="../js/features.js?v=20261125-phone"></script>
 <!-- Cloudflare Web Analytics: counts visits, no cookies --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "ac91466da98a415b93a1320d7a491246"}'></script>
 </body>
 </html>

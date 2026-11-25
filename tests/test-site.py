@@ -932,6 +932,229 @@ def test_offline(browser, pw):
     ctx.close()
 
 
+PHONE_LAYOUT_JS = r"""() => {
+  const out = {tiny: [], smalltext: [], inputs: [], squeezed: []};
+  const shown = el => { const r = el.getBoundingClientRect(); if (!r.width || !r.height) return false;
+    for (let p = el; p; p = p.parentElement) { if (p.hidden) return false; const c = getComputedStyle(p); if (c.display === 'none' || c.visibility === 'hidden' || +c.opacity === 0) return false; }
+    return true; };
+  const label = el => (el.tagName.toLowerCase() + (el.id ? '#' + el.id : '') + (typeof el.className === 'string' && el.className.trim() ? '.' + el.className.trim().split(/\s+/)[0] : '') + ' "' + (el.innerText || el.value || el.getAttribute('aria-label') || '').trim().replace(/\s+/g, ' ').slice(0, 25) + '"');
+  for (const el of document.querySelectorAll('a[href], button, input:not([type=hidden]), select, textarea, summary, [role=button]')) {
+    if (!shown(el)) continue;
+    const r = el.getBoundingClientRect(), c = getComputedStyle(el);
+    if (r.right <= 0 || r.left >= innerWidth) continue;  // off-screen helpers such as "skip to content"
+    if (el.tagName === 'A' && c.display === 'inline' && el.closest('p, li, td, blockquote, small, .helper, .note')) continue;  // a link inside a sentence
+    const lab = el.closest('label');
+    if ((el.type === 'checkbox' || el.type === 'radio') && lab && lab.getBoundingClientRect().height >= 24) continue;
+    if (r.width < 24 || r.height < 24) out.tiny.push(label(el) + ' ' + Math.round(r.width) + 'x' + Math.round(r.height));
+    if (/^(INPUT|SELECT|TEXTAREA)$/.test(el.tagName) && !/^(checkbox|radio|range|button|submit|file|color)$/.test(el.type) && parseFloat(c.fontSize) < 16) out.inputs.push(label(el) + ' ' + c.fontSize);
+  }
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); const seen = new Set(); let n;
+  while ((n = walker.nextNode())) {
+    const el = n.parentElement; if (!el || seen.has(el) || !n.nodeValue.trim()) continue; seen.add(el);
+    if (el.closest('script, style, noscript, svg') || !shown(el)) continue;
+    const fs = parseFloat(getComputedStyle(el).fontSize);
+    if (fs < 9) out.smalltext.push(label(el) + ' ' + fs + 'px');
+  }
+  // Sentences squeezed into a narrow column (words broken in the middle, e.g. "speakin g").
+  for (const el of document.querySelectorAll('p, span, strong, b, em, h1, h2, h3, h4, a, button, li, label, small, div')) {
+    const own = [...el.childNodes].filter(t => t.nodeType === 3).map(t => t.nodeValue).join('').trim();
+    if (own.length < 16 || !/\s/.test(own) || !shown(el)) continue;
+    const r = el.getBoundingClientRect(), c = getComputedStyle(el);
+    if (r.width >= 100) continue;
+    const lh = parseFloat(c.lineHeight) || parseFloat(c.fontSize) * 1.3;
+    if (r.height / lh >= 3.5) out.squeezed.push(label(el) + ' ' + Math.round(r.width) + 'px wide');
+  }
+  for (const k in out) out[k] = [...new Set(out[k])].slice(0, 6);
+  return out;
+}"""
+
+
+def test_phone_layout(browser, pw):
+    """On phones every button and link is big enough to tap (24px or more), no text is smaller than 9px,
+    form fields use 16px text so iPhones don't zoom in, and a phone turned sideways gets the short header."""
+    for name in ("iPhone 13", "Galaxy S8"):
+        dev = {k: v for k, v in pw.devices[name].items() if k != "default_browser_type"}
+        ctx = browser.new_context(**dev, service_workers="block")
+        page = ctx.new_page()
+        problems = watch(page)
+        for path in PAGES:
+            page.goto(BASE + path, wait_until="load")
+            page.wait_for_timeout(250)
+            r = page.evaluate(PHONE_LAYOUT_JS)
+            where = f"{name} {path}"
+            check(not r["tiny"], f"{where}: too small to tap {r['tiny']}")
+            check(not r["smalltext"], f"{where}: text smaller than 9px {r['smalltext']}")
+            check(not r["inputs"], f"{where}: form fields under 16px make iPhones zoom in {r['inputs']}")
+            check(not r["squeezed"], f"{where}: text squeezed into a narrow column {r['squeezed']}")
+        # Listening mode buttons keep their full width (they were once squeezed into a narrow column).
+        page.goto(BASE + "pages/listening-test-01.html", wait_until="load")
+        page.wait_for_timeout(300)
+        info = page.evaluate("""() => { const b = document.getElementById('practice'), s = b.querySelector('strong'), r = document.createRange();
+          r.selectNodeContents(s); return {width: b.getBoundingClientRect().width, lines: new Set([...r.getClientRects()].map(x => Math.round(x.top))).size}; }""")
+        check(info["width"] >= 200 and info["lines"] == 1, f"{name}: listening 'Practice mode' button is squeezed ({info})")
+        no_problems(problems, f"phone layout {name}")
+        ctx.close()
+    ctx = browser.new_context(viewport={"width": 740, "height": 360}, is_mobile=True, has_touch=True, device_scale_factor=2, service_workers="block")
+    page = ctx.new_page()
+    for path in ("index.html", "pages/writing.html", "pages/vocabulary.html"):
+        page.goto(BASE + path, wait_until="load")
+        page.wait_for_timeout(300)
+        h = page.evaluate("Math.round(document.querySelector('.topbar').getBoundingClientRect().height)")
+        check(h <= 72, f"phone turned sideways, {path}: the header is {h}px tall instead of folding the menu away")
+        if page.is_visible("#menuToggle"):
+            page.click("#menuToggle")
+            page.wait_for_timeout(250)
+            links = page.evaluate("[...document.querySelectorAll('#navigation a')].filter(a => a.offsetParent).length")
+            check(links >= 5, f"phone turned sideways, {path}: the menu shows {links} links")
+        else:
+            check(False, f"phone turned sideways, {path}: no menu button")
+    ctx.close()
+
+
+CONTRAST_JS = r"""(limit) => {
+  const p = s => (s.match(/[\d.]+/g) || []).map(Number);
+  const lum = ([r, g, b]) => { const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b); };
+  const ratio = (a, b) => { const A = lum(a), B = lum(b); return (Math.max(A, B) + 0.05) / (Math.min(A, B) + 0.05); };
+  const blend = (top, under) => { const a = top[3] === undefined ? 1 : top[3]; return [0, 1, 2].map(i => top[i] * a + under[i] * (1 - a)); };
+  const bgOf = el => {
+    const stack = [];
+    for (let e = el; e; e = e.parentElement) {
+      const c = getComputedStyle(e);
+      if (c.backgroundImage && c.backgroundImage !== 'none' && !/url\(/.test(c.backgroundImage)) {
+        const m = c.backgroundImage.match(/rgba?\([^)]+\)/);
+        if (m) { const col = p(m[0]); stack.push(col.length === 3 ? [...col, 1] : col); if ((col[3] ?? 1) >= 0.95) break; }
+      }
+      const col = p(c.backgroundColor);
+      if (col.length >= 3) { const a = col.length > 3 ? col[3] : 1; if (a > 0) { stack.push([col[0], col[1], col[2], a]); if (a >= 0.95) break; } }
+    }
+    let base = document.documentElement.dataset.theme === 'dark' ? [17, 27, 26] : [255, 255, 255];
+    for (let i = stack.length - 1; i >= 0; i--) base = blend(stack[i], base);
+    return base;
+  };
+  const out = [], seen = new Set();
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  let n;
+  while ((n = walker.nextNode())) {
+    const el = n.parentElement, text = n.nodeValue.trim();
+    if (!el || seen.has(el) || !text || /^[·•|\/–—-]$/.test(text)) continue;  // separators are decoration
+    seen.add(el);
+    if (el.closest('script, style, noscript, svg, option, [aria-hidden=true], .sr-only, button:disabled, input:disabled, select:disabled, [aria-disabled=true]')) continue;
+    const r = el.getBoundingClientRect(); if (!r.width || !r.height) continue;
+    let hidden = false;
+    for (let e = el; e; e = e.parentElement) { const c = getComputedStyle(e); if (e.hidden || c.display === 'none' || c.visibility === 'hidden' || +c.opacity < 0.15) { hidden = true; break; } }
+    if (hidden) continue;
+    const fg = p(getComputedStyle(el).color); if (fg.length < 3) continue;
+    const bg = bgOf(el), col = fg.length > 3 ? blend(fg, bg) : fg, cr = ratio(col, bg);
+    if (cr < limit) out.push(el.tagName.toLowerCase() + (el.className && typeof el.className === 'string' ? '.' + el.className.trim().split(/\s+/)[0] : '') + ' "' + text.replace(/\s+/g, ' ').slice(0, 25) + '" ' + cr.toFixed(2));
+  }
+  return [...new Set(out)].slice(0, 6);
+}"""
+
+
+def test_readable_text_light_and_dark(browser, pw):
+    """Text is easy to read in light and dark mode (contrast 4:1 or better), on every page and after answers are checked;
+    dark mode has no big white boxes."""
+    white_box = """() => { const out = [], p = s => (s.match(/\\d+(\\.\\d+)?/g) || []).map(Number);
+      for (const el of document.querySelectorAll('body *')) {
+        const r = el.getBoundingClientRect(); if (r.width * r.height < 1200 || el.closest('img, svg, canvas, video, audio, picture, figure, .task-image, mark')) continue;
+        let hid = false; for (let q = el; q; q = q.parentElement) { const c = getComputedStyle(q); if (q.hidden || c.display === 'none' || c.visibility === 'hidden') { hid = true; break; } }
+        if (hid) continue;
+        const [R, G, B, A = 1] = p(getComputedStyle(el).backgroundColor);
+        if (A >= 0.6 && (R * 299 + G * 587 + B * 114) / 1000 > 200 && !el.querySelector('img')) out.push(el.tagName.toLowerCase() + '.' + [...el.classList].slice(0, 2).join('.') + ' "' + (el.innerText || '').trim().slice(0, 25) + '"');
+      }
+      return [...new Set(out)].slice(0, 5); }"""
+    phone = {k: v for k, v in pw.devices["Galaxy S8"].items() if k != "default_browser_type"}
+    for theme in ("light", "dark"):
+        ctx = browser.new_context(**phone, service_workers="block")
+        ctx.add_init_script(f"try {{ localStorage.setItem('englisity-theme', '{theme}'); }} catch (e) {{}}")
+        page = ctx.new_page()
+        problems = watch(page)
+        def scan(where):
+            bad = page.evaluate(CONTRAST_JS, 4.0)
+            check(not bad, f"{theme} {where}: hard to read {bad}")
+            if theme == "dark":
+                boxes = page.evaluate(white_box)
+                check(not boxes, f"dark {where}: white boxes {boxes}")
+        for path in PAGES:
+            page.goto(BASE + path, wait_until="load")
+            page.wait_for_timeout(250)
+            scan(path)
+        for slug in ("redwoods", "full-test-02"):
+            page.goto(BASE + f"pages/{slug}.html", wait_until="load")
+            page.wait_for_timeout(300)
+            choose_practice_mode(page)
+            page.click("#checkAnswers")
+            page.wait_for_timeout(300)
+            if page.query_selector("#submitAnyway") and page.is_visible("#submitAnyway"):
+                page.click("#submitAnyway")
+                page.wait_for_timeout(300)
+            scan(f"{slug} after checking")
+        page.goto(BASE + "pages/listening-test-01.html", wait_until="load")
+        page.wait_for_timeout(300)
+        page.click("#practice")
+        page.wait_for_timeout(300)
+        page.evaluate("document.getElementById('submit').click()")
+        page.wait_for_timeout(400)
+        scan("listening after checking")
+        page.goto(BASE + "pages/writing.html#task1/australia-reservoir-levels", wait_until="load")
+        page.wait_for_timeout(400)
+        scan("writing Task 1")
+        no_problems(problems, f"readable text {theme}")
+        ctx.close()
+
+
+def test_new_visitors_and_latest(browser, pw):
+    """A first visit shows no empty streak or dashboard; the home page lists the latest questions newest first;
+    the writing page lists its four newest tasks; speaking says how recent its questions are; 'Save resource' on a
+    writing task saves that task without opening it."""
+    ctx = browser.new_context(**DESKTOP, service_workers="block")
+    page, problems = open_page(ctx, "index.html", 600)
+    check(not page.is_visible(".eng-progress"), "a first-time visitor sees the 0-day streak strip")
+    check(not page.is_visible("#myDashboard"), "a first-time visitor sees an empty dashboard")
+    dates = page.evaluate("[...document.querySelectorAll('#latest .latest-list time')].map(t => t.getAttribute('datetime'))")
+    check(3 <= len(dates) <= 6, f"home 'Latest questions and tests' shows {len(dates)} items")
+    check(dates == sorted(dates, reverse=True), f"home latest items are not newest first: {dates}")
+    # Writing: the four newest tasks, newest first, and each opens its task.
+    page.goto(BASE + "pages/writing.html")
+    page.wait_for_timeout(500)
+    info = page.evaluate("""() => ({
+      shown: [...document.querySelectorAll('#writingLatestList a')].map(a => [a.getAttribute('href'), a.querySelector('time').getAttribute('datetime')]),
+      newest: [...document.querySelectorAll('.task-library-card[data-sort-date]')].map(c => c.dataset.sortDate).sort().reverse().slice(0, 4)})""")
+    check(page.is_visible("#writingLatest") and len(info["shown"]) == 4, f"writing page does not list 4 latest questions: {info['shown']}")
+    check([d for _, d in info["shown"]] == info["newest"], f"writing latest list is not the newest tasks: {info}")
+    href = info["shown"][0][0] if info["shown"] else ""
+    page.click("#writingLatestList a >> nth=0")
+    page.wait_for_timeout(400)
+    check(page.evaluate("location.hash") == href and (page.is_visible("#task1Workspace") or page.is_visible("#task2Workspace")), f"latest question link {href} does not open its task")
+    check(not page.is_visible("#writingLatest"), "the latest list still shows inside an open task")
+    page.go_back()
+    page.wait_for_timeout(400)
+    check(page.is_visible("#writingLatest") and page.is_visible("#taskChooser"), "Back does not return to the writing start page with the latest list")
+    # Save resource on a writing card: saved under the task's own address, and the task does not open.
+    page.goto(BASE + "pages/writing.html#task2")
+    page.wait_for_timeout(500)
+    card = page.locator("#task2TaskGrid .task-library-card").first
+    tid = card.get_attribute("data-open-task2-detail")
+    card.locator(".eng-save").click()
+    page.wait_for_timeout(300)
+    saved = page.evaluate("JSON.parse(localStorage.getItem('englisity-bookmarks-v1') || '[]').map(b => b.url)")
+    check(any(u.endswith("#task2/" + tid) for u in saved), f"'Save resource' on a writing task saved {saved}")
+    check(page.is_visible("#task2Library") and not page.is_visible("#task2Workspace"), "'Save resource' on a writing card also opened the task")
+    page.goto(BASE + "index.html")
+    page.wait_for_timeout(500)
+    check(page.is_visible(".eng-progress"), "after saving something, the progress strip does not show")
+    # Speaking: "questions reported up to <newest date>".
+    page.goto(BASE + "pages/speaking.html")
+    page.wait_for_timeout(500)
+    newest = page.evaluate("""() => { const b = window.EnglisitySpeakingBank, order = {October: 10, November: 11, December: 12, January: 13, February: 14, March: 15, April: 16, May: 17, June: 18, July: 19, August: 20, September: 21};
+      const v = d => { const [m, n] = String(d || '').split(' '); return (order[m] || 0) * 100 + Number(n || 0); };
+      return Object.values(b.sets).flatMap(set => set.flatMap(t => t.questions)).map(q => b.reported(q)).reduce((a, d) => v(d) > v(a) ? d : a, ''); }""")
+    fresh = page.inner_text("#speakingFresh") if page.is_visible("#speakingFresh") else ""
+    check(bool(newest) and newest in fresh, f"speaking page says {fresh!r}; newest reported date is {newest!r}")
+    no_problems(problems, "new visitors and latest lists")
+    ctx.close()
+
+
 # ------------------------------------------------------------------- main ---
 def main():
     global BASE

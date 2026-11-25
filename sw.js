@@ -1,19 +1,19 @@
 "use strict";
 
-const CACHE_NAME = "englisity-pwa-v62";
+const CACHE_NAME = "englisity-pwa-v63";
 const APP_ROOT = new URL(self.registration.scope);
 
 const CORE_FILES = [
   "./",
   "index.html",
   "css/style.css",
-  "css/design.css?v=20261123-1",
+  "css/design.css?v=20261125-phone",
   "css/mobile.css?v=20261103-responsive-pwa-2",
   "js/app.js?v=20261111-search-1",
-  "js/features.js?v=20261122-1",
+  "js/features.js?v=20261125-phone",
   "js/resources.js?v=20261111-review-fixes-1",
-  "js/vocabulary.js?v=20261124-tabs-2",
-  "js/article-learning.js?v=20261111-check-answer-1",
+  "js/vocabulary.js?v=20261125-tabs-3",
+  "js/article-learning.js?v=20261125-contrast",
   "pages/vocabulary.html",
   "articles/hobbies-mentally-sharp.html",
   "js/life-on-mars.js",
@@ -44,7 +44,7 @@ const CORE_FILES = [
   "pages/share.html",
   "js/share.js?v=20261111-visible-1",
   "js/listening-mini-player.js?v=20261116-mobile-1",
-  "js/word-lookup.js?v=20261116-mobile-1",
+  "js/word-lookup.js?v=20261125-colours",
   "images/richlands-station-map.jpg",
   "pages/life-on-mars.html",
   "pages/beatrix-potter.html",

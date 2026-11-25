@@ -2,7 +2,7 @@
 :root{
   --blue:#276c73;--blue-dark:#20565d;--blue-soft:#e7f2ef;
   --navy:#1d3037;--background:#f5f7f4;--surface:#fff;
-  --text:#26363a;--muted:#718087;--border:#e1e8e4;
+  --text:#26363a;--muted:var(--ink-718087,#718087);--border:#e1e8e4;
   --green:#39856a;--green-soft:#e8f3ec;--radius:18px;
   --shadow:0 8px 28px rgba(29,48,55,.055);
   --shadow-hover:0 16px 36px rgba(29,48,55,.10);
@@ -129,7 +129,7 @@ button{cursor:pointer}
 .eng-progress a,.eng-progress button{border-color:#d8e4dc;background:#f7faf7;color:#315d51;border-radius:10px}
 .eng-bookmark-list a{background:#edf4ef;color:#315d51}
 .eng-save.saved{background:#eaf4ed;border-color:#bcd9c5;color:#276c52}
-.footer,.home-footer{background:#eef3ee;border-top:1px solid #dfe8e1;color:#718078}
+.footer,.home-footer{background:#eef3ee;border-top:1px solid #dfe8e1;color:var(--ink-718078,#718078)}
 .footer{padding:28px max(4%,calc((100% - 1160px)/2));}
 .home-footer{padding:30px 20px}
 input,select,textarea{accent-color:#39796d}
@@ -185,7 +185,7 @@ hr{border:0;border-top:1px solid var(--border)}
 .recent-heading h2{margin:0;color:var(--navy);font-size:1.15rem}
 .recent-heading a{color:#39796d;font-size:13px;font-weight:700}
 .home-footer{display:flex;align-items:center;justify-content:center;min-height:82px;text-align:center}
-.home-footer p{margin:0;color:#718078;font-size:13px}
+.home-footer p{margin:0;color:var(--ink-718078,#718078);font-size:13px}
 .page-hero{position:relative;overflow:hidden}
 .page-hero:after{content:"";position:absolute;right:-55px;top:-95px;width:260px;height:260px;border:1px solid rgba(57,121,109,.13);border-radius:50%;box-shadow:0 0 0 26px rgba(57,121,109,.035),0 0 0 52px rgba(57,121,109,.025);pointer-events:none}
 .panel h2{font-size:1.3rem}
@@ -306,12 +306,12 @@ body{color:#263b32;background:#f7f8f5}
 .nav a.active,.nav a[aria-current="page"]{background:#e8f1e9;color:#276c5c}
 .page-hero,.vocab-hero{border:1px solid #dce9df!important;background:linear-gradient(120deg,#edf4ed,#e6f0e8)!important;box-shadow:none!important}
 .page-hero h1,.vocab-hero h1{color:#29483b!important;letter-spacing:-1.2px}
-.page-hero p,.vocab-hero p{color:#687b70!important}
+.page-hero p,.vocab-hero p{color:var(--ink-687b70,#687b70)!important}
 .panel,.card,.practice-card,.resource-card,.vocab-panel{border-color:#e2e9e1!important;border-radius:16px!important;box-shadow:0 5px 18px rgba(35,59,47,.035)}
 button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid rgba(67,139,101,.38)!important;outline-offset:2px}
 .eng-progress{max-width:1160px!important;margin:14px auto!important;padding:15px 19px!important;border:1px solid #e1e9e1!important;border-radius:15px!important;background:#fff!important;box-shadow:0 5px 18px rgba(35,59,47,.035)!important}
 .eng-progress strong{color:#29483b!important}.eng-progress small{color:#829087!important}
-.eng-streak-pill{background:#edf5e9!important;color:#557a42!important}
+.eng-streak-pill{background:#edf5e9!important;color:var(--ink-557a42,#557a42)!important}
 .eng-progress a,.eng-progress button{border-color:#dce8dd!important;background:#f7faf6!important;color:#386c54!important}
 .eng-progress a:hover,.eng-progress button:hover{background:#eaf3eb!important}
 .eng-dashboard{margin:0 auto 50px!important}
@@ -331,7 +331,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 :root{
   --blue:#276c73;--blue-dark:#20565d;--blue-soft:#e7f2ef;
   --navy:#1d3037;--background:#f7f8f5;--surface:#fff;
-  --text:#263b32;--muted:#718087;--border:#e1e8e4;
+  --text:#263b32;--muted:var(--ink-718087,#718087);--border:#e1e8e4;
   --green:#39856a;--green-soft:#e8f3ec;
 }
 .page-hero,.library-hero,.vocab-hero{
@@ -340,7 +340,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
   color:#29483b!important;box-shadow:none!important;
 }
 .page-hero h1,.library-hero h1,.vocab-hero h1{color:#29483b!important}
-.page-hero p,.library-hero p,.vocab-hero p{color:#687b70!important}
+.page-hero p,.library-hero p,.vocab-hero p{color:var(--ink-687b70,#687b70)!important}
 .page-hero .eyebrow,.library-hero .crumb,.breadcrumb,.vocab-hero .eyebrow,.vocab-kicker{color:#527b69!important}
 .library-card,.test-item,.resource-card,.skill-card,.vocab-panel{
   border-color:#e1e9e1!important;box-shadow:0 5px 18px rgba(35,59,47,.035)!important;
@@ -373,7 +373,7 @@ input,select,textarea{accent-color:#39856a}
 
 
 /* Englisity hybrid theme: forest-green brand surfaces + comfortable study canvas */
-:root{color-scheme:light;--background:#f5f7f4;--surface:#fff;--text:#263b32;--muted:#718078;--border:#e1e8e2}
+:root{color-scheme:light;--background:#f5f7f4;--surface:#fff;--text:#263b32;--muted:var(--ink-718078,#718078);--border:#e1e8e2}
 html,body{background:var(--background);color:var(--text)}
 .topbar{background:rgba(22,49,44,.97)!important;border-color:#294b42!important;box-shadow:0 5px 22px rgba(15,38,32,.14)!important}
 .brand,.brand small{color:#edf6ef!important}.nav a{color:#c3d6ca!important}
@@ -390,17 +390,17 @@ html,body{background:var(--background);color:var(--text)}
 .skill-grid-new .skill-card,.level-section-new,.level-section-new .resource-card,.panel,.card,.practice-card,.resource-card,.feature-card,.vocab-panel,.eng-progress,.eng-stat,.eng-bookmarks,.library-card,.task-library-card,.part-card,.topic-button,.question-item,.vocab-item,.study-card,.audio-card,.recorder,.timer-panel,.cue-card,.selected-question,.word-example{background:#fff!important;border-color:#e1e9e1!important;color:#263b32!important}
 .skill-grid-new .skill-card-featured{background:#edf4ee!important}
 .skill-grid-new .skill-card h3,.level-section-new .recent-heading h2,.panel h2,.panel h3,.vocab-panel h2,.vocab-item h3{color:#29483b}
-.skill-grid-new .skill-card p,.level-section-new p,.panel p,.vocab-panel p{color:#718078}
+.skill-grid-new .skill-card p,.level-section-new p,.panel p,.vocab-panel p{color:var(--ink-718078,#718078)}
 .home-bottom-cta{background:linear-gradient(110deg,#e8f2e9,#f3f6ef)!important;border-color:#dce9df!important}
-.home-bottom-cta h2{color:#29483b!important}.home-bottom-cta p{color:#718078!important}
-.home-footer,.footer{background:#edf3ed!important;border-color:#dfe8e1!important;color:#718078!important}
+.home-bottom-cta h2{color:#29483b!important}.home-bottom-cta p{color:var(--ink-718078,#718078)!important}
+.home-footer,.footer{background:#edf3ed!important;border-color:#dfe8e1!important;color:var(--ink-718078,#718078)!important}
 .toolbar input,.toolbar select,.vocab-search,.writing-editor textarea,textarea,input,select{background:#fff;color:#263b32;border-color:#dce6e0}
 .level-button,.vocab-filter,.small-button,.recorder-button,.practise-question,.back-button,.vocab-option{background:#fff;color:#315d51;border-color:#d8e4dc}
 .level-button.active,.vocab-filter.active,.small-button.primary,.recorder-button.primary,.vocab-btn.primary,.button.primary{background:#276c5c!important;border-color:#276c5c!important;color:#fff!important}
 .eng-progress strong,.eng-stat b{color:#29483b!important}.eng-progress small,.eng-stat span,.eng-bookmarks p{color:#829087!important}
-.eng-streak-pill{background:#edf5e9!important;color:#557a42!important}
+.eng-streak-pill{background:#edf5e9!important;color:var(--ink-557a42,#557a42)!important}
 .notice,.tag,.date-label{background:#edf5ef!important;color:#39796d!important}
-.empty,.task-empty-state,.library-empty,.vocab-empty{background:#fbfdfb!important;color:#718078!important}
+.empty,.task-empty-state,.library-empty,.vocab-empty{background:#fbfdfb!important;color:var(--ink-718078,#718078)!important}
 
 /* Englisity visual refresh — one consistent light theme */
 :root{
@@ -408,7 +408,7 @@ html,body{background:var(--background);color:var(--text)}
   --background:#f6f7f3;
   --surface:#ffffff;
   --text:#24352f;
-  --muted:#718078;
+  --muted:var(--ink-718078,#718078);
   --border:#e3e9e3;
   --blue:#286b5a;
   --blue-dark:#1f5548;
@@ -826,12 +826,12 @@ html[data-theme="light"] .question-text{
 }
 html[data-theme="light"] .part-card p,
 html[data-theme="light"] .topic-button span{
-  color:#718087!important;
+  color:var(--ink-718087,#718087)!important;
 }
 html[data-theme="light"] .question-number,
 html[data-theme="light"] .part-number{
   background:#e8f3ec!important;
-  color:#39796a!important;
+  color:#2f6b5c!important;
 }
 html[data-theme="light"] .practise-question,
 html[data-theme="light"] .back-button{
@@ -1088,16 +1088,16 @@ html[data-theme="light"] body .passage-library-panel .library-tools input{
   background:#fbfdfb!important;color:#26363a!important;border-color:#dce6e0!important;
 }
 html[data-theme="light"] body .passage-library-panel .library-tools input::placeholder{
-  color:#718087!important;opacity:1!important;
+  color:var(--ink-718087,#718087)!important;opacity:1!important;
 }
 html[data-theme="light"] body .passage-library-panel .library-card{
   background:#fff!important;border-color:#e1e8e4!important;color:#26363a!important;
 }
 html[data-theme="light"] body .passage-library-panel .library-card strong{color:#26363a!important}
-html[data-theme="light"] body .passage-library-panel .library-card span{color:#718087!important}
+html[data-theme="light"] body .passage-library-panel .library-card span{color:var(--ink-718087,#718087)!important}
 html[data-theme="light"] body .passage-library-panel .library-card .open{color:#2f7a5c!important}
 html[data-theme="light"] body .passage-library-panel .library-empty{
-  background:#fbfdfb!important;color:#718087!important;border-color:#cbdad1!important;
+  background:#fbfdfb!important;color:var(--ink-718087,#718087)!important;border-color:#cbdad1!important;
 }
 html[data-theme="dark"] body .passage-library-panel,
 html[data-theme="dark"] body .passage-library-panel h1,
@@ -1805,9 +1805,9 @@ a{transition:color .18s ease}
 .art-check{background:#e4f1e6!important;color:#176b5b!important}
 .art-float-word span{color:#176b5b!important}
 .art-float-sound span{color:#b4872d!important}
-.home-section-heading>span{color:#43816d!important;letter-spacing:.16em!important;font-weight:850!important}
+.home-section-heading>span{color:var(--ink-43816d,#43816d)!important;letter-spacing:.16em!important;font-weight:850!important}
 .home-section-heading h2{color:#1b302b!important;letter-spacing:-.05em!important}
-.home-section-heading p{color:#6b7b72!important}
+.home-section-heading p{color:var(--ink-6b7b72,#6b7b72)!important}
 .skill-card{
   border:1px solid #e0e8df!important;border-radius:19px!important;
   background:rgba(255,255,255,.92)!important;
@@ -1816,7 +1816,7 @@ a{transition:color .18s ease}
 .skill-card-featured{background:linear-gradient(145deg,#edf5ee,#fff)!important;border-color:#d6e6d8!important}
 .skill-card:hover{border-color:#b6d2bd!important;box-shadow:0 15px 34px rgba(27,58,42,.09)!important}
 .skill-card h3{color:#213a30!important}
-.skill-card p{color:#718077!important}
+.skill-card p{color:var(--ink-718078,#718078)!important}
 .skill-icon{background:#e9f2e9!important;color:#28745e!important;border-radius:13px!important}
 .skill-arrow,.skill-link{color:#176b5b!important}
 .level-section{
@@ -1868,7 +1868,7 @@ a{transition:color .18s ease}
 }
 .panel{padding:clamp(20px,3vw,30px)!important}
 .panel h2,.panel h3,.vocab-panel h2{color:#233c31!important;letter-spacing:-.04em}
-.panel p,.panel li,.vocab-panel p{color:#697b71}
+.panel p,.panel li,.vocab-panel p{color:var(--ink-697b71,#697b71)}
 .feature-card,.resource-card,.part-card,.topic-button,.task-library-card,.library-card,.vocab-item,.question-item{
   border:1px solid #e1e9e0!important;border-radius:17px!important;
   background:#fff!important;box-shadow:0 5px 18px rgba(25,55,43,.04)!important;
@@ -1877,7 +1877,7 @@ a{transition:color .18s ease}
   border-color:#b7d2bd!important;box-shadow:var(--shadow-card-hover)!important;transform:translateY(-3px)
 }
 .feature-card h3,.resource-card h3,.part-card h3,.vocab-item h3{color:#243d32!important}
-.feature-card p,.resource-card p,.part-card p{color:#718077!important}
+.feature-card p,.resource-card p,.part-card p{color:var(--ink-718078,#718078)!important}
 .card-link,.task-card-link,.feature-card .card-link{color:#176b5b!important}
 .tag,.task-category-tag,.date-label{
   background:#e8f2e9!important;color:#28745e!important;border-radius:999px!important;
@@ -1905,7 +1905,7 @@ input::placeholder,textarea::placeholder{color:#9aa79e}
 .writing-editor textarea{min-height:300px;line-height:1.8;padding:18px!important}
 .task-library-card img{background:#f1f5ef!important}
 .task-library-card-content strong{color:#243d32!important}
-.task-library-card-content span{color:#718077!important}
+.task-library-card-content span{color:var(--ink-718078,#718078)!important}
 .word-example,.study-card,.vocab-result,.cue-card,.selected-question{
   background:#f0f5ef!important;border-color:#dce8dc!important;color:#315144!important;
 }
@@ -1921,7 +1921,7 @@ input::placeholder,textarea::placeholder{color:#9aa79e}
   box-shadow:0 12px 32px rgba(30,65,46,.06)!important;
 }
 .recording-studio-heading h3{color:#243d32!important}
-.recording-studio-heading p,.recording-eyebrow{color:#718077!important}
+.recording-studio-heading p,.recording-eyebrow{color:var(--ink-718078,#718078)!important}
 .studio-mic-icon{background:#e5f0e6!important;color:#176b5b!important}
 .recorder-display{background:#fff!important;border-color:#dce8dc!important}
 .listening-hero{
@@ -1939,7 +1939,7 @@ input::placeholder,textarea::placeholder{color:#9aa79e}
 .listening-start-link{background:#176b5b!important;color:#fff!important;border-radius:999px!important}
 .footer,.home-footer{
   margin-top:58px!important;border-top:1px solid #dfe8df!important;
-  background:#eef3ec!important;color:#718077!important;
+  background:#eef3ec!important;color:var(--ink-718078,#718078)!important;
 }
 .footer strong,.home-footer strong{color:#294438!important}
 .footer a{color:#176b5b!important}
@@ -2134,7 +2134,7 @@ html[data-theme="light"] dialog.pwa-install-dialog[open]{
   --background:#f5f7f4;
   --surface:#fff;
   --text:#26363a;
-  --muted:#718087;
+  --muted:var(--ink-718087,#718087);
   --border:#e1e8e4;
   --green:#39856a;
   --green-soft:#e8f3ec;
@@ -2201,7 +2201,7 @@ a{color:inherit}
   background:#edf4ef!important;
   color:#315d51!important;
 }
-.footer,.home-footer{background:#eef3ee!important;color:#718078!important;border-color:#dfe8e1!important}
+.footer,.home-footer{background:#eef3ee!important;color:var(--ink-718078,#718078)!important;border-color:#dfe8e1!important}
 @media(max-width:700px){
   .topbar .nav-container{width:92%;flex-wrap:wrap;gap:10px}
   .topbar .nav{width:100%;flex-direction:column;align-items:stretch}
@@ -2336,7 +2336,7 @@ html[data-theme="dark"]{background:#111b1a}
 :root{--brand:#276c5c;--brand-dark:#17352b;--brand-ink:#29483b;--brand-soft:#edf5ef;--line:#dce9df;--muted-ink:#5d706b}
 /* Breadcrumbs */
 html body .breadcrumb{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 12px;font-size:12.5px;font-weight:700;letter-spacing:0;text-transform:none;color:#718780!important}
-html body .breadcrumb a{color:#3f7a62!important;text-decoration:none}
+html body .breadcrumb a{color:#346d55!important;text-decoration:none}
 html body .breadcrumb a:hover{text-decoration:underline}
 html body .breadcrumb .crumb-sep{color:#a7b8ae}
 html body .breadcrumb [aria-current]{color:#5d706b}
@@ -2383,10 +2383,10 @@ html body .mode-kicker{font-size:10px!important;letter-spacing:.14em!important;f
 html body .mode-card h1{font-size:clamp(22px,3.4vw,28px)!important;margin:0 0 6px!important;line-height:1.2}
 html body .mode-card>p{font-size:14px!important;line-height:1.6;margin:0 0 16px}
 html body .mode-choices{display:grid!important;grid-template-columns:1fr 1fr;gap:12px}
-html body .mode-choice{display:flex!important;gap:12px;align-items:flex-start;min-height:140px;padding:17px!important;border:1px solid #dfe9e1;border-radius:14px!important;background:#fff;text-align:left;cursor:pointer;transition:border-color .15s,background .15s}
+html body .mode-gate .mode-choice{display:flex!important;gap:12px;align-items:flex-start;min-height:140px;padding:17px!important;border:1px solid #dfe9e1;border-radius:14px!important;background:#fff;text-align:left;cursor:pointer;transition:border-color .15s,background .15s}
 html body .mode-icon{display:grid;place-items:center;flex:0 0 36px;height:36px;border-radius:10px;background:#edf5ef;color:#39796d;font-size:19px}
 html body .mode-choice strong{display:block;font-size:16px;margin-bottom:6px}
-html body .mode-choice span span{display:block;color:#718078;font-size:12.5px;line-height:1.6}
+html body .mode-choice span span{display:block;color:var(--ink-718078,#718078);font-size:12.5px;line-height:1.6}
 html body .mode-feature{display:block;margin-top:10px;font-size:9.5px;font-weight:900;letter-spacing:.07em}
 html[data-theme="dark"] body .mode-choice{background:#1c2f28!important;border-color:#33493f!important}
 html[data-theme="dark"] body .mode-icon{background:#24413a;color:#9fd8b6}
@@ -2396,3 +2396,167 @@ html[data-theme="dark"] body .mode-feature{color:#9fd8b6!important}
 @media(max-width:760px){html body main.vocab-wrap,html body main.listening-library{width:auto!important}}
 html body .word-count-guidance{background:#eef6f0!important;border-color:#d6e7dc!important}
 html[data-theme="dark"] body .word-count-guidance{background:#1c2f28!important;border-color:#33493f!important}
+
+/* ============================================================
+   Phone audit fixes (25 Nov 2026)
+   ============================================================ */
+/* Touch screens (also phones turned sideways): answer boxes at 16px so iPhones never zoom in when tapped. */
+@media (pointer:coarse){html body input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),html body select,html body textarea{font-size:16px!important}}
+
+/* Bigger tap areas for small links, without changing how they look. */
+html body .breadcrumb a{display:inline-flex;align-items:center;min-height:32px;padding:0 4px;margin:-6px -4px}
+html body .sf-brand{display:inline-flex;align-items:center;min-height:44px}
+html body .resource-url{display:inline-flex;align-items:center;min-height:40px}
+html body details>summary{padding-top:9px;padding-bottom:9px}
+html body .home-resources a[href="pages/articles.html"]{display:inline-flex;align-items:center;min-height:40px}
+@media(max-width:700px){html body .qnav .qnav-btn{width:36px!important;height:36px!important;flex:0 0 36px!important;font-size:13px!important}}
+
+/* Text that was too small to read comfortably on a phone. */
+@media(max-width:700px){html body .brand small{font-size:9px!important;letter-spacing:.08em!important}}
+html body .theme-toggle{font-size:12px!important}
+html body .mode-feature{font-size:10.5px!important}
+html body .listening-card-tags span{font-size:10.5px!important}
+html body .listening-library-note{font-size:12.5px!important}
+html body .resource-meta span{font-size:12px!important}
+html body .resource-meta .tag{font-size:11px!important}
+
+/* Faint labels: a little darker so they are easy to read. */
+html body .para-number{color:#66786e!important}
+html[data-theme="dark"] body .para-number{color:#9fb5a8!important}
+
+/* Phones: theme button next to the menu button on every page. */
+@media(max-width:700px){
+  html body .topbar .theme-toggle{margin-left:auto!important}
+  html body .topbar .menu-toggle{margin-left:8px!important}
+}
+
+/* Phones turned sideways: use the compact menu so the passage and questions get the screen. */
+@media (max-height:500px) and (orientation:landscape) and (pointer:coarse){
+  html body .topbar{flex-wrap:wrap;min-height:56px!important;padding-top:6px!important;padding-bottom:6px!important}
+  html body .topbar .nav-container{flex-wrap:wrap}
+  html body .menu-toggle{display:inline-flex!important;align-items:center;justify-content:center;min-width:44px;min-height:44px;margin-left:8px!important}
+  html body .topbar .theme-toggle{margin-left:auto!important}
+  html body .topbar .nav{display:none!important;flex-basis:100%;width:100%;flex-direction:column;align-items:stretch;padding:6px 0;max-height:calc(100vh - 70px);overflow-y:auto}
+  html body .topbar .nav.open{display:flex!important}
+  html body .topbar .nav a{padding:10px 13px}
+}
+
+/* Dark mode: boxes that stayed white or became unreadable. */
+html[data-theme="dark"] body .eng-progress a,html[data-theme="dark"] body .eng-progress button{background:#1c2f28!important;border-color:#33493f!important;color:#cfe6d8!important}
+html[data-theme="dark"] body .eng-progress a:hover,html[data-theme="dark"] body .eng-progress button:hover{background:#24413a!important}
+html[data-theme="dark"] body .listening-hero-meta span{background:rgba(255,255,255,.07)!important;border-color:#3a5247!important;color:#d4e4da!important}
+html[data-theme="dark"] body .level-button.active{background:#347b52!important;border-color:#347b52!important;color:#fff!important}
+html[data-theme="dark"] body .about-btn.primary{background:#347b52!important;border-color:#347b52!important;color:#fff!important}
+html[data-theme="dark"] body .word-bank{background:#1c2f28!important;border-color:#33493f!important;color:#e6f2ea!important}
+html[data-theme="dark"] body .heading-card{background:#1c2f28!important;border-color:#3a5247!important;color:#e6f2ea!important}
+html[data-theme="dark"] body .drop-slot{background:#172722!important;border-color:#3a5247!important;color:#b5c9bc!important}
+html[data-theme="dark"] body #testResult.result{background:#1c2f28!important;border-color:#33493f!important;color:#e6f2ea!important}
+html[data-theme="dark"] body .share-submit{background:#347b52!important;border-color:#347b52!important;color:#fff!important}
+html[data-theme="dark"] body #fullTest .part-tab.active em{background:#245c40!important;color:#fff!important}
+
+/* Home: latest questions and tests, newest first (25 Nov 2026). */
+html body .home-latest{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.5fr);gap:clamp(22px,4vw,54px);align-items:start;padding-bottom:72px}
+html body .home-latest .latest-heading{margin:6px 0 0}
+html body .latest-share{display:inline-flex;align-items:center;gap:6px;min-height:40px;margin-top:14px;color:#276c5c;font-weight:700;font-size:.92rem;text-decoration:none}
+html body .latest-share:hover{text-decoration:underline;text-underline-offset:3px}
+html body .latest-list{list-style:none;margin:0;padding:6px;border:1px solid #e2e9e1;border-radius:20px;background:#fff;box-shadow:0 12px 35px rgba(35,59,47,.045)}
+html body .latest-list li{margin:0}
+html body .latest-list li+li{border-top:1px solid #edf1ec}
+html body .latest-list a{display:grid;grid-template-columns:54px minmax(0,1fr) auto;gap:16px;align-items:center;padding:14px;border-radius:14px;color:inherit;text-decoration:none;transition:background .15s}
+html body .latest-list a:hover{background:#f3f8f3}
+html body .latest-list a:focus-visible{outline:3px solid #5b9b77;outline-offset:2px}
+html body .latest-list time{display:flex;flex-direction:column;align-items:center;justify-content:center;width:54px;height:58px;border-radius:13px;background:#edf4ee;color:#245c40;font:800 1.3rem/1 "Manrope","DM Sans",sans-serif}
+html body .latest-list time small{margin-bottom:4px;font:800 .62rem/1 "DM Sans",sans-serif;letter-spacing:1.2px;text-transform:uppercase;color:#4a7360}
+html body .latest-text{display:flex;flex-direction:column;gap:3px;min-width:0}
+html body .latest-skill{font-size:.7rem;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;color:#39796d}
+html body .latest-text strong{color:#203a32;font:700 1.02rem/1.35 "Manrope","DM Sans",sans-serif;letter-spacing:-.01em}
+html body .latest-desc{color:#5b6e64;font-size:.88rem;line-height:1.5}
+html body .latest-go{color:#39796d;font-size:1.1rem;font-weight:700;transition:transform .15s}
+html body .latest-list a:hover .latest-go{transform:translateX(3px)}
+@media(max-width:900px){html body .home-latest{grid-template-columns:1fr;gap:4px}}
+@media(max-width:700px){
+  html body .home-latest{padding-bottom:48px}
+  html body .latest-list{padding:4px;border-radius:17px}
+  html body .latest-list a{grid-template-columns:46px minmax(0,1fr) auto;gap:12px;padding:12px 10px}
+  html body .latest-list time{width:46px;height:50px;border-radius:11px;font-size:1.12rem}
+  html body .latest-text strong{font-size:.95rem}
+  html body .latest-desc{font-size:.82rem}
+  /* The decorative picture pushed every link a full screen down on phones. */
+  html body .home-hero-new .hero-art{display:none!important}
+  html body .home-hero-new{padding-bottom:32px!important;margin-bottom:30px!important}
+}
+html[data-theme="dark"] body .latest-list{background:#172722!important;border-color:#2c4239!important;box-shadow:none!important}
+html[data-theme="dark"] body .latest-list li+li{border-top-color:#25382f!important}
+html[data-theme="dark"] body .latest-list a:hover{background:#1d332b!important}
+html[data-theme="dark"] body .latest-list time{background:#22392f!important;color:#e3f0e6!important}
+html[data-theme="dark"] body .latest-list time small,html[data-theme="dark"] body .latest-skill,html[data-theme="dark"] body .latest-go,html[data-theme="dark"] body .latest-share{color:#9bd1ad!important}
+html[data-theme="dark"] body .latest-text strong{color:#edf5ef!important}
+html[data-theme="dark"] body .latest-desc{color:#b4c4ba!important}
+
+/* Writing: latest reported questions above the task chooser (built from the newest cards). */
+html body .writing-latest{margin:20px 0 4px}
+html body .writing-latest-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:4px 14px;margin:0 4px 10px}
+html body .writing-latest-head h2{margin:0;font-size:1.25rem;color:#203a32}
+html body .writing-latest-head a{display:inline-flex;align-items:center;min-height:36px;color:#276c5c;font-size:.88rem;font-weight:700;text-decoration:none}
+html body .writing-latest-head a:hover{text-decoration:underline;text-underline-offset:3px}
+@media(min-width:820px){
+  html body .writing-latest .latest-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:8px}
+  html body .writing-latest .latest-list li:nth-child(2){border-top:0}
+}
+html[data-theme="dark"] body .writing-latest-head h2{color:#edf5ef!important}
+html[data-theme="dark"] body .writing-latest-head a{color:#9bd1ad!important}
+
+/* Speaking: how fresh the questions are, and shorter part cards on phones. */
+html body .section-heading p.speaking-fresh{display:inline-flex;align-items:center;gap:8px;margin:10px 0 0;padding:5px 12px;border-radius:999px;background:#edf4ee;color:#245c40;font-size:.84rem;font-weight:700;line-height:1.4}
+html body .section-heading p.speaking-fresh::before{content:"";flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#3d9a6a}
+html[data-theme="dark"] body .section-heading p.speaking-fresh{background:#22392f!important;color:#cfe6d8!important}
+html[data-theme="dark"] body .section-heading p.speaking-fresh::before{background:#7cc79b}
+@media(max-width:600px){
+  html body #partSelection .part-card{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;align-items:start;padding:18px 16px}
+  html body #partSelection .part-card .part-number{grid-row:1 / span 3;margin:0}
+  html body #partSelection .part-card h3,html body #partSelection .part-card p,html body #partSelection .part-card .card-link{grid-column:2}
+  html body #partSelection .part-card h3{margin:6px 0 6px}
+  html body #partSelection .part-card p{margin-bottom:10px}
+  html body #partSelection .share-prompt{margin-top:16px}
+}
+
+/* Home hero buttons in light mode: the main button is the strongest one again, and white text is easy to read on it. */
+html[data-theme="light"] body.home-page .home-hero-new .home-button,html[data-theme="light"] body.home-page .home-bottom-cta>a{background:#276c5c!important;border-color:#276c5c!important;color:#fff!important}
+html[data-theme="light"] body.home-page .home-hero-new .home-button:hover,html[data-theme="light"] body.home-page .home-bottom-cta>a:hover{background:#1f5548!important;border-color:#1f5548!important}
+html[data-theme="light"] body.home-page .home-hero-new .home-button.secondary{background:rgba(255,255,255,.72)!important;border-color:#c5d8cb!important;color:#245c40!important;box-shadow:none!important}
+html[data-theme="light"] body.home-page .home-hero-new .home-button.secondary:hover{background:#fff!important;border-color:#9fc2ab!important}
+
+/* Grey helper text: darker in light mode so it is easy to read (about 4.5:1 or more); dark mode keeps the original shades. */
+:root{--ink-43816d:#356f5c;--ink-557a42:#48693a;--ink-59816a:#4a7259;--ink-5f7369:#536860;--ink-618e7e:#4d7567;--ink-658277:#536f64;--ink-668474:#557263;--ink-687b70:#5a6d62;--ink-688071:#586f61;--ink-68877c:#557569;--ink-697b71:#5f7068;--ink-6b7b72:#5a6a61;--ink-6b7d73:#5a6b62;--ink-718078:#5d6c64;--ink-718087:#5d6b71;--ink-75867a:#5f6f64;--ink-759287:#52705f;--ink-75968a:#5a7a6d;--ink-9b8050:#7d6538}
+html[data-theme="dark"]{--ink-43816d:#43816d;--ink-557a42:#557a42;--ink-59816a:#59816a;--ink-5f7369:#5f7369;--ink-618e7e:#618e7e;--ink-658277:#658277;--ink-668474:#668474;--ink-687b70:#687b70;--ink-688071:#688071;--ink-68877c:#68877c;--ink-697b71:#697b71;--ink-6b7b72:#6b7b72;--ink-6b7d73:#6b7d73;--ink-718078:#718078;--ink-718087:#718087;--ink-75867a:#75867a;--ink-759287:#759287;--ink-75968a:#75968a;--ink-9b8050:#9b8050}
+
+/* Contrast touch-ups found by the light and dark audits (25 Nov 2026). */
+html body.home-page .home-bottom-cta>div>span{color:#3f6f56!important}
+html body.home-page .home-bottom-cta p{color:#566a5f!important}
+html[data-theme="dark"] body.home-page .home-bottom-cta>div>span{color:#9bd1ad!important}
+html[data-theme="dark"] body.home-page .home-bottom-cta p{color:#b4c4ba!important}
+html[data-theme="dark"] body .drop-slot .slot-answer{color:#e6f2ea!important}
+html[data-theme="dark"] body .drop-slot .slot-label{color:#9bd1ad!important}
+html[data-theme="dark"] body .article-learning .al-kicker{color:#dcc48f!important}
+html[data-theme="dark"] body .section-kicker,html[data-theme="dark"] body .ft-box-title,html[data-theme="dark"] body .ft-passage-label,html[data-theme="dark"] body .mode-kicker{color:#93c9a6!important}
+html[data-theme="dark"] body #answeredCount,html[data-theme="dark"] body .library-search-count,html[data-theme="dark"] body .para-letter{color:#a9bcb1!important}
+html[data-theme="dark"] body .passage-tools span{color:#a9bcb1!important}
+/* Article end: "Explore more articles" is the second choice, so it looks like a secondary button (it was a leftover teal). */
+html body .article-end a.button:not(.primary){background:#fff!important;border:1px solid #c5d8cb!important;color:#245c40!important;box-shadow:none!important}
+html body .article-end a.button:not(.primary):hover{background:#f3f8f3!important;border-color:#9fc2ab!important}
+html[data-theme="dark"] body .article-end a.button:not(.primary){background:#1c2f28!important;border-color:#3a5247!important;color:#e3f0e6!important}
+html[data-theme="dark"] body .article-end a.button:not(.primary):hover{background:#24413a!important}
+html[data-theme="dark"] body article.article-body blockquote.pullquote{background:#1c2f28!important;background-image:none!important;border-left-color:#5fb383!important}
+html[data-theme="dark"] body article.article-body blockquote.pullquote,html[data-theme="dark"] body article.article-body blockquote.pullquote *{color:#e3f0e6!important}
+/* Speaking mock banner on phones: the text was squeezed into a narrow column ("speakin g"). */
+@media(max-width:600px){
+  html body .mock-banner{display:grid!important;grid-template-columns:48px minmax(0,1fr);gap:10px 14px;align-items:center}
+  html body .mock-banner>span:nth-child(2){min-width:0}
+  html body .mock-banner .card-link{grid-column:1 / -1;justify-self:start}
+}
+html body .home-latest .latest-heading h2{line-height:1.15}
+/* Redwoods matching questions on small phones: statement first, then a full-width answer box (the box text was cut off). */
+@media(max-width:480px){
+  html body .match-question{grid-template-columns:1fr!important;gap:8px!important}
+  html body .match-question select{width:100%!important}
+}

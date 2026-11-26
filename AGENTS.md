@@ -42,3 +42,11 @@ When editing existing article pages or the shared learning script, preserve this
 
 - `tests/test-site.py` also checks every page on iPhone and Android sizes: tap targets at least 24px, no text under 9px, form fields at 16px (so iPhones don't zoom), no sentence squeezed into a narrow column, a short header when a phone is turned sideways, and text contrast of at least 4:1 in light and dark mode (plus no white boxes in dark mode).
 - Grey helper text uses `var(--ink-XXXXXX,#XXXXXX)`: darker in light mode, the original shade in dark mode (defined at the end of `css/design.css`). Use these variables for new grey text instead of a lighter grey.
+
+# AI writing check
+
+- Writing page: "Check my writing with AI" (`js/writing-ai.js`) posts to `/api/writing-check` (`worker/writing-check.js`), which marks against summaries of the public IELTS band descriptors and returns JSON (bands, overall, strengths, improvements, corrections). The overall band is calculated in the Worker, not by the AI.
+- Provider: Cloudflare Workers AI (`ai` binding, model `@cf/openai/gpt-oss-120b`, free daily allowance) unless the secret `ANTHROPIC_API_KEY` is set, then Claude Haiku 5.5. Limits per day in table `ai_usage`: 5 per device, 12 per network, 40 in total on Workers AI (400 with Claude).
+- Every Task 1 task in `pages/writing.html` needs a `data:` line with the chart/table/map figures, so the AI can check the numbers. Add it whenever a Task 1 task is added.
+- Live self-test: `GET /api/writing-check?selftest=0|1|2` marks built-in essays at about band 5, 6.5 and 8 (`worker/writing-samples.js`); results are cached for 6 hours.
+- Essays are never stored. Tests: `tests/test-worker.mjs` (endpoint, limits, rounding, Claude switch) and `test_ai_writing_check` in `tests/test-site.py`.

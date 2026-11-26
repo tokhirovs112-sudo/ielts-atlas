@@ -2560,3 +2560,60 @@ html body .home-latest .latest-heading h2{line-height:1.15}
   html body .match-question{grid-template-columns:1fr!important;gap:8px!important}
   html body .match-question select{width:100%!important}
 }
+
+/* Writing: AI check (26 Nov 2026). */
+html body .ai-check{margin-top:22px;padding-top:20px;border-top:1px solid #e2e9e1}
+html body .ai-check-btn{min-height:46px;padding:0 20px!important;background:#276c5c!important;border-color:#276c5c!important;color:#fff!important;font-weight:800!important;font-size:.98rem!important}
+html body .ai-check-btn:hover{background:#1f5548!important}
+html body .ai-check-btn:disabled{opacity:.75;cursor:wait}
+html body .ai-check-note{margin:10px 0 0;color:var(--ink-718078,#718078);font-size:.84rem;line-height:1.5}
+html body .ai-result{margin-top:16px;padding:18px;border:1px solid #d7e5da;border-radius:16px;background:#f6faf6}
+html body .ai-msg{margin:0;font-weight:600;color:#245c40}
+html body .ai-msg-warn{color:#7a5410}
+html body .ai-msg-error{color:#a33a35}
+html body .ai-msg-wait::before{content:"";display:inline-block;width:12px;height:12px;margin-right:10px;border:2px solid #9fc2ab;border-top-color:#276c5c;border-radius:50%;vertical-align:-1px;animation:ai-spin .8s linear infinite}
+@keyframes ai-spin{to{transform:rotate(360deg)}}
+html body .ai-head{display:flex;gap:16px;align-items:center}
+html body .ai-overall{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;width:92px;height:92px;border-radius:18px;background:#276c5c;color:#fff}
+html body .ai-overall small{font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;opacity:.9;text-align:center}
+html body .ai-overall strong{font:800 2.1rem/1.05 "Manrope","DM Sans",sans-serif}
+html body .ai-summary p{margin:0 0 6px;color:#203a32}
+html body .ai-summary p.ai-fine{margin:0;color:var(--ink-718078,#718078);font-size:.82rem}
+html body .ai-bands{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:16px 0 4px}
+html body .ai-band{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border:1px solid #dfe9e1;border-radius:12px;background:#fff}
+html body .ai-band span{color:#38544a;font-size:.86rem;font-weight:600}
+html body .ai-band strong{color:#245c40;font:800 1.25rem/1 "Manrope","DM Sans",sans-serif}
+html body .ai-result h3{margin:18px 0 8px;font-size:1rem;color:#203a32}
+html body .ai-list{margin:0;padding-left:20px}
+html body .ai-list li{margin:0 0 8px;color:#2c4239;line-height:1.55}
+html body .ai-tag{display:inline-block;margin-right:8px;padding:1px 8px;border-radius:999px;background:#e3efe6;color:#245c40;font-size:.72rem;font-weight:800;vertical-align:1px}
+html body .ai-corrections{display:grid;gap:8px}
+html body .ai-correction{display:flex;flex-direction:column;gap:3px;padding:10px 12px;border-radius:12px;background:#fff;border:1px solid #e6ece6}
+html body .ai-correction del{color:#a33a35;text-decoration-thickness:1px}
+html body .ai-correction ins{color:#1f6b45;text-decoration:none;font-weight:700}
+html body .ai-correction ins::before{content:"→ ";color:#6b8a78;font-weight:400}
+html body .ai-correction small{color:var(--ink-718078,#718078);font-size:.8rem}
+@media(max-width:600px){html body .ai-bands{grid-template-columns:1fr} html body .ai-overall{width:78px;height:78px} html body .ai-overall strong{font-size:1.8rem} html body .ai-result{padding:14px}}
+html[data-theme="dark"] body .ai-check{border-top-color:#2c4239}
+html[data-theme="dark"] body .ai-check-btn{background:#2f7550!important;border-color:#2f7550!important}
+html[data-theme="dark"] body .ai-check-note,html[data-theme="dark"] body .ai-summary p.ai-fine,html[data-theme="dark"] body .ai-correction small{color:#a9bcb1!important}
+html[data-theme="dark"] body .ai-result{background:#172722!important;border-color:#2c4239!important}
+html[data-theme="dark"] body .ai-msg{color:#cfe6d8!important}
+html[data-theme="dark"] body .ai-msg-warn{color:#e8c77d!important}
+html[data-theme="dark"] body .ai-msg-error{color:#f0a19c!important}
+html[data-theme="dark"] body .ai-overall{background:#2f7550!important}
+html[data-theme="dark"] body .ai-summary p,html[data-theme="dark"] body .ai-result h3{color:#edf5ef!important}
+html[data-theme="dark"] body .ai-band,html[data-theme="dark"] body .ai-correction{background:#1c2f28!important;border-color:#2c4239!important}
+html[data-theme="dark"] body .ai-band span,html[data-theme="dark"] body .ai-list li{color:#d6e4db!important}
+html[data-theme="dark"] body .ai-band strong{color:#9bd1ad!important}
+html[data-theme="dark"] body .ai-tag{background:#22392f!important;color:#cfe6d8!important}
+html[data-theme="dark"] body .ai-correction del{color:#f0a19c!important}
+html[data-theme="dark"] body .ai-correction ins{color:#9bd1ad!important}
+html body .writing-editor .ai-check .ai-check-btn,html[data-theme] body .writing-editor .ai-check .ai-check-btn{background:#276c5c!important;border:1px solid #276c5c!important;color:#fff!important}
+html body .writing-editor .ai-check .ai-check-btn:hover{background:#1f5548!important}
+html[data-theme="dark"] body .writing-editor .ai-check .ai-check-btn{background:#2f7550!important;border-color:#2f7550!important}
+@media(max-width:600px){
+  html body .ai-head{flex-direction:column;align-items:flex-start;gap:12px}
+  html body .ai-overall{flex-direction:row;gap:10px;width:auto;height:auto;padding:10px 16px;border-radius:14px}
+  html body .ai-overall small{text-align:left}
+}

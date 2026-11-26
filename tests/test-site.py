@@ -1155,6 +1155,57 @@ def test_new_visitors_and_latest(browser, pw):
     ctx.close()
 
 
+def test_ai_writing_check(browser, pw):
+    """'Check my writing with AI' sends the open task (with Task 1 chart figures) and shows bands, advice and
+    corrections; short answers get a warning first; the daily limit and errors show clear messages."""
+    import json as _json
+    sent = []
+    reply = {"status": 200, "body": {"ok": True, "task": 2, "words": 260, "left": 4, "provider": "workers-ai", "bands": {"TR": 6, "CC": 6, "LR": 5, "GRA": 6}, "overall": 6.0,
+             "summary": "A clear answer <b>not bold</b>.", "strengths": ["Clear position"], "improvements": [{"criterion": "LR", "advice": "Use more precise words."}],
+             "corrections": [{"original": "more crimes", "better": "more crime", "why": "uncountable"}]}}
+    def handle(route):
+        sent.append(_json.loads(route.request.post_data))
+        route.fulfill(status=reply["status"], content_type="application/json", body=_json.dumps(reply["body"]))
+    for name, dev in (("laptop", DESKTOP), ("phone", {k: v for k, v in pw.devices["iPhone 13"].items() if k != "default_browser_type"})):
+        ctx = browser.new_context(**dev, service_workers="block")
+        ctx.route("**/api/writing-check", handle)
+        page, problems = open_page(ctx, "pages/writing.html#task2/youth-crime", 600)
+        wrap = "#task2Workspace [data-ai-check]"
+        check(page.is_visible(wrap + " .ai-check-btn"), f"{name}: no AI check button on a Task 2 question")
+        page.fill("#task2Draft", "word " * 120)
+        before = len(sent)
+        page.click(wrap + " .ai-check-btn")
+        page.wait_for_timeout(200)
+        check("120 words" in page.inner_text(wrap + " .ai-result") and len(sent) == before, f"{name}: a short essay is sent without a warning")
+        page.click(wrap + " .ai-check-btn")
+        page.wait_for_selector(wrap + " .ai-overall", timeout=5000)
+        out = page.inner_text(wrap + " .ai-result")
+        check(sent and sent[-1]["task"] == 2 and "committing more crimes" in sent[-1]["question"] and len(sent[-1]["essay"].split()) == 120, f"{name}: wrong data sent {sent[-1:]}")
+        check("6.0" in out and "Task Response" in out and "Lexical Resource" in out and "more crime" in out and "Use more precise words." in out, f"{name}: result missing parts: {out[:300]}")
+        check(page.locator(wrap + " .ai-result b").count() == 0, f"{name}: AI text is shown as HTML")
+        reply["status"], reply["body"] = 200, {"error": "limit", "limit": 5}
+        page.click(wrap + " .ai-check-btn")
+        page.wait_for_timeout(400)
+        check("today's 5 free AI checks" in page.inner_text(wrap + " .ai-result"), f"{name}: daily limit message missing")
+        reply["status"], reply["body"] = 200, {"error": "ai-failed"}
+        page.click(wrap + " .ai-check-btn")
+        page.wait_for_timeout(400)
+        check("try again" in page.inner_text(wrap + " .ai-result"), f"{name}: error message missing")
+        reply["status"], reply["body"] = 200, dict(reply["body"])
+        # Task 1 sends the chart figures.
+        reply["body"] = {"ok": True, "task": 1, "words": 170, "left": 3, "bands": {"TA": 5, "CC": 6, "LR": 6, "GRA": 6}, "overall": 6.0, "summary": "", "strengths": [], "improvements": [], "corrections": []}
+        page.goto(BASE + "pages/writing.html#task1/australia-reservoir-levels")
+        page.wait_for_timeout(500)
+        page.fill("#task1Draft", "word " * 170)
+        page.click("#task1Workspace [data-ai-check] .ai-check-btn")
+        page.wait_for_selector("#task1Workspace .ai-overall", timeout=5000)
+        check(sent[-1]["task"] == 1 and "Darwin 45 / 25" in sent[-1]["data"], f"{name}: Task 1 chart figures not sent {sent[-1]}")
+        check("Task Achievement" in page.inner_text("#task1Workspace .ai-result"), f"{name}: Task 1 result is not on Task Achievement")
+        reply["status"], reply["body"] = 200, {"ok": True, "task": 2, "words": 260, "left": 4, "bands": {"TR": 6, "CC": 6, "LR": 5, "GRA": 6}, "overall": 6.0, "summary": "A clear answer <b>not bold</b>.", "strengths": ["Clear position"], "improvements": [{"criterion": "LR", "advice": "Use more precise words."}], "corrections": [{"original": "more crimes", "better": "more crime", "why": "uncountable"}]}
+        no_problems(problems, f"AI writing check {name}")
+        ctx.close()
+
+
 # ------------------------------------------------------------------- main ---
 def main():
     global BASE

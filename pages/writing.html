@@ -259,7 +259,7 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
   <link rel="icon" type="image/svg+xml" href="../assets/englisity-mark.svg?v=20261117-logo">
   <link rel="manifest" href="../manifest.webmanifest">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/englisity-app-icon.png?v=20261117-logo">
-  <link rel="stylesheet" href="../css/design.css?v=20261125-phone">
+  <link rel="stylesheet" href="../css/design.css?v=20261126-ai">
 </head>
 
 <body>
@@ -765,6 +765,11 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
           <button class="small-button" type="button" data-clear-draft="task1">Clear draft</button>
         </div>
         <p class="helper" id="task1Status" aria-live="polite"></p>
+        <div class="ai-check" data-ai-check="task1">
+          <button class="small-button ai-check-btn" type="button">✦ Check my writing with AI</button>
+          <p class="ai-check-note">Free AI estimate of your band for each criterion, with corrections. It is not an official IELTS score. Your answer is sent to an AI to be marked and is not saved by Englisity.</p>
+          <div class="ai-result" hidden aria-live="polite"></div>
+        </div>
       </div>
     </section>
 
@@ -791,6 +796,11 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
           <button class="small-button" type="button" data-clear-draft="task2">Clear draft</button>
         </div>
         <p class="helper" id="task2Status" aria-live="polite"></p>
+        <div class="ai-check" data-ai-check="task2">
+          <button class="small-button ai-check-btn" type="button">✦ Check my writing with AI</button>
+          <p class="ai-check-note">Free AI estimate of your band for each criterion, with corrections. It is not an official IELTS score. Your answer is sent to an AI to be marked and is not saved by Englisity.</p>
+          <div class="ai-result" hidden aria-live="polite"></div>
+        </div>
       </div>
     </section>
 
@@ -958,12 +968,14 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
 
     const task1Tasks = {
       "waste-production": {
+        data: "Table, waste production in millions of tonnes. 1980 / 1990 / 2000: Ireland 0.6 / no data / 5; Japan 28 / 32 / 53; Korea no data / 31 / 19; Poland 4 / 5 / 6.6; Portugal 2 / 3 / 5; US 131 / 151 / 192.",
         title: "Waste production in six countries",
         instruction: "The table below shows the amount of waste production (in millions of tonnes) in six different countries in 1980, 1990 and 2000.",
         image: "../images/task1/image_2026-10-31_16-47-51.png",
         alt: "Table showing waste production in six countries in 1980, 1990 and 2000"
       },
       "cars-per-1000": {
+        data: "Bar chart, cars per 1,000 people (values read from the bars). 2005 / 2009 / 2015: Country 1: 300 / 400 / 300; Country 2: 500 / 550 / 530; Country 3: 700 / 600 / 580; Country 4: 700 / 700 / 700; Country 5: 900 / 870 / 980; average of the five: 700 / 680 / 780.",
         title: "Cars per 1,000 people in five European countries",
         instruction: "The bar chart shows the number of cars per 1,000 people in five European countries in 2005, 2009 and 2015, compared with the European average.",
         image: "../images/task1/cars-per-1000.svg",
@@ -971,6 +983,7 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
         reported: "November 3"
       },
       "shalton-village": {
+        data: "Two maps. 1910: a triangle of land between School Road (west side), London Road (east side) and High Street (south). Inside the triangle: a large house surrounded by trees, a grocer, a house and a baker along High Street. Outside: a butcher on School Road, a school to the south-west, a post office at the north end, one house north of the triangle, two houses south of High Street. 2010: the large house and trees are gone; the triangle now has a small curved road with five houses, a café (where the grocer was), a house and a larger building (where the baker was). The butcher has become a bank; a supermarket with parking has been built on School Road; the school and post office remain; five new houses line the east side of London Road; there are now four houses south of High Street.",
         title: "Changes in Shalton village (1910–2010)",
         instruction: "The maps below show Shalton village in 1910 and 2010.",
         image: "../images/task1/image_2026-11-09_15-50-02.png",
@@ -978,6 +991,7 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
         reported: "November 8"
       },
       "journeys-to-school": {
+        data: "Bar chart, percentage of journeys to school by distance (approximate). 0-1 mile: walk 90%, bicycle 50%, car 8%, bus 2%. 1-2 miles: walk 60%, bicycle 77%, car 20%, bus 10%. 2-5 miles: walk 25%, bicycle 48%, car 32%, bus 50%. Over 5 miles: walk 0%, bicycle 0%, car 22%, bus 68%.",
         title: "Journeys to school by distance",
         instruction: "The bar chart below shows the percentages of journeys to school made by walking, bicycle, car and bus across four distance ranges.",
         image: "../images/task1/image_2026-11-09_15-50-03.png",
@@ -985,6 +999,7 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
         reported: "November 8"
       },
       "harbour-changes": {
+        data: "Two maps of a zoo by a harbour. 1960: harbour at the top; enclosures for African animals, Australian animals, birds, a seal show and chimpanzees; a gift shop; a picnic area on the east side; paths between areas. Now: a ferry stop and a new entrance by the harbour; a second entrance at the bottom; 'African animals' area is now 'Wild animals', with a new smaller African animals enclosure; the birds and chimpanzee areas are gone; the seal show and Australian animals remain; the gift shop has moved and is larger; a cable car now runs across the site; the picnic area remains.",
         title: "Changes to a harbour (1960–now)",
         instruction: "The maps below show the changes to a harbour between 1960 and now.",
         image: "../images/task1/photo_2026-11-09_15-50-18.jpg",
@@ -992,6 +1007,7 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
         reported: "November 8"
       },
       "films-five-countries": {
+        data: "Bar chart, number of films produced by countries A-E (approximate). 2007 / 2008 / 2009: A 87 / 87 / 80; B 50 / 52 / 70; C 8 / 14 / 17; D 15 / 9 / 13; E 9 / 10 / 12.",
         title: "Films produced by five countries (2007–2009)",
         instruction: "The chart below shows the number of films produced by five countries in three years.",
         image: "../images/task1/films-five-countries.png",
@@ -999,6 +1015,7 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
         reported: "November 10"
       },
       "household-technology-uk": {
+        data: "Line graph, percentage of UK households (approximate). 1997 / 1998 / 1999 / 2000 / 2001: CD player 60 / 70 / 70 / 75 / 80; telephone 20 / 20 / 30 / 40 / 75; computer 40 / 45 / 50 / 55 / 70; internet 10 / 18 / 20 / 30 / 60; DVD player 26 / 15 / 20 / 30 / 50.",
         title: "Household technology in the UK (1997–2001)",
         instruction: "The graph below shows the percentage of households with different kinds of technology in the UK from 1997 to 2001.",
         image: "../images/task1/household-technology-uk.png",
@@ -1006,6 +1023,7 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
         reported: "November 11"
       },
       "global-warming-suggestions": {
+        data: "Table, top five suggestions in order of importance. Consumers: 1 recycling, 2 using energy-efficient appliances, 3 driving less, 4 using fuel-efficient cars, 5 eating less beef. Researchers: 1 using fuel-efficient cars, 2 driving less, 3 eating less beef, 4 using energy-efficient appliances, 5 recycling.",
         title: "Ways to reduce global warming: consumers vs researchers",
         instruction: "A survey was conducted to explore ways to reduce global warming. The table shows the top five suggestions given by consumers and researchers. The suggestions are placed in order of importance.",
         image: "../images/task1/global-warming-suggestions.png",
@@ -1013,6 +1031,7 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
         reported: "November 11"
       },
       "australia-reservoir-levels": {
+        data: "Bar chart, reservoir water levels as % of maximum. October 2009 / October 2010: Darwin 45 / 25; Sydney 78 / 81; Melbourne 23 / 40; Brisbane 57 / 57; Perth 40 / 71; Canberra 76 / 99.",
         title: "Reservoir water levels in six Australian cities",
         instruction: "The chart below shows the water levels in the reservoirs of six cities in Australia in October 2009 and October 2010.",
         image: "../images/task1/australia-reservoir-levels.png",
@@ -1020,6 +1039,7 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
         reported: "November 22"
       },
       "dairy-production-2012": {
+        data: "Bar charts, top three producers in 2012, in metric tons (MT). Milk: EU 142,970; India 127,000; United States 90,038. Cheese: EU 7,120; United States 4,925; Brazil 700. Butter: India 4,500; EU 2,040; United States 810. Milk powder: China 1,200; New Zealand 1,110; EU 770.",
         title: "Dairy production: top three producers (2012)",
         instruction: "The charts below give information about the world’s top three producers of four different dairy products (milk, cheese, butter and milk powder) in 2012.",
         image: "../images/task1/dairy-production-2012.png",
@@ -1027,6 +1047,7 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
         reported: "November 19"
       },
       "medical-care-europe": {
+        data: "Table. 1980 / 1990 / 2000. Physicians per 1,000 people: Austria 0.8 / 0.9 / 1.0; France 2.4 / 2.2 / 1.3; Sweden 3.6 / 3.0 / 3.8. Hospital beds per 1,000 people: Austria 1.4 / 3.1 / 3.7; France 0.2 / 0.8 / 1.6; Sweden 6.4 / 6.4 / 6.9. Average stay in hospital (days): Austria 18 / 6 / 8; France 9 / 7 / 5; Sweden 23 / 18 / 21.",
         title: "Medical care in three European countries (1980–2000)",
         instruction: "The table shows information about medical care in three European countries between 1980 and 2000.",
         image: "../images/task1/medical-care-europe.png",
@@ -1034,6 +1055,7 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
         reported: "November 20"
       },
       "skilled-migrants-australia": {
+        data: "Bar chart, skilled migrants to Australia in thousands of workers. 2009 / 2010 / 2011 / 2012: accountant 20 / 28 / 22 / 21; cook 17 / 15 / 18 / 16; software engineer 19 / 20 / 21 / 17; computer programmer 2 / 4 / 2 / 5.",
         title: "Skilled migrants to Australia (2009–2012)",
         instruction: "The bar chart below gives information on the number of workers in different occupations who migrated to Australia between 2009 and 2012.",
         image: "../images/task1/skilled-migrants-australia.png",
@@ -1042,6 +1064,14 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
       }
     };
     let currentTask1Id = null;
+    // For the AI check (js/writing-ai.js): the open task's question and, for Task 1, the chart figures.
+    window.EnglisityWriting = {
+      current(type) {
+        if (type === "task1" && currentTask1Id && task1Tasks[currentTask1Id]) { const t = task1Tasks[currentTask1Id]; return { task: 1, id: currentTask1Id, question: t.instruction + " Summarise the information by selecting and reporting the main features, and make comparisons where relevant.", data: t.data || "" }; }
+        if (type === "task2" && currentTask2Id && task2Tasks[currentTask2Id]) return { task: 2, id: currentTask2Id, question: task2Tasks[currentTask2Id].question, data: "" };
+        return null;
+      }
+    };
 
     function showTaskDetail(taskId) {
       const task = task1Tasks[taskId];
@@ -1371,6 +1401,7 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
 
 <script src="../js/features.js?v=20261125-phone"></script>
 <script src="../js/writing-exit.js?v=20261105-exit-warning-1"></script>
+<script src="../js/writing-ai.js?v=20261126-1"></script>
 <!-- Cloudflare Web Analytics: counts visits, no cookies --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "ac91466da98a415b93a1320d7a491246"}'></script>
 </body>
 </html>

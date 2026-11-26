@@ -125,5 +125,64 @@ check("Stats page explains a missing password secret", res.status === 503 && /ST
 res = await stats("wrong", { STATS_PASSWORD: "right-password", STATS: {} });
 check("Wrong stats password is refused", res.status === 401);
 
-console.log(failures ? `Worker tests: ${failures} failed, ${passed} passed.` : `Worker tests passed (${passed} checks): form delivery, spam protection, error messages, audio ranges.`);
+// --- AI writing check ---
+function fakeD1() {
+  const rows = new Map();
+  return {
+    rows,
+    prepare(sql) {
+      const st = { args: [], bind(...a) { st.args = a; return st; },
+        async run() { return {}; },
+        async first() {
+          const [day, k, by] = st.args;
+          if (/^INSERT INTO ai_usage/.test(sql)) { const n = (rows.get(day + "|" + k) || 0) + by; rows.set(day + "|" + k, n); return { n }; }
+          if (/^SELECT n FROM ai_usage/.test(sql)) { const n = rows.get(day + "|" + k); return n === undefined ? null : { n }; }
+          return null;
+        } };
+      return st;
+    }
+  };
+}
+const essay = ("Some people believe that children are committing more crimes because parents are too busy. I partly agree with this view. ").repeat(14);
+let aiReply = JSON.stringify({ bands: { TR: 6, CC: 6, LR: 5, GRA: 6 }, summary: "A clear answer.", strengths: ["Clear position"], improvements: [{ criterion: "LR", advice: "Use more precise words." }], corrections: [{ original: "more crimes", better: "more crime", why: "uncountable" }] });
+let aiCalls = [];
+const AI = { async run(model, input) { aiCalls.push({ model, input }); return { choices: [{ message: { content: "Here you go:\n" + aiReply } }] }; } };
+const check2 = (body, extraEnv = {}, origin = SITE) => worker.fetch(new Request(SITE + "/api/writing-check", { method: "POST", headers: { "Content-Type": "application/json", Origin: origin, "CF-Connecting-IP": "1.2.3.4" }, body: JSON.stringify(body) }), { ...env, AI, ...extraEnv });
+const q2 = "In many parts of the world, children and teenagers are committing more crimes. Why is this? What can be done?";
+const db = fakeD1();
+res = await check2({ task: 2, question: q2, essay, vid: "abcdefgh1234" }, { STATS: db });
+let wbody = await res.json();
+check("Essay check returns bands and feedback", res.status === 200 && wbody.bands.TR === 6 && wbody.overall === 6 && wbody.corrections.length === 1, JSON.stringify(wbody));
+check("Essay check uses the free Workers AI model without a key", wbody.provider === "workers-ai" && aiCalls[0].model === "@cf/openai/gpt-oss-120b");
+check("Essay check tells how many checks are left today", wbody.left === 4, String(wbody.left));
+check("Essay text goes to the AI as data", /Student's answer:\n<<<\n/.test(aiCalls[0].input.messages[1].content));
+aiReply = JSON.stringify({ bands: { TR: 7, CC: 6, LR: 6, GRA: 6 } });
+res = await check2({ task: 2, question: q2, essay, vid: "abcdefgh1234" }, { STATS: db });
+wbody = await res.json();
+check("Overall band rounds like IELTS (6.25 -> 6.5)", wbody.overall === 6.5, String(wbody.overall));
+for (let i = 0; i < 3; i++) await check2({ task: 2, question: q2, essay, vid: "abcdefgh1234" }, { STATS: db });
+res = await check2({ task: 2, question: q2, essay, vid: "abcdefgh1234" }, { STATS: db });
+check("Sixth check from one device in a day is refused", res.status === 429 && (await res.json()).error === "limit");
+res = await check2({ task: 2, question: q2, essay: "Too short essay here.", vid: "abcdefgh9999" }, { STATS: fakeD1() });
+check("Very short answers are refused", res.status === 400 && (await res.json()).error === "too-short");
+res = await check2({ task: 2, question: q2, essay }, { STATS: fakeD1() }, "https://evil.example.com");
+check("Essay checks from other websites are refused", res.status === 403);
+aiReply = "Sorry, I cannot do that.";
+const db3 = fakeD1();
+res = await check2({ task: 1, question: "The chart below shows the water levels in reservoirs.", data: "Darwin 45 / 25", essay, vid: "abcdefgh7777" }, { STATS: db3 });
+check("An unreadable AI reply gives a clear error and does not use up a check", res.status === 502 && [...db3.rows.values()].every(n => n === 0));
+aiReply = JSON.stringify({ bands: { TA: 5, CC: 5, LR: 5, GRA: 6 } });
+aiCalls = [];
+res = await check2({ task: 1, question: "The chart below shows the water levels in reservoirs.", data: "Darwin 45 / 25", essay, vid: "abcdefgh7777" }, { STATS: db3 });
+wbody = await res.json();
+check("Task 1 is marked on Task Achievement with the chart figures", res.status === 200 && wbody.bands.TA === 5 && /Darwin 45 \/ 25/.test(aiCalls[0].input.messages[1].content));
+let claudeCalls = [];
+const realFetch = globalThis.fetch;
+globalThis.fetch = async (url, init) => { claudeCalls.push({ url: String(url), headers: init.headers, body: JSON.parse(init.body) }); return new Response(JSON.stringify({ content: [{ type: "text", text: JSON.stringify({ bands: { TR: 7, CC: 7, LR: 7, GRA: 7 } }) }] })); };
+res = await check2({ task: 2, question: q2, essay, vid: "abcdefgh5555" }, { STATS: fakeD1(), ANTHROPIC_API_KEY: "sk-test" });
+wbody = await res.json();
+check("With ANTHROPIC_API_KEY the check uses Claude Haiku 5.5", wbody.provider === "claude" && claudeCalls[0].url === "https://api.anthropic.com/v1/messages" && claudeCalls[0].body.model === "claude-haiku-5-5" && wbody.overall === 7);
+globalThis.fetch = realFetch;
+
+console.log(failures ? `Worker tests: ${failures} failed, ${passed} passed.` : `Worker tests passed (${passed} checks): form delivery, spam protection, error messages, audio ranges, AI writing check.`);
 process.exit(failures ? 1 : 0);

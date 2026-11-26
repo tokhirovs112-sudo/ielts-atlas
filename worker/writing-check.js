@@ -147,7 +147,7 @@ async function bump(db, day, k, by) {
 
 // Live self-test: marks one of three built-in sample essays (band ~5, ~6.5, ~8). Each result is kept
 // for 6 hours, so the test costs at most a few AI calls a day.
-async function selfTest(request, env) {
+async function selfTest(request, env, maxAgeHours = 6) {
   const i = Number(new URL(request.url).searchParams.get("selftest"));
   const sample = SAMPLES[i];
   if (!sample) return json({ error: "bad-sample" }, 400);
@@ -158,7 +158,7 @@ async function selfTest(request, env) {
     try {
       await env.STATS.prepare("CREATE TABLE IF NOT EXISTS ai_selftest (k TEXT PRIMARY KEY, ts INTEGER, result TEXT)").run();
       const row = await env.STATS.prepare("SELECT ts, result FROM ai_selftest WHERE k = ?1").bind(key).first();
-      if (row && now - row.ts < 6 * 3600 * 1000) return json({ cached: true, level: sample.level, ...JSON.parse(row.result) });
+      if (row && now - row.ts < maxAgeHours * 3600 * 1000) return json({ cached: true, level: sample.level, ...JSON.parse(row.result) });
     } catch (e) {}
   }
   const words = countWords(sample.essay);
@@ -248,4 +248,10 @@ export async function handleWritingCheck(request, env) {
     } catch (e) {}
   }
   return json({ ok: true, task, words, provider: useClaude ? "claude" : "workers-ai", left, ...feedback });
+}
+
+// Daily check (cron in wrangler.jsonc): marks the three sample essays once a day and keeps the results
+// in ai_selftest, so the marking quality can be watched without sending any request by hand.
+export async function dailySelfTest(env) {
+  for (const i of [0, 1, 2]) await selfTest(new Request("https://self.test/api/writing-check?selftest=" + i), env, 20);
 }

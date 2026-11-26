@@ -16,5 +16,7 @@
     { "binding": "STATS", "database_name": "englisity-stats", "database_id": "584a0d1d-5cef-40f1-8fb9-99ed2f8d0128" }
   ],
   "ai": { "binding": "AI" },
+  // Once an hour; the AI self-test inside only re-runs when its last result is 20+ hours old.
+  "triggers": { "crons": ["37 * * * *"] },
   "observability": { "enabled": true }
 }

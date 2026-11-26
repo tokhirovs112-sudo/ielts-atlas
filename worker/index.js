@@ -5,7 +5,7 @@
 // Everything else is served from the static files.
 
 import { handleTrack, handleStats } from "./stats.js";
-import { handleWritingCheck } from "./writing-check.js";
+import { handleWritingCheck, dailySelfTest } from "./writing-check.js";
 
 const LIMITS = { text: 4000, testDate: 20, location: 80, module: 30, section: 40, page: 300, kind: 60, question: 40, name: 60, contact: 100, from: 300 };
 const LABELS = { testDate: "Test date", location: "Location", module: "Test type", section: "Part", page: "Page", kind: "Problem", question: "Question", name: "Name", contact: "Contact" };
@@ -157,5 +157,8 @@ export default {
     if (url.pathname === "/api/writing-check") return handleWritingCheck(request, env);
     if (url.pathname.startsWith("/assets/audio/")) return serveAudio(request, env);
     return env.ASSETS.fetch(request);
+  },
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(dailySelfTest(env));
   }
 };

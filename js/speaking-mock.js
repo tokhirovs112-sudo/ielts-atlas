@@ -76,7 +76,7 @@ function say(text) {
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
     const v = pickVoice(); if (v) u.voice = v;
-    u.lang = v?.lang || "en-GB"; u.rate = 0.95;
+    u.lang = v?.lang || "en-GB"; u.rate = 1.08; // natural exam pace (was 0.95, a little slow)
     speechSynthesis.speak(u);
   } catch (_) {}
 }

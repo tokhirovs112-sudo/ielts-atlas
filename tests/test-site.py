@@ -1206,6 +1206,62 @@ def test_ai_writing_check(browser, pw):
         ctx.close()
 
 
+def test_ai_speaking_check(browser, pw):
+    """'Check my answer with AI' (practice) and 'Get my estimated band' (end of a mock) send the recordings
+    with their questions and show bands, transcript and corrections. Uses Chrome's fake microphone."""
+    import json as _json
+    fake = pw.chromium.launch(args=["--use-fake-ui-for-media-stream", "--use-fake-device-for-media-stream"])
+    sent = []
+    reply = {"ok": True, "mode": "answer", "left": 7, "cost": 1, "bands": {"FC": 6, "LR": 6, "GRA": 5, "P": 6}, "overall": 6.0,
+             "summary": "Clear answer.", "strengths": ["Good ideas"], "improvements": [{"criterion": "GRA", "advice": "Use the past tense for past events."}],
+             "corrections": [{"original": "I go there yesterday", "better": "I went there yesterday", "why": "past tense"}],
+             "transcripts": [{"part": 2, "text": "I go there yesterday with my friends", "words": 7, "seconds": 4, "wpm": 105}]}
+    def handle(route):
+        body = route.request.post_data_buffer or b""
+        sent.append({"size": len(body), "meta": _json.loads(re.search(rb'name="meta"\r\n\r\n(.*?)\r\n--', body, re.S).group(1)), "files": len(re.findall(rb'name="audio\d"', body))})
+        route.fulfill(status=200, content_type="application/json", body=_json.dumps(reply))
+    ctx = fake.new_context(**DESKTOP, service_workers="block", permissions=["microphone"])
+    ctx.route("**/api/speaking-check", handle)
+    page, problems = open_page(ctx, "pages/speaking.html#part2/0/0", 700)
+    page.click("#startRecording")
+    page.wait_for_timeout(9500)
+    page.click("#stopRecording")
+    page.wait_for_selector("#practiceAi .speak-ai-btn", state="visible", timeout=5000)
+    page.click("#practiceAi .speak-ai-btn")
+    page.wait_for_selector("#practiceAi .ai-overall", timeout=8000)
+    out = page.inner_text("#practiceAi .ai-result")
+    meta = sent[-1]["meta"] if sent else {}
+    check(sent and meta.get("mode") == "answer" and sent[-1]["files"] == 1 and meta["parts"][0]["part"] == 2 and "You should say" in meta["parts"][0]["questions"][0] and meta["parts"][0]["seconds"] >= 9, f"practice answer sent wrongly: {meta}")
+    check("6.0" in out and "Pronunciation" in out and "I went there yesterday" in out and "Fluency and Coherence" in out, f"practice result missing parts: {out[:300]}")
+    page.click("#practiceAi .ai-transcript summary")
+    check("about 105 words a minute" in page.inner_text("#practiceAi .ai-transcript"), "transcript is not shown")
+    # Full mock with recording: one AI recording per part (Part 2 only while talking).
+    reply["mode"] = "mock"
+    page.goto(BASE + "pages/speaking.html#mock/1")
+    page.wait_for_timeout(500)
+    page.check("#mockRecord")
+    page.click("#mockBegin")
+    page.wait_for_timeout(600)
+    for _ in range(40):
+        if page.query_selector(".mock-end"):
+            break
+        if page.query_selector("#mockNotes"):
+            page.fill("#mockNotes", "notes")
+        page.click("#mockNext")
+        page.wait_for_timeout(700)
+    page.wait_for_selector("#mockAi .speak-ai-btn", timeout=8000)
+    page.click("#mockAi .speak-ai-btn")
+    page.wait_for_selector("#mockAi .ai-overall", timeout=8000)
+    meta = sent[-1]["meta"]
+    parts = [p["part"] for p in meta["parts"]]
+    check(meta["mode"] == "mock" and parts == [1, 2, 3] and sent[-1]["files"] == 3, f"mock sent {parts} with {sent[-1]['files']} recordings")
+    check(len(meta["parts"][0]["questions"]) >= 8 and "You should say" in meta["parts"][1]["questions"][0] and len(meta["parts"][2]["questions"]) == 5, "mock questions not sent with each part")
+    check(sent[-1]["size"] < 2_000_000, f"mock upload is {sent[-1]['size']} bytes")
+    no_problems(problems, "AI speaking check")
+    ctx.close()
+    fake.close()
+
+
 # ------------------------------------------------------------------- main ---
 def main():
     global BASE

@@ -8,17 +8,17 @@
 
 import { SAMPLES, SAMPLE_QUESTION } from "./writing-samples.js";
 
-const DAILY = { device: 5, ip: 12, totalFree: 40, totalClaude: 400 };
-const ID = /^[a-z0-9]{8,40}$/;
+export const DAILY = { device: 5, ip: 12, totalFree: 40, totalClaude: 400 };
+export const ID = /^[a-z0-9]{8,40}$/;
 const WORKERS_MODEL = "@cf/openai/gpt-oss-120b";
 const CLAUDE_MODEL = "claude-haiku-5-5";
 
-const json = (body, status = 200) => new Response(JSON.stringify(body), {
+export const json = (body, status = 200) => new Response(JSON.stringify(body), {
   status,
   headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }
 });
 
-const countWords = text => (String(text).trim().match(/[A-Za-z0-9’'-]+/g) || []).length;
+export const countWords = text => (String(text).trim().match(/[A-Za-z0-9’'-]+/g) || []).length;
 
 // Short summaries of the public IELTS Writing band descriptors (updated May 2023), in our own words.
 const CRITERIA = {
@@ -71,7 +71,7 @@ export function overallBand(bands) {
   return Math.floor(mean * 2 + 0.5) / 2;
 }
 
-function textOf(result) {
+export function textOf(result) {
   if (!result) return "";
   if (typeof result === "string") return result;
   if (typeof result.response === "string") return result.response;
@@ -92,20 +92,26 @@ function textOf(result) {
   return "";
 }
 
-const clipText = (v, n) => String(v ?? "").replace(/\s+/g, " ").trim().slice(0, n);
+export const clipText = (v, n) => String(v ?? "").replace(/\s+/g, " ").trim().slice(0, n);
 
 export function parseFeedback(raw, task) {
+  const firstKey = task === 1 ? "TA" : "TR";
+  return parseBandFeedback(raw, [firstKey, "CC", "LR", "GRA"], { [firstKey]: ["TA", "TR"] });
+}
+
+// Reads the AI's JSON reply: whole bands 0-9 for each key (aliases allowed), plus cleaned feedback lists.
+export function parseBandFeedback(raw, keyList, aliases = {}) {
   const text = String(raw || "");
   const start = text.indexOf("{"), end = text.lastIndexOf("}");
   if (start < 0 || end <= start) return null;
   let obj;
   try { obj = JSON.parse(text.slice(start, end + 1)); } catch (e) { return null; }
-  const firstKey = task === 1 ? "TA" : "TR";
   const src = obj && obj.bands || {};
-  const band = v => { const n = Math.round(Number(v)); return Number.isFinite(n) ? Math.min(9, Math.max(0, n)) : null; };
-  const bands = { [firstKey]: band(src[firstKey] ?? src.TA ?? src.TR), CC: band(src.CC), LR: band(src.LR), GRA: band(src.GRA) };
+  const band = v => { if (v === null || v === undefined || v === "") return null; const n = Math.round(Number(v)); return Number.isFinite(n) ? Math.min(9, Math.max(0, n)) : null; };
+  const bands = {};
+  for (const k of keyList) bands[k] = band(src[k] ?? (aliases[k] || []).map(a => src[a]).find(v => v !== undefined));
   if (Object.values(bands).some(v => v === null)) return null;
-  const keys = new Set([firstKey, "CC", "LR", "GRA"]);
+  const keys = new Set(keyList);
   return {
     bands,
     overall: overallBand(Object.values(bands)),
@@ -120,7 +126,7 @@ export function parseFeedback(raw, task) {
   };
 }
 
-async function askClaude(env, prompt) {
+export async function askClaude(env, prompt) {
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: { "content-type": "application/json", "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
@@ -130,7 +136,7 @@ async function askClaude(env, prompt) {
   return textOf(await res.json());
 }
 
-async function askWorkersAI(env, prompt) {
+export async function askWorkersAI(env, prompt) {
   const result = await env.AI.run(WORKERS_MODEL, {
     messages: [{ role: "system", content: prompt.system }, { role: "user", content: prompt.user }],
     max_tokens: 4000
@@ -138,10 +144,10 @@ async function askWorkersAI(env, prompt) {
   return textOf(result);
 }
 
-async function ensureTable(db) {
+export async function ensureTable(db) {
   await db.prepare("CREATE TABLE IF NOT EXISTS ai_usage (day TEXT NOT NULL, k TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (day, k))").run();
 }
-async function bump(db, day, k, by) {
+export async function bump(db, day, k, by) {
   const row = await db.prepare("INSERT INTO ai_usage (day, k, n) VALUES (?1, ?2, ?3) ON CONFLICT(day, k) DO UPDATE SET n = n + ?3 RETURNING n").bind(day, k, by).first();
   return row ? row.n : 0;
 }

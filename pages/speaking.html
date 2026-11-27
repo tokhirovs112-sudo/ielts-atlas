@@ -341,7 +341,7 @@ html[data-theme="dark"] .mock-kicker,html[data-theme="dark"] .mock-label,html[da
   <link rel="icon" type="image/svg+xml" href="../assets/englisity-mark.svg?v=20261117-logo">
   <link rel="manifest" href="../manifest.webmanifest">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/englisity-app-icon.png?v=20261117-logo">
-  <link rel="stylesheet" href="../css/design.css?v=20261126-ai">
+  <link rel="stylesheet" href="../css/design.css?v=20261127-speak">
 </head>
 <body>
 <header class="topbar">
@@ -486,6 +486,11 @@ html[data-theme="dark"] .mock-kicker,html[data-theme="dark"] .mock-label,html[da
         </div>
         <audio id="recordingPlayback" controls></audio>
         <a class="download-recording" id="downloadRecording" href="#" download>↓ Download recording</a>
+        <div class="speak-ai" id="practiceAi">
+          <button class="speak-ai-btn small-button" type="button">✦ Check my answer with AI</button>
+          <p class="speak-ai-note">Estimated band for this answer, with corrections. Pronunciation is only a rough estimate: the AI reads the text of what you said and cannot hear your voice. Not an official IELTS score. Your recording is not saved.</p>
+          <div class="ai-result" hidden aria-live="polite"></div>
+        </div>
       </div>
       <p class="helper recorder-message" id="recorderMessage" aria-live="polite">Allow microphone access when your browser asks. Your recording stays in this page unless you download it.</p>
     </section>
@@ -519,7 +524,8 @@ html[data-theme="dark"] .mock-kicker,html[data-theme="dark"] .mock-label,html[da
   <a href="../index.html">Back home ↑</a>
 </footer>
 
-<script src="../js/speaking-mock.js?v=20261126-rate"></script>
+<script src="../js/speaking-mock.js?v=20261127-ai"></script>
+<script src="../js/speaking-ai.js?v=20261127-1"></script>
 <script>
 (() => {
   const questionSets = {
@@ -1354,6 +1360,12 @@ html[data-theme="dark"] .mock-kicker,html[data-theme="dark"] .mock-label,html[da
   let currentPart = null;
   let currentTopic = null;
   let selectedQuestion = null;
+  let lastAnswer = null;
+  document.getElementById("practiceAi")?.querySelector(".speak-ai-btn").addEventListener("click", event => {
+    if (!lastAnswer || !window.EnglisitySpeakingAI) return;
+    window.EnglisitySpeakingAI.check(document.getElementById("practiceAi"), "answer",
+      [{ part: lastAnswer.part, questions: [lastAnswer.question], seconds: lastAnswer.seconds, blob: lastAnswer.blob }], event.currentTarget);
+  });
 
   let routingScreen = false, lastRoutedHash = null;
   function showScreen(name) {
@@ -1662,7 +1674,7 @@ html[data-theme="dark"] .mock-kicker,html[data-theme="dark"] .mock-label,html[da
       );
 
       recorder = supportedType
-        ? new MediaRecorder(stream, { mimeType: supportedType })
+        ? new MediaRecorder(stream, { mimeType: supportedType, audioBitsPerSecond: 48000 })
         : new MediaRecorder(stream);
 
       recorder.ondataavailable = event => {
@@ -1704,6 +1716,10 @@ html[data-theme="dark"] .mock-kicker,html[data-theme="dark"] .mock-label,html[da
         });
 
         recordingUrl = URL.createObjectURL(audioBlob);
+        // For "Check my answer with AI" (js/speaking-ai.js).
+        lastAnswer = { blob: audioBlob, part: currentPart, question: selectedQuestion + (currentPart === 2 && window.EnglisitySpeakingBank ? " You should say: " + window.EnglisitySpeakingBank.cuePrompts(selectedQuestion).join("; ") : ""), seconds: Math.round((Date.now() - startTime) / 1000) };
+        const aiBox = document.getElementById("practiceAi");
+        if (aiBox) { const r = aiBox.querySelector(".ai-result"); r.hidden = true; r.replaceChildren(); }
         playback.src = recordingUrl;
         playback.load();
 

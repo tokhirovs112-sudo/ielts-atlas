@@ -2,10 +2,12 @@
 // POST /api/submit → forwards to Telegram (secrets: TELEGRAM_BOT_TOKEN,
 // TELEGRAM_CHAT_ID). /api/track and /api/stats: private usage statistics
 // (see worker/stats.js). /api/writing-check: AI essay marking (worker/writing-check.js).
+// /api/speaking-check: AI marking of recorded speaking answers (worker/speaking-check.js).
 // Everything else is served from the static files.
 
 import { handleTrack, handleStats } from "./stats.js";
 import { handleWritingCheck, dailySelfTest } from "./writing-check.js";
+import { handleSpeakingCheck, speakingSelfTest } from "./speaking-check.js";
 
 const LIMITS = { text: 4000, testDate: 20, location: 80, module: 30, section: 40, page: 300, kind: 60, question: 40, name: 60, contact: 100, from: 300 };
 const LABELS = { testDate: "Test date", location: "Location", module: "Test type", section: "Part", page: "Page", kind: "Problem", question: "Question", name: "Name", contact: "Contact" };
@@ -155,10 +157,11 @@ export default {
     if (url.pathname === "/api/track") return handleTrack(request, env);
     if (url.pathname === "/api/stats") return handleStats(request, env);
     if (url.pathname === "/api/writing-check") return handleWritingCheck(request, env);
+    if (url.pathname === "/api/speaking-check") return handleSpeakingCheck(request, env);
     if (url.pathname.startsWith("/assets/audio/")) return serveAudio(request, env);
     return env.ASSETS.fetch(request);
   },
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(dailySelfTest(env));
+    ctx.waitUntil(dailySelfTest(env).then(() => speakingSelfTest(env)));
   }
 };

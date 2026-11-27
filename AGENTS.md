@@ -50,3 +50,10 @@ When editing existing article pages or the shared learning script, preserve this
 - Every Task 1 task in `pages/writing.html` needs a `data:` line with the chart/table/map figures, so the AI can check the numbers. Add it whenever a Task 1 task is added.
 - Live self-test: `GET /api/writing-check?selftest=0|1|2` marks built-in essays at about band 5, 6.5 and 8 (`worker/writing-samples.js`); results are cached for 6 hours.
 - Essays are never stored. Tests: `tests/test-worker.mjs` (endpoint, limits, rounding, Claude switch) and `test_ai_writing_check` in `tests/test-site.py`.
+
+# AI speaking check
+
+- Speaking page: "Check my answer with AI" under the practice recorder, and "Get my estimated band with AI" at the end of a mock test (only when recording was on). Client: `js/speaking-ai.js`; the mock keeps a second, low-bitrate recording per part (Part 2 only while talking) in `js/speaking-mock.js`.
+- `/api/speaking-check` (`worker/speaking-check.js`): multipart form (`meta` JSON + `audio0..2`), Whisper `@cf/openai/whisper-large-v3-turbo` for the transcript, then the same AI as the writing check, marked on FC, LR, GRA and P using a summary of the official Speaking band descriptors. Pronunciation is labelled a rough estimate (the AI only sees text). Recordings are never stored.
+- Limits share the "all" daily pool with writing (an answer costs 1, a full mock 4); 8 speaking points per device and 16 per network a day.
+- Daily self-test (cron): transcribes `assets/audio/selftest/answer.webm` and `.m4a` and marks the WebM one; result in `ai_selftest` (key `speaking-selftest`).

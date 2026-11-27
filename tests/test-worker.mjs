@@ -184,5 +184,43 @@ wbody = await res.json();
 check("With ANTHROPIC_API_KEY the check uses Claude Haiku 5.5", wbody.provider === "claude" && claudeCalls[0].url === "https://api.anthropic.com/v1/messages" && claudeCalls[0].body.model === "claude-haiku-5-5" && wbody.overall === 7);
 globalThis.fetch = realFetch;
 
-console.log(failures ? `Worker tests: ${failures} failed, ${passed} passed.` : `Worker tests passed (${passed} checks): form delivery, spam protection, error messages, audio ranges, AI writing check.`);
+// --- AI speaking check ---
+{
+  const sdb = fakeD1();
+  let calls = [];
+  let spokenText = "Well I usually get up at seven and have breakfast with my family, then I go to university by bus because it is quite cheap and fast.";
+  const SAI = { async run(model, input) {
+    calls.push({ model, input });
+    if (/whisper/.test(model)) return { text: spokenText };
+    return { choices: [{ message: { content: JSON.stringify({ bands: { FC: 6, LR: 6, GRA: 5, P: 6 }, summary: "Good.", strengths: ["Clear"], improvements: [{ criterion: "GRA", advice: "Use past tenses." }], corrections: [] }) } }] };
+  } };
+  const audio = new Uint8Array(5000).fill(7);
+  const speak = (meta, n = 1, origin = SITE, db = sdb) => {
+    const fd = new FormData();
+    fd.append("meta", JSON.stringify(meta));
+    for (let i = 0; i < n; i++) fd.append("audio" + i, new Blob([audio], { type: "audio/webm" }), "a.webm");
+    return worker.fetch(new Request(SITE + "/api/speaking-check", { method: "POST", headers: { Origin: origin, "CF-Connecting-IP": "5.6.7.8" }, body: fd }), { ...env, AI: SAI, STATS: db });
+  };
+  let r = await speak({ mode: "answer", vid: "speakvid0001", parts: [{ part: 1, questions: ["What do you do in the morning?"], seconds: 20 }] });
+  let b = await r.json();
+  check("Speaking check transcribes with Whisper and marks four criteria", r.status === 200 && calls[0].model === "@cf/openai/whisper-large-v3-turbo" && typeof calls[0].input.audio === "string" && b.bands.P === 6 && b.overall === 6 && b.transcripts[0].text === spokenText, JSON.stringify(b));
+  check("Speaking check gives words per minute", b.transcripts[0].wpm === Math.round(b.transcripts[0].words / (20 / 60)));
+  check("Speaking prompt includes the question and speaking time", /What do you do in the morning\?/.test(calls[1].input.messages[1].content) && /20 seconds/.test(calls[1].input.messages[1].content));
+  calls = [];
+  r = await speak({ mode: "mock", vid: "speakvid0001", parts: [1, 2, 3].map(p => ({ part: p, questions: ["Q" + p + " question here"], seconds: 200 })) }, 3);
+  b = await r.json();
+  check("A full mock sends three parts and costs 4 checks", r.status === 200 && calls.filter(c => /whisper/.test(c.model)).length === 3 && b.cost === 4 && b.left === 3, JSON.stringify(b).slice(0, 200));
+  r = await speak({ mode: "mock", vid: "speakvid0001", parts: [1, 2, 3].map(p => ({ part: p, questions: ["Q"], seconds: 200 })) }, 3);
+  check("A second mock goes over the daily speaking allowance", r.status === 429 && (await r.json()).error === "limit");
+  spokenText = "um";
+  const db2 = fakeD1();
+  r = await speak({ mode: "answer", vid: "speakvid0002", parts: [{ part: 1, questions: ["Q"], seconds: 10 }] }, 1, SITE, db2);
+  check("Silence or a few words is not marked and not counted", r.status === 422 && [...db2.rows.values()].every(n => n === 0));
+  r = await speak({ mode: "answer", parts: [{ part: 1, questions: ["Q"], seconds: 10 }] }, 1, "https://evil.example.com");
+  check("Speaking checks from other websites are refused", r.status === 403);
+  r = await speak({ mode: "answer", parts: [{ part: 1, questions: ["Q"] }] }, 0);
+  check("A speaking check without audio is refused", r.status === 400);
+}
+
+console.log(failures ? `Worker tests: ${failures} failed, ${passed} passed.` : `Worker tests passed (${passed} checks): form delivery, spam protection, error messages, audio ranges, AI writing and speaking checks.`);
 process.exit(failures ? 1 : 0);

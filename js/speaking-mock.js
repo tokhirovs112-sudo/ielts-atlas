@@ -111,6 +111,37 @@ function stopRecording() {
 }
 function release() { stream?.getTracks().forEach(t => t.stop()); stream = null; }
 
+// A second, smaller recording per part (Part 2 only while talking), sent only if the student asks for
+// an AI band estimate at the end. Kept in memory on this device.
+let aiRec = null, aiParts = [];
+function lowQuality() {
+  const type = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4"].find(t => { try { return MediaRecorder.isTypeSupported(t); } catch (_) { return false; } });
+  return Object.assign({ audioBitsPerSecond: 32000 }, type ? { mimeType: type } : {});
+}
+function aiStart(part) {
+  aiStop();
+  if (!stream || typeof MediaRecorder === "undefined") return;
+  let r;
+  try { r = new MediaRecorder(stream, lowQuality()); } catch (_) { try { r = new MediaRecorder(stream); } catch (__) { return; } }
+  const seg = { part, chunks: [], started: Date.now(), seconds: 0, blob: null, done: null };
+  r.ondataavailable = e => { if (e.data && e.data.size) seg.chunks.push(e.data); };
+  r.onstop = () => { seg.blob = new Blob(seg.chunks, { type: r.mimeType || "audio/webm" }); if (seg.done) seg.done(); };
+  try { r.start(1000); } catch (_) { return; }
+  aiRec = { r, seg };
+  aiParts = aiParts.filter(p => p.part !== part).concat(seg);
+}
+function aiStop() {
+  if (!aiRec) return Promise.resolve();
+  const { r, seg } = aiRec;
+  aiRec = null;
+  seg.seconds = Math.round((Date.now() - seg.started) / 1000);
+  return new Promise(resolve => {
+    if (r.state === "inactive") { resolve(); return; }
+    seg.done = resolve;
+    try { r.stop(); } catch (_) { resolve(); }
+  });
+}
+
 // ---------- Screens ----------
 function doneSet() { try { return new Set(JSON.parse(localStorage.getItem(DONE_KEY) || "[]")); } catch (_) { return new Set(); } }
 function markDone(n) { const s = doneSet(); s.add(n); try { localStorage.setItem(DONE_KEY, JSON.stringify([...s])); } catch (_) {} }
@@ -157,7 +188,7 @@ function renderStart(n) {
   $("mockBegin").addEventListener("click", async () => {
     $("mockBegin").disabled = true;
     recState = $("mockRecord").checked ? await startRecording() : "off";
-    steps = buildSteps(mock); stepIndex = 0; partStart = {}; partTime = {};
+    steps = buildSteps(mock); stepIndex = 0; partStart = {}; partTime = {}; aiParts = [];
     renderStep();
   });
 }
@@ -176,6 +207,11 @@ function renderStep() {
   clearInterval(tick); hush();
   const st = steps[stepIndex];
   notePart(st.part);
+  if (recState === "on") {
+    const want = st.kind === "q" && st.part === 1 ? 1 : st.kind === "talk" ? 2 : st.kind === "q" && st.part === 3 ? 3 : st.kind === "prep" ? 0 : null;
+    if (want === 0) aiStop();
+    else if (want && (!aiRec || aiRec.seg.part !== want)) aiStart(want);
+  }
   const total = steps.filter(x => x.kind === "q" && x.part === st.part).length;
   const num = steps.slice(0, stepIndex + 1).filter(x => x.kind === "q" && x.part === st.part).length;
   let html = partBar(st.part);
@@ -241,6 +277,7 @@ async function finish() {
   [1, 2].forEach(p => { if (!partTime[p] && partStart[p]) partTime[p] = Math.round(((partStart[p + 1] || Date.now()) - partStart[p]) / 1000); });
   say("Thank you. That is the end of the speaking test.");
   markDone(mock.n);
+  await aiStop();
   const rec = await stopRecording();
   if (recState === "on") recState = rec ? "saved" : "off";
   const total = (partTime[1] || 0) + (partTime[2] || 0) + (partTime[3] || 0);
@@ -249,6 +286,7 @@ async function finish() {
     '<div class="mock-stage mock-end"><div class="mock-kicker">MOCK ' + mock.n + ' COMPLETE</div><h2>Well done, that is the end of the test.</h2>' +
     '<div class="mock-times">' + [1, 2, 3].map(p => '<div><b>' + fmt(Math.round(partTime[p] || 0)) + '</b><span>Part ' + p + '</span></div>').join("") + '<div><b>' + fmt(Math.round(total)) + '</b><span>Total</span></div></div>' +
     (rec ? '<div class="mock-recording"><b>Listen to your answers</b><audio controls src="' + rec.url + '"></audio><a href="' + rec.url + '" download="englisity-speaking-mock-' + mock.n + '.' + (/mp4/.test(rec.type) ? "m4a" : "webm") + '">Download recording</a></div>' : '') +
+    (rec && aiParts.some(p => p.blob && p.blob.size > 2000) ? '<div class="speak-ai" id="mockAi"><button class="mock-primary speak-ai-btn" type="button">✦ Get my estimated band with AI</button><p class="speak-ai-note">The AI turns your recording into text and marks it against the IELTS Speaking band descriptors. Pronunciation is only a rough estimate, because the AI reads the text and cannot hear your voice. Not an official IELTS score. Your recording is not saved.</p><div class="ai-result" hidden aria-live="polite"></div></div>' : '') +
     '<div class="mock-check"><b>Check yourself while you listen</b><ul>' +
     '<li><b>Fluency:</b> Did you keep talking without long pauses? Did you use linking words (because, for example, on the other hand)?</li>' +
     '<li><b>Part 2:</b> Did you speak for close to 2 minutes and cover every point on the card?</li>' +
@@ -259,9 +297,16 @@ async function finish() {
     '<div class="mock-nav"><a class="mock-secondary" href="#mock/' + mock.n + '">Try this mock again</a>' +
     (mocks.find(m => m.n === mock.n + 1) ? '<a class="mock-primary" href="#mock/' + (mock.n + 1) + '">Next mock: Mock ' + (mock.n + 1) + ' →</a>' : '<a class="mock-primary" href="#mock">All mock tests</a>') + '</div></div>';
   window.EnglisityProgress?.recordActivity?.();
+  const aiBox = $("mockAi");
+  if (aiBox && window.EnglisitySpeakingAI) {
+    const qs = { 1: all1, 2: [mock.cue + " You should say: " + mock.prompts.join("; ")], 3: mock.part3 };
+    const parts = [1, 2, 3].map(p => aiParts.find(x => x.part === p)).filter(x => x && x.blob && x.blob.size > 2000)
+      .map(x => ({ part: x.part, questions: qs[x.part], seconds: x.seconds, blob: x.blob }));
+    aiBox.querySelector(".speak-ai-btn").addEventListener("click", e => window.EnglisitySpeakingAI.check(aiBox, "mock", parts, e.currentTarget));
+  }
 }
 
-function stopAll() { clearInterval(tick); hush(); if (recorder && recorder.state !== "inactive") { try { recorder.stop(); } catch (_) {} } release(); }
+function stopAll() { clearInterval(tick); hush(); if (aiRec) { try { aiRec.r.stop(); } catch (_) {} aiRec = null; } if (recorder && recorder.state !== "inactive") { try { recorder.stop(); } catch (_) {} } release(); }
 
 window.EnglisitySpeakingMock = {
   init(container) {

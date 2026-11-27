@@ -197,6 +197,11 @@ function submit(auto) {
     '<span>Time used: ' + Math.floor(used / 60) + ' min ' + (used % 60) + ' s' + (used > SECONDS ? " (over the 60-minute limit)" : "") + '</span>' +
     (wrong.length ? '<span>Review these questions: ' + wrong.map(n => '<button type="button" class="ft-review" data-n="' + n + '">' + n + '</button>').join("") + '</span>' : '<span>Perfect score — excellent work!</span>');
   try { localStorage.removeItem(SAVE_KEY); } catch (_) {}
+  // Part of a full mock test: save the section result and offer the next section.
+  if (T.mock && window.EnglisityMock) {
+    window.EnglisityMock.save(T.mock, "reading", { score, total: TOTAL, band: window.EnglisityMock.readingBand(score) });
+    result.insertAdjacentHTML("beforeend", '<a class="ft-next-section" href="' + esc(T.next) + '">Next section: ' + esc(T.nextLabel) + ' →</a>');
+  }
   if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
   document.body.classList.add("ft-submitted");
   window.EnglisityProgress?.recordActivity?.();

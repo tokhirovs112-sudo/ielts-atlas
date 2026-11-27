@@ -57,3 +57,11 @@ When editing existing article pages or the shared learning script, preserve this
 - `/api/speaking-check` (`worker/speaking-check.js`): multipart form (`meta` JSON + `audio0..2`), Whisper `@cf/openai/whisper-large-v3-turbo` for the transcript, then the same AI as the writing check, marked on FC, LR, GRA and P using a summary of the official Speaking band descriptors. Pronunciation is labelled a rough estimate (the AI only sees text). Recordings are never stored.
 - Limits share the "all" daily pool with writing (an answer costs 1, a full mock 4); 8 speaking points per device and 16 per network a day.
 - Daily self-test (cron): transcribes `assets/audio/selftest/answer.webm` and `.m4a` and marks the WebM one; result in `ai_selftest` (key `speaking-selftest`).
+
+# Full mock tests and sidebar
+
+- Hub: `pages/mock-tests.html` (estimated band, resume banner, a card per test). Each test has four section pages: `pages/mock-NN-listening.html` (listening engine copied from the listening mocks), `pages/mock-NN-reading.html` + `js/mock-NN-reading-data.js` (the shared `js/full-test.js` engine; data has `mock`, `next`, `nextLabel`), `pages/mock-NN-writing.html` (two tasks, 60-minute timer, AI check), `pages/mock-NN-speaking.html` (`js/speaking-mock.js` with `window.ENGLISITY_CUSTOM_MOCK`).
+- Section results are saved with `window.EnglisityMock.save(test, section, {band, ...})` (`js/mock-results.js`, localStorage key `englisity-mock-results-v1`). Overall band = mean of section bands, rounded like IELTS. Writing band = (Task 1 + 2 × Task 2) / 3 from the AI checks; Speaking band from the AI check at the end of the mock.
+- Materials for upcoming tests are kept in `content-staging/` (ignored by git and never served). Audio files must stay under Cloudflare's 25 MiB limit (re-encode with ffmpeg, mono ~80 kbps, strip tags and cover art).
+- Laptops/desktops (≥1024px) get a left sidebar menu built by `js/features.js` from the page's own menu links; phones keep the top bar. Exam screens (reading/listening tests with a mode gate) keep the top bar. The top bar's theme and install buttons are proxied into the sidebar.
+- When adding a mock test: add it to `TESTS` in `pages/mock-tests.html`, add its section slugs to `READING_TESTS` / `LISTENING_TESTS` in `tests/test-site.py`, and add a line to the home page "Latest" list.

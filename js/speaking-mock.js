@@ -46,8 +46,12 @@ const VOICE_KEY = "englisity-mock-voice", DONE_KEY = "englisity-speaking-mocks-d
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const $ = id => document.getElementById(id);
 let bank = null, root = null, mocks = [];
+// A page can define one fixed mock (e.g. a section of a full mock test) instead of the bank-based list.
+const CUSTOM = window.ENGLISITY_CUSTOM_MOCK || null;
+const listHref = () => CUSTOM ? CUSTOM.back : "#mock";
 
 function build() {
+  if (CUSTOM) { bank = {}; mocks = [{ n: 1, part1: CUSTOM.part1, cue: CUSTOM.cue, prompts: CUSTOM.prompts || [], part3: CUSTOM.part3 }]; return; }
   bank = window.EnglisitySpeakingBank;
   const find = (part, name) => bank.sets[part].filter(t => t.topic === name).flatMap(t => t.questions);
   const all3 = new Set(bank.sets[3].flatMap(t => t.questions));
@@ -144,7 +148,7 @@ function aiStop() {
 
 // ---------- Screens ----------
 function doneSet() { try { return new Set(JSON.parse(localStorage.getItem(DONE_KEY) || "[]")); } catch (_) { return new Set(); } }
-function markDone(n) { const s = doneSet(); s.add(n); try { localStorage.setItem(DONE_KEY, JSON.stringify([...s])); } catch (_) {} }
+function markDone(n) { if (CUSTOM) { try { localStorage.setItem(CUSTOM.doneKey, String(Date.now())); } catch (_) {} return; } const s = doneSet(); s.add(n); try { localStorage.setItem(DONE_KEY, JSON.stringify([...s])); } catch (_) {} }
 
 function renderList() {
   stopAll();
@@ -174,7 +178,7 @@ function renderStart(n) {
   mock = mocks.find(m => m.n === n);
   if (!mock) { renderList(); return; }
   const count1 = mock.part1.reduce((a, t) => a + t.questions.length, 0);
-  root.innerHTML = '<a class="back-button" href="#mock">← All mock tests</a>' +
+  root.innerHTML = '<a class="back-button" href="' + listHref() + '">' + (CUSTOM ? "← " + esc(CUSTOM.backLabel) : "← All mock tests") + '</a>' +
     '<div class="mock-start"><div class="mock-head"><div class="mock-kicker">IELTS SPEAKING · MOCK ' + mock.n + '</div><h2>Full speaking test</h2><p>About 11–14 minutes. Answer out loud, as you would to a real examiner.</p></div>' +
     '<ol class="mock-outline"><li><b>Part 1 · 4–5 min</b><span>' + count1 + ' questions on ' + mock.part1.map(t => esc(t.topic.toLowerCase())).join(", ") + '.</span></li>' +
     '<li><b>Part 2 · 3–4 min</b><span>One cue card. 1 minute to prepare and make notes, then speak for up to 2 minutes.</span></li>' +
@@ -294,12 +298,12 @@ async function finish() {
     '<li><b>Grammar:</b> Did you use different tenses correctly, and some longer sentences (if, when, which, although)?</li>' +
     '<li><b>Pronunciation:</b> Were you clear? Would someone who does not know your language understand every word?</li></ul></div>' +
     '<details class="mock-review"><summary>See all the questions in this mock</summary><h4>Part 1</h4><ol>' + all1.map(q => '<li>' + esc(q) + '</li>').join("") + '</ol><h4>Part 2</h4><p>' + esc(mock.cue) + '</p><h4>Part 3</h4><ol>' + mock.part3.map(q => '<li>' + esc(q) + '</li>').join("") + '</ol></details>' +
-    '<div class="mock-nav"><a class="mock-secondary" href="#mock/' + mock.n + '">Try this mock again</a>' +
-    (mocks.find(m => m.n === mock.n + 1) ? '<a class="mock-primary" href="#mock/' + (mock.n + 1) + '">Next mock: Mock ' + (mock.n + 1) + ' →</a>' : '<a class="mock-primary" href="#mock">All mock tests</a>') + '</div></div>';
+    (CUSTOM ? '<div class="mock-nav"><a class="mock-primary" href="' + esc(CUSTOM.back) + '">' + esc(CUSTOM.doneLabel) + ' →</a></div>' : '<div class="mock-nav"><a class="mock-secondary" href="#mock/' + mock.n + '">Try this mock again</a>' +
+    (mocks.find(m => m.n === mock.n + 1) ? '<a class="mock-primary" href="#mock/' + (mock.n + 1) + '">Next mock: Mock ' + (mock.n + 1) + ' →</a>' : '<a class="mock-primary" href="#mock">All mock tests</a>') + '</div>') + '</div>';
   window.EnglisityProgress?.recordActivity?.();
   const aiBox = $("mockAi");
   if (aiBox && window.EnglisitySpeakingAI) {
-    const qs = { 1: all1, 2: [mock.cue + " You should say: " + mock.prompts.join("; ")], 3: mock.part3 };
+    const qs = { 1: all1, 2: [mock.cue + (mock.prompts.length ? " You should say: " + mock.prompts.join("; ") : "")], 3: mock.part3 };
     const parts = [1, 2, 3].map(p => aiParts.find(x => x.part === p)).filter(x => x && x.blob && x.blob.size > 2000)
       .map(x => ({ part: x.part, questions: qs[x.part], seconds: x.seconds, blob: x.blob }));
     aiBox.querySelector(".speak-ai-btn").addEventListener("click", e => window.EnglisitySpeakingAI.check(aiBox, "mock", parts, e.currentTarget));

@@ -479,3 +479,83 @@
     observer.observe(document.body,{childList:true,subtree:true});
   });
 })();
+// Left sidebar menu on laptops and desktops (27 Nov 2026). Built from the page's own menu links,
+// plus "Full mock tests" and "My progress". Phones keep the top bar and the ☰ menu.
+// Exam screens (reading and listening tests) keep the top bar so the test has the full width.
+(function () {
+  if (document.querySelector(".sb")) return;
+  const nav = document.getElementById("navigation");
+  const topbar = document.querySelector(".topbar");
+  if (!nav || !topbar) return;
+  if (document.querySelector(".mode-gate, #fullTest, #testArea, #modeGate")) return;
+  const home = nav.querySelector('a[href$="index.html"]');
+  const prefix = home ? home.getAttribute("href").replace(/index\.html$/, "") : "";
+  const ICONS = {
+    home: '<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+    mock: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+    reading: '<path d="M3 5a2 2 0 0 1 2-2h5v17H5a2 2 0 0 0-2 2zM21 5a2 2 0 0 0-2-2h-5v17h5a2 2 0 0 1 2 2z"/>',
+    listening: '<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="7" rx="1.5"/><rect x="17" y="14" width="4" height="7" rx="1.5"/>',
+    writing: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/>',
+    speaking: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+    vocabulary: '<rect x="3" y="5" width="13" height="15" rx="2"/><path d="M8 3h11a2 2 0 0 1 2 2v13"/>',
+    articles: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h4"/>',
+    podcasts: '<circle cx="12" cy="11" r="3"/><path d="M6.5 16a8 8 0 1 1 11 0M12 14v7"/>',
+    progress: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'
+  };
+  const icon = k => '<svg viewBox="0 0 24 24" aria-hidden="true">' + (ICONS[k] || ICONS.articles) + '</svg>';
+  const here = location.pathname.replace(/\/index\.html$/, "/").replace(/\.html$/, "");
+  const isHere = href => { try { const u = new URL(href, location.href); return u.pathname.replace(/\/index\.html$/, "/").replace(/\.html$/, "") === here && !u.hash; } catch (e) { return false; } };
+  const linkFor = (label, href, key) => '<a href="' + href + '"' + (isHere(href) ? ' class="on" aria-current="page"' : "") + ">" + icon(key) + "<span>" + label + "</span></a>";
+  const byText = t => [...nav.querySelectorAll("a")].find(a => a.textContent.trim().toLowerCase() === t);
+  const hrefOf = (t, fallback) => (byText(t) && byText(t).getAttribute("href")) || fallback;
+  const inPages = /\/pages\//.test(location.pathname);
+  const P = name => (inPages ? "" : prefix + "pages/") + name + ".html";
+  let streak = 0;
+  try { streak = Math.max(0, Math.floor(Number((JSON.parse(localStorage.getItem("englisity-quiz-streak-v1") || "{}") || {}).current) || 0)); } catch (e) {}
+  const aside = document.createElement("aside");
+  aside.className = "sb";
+  aside.setAttribute("aria-label", "Main menu");
+  aside.innerHTML =
+    '<a class="sb-brand" href="' + prefix + 'index.html"><img src="' + prefix + 'assets/englisity-mark.svg?v=20261117-logo" alt=""><span>Englisity<small>LEARN WITH PURPOSE</small></span></a>' +
+    '<nav class="sb-nav">' +
+    linkFor("Home", prefix + "index.html", "home") +
+    linkFor("Full mock tests", P("mock-tests"), "mock") +
+    '<div class="sb-label">Practice</div>' +
+    linkFor("Reading", hrefOf("reading", P("reading")), "reading") +
+    linkFor("Listening", hrefOf("listening", P("listening")), "listening") +
+    linkFor("Writing", hrefOf("writing", P("writing")), "writing") +
+    linkFor("Speaking", hrefOf("speaking", P("speaking")), "speaking") +
+    '<div class="sb-label">Learn</div>' +
+    linkFor("Vocabulary", hrefOf("vocabulary", P("vocabulary")), "vocabulary") +
+    linkFor("Articles", hrefOf("articles", P("articles")), "articles") +
+    linkFor("Podcasts", hrefOf("podcasts", P("podcasts")), "podcasts") +
+    '<div class="sb-label">You</div>' +
+    linkFor("My progress", prefix + "index.html#myDashboard", "progress") +
+    "</nav>" +
+    '<div class="sb-foot"><div class="sb-streak"><b>' + (streak > 0 ? "🔥 " + streak + "-day streak" : "🔥 Start a streak today") + "</b><small>" + (streak > 0 ? "Practise today to keep it going" : "Finish any test to begin") + '</small></div>' +
+    '<button class="sb-theme" type="button"></button></div>';
+  document.body.insertBefore(aside, document.body.firstChild);
+  document.body.classList.add("has-sb");
+  const themeBtn = aside.querySelector(".sb-theme");
+  const label = () => { themeBtn.textContent = document.documentElement.dataset.theme === "dark" ? "☀ Light mode" : "☾ Dark mode"; };
+  label();
+  themeBtn.addEventListener("click", () => { const t = document.querySelector(".topbar .theme-toggle"); if (t) t.click(); setTimeout(label, 30); });
+  new MutationObserver(label).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  // The "Install Englisity" button lives in the hidden top bar: show a copy in the sidebar while it is offered.
+  const syncInstall = () => {
+    const orig = topbar.querySelector(".pwa-install-button");
+    let copy = aside.querySelector(".sb-install");
+    if (orig && !orig.hidden && !orig.disabled && getComputedStyle(orig).display !== "none" || orig && orig.offsetParent) {
+      if (!copy) { copy = document.createElement("button"); copy.type = "button"; copy.className = "sb-theme sb-install"; copy.addEventListener("click", () => orig.click()); aside.querySelector(".sb-foot").append(copy); }
+      copy.textContent = orig.textContent.trim() || "Install Englisity";
+    } else if (copy) copy.remove();
+  };
+  syncInstall();
+  new MutationObserver(syncInstall).observe(topbar, { childList: true, subtree: true, attributes: true });
+  // Phones: the top menu also gets the new "Full mock tests" link.
+  if (!nav.querySelector('a[href$="mock-tests.html"]') && home) {
+    const a = document.createElement("a");
+    a.href = P("mock-tests"); a.textContent = "Mock tests"; a.className = "nav-mock";
+    home.insertAdjacentElement("afterend", a);
+  }
+})();

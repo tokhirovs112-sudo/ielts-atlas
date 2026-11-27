@@ -98,6 +98,7 @@
       const r = await res.json().catch(() => ({}));
       if (res.ok && r.ok) {
         render(box, r);
+        try { document.dispatchEvent(new CustomEvent("englisity:writing-ai", { detail: { type, task: task.task, overall: r.overall } })); } catch (e) {}
         try { localStorage.setItem("englisity-ai-check-" + type + "-" + task.id, JSON.stringify({ at: Date.now(), overall: r.overall, bands: r.bands })); } catch (e) {}
         try { window.EnglisityTrack && window.EnglisityTrack.finish(Math.round(r.overall * 2), 18, "AI writing check: Task " + task.task + " " + task.id); } catch (e) {}
       } else if (r.error === "limit") message(box, "You have used today's " + (r.limit || 5) + " free AI checks. Come back tomorrow, or use the checklist below to review your writing.", "warn");

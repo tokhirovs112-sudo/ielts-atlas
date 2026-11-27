@@ -70,6 +70,7 @@
       const r = await res.json().catch(() => ({}));
       if (res.ok && r.ok) {
         render(box, r);
+        try { document.dispatchEvent(new CustomEvent("englisity:speaking-ai", { detail: { mode: r.mode || mode, overall: r.overall } })); } catch (e) {}
         try { window.EnglisityTrack && window.EnglisityTrack.finish(Math.round(r.overall * 2), 18, "AI speaking check: " + mode); } catch (e) {}
       } else if (r.error === "limit") message(box, mode === "mock" ? "A full mock uses 4 of your " + (r.limit || 8) + " daily speaking checks, and there are not enough left today. Come back tomorrow, or check single answers in the practice section." : "You have used today's free speaking checks. Come back tomorrow.", "warn");
       else if (r.error === "busy") message(box, "So many students used the AI checker today that it has reached its daily limit. Please try again tomorrow.", "warn");

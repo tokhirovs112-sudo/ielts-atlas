@@ -12,3 +12,4 @@ site-quality.yml
 .wrangler
 .gitignore
 tests
+content-staging

@@ -28,8 +28,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 
 PAGES = ["index.html"] + sorted(glob.glob("pages/*.html")) + sorted(glob.glob("articles/*.html"))
-READING_TESTS = ["full-test-01", "full-test-02", "beatrix-potter", "dolls", "foot-pedal-irrigation", "seeing-in-the-sea", "halley-vi", "herding", "keeping-healthy-at-work", "life-on-mars", "power-from-the-sea", "redwoods"]
-LISTENING_TESTS = ["listening-test-01", "listening-test-02", "listening-test-03", "listening-test-04"]
+READING_TESTS = ["full-test-01", "full-test-02", "mock-01-reading", "beatrix-potter", "dolls", "foot-pedal-irrigation", "seeing-in-the-sea", "halley-vi", "herding", "keeping-healthy-at-work", "life-on-mars", "power-from-the-sea", "redwoods"]
+LISTENING_TESTS = ["listening-test-01", "listening-test-02", "listening-test-03", "listening-test-04", "mock-01-listening"]
 DESKTOP = {"viewport": {"width": 1366, "height": 900}}
 IGNORED_CONSOLE = ("fonts.googleapis", "fonts.gstatic", "ERR_INTERNET_DISCONNECTED", "ERR_NAME_NOT_RESOLVED", "ERR_CONNECTION", "ERR_TUNNEL", "ERR_PROXY", "net::ERR_FAILED", "api.dictionaryapi.dev", "cloudflareinsights")
 
@@ -277,13 +277,13 @@ def test_navigation_links(browser, pw):
 def test_dark_mode_and_menu(browser, pw):
     ctx = browser.new_context(**DESKTOP, service_workers="block")
     page, problems = open_page(ctx, "index.html")
-    page.click(".theme-toggle")
+    page.click(".sb-theme" if page.is_visible(".sb-theme") else ".theme-toggle")  # laptops: the sidebar has the theme button
     page.wait_for_timeout(200)
     check(page.evaluate("document.documentElement.dataset.theme") == "dark", "Dark button does not switch to dark mode")
     page.goto(BASE + "pages/speaking.html")
     page.wait_for_timeout(300)
     check(page.evaluate("document.documentElement.dataset.theme") == "dark", "Dark mode is not remembered on the next page")
-    page.click(".theme-toggle")
+    page.click(".sb-theme" if page.is_visible(".sb-theme") else ".theme-toggle")  # laptops: the sidebar has the theme button
     check(page.evaluate("document.documentElement.dataset.theme") != "dark", "Light button does not switch back")
     no_problems(problems, "dark mode")
     ctx.close()
@@ -1260,6 +1260,75 @@ def test_ai_speaking_check(browser, pw):
     no_problems(problems, "AI speaking check")
     ctx.close()
     fake.close()
+
+
+def test_full_mock_test(browser, pw):
+    """Full Mock Test 1: Writing and Speaking sections save their results, the hub shows progress, a resume
+    banner and the estimated band; the sidebar menu shows on laptops (not on phones or exam screens)."""
+    ctx = browser.new_context(**DESKTOP, service_workers="block")
+    page, problems = open_page(ctx, "pages/mock-tests.html", 500)
+    check(page.inner_text("#mkBig").strip() == "—" and page.is_hidden("#mkResume"), "a new student already sees a band or a resume banner")
+    check(page.is_visible(".sb") and not page.is_visible(".topbar"), "laptop: the sidebar menu is not shown")
+    links = page.evaluate("[...document.querySelectorAll('.sb-nav a')].map(a => a.textContent.trim())")
+    check(links[:2] == ["Home", "Full mock tests"] and "Vocabulary" in links and "My progress" in links, f"sidebar links: {links}")
+    check(page.locator(".sb-nav a.on").inner_text().strip() == "Full mock tests", "sidebar does not highlight the current page")
+    page.click(".mk-card .mk-btn.pri")
+    page.wait_for_timeout(400)
+    check(page.url.endswith("mock-01-listening.html"), f"Start test opens {page.url}")
+    check(not page.is_visible(".sb"), "the sidebar covers an exam screen")
+    # Writing: answers are kept, finishing saves the section.
+    page.goto(BASE + "pages/mock-01-writing.html")
+    page.wait_for_timeout(400)
+    page.fill("#task1Draft", "word " * 160)
+    page.reload()
+    page.wait_for_timeout(400)
+    check(len(page.input_value("#task1Draft").split()) == 160, "writing is not saved after a reload")
+    check("Darwin" not in page.content() and "Quality of air in cities" in page.get_attribute(".mw-chart", "alt"), "Task 1 chart missing")
+    page.click('.mw-tab[data-task="2"]')
+    check(page.is_visible("#task2Draft") and not page.is_visible("#task1Draft"), "Task 2 tab does not switch tasks")
+    page.fill("#task2Draft", "word " * 260)
+    page.click("#mwFinish")
+    page.wait_for_timeout(300)
+    check(page.is_visible("#mwSummary") and "mock-01-speaking.html" in page.inner_html("#mwSummary"), "finishing writing does not lead to Speaking")
+    # Speaking: the fixed mock runs to the end and is saved.
+    page.goto(BASE + "pages/mock-01-speaking.html")
+    page.wait_for_timeout(500)
+    page.uncheck("#mockRecord")
+    page.click("#mockBegin")
+    page.wait_for_timeout(300)
+    asked = set()
+    for _ in range(40):
+        if page.query_selector(".mock-end"):
+            break
+        q = page.query_selector(".mock-q")
+        if q:
+            asked.add(q.inner_text().strip())
+        if page.query_selector("#mockNotes"):
+            page.fill("#mockNotes", "notes")
+        page.click("#mockNext")
+        page.wait_for_timeout(100)
+    page.wait_for_timeout(400)
+    check(page.query_selector(".mock-end") is not None, "the speaking section does not reach its end screen")
+    check(any("expensive watches" in a for a in asked) and any("traditional products" in a for a in asked), f"speaking questions missing: {sorted(asked)[:5]}")
+    check("Describe a traditional product that is made in your country." in page.text_content(".mock-review"), "the cue card is not on the end screen")
+    page.goto(BASE + "pages/mock-tests.html")
+    page.wait_for_timeout(400)
+    check(page.is_visible("#mkResume") and "Listening next" in page.inner_text("#mkResume"), "the hub does not offer to resume with Listening")
+    page.evaluate("EnglisityMock.save('mock-01', 'listening', {score: 30, total: 40, band: EnglisityMock.listeningBand(30)}); EnglisityMock.save('mock-01', 'reading', {score: 27, total: 40, band: EnglisityMock.readingBand(27)}); EnglisityMock.save('mock-01', 'writing', {band: 6}); EnglisityMock.save('mock-01', 'speaking', {band: 6})")
+    page.reload()
+    page.wait_for_timeout(400)
+    check(page.inner_text("#mkBig").strip() == "6.5" and "FULL TEST" in page.inner_text("#mkConf"), f"overall band for 7/6.5/6/6 should be 6.5, got {page.inner_text('#mkBig')}")
+    no_problems(problems, "full mock test")
+    ctx.close()
+    phone = {k: v for k, v in pw.devices["iPhone 13"].items() if k != "default_browser_type"}
+    ctx = browser.new_context(**phone, service_workers="block")
+    page, problems = open_page(ctx, "pages/mock-tests.html", 400)
+    check(not page.is_visible(".sb") and page.is_visible(".topbar"), "phone: the sidebar shows instead of the top bar")
+    page.click("#menuToggle")
+    page.wait_for_timeout(250)
+    check(page.is_visible('#navigation a[href$="mock-tests.html"]'), "phone menu has no Mock tests link")
+    no_problems(problems, "full mock test phone")
+    ctx.close()
 
 
 # ------------------------------------------------------------------- main ---

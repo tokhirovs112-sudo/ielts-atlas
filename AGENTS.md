@@ -65,3 +65,9 @@ When editing existing article pages or the shared learning script, preserve this
 - Materials for upcoming tests are kept in `content-staging/` (ignored by git and never served). Audio files must stay under Cloudflare's 25 MiB limit (re-encode with ffmpeg, mono ~80 kbps, strip tags and cover art).
 - Laptops/desktops (≥1024px) get a left sidebar menu built by `js/features.js` from the page's own menu links; phones keep the top bar. Exam screens (reading/listening tests with a mode gate) keep the top bar. The top bar's theme and install buttons are proxied into the sidebar.
 - When adding a mock test: add it to `TESTS` in `pages/mock-tests.html`, add its section slugs to `READING_TESTS` / `LISTENING_TESTS` in `tests/test-site.py`, and add a line to the home page "Latest" list.
+
+## My progress (pages/progress.html)
+- A static page with an inline script; no server data.
+- Every `EnglisityTrack.finish(score, total, name)` call (test results, AI checks, vocabulary quizzes) is also saved on the device in `englisity-history-v1` (last 300). Full mock sections come from `englisity-mock-results-v1`.
+- Bands: 40-question Listening/Reading via `EnglisityMock.listeningBand/readingBand`; AI checks send score = band × 2 out of 18. Each skill shows the average of its last 3 bands; overall only when all four skills have a band.
+- The old home "dashboard" (page visits) is gone; `index.html#myDashboard` redirects here.

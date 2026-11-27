@@ -140,7 +140,7 @@
     if (siteNav && !siteNav.querySelector(".eng-vocab-nav")) siteNav.appendChild(vocabLink);
     const strip = document.createElement("section");
     strip.className = "eng-progress";
-    strip.innerHTML = '<div><strong>My learning</strong><small>Progress is saved on this device.</small></div><div class="eng-progress-actions"><span class="eng-streak-pill" id="engStreakPill">🔥 0-day streak</span><a href="' + (page === "index.html" ? "#myDashboard" : "../index.html#myDashboard") + '">Dashboard</a><a href="' + (page === "index.html" ? "pages/vocabulary.html" : "../pages/vocabulary.html") + '">Daily practice</a></div>';
+    strip.innerHTML = '<div><strong>My learning</strong><small>Progress is saved on this device.</small></div><div class="eng-progress-actions"><span class="eng-streak-pill" id="engStreakPill">🔥 0-day streak</span><a href="' + (page === "index.html" ? "pages/progress.html" : "../pages/progress.html") + '">My progress</a><a href="' + (page === "index.html" ? "pages/vocabulary.html" : "../pages/vocabulary.html") + '">Daily practice</a></div>';
     updateStreakPill();
     nav.insertAdjacentElement("afterend", strip);
     syncStartedState();
@@ -216,18 +216,9 @@
     target.innerHTML = '<div class="eng-dashboard-grid"><div class="eng-stat"><b>'+totalVisits+'</b><span>Page visits</span></div><div class="eng-stat"><b>'+(vocabStats.passed||0)+'</b><span>Vocabulary quizzes passed</span></div><div class="eng-stat"><b>🔥 '+streak.current+'</b><span>Current streak</span></div><div class="eng-stat"><b>'+(streak.longest||0)+'</b><span>Longest streak</span></div><div class="eng-stat"><b>'+saved.length+'</b><span>Saved resources</span></div><div class="eng-bookmarks"><strong>Saved resources</strong><div class="eng-bookmark-list">'+(saved.length?saved.map(x=>'<a href="'+String(x.url).replace(/&/g,"&amp;").replace(/"/g,"&quot;")+'">'+String(x.title).replace(/&/g,"&amp;").replace(/</g,"&lt;")+'</a>').join(""):'<p>You have not saved any resources yet. Use “Save resource” on an existing resource.</p>')+'</div></div></div>';
   }
 
+  // The old home "dashboard" only counted page visits; My progress now lives on pages/progress.html.
   function addDashboard() {
-    if (page !== "index.html" || document.getElementById("myDashboard")) return;
-    const hero = document.querySelector(".home-hero, .home-hero-new");
-    if (!hero) return;
-    const section = document.createElement("section");
-    section.className = "eng-dashboard";
-    section.id = "myDashboard";
-    section.innerHTML = '<div class="home-section-heading"><span>YOUR ACTIVITY</span><h2>My learning dashboard</h2><p>A simple overview of your activity on this device.</p></div><div id="engDashboardContent"></div>';
-    const anchor = document.getElementById("learning-path") || hero;
-    anchor.insertAdjacentElement("afterend",section);
-    renderDashboard();
-    syncStartedState();
+    if (page === "index.html" && location.hash === "#myDashboard") location.replace("pages/progress.html");
   }
 
   function addTimer() {
@@ -345,7 +336,7 @@
     f.className="site-footer";
     f.innerHTML='<div class="sf-inner"><div class="sf-grid">'+
       col("Practice",[link(root+"index.html","home","Home"),link(pg+"reading.html","book","Reading"),link(pg+"listening.html","headphones","Listening"),link(pg+"writing.html","pen","Writing"),link(pg+"speaking.html","mic","Speaking")])+
-      col("Learn",[link(pg+"vocabulary.html","cards","Vocabulary"),link(pg+"articles.html","news","Articles"),link(pg+"podcasts.html","podcast","Podcasts"),link(root+"index.html#myDashboard","chart","My progress")])+
+      col("Learn",[link(pg+"vocabulary.html","cards","Vocabulary"),link(pg+"articles.html","news","Articles"),link(pg+"podcasts.html","podcast","Podcasts"),link(pg+"progress.html","chart","My progress")])+
       col("Englisity",[link(pg+"about.html","info","About Englisity"),link(pg+"share.html","share","Share your exam questions"),'<a href="'+reportHref()+'" data-report-link>'+icon("flag")+'<span>Report a problem</span></a>'])+
       col("Connect",[link("https://t.me/TokhirovEnglisity","send","Telegram channel",true),link("mailto:tokhirovs112@gmail.com","mail","Contact us")])+
       '</div><div class="sf-bottom"><a class="sf-brand" href="'+root+'index.html"><img src="'+root+'assets/englisity-mark.svg?v=20261117-logo" alt="" width="28" height="28"><span>Englisity</span></a><span class="sf-copy">© '+new Date().getFullYear()+' Englisity · Free IELTS practice</span></div></div>';
@@ -389,7 +380,7 @@
 
   // ---- Private usage statistics (no cookies, no names; owner-only stats page) ----
   // Sends small anonymous events to /api/track on the live site only. Respects "Do Not Track".
-  const NOOP={add(){},start(){},finish(){},view(){}};
+  const NOOP={add(){},start(){},finish(){},view(){}};// (Track.finish is wrapped below to keep a local history)
   const Track=(()=>{try{
     if(typeof navigator==="undefined"||typeof crypto==="undefined"||!crypto.getRandomValues)return NOOP;
     let debug=false;try{debug=localStorage.getItem("englisity-track-debug")==="1";}catch(e){}
@@ -437,6 +428,20 @@
       view(){add("view",{ref:document.referrer||""});}
     };
   }catch(e){return NOOP;}})();
+  // Every finished test, quiz and AI check is also kept on this device for "My progress" (pages/progress.html).
+  const sendFinish=Track.finish;
+  Track.finish=function(score,total,name,wrong){
+    try{
+      const item=name||((/listening/.test(page)?"Listening: ":"Reading: ")+(document.title||"").replace(/\s*[—|-]\s*(IELTS Reading|IELTS Listening)?\s*\|?\s*Englisity.*$/i,"").trim());
+      const h=read("englisity-history-v1",[]);const list=Array.isArray(h)?h:[];
+      const last=list[list.length-1];
+      if(!(last&&last.item===item&&last.score===score&&Date.now()-last.at<60000)){
+        list.push({at:Date.now(),item:String(item).slice(0,140),score:+score||0,total:+total||0,path:location.pathname.slice(0,140),exam:document.body.classList.contains("exam-mode")||((document.getElementById("modeTitle")||{}).textContent||"").trim()==="Exam mode"});
+        save("englisity-history-v1",list.slice(-300));
+      }
+    }catch(e){}
+    return sendFinish.apply(this,arguments);
+  };
   window.EnglisityTrack=Track;
   function initTracking(){
     Track.view();
@@ -530,7 +535,7 @@
     linkFor("Articles", hrefOf("articles", P("articles")), "articles") +
     linkFor("Podcasts", hrefOf("podcasts", P("podcasts")), "podcasts") +
     '<div class="sb-label">You</div>' +
-    linkFor("My progress", prefix + "index.html#myDashboard", "progress") +
+    linkFor("My progress", prefix + "pages/progress.html", "progress") +
     "</nav>" +
     '<div class="sb-foot"><div class="sb-streak"><b>' + (streak > 0 ? "🔥 " + streak + "-day streak" : "🔥 Start a streak today") + "</b><small>" + (streak > 0 ? "Practise today to keep it going" : "Finish any test to begin") + '</small></div>' +
     '<button class="sb-theme" type="button"></button></div>';

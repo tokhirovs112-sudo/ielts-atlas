@@ -1268,6 +1268,43 @@ def test_ai_speaking_check(browser, pw):
     fake.close()
 
 
+def test_my_progress(browser, pw):
+    """My progress shows real results: finished tests and AI checks are kept on the device and turned into
+    an estimated band per skill, an overall band when all four skills have one, and a list of recent results."""
+    ctx = browser.new_context(**DESKTOP, service_workers="block")
+    page, problems = open_page(ctx, "pages/progress.html", 400)
+    check(page.is_visible("#pgEmpty") and "Page visits" not in page.inner_text("main"), "a new student does not see the empty state on My progress")
+    check(page.locator('.sb-nav a.on').inner_text().strip() == "My progress", "sidebar does not highlight My progress")
+    # Finish a 40-question listening test and get Writing and Speaking marked (the same calls the site makes).
+    page.goto(BASE + "pages/listening-test-01.html")
+    page.wait_for_timeout(300)
+    page.evaluate("EnglisityTrack.finish(30, 40); EnglisityTrack.finish(30, 40)")
+    page.goto(BASE + "pages/passage-1.html")
+    page.wait_for_timeout(300)
+    page.evaluate("document.body.classList.add('exam-mode'); EnglisityTrack.finish(27, 40, 'Reading: Full test')")
+    page.evaluate("EnglisityTrack.finish(12, 18, 'AI writing check: Task 2 youth-crime'); EnglisityTrack.finish(13, 18, 'AI speaking check: answer')")
+    page.goto(BASE + "pages/progress.html")
+    page.wait_for_timeout(400)
+    skills = page.evaluate("Object.fromEntries([...document.querySelectorAll('.pg-skill[data-skill]')].map(a => [a.dataset.skill, a.querySelector('b').textContent]))")
+    check(skills == {"listening": "7.0", "reading": "6.5", "writing": "6.0", "speaking": "6.5"}, f"bands per skill: {skills}")
+    check(page.is_visible("#pgOverall") and page.inner_text("#pgOverall b") == "6.5", "no overall band when all four skills have one")
+    items = page.locator("#pgRecent li").count()
+    check(items == 4, f"recent results should list 4 (the duplicate listening result once), got {items}")
+    check("Exam mode" in page.inner_text("#pgRecent") and "30 / 40" in page.inner_text("#pgRecent"), "recent results miss scores or the exam-mode tag")
+    # Old home dashboard link goes to the new page; the home page no longer shows page visits.
+    page.goto(BASE + "index.html#myDashboard")
+    page.wait_for_timeout(600)
+    check(page.url.endswith("pages/progress.html"), f"old dashboard link opens {page.url}")
+    no_problems(problems, "my progress")
+    ctx.close()
+    phone = {k: v for k, v in pw.devices["iPhone 13"].items() if k != "default_browser_type"}
+    ctx = browser.new_context(**phone, service_workers="block")
+    page, problems = open_page(ctx, "pages/progress.html", 400)
+    check(page.evaluate("document.documentElement.scrollWidth <= innerWidth + 1"), "My progress is wider than a phone screen")
+    no_problems(problems, "my progress phone")
+    ctx.close()
+
+
 def test_full_mock_test(browser, pw):
     """Full Mock Test 1: Writing and Speaking sections save their results, the hub shows progress, a resume
     banner and the estimated band; the sidebar menu shows on laptops (not on phones or exam screens)."""

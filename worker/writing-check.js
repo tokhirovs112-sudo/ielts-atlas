@@ -94,6 +94,10 @@ export function textOf(result) {
 
 export const clipText = (v, n) => String(v ?? "").replace(/\s+/g, " ").trim().slice(0, n);
 
+// Corrections that only change punctuation or contractions, or are "more natural" rewrites, are not errors.
+const sameWords = t => String(t).toLowerCase().replace(/[’']/g, "'").replace(/\b(\w+)n't\b/g, "$1 not").replace(/\b(i|you|we|they)'re\b/g, "$1 are").replace(/\b(it|he|she|that|there)'s\b/g, "$1 is").replace(/\bi'm\b/g, "i am").replace(/\b(\w+)'ve\b/g, "$1 have").replace(/\b(\w+)'ll\b/g, "$1 will").replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim();
+const STYLE_ONLY = /\b(more natural|more idiomatic|more concise|smoother|flow|punctuation|contraction|style|stylistic|sounds better|more formal|optional)\b/i;
+
 export function parseFeedback(raw, task) {
   const firstKey = task === 1 ? "TA" : "TR";
   return parseBandFeedback(raw, [firstKey, "CC", "LR", "GRA"], { [firstKey]: ["TA", "TR"] });
@@ -122,7 +126,7 @@ export function parseBandFeedback(raw, keyList, aliases = {}) {
       .filter(i => i.advice).slice(0, 6),
     corrections: (Array.isArray(obj.corrections) ? obj.corrections : [])
       .map(c => ({ original: clipText(c && c.original, 300), better: clipText(c && c.better, 300), why: clipText(c && c.why, 200) }))
-      .filter(c => c.original && c.better && c.original !== c.better).slice(0, 8)
+      .filter(c => c.original && c.better && sameWords(c.original) !== sameWords(c.better) && !STYLE_ONLY.test(c.why)).slice(0, 8)
   };
 }
 

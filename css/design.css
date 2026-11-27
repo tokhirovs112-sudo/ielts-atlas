@@ -2684,3 +2684,6 @@ html[data-theme="dark"] body .mock-autonext small{color:#a9bcb1!important}
 html[data-theme="dark"] body .mock-autonext .stay{background:#1c2f28!important;border-color:#2c4239!important;color:#edf5ef!important}
 html[data-theme="dark"] body .mock-autonext .go{background:#2f7550!important}
 @media(min-width:1024px){html body.has-sb > .eng-progress{width:min(1160px,91%)!important;margin-left:auto!important;margin-right:auto!important;box-sizing:border-box}}
+/* mock start: exam mode first */
+.mode-rec{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:99px;background:#e3f3ea;color:#14532d;font-size:.72rem;font-style:normal;font-weight:700;vertical-align:middle}
+[data-theme="dark"] .mode-rec{background:#1d3a2b;color:#bdf0d0}

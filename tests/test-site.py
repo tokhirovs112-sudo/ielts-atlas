@@ -1273,7 +1273,7 @@ def test_full_mock_test(browser, pw):
     banner and the estimated band; the sidebar menu shows on laptops (not on phones or exam screens)."""
     ctx = browser.new_context(**DESKTOP, service_workers="block")
     page, problems = open_page(ctx, "pages/mock-tests.html", 500)
-    check(page.inner_text("#mkBig").strip() == "—" and page.is_hidden("#mkResume"), "a new student already sees a band or a resume banner")
+    check(page.is_hidden("#mkScore") and page.is_hidden("#mkResume"), "a new student already sees a band card or a resume banner")
     check(page.is_visible(".sb") and not page.is_visible(".topbar"), "laptop: the sidebar menu is not shown")
     links = page.evaluate("[...document.querySelectorAll('.sb-nav a')].map(a => a.textContent.trim())")
     check(links[:2] == ["Home", "Full mock tests"] and "Vocabulary" in links and "My progress" in links, f"sidebar links: {links}")

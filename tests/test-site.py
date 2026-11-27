@@ -1271,7 +1271,15 @@ def test_ai_speaking_check(browser, pw):
 def test_full_mock_test(browser, pw):
     """Full Mock Test 1: Writing and Speaking sections save their results, the hub shows progress, a resume
     banner and the estimated band; the sidebar menu shows on laptops (not on phones or exam screens)."""
+    import json as _json
     ctx = browser.new_context(**DESKTOP, service_workers="block")
+    marked = []
+    def fake_mark(route):
+        t = _json.loads(route.request.post_data)["task"]
+        marked.append(t)
+        route.fulfill(status=200, content_type="application/json", body=_json.dumps({"ok": True, "task": t, "words": 200, "left": 3, "bands": {"TR": 6, "CC": 6, "LR": 6, "GRA": 6},
+            "overall": 6.0 if t == 1 else 7.0, "summary": "Fine.", "strengths": [], "improvements": [], "corrections": []}))
+    ctx.route("**/api/writing-check", fake_mark)
     page, problems = open_page(ctx, "pages/mock-tests.html", 500)
     check(page.is_hidden("#mkScore") and page.is_hidden("#mkResume"), "a new student already sees a band card or a resume banner")
     check(page.is_visible(".sb") and not page.is_visible(".topbar"), "laptop: the sidebar menu is not shown")
@@ -1293,9 +1301,14 @@ def test_full_mock_test(browser, pw):
     page.click('.mw-tab[data-task="2"]')
     check(page.is_visible("#task2Draft") and not page.is_visible("#task1Draft"), "Task 2 tab does not switch tasks")
     page.fill("#task2Draft", "word " * 260)
+    check(page.query_selector_all(".ai-check-btn:visible") == [] and "Check my writing" not in page.inner_text("main"), "an AI check is offered in the middle of the mock exam")
     page.click("#mwFinish")
-    page.wait_for_timeout(300)
+    page.wait_for_timeout(1200)
     check(page.is_visible("#mwSummary") and "mock-01-speaking.html" in page.inner_html("#mwSummary"), "finishing writing does not lead to Speaking")
+    check(sorted(marked) == [1, 2] and "6.5" in page.inner_text("#mwBand"), f"after finishing, both tasks are not marked by AI: {marked}, {page.inner_text('#mwBand')!r}")
+    check(page.is_hidden("#task1Draft") and page.is_hidden("#mwFinish"), "the exam is still editable after finishing")
+    check(page.evaluate("EnglisityMock.get('mock-01').writing.band") == 6.5, "the Writing band is not saved for the hub")
+    page.click("#mockAutoNext .stay")
     # Speaking: the fixed mock runs to the end and is saved.
     page.goto(BASE + "pages/mock-01-speaking.html")
     page.wait_for_timeout(500)

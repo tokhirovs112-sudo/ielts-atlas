@@ -114,7 +114,8 @@
     }
   }
 
-  document.querySelectorAll("[data-ai-check]").forEach(wrap => {
+  window.EnglisityWritingAI = { check };
+  document.querySelectorAll("[data-ai-check]:not([data-ai-manual])").forEach(wrap => {
     wrap.querySelector(".ai-check-btn").addEventListener("click", () => check(wrap));
   });
   // A new task opens with an empty result box.

@@ -25,6 +25,28 @@
     listeningBand: s => fromRaw(LISTENING, s),
     readingBand: s => fromRaw(READING, s),
     roundBand,
+    // Exam-day flow: after a section ends, the next one starts by itself after a short countdown.
+    // The student can start at once or stay to review (the "Next section" button stays on the page).
+    autoNext(url, label, seconds) {
+      seconds = seconds || 15;
+      if (document.getElementById("mockAutoNext")) return;
+      const box = document.createElement("div");
+      box.id = "mockAutoNext";
+      box.className = "mock-autonext";
+      box.setAttribute("role", "status");
+      box.innerHTML = '<div><b></b><small>Like the real exam, the next part starts automatically.</small></div><button type="button" class="stay">Stay and review</button><a class="go" href="' + url + '">Start now →</a>';
+      document.body.append(box);
+      const b = box.querySelector("b");
+      let left = seconds;
+      const show = () => { b.textContent = label + " starts in " + left + " s"; };
+      show();
+      const t = setInterval(() => { left--; if (left <= 0) { clearInterval(t); location.href = url; } else show(); }, 1000);
+      const stop = () => { clearInterval(t); box.remove(); document.removeEventListener("click", review, true); };
+      // Reviewing answers ("Show in passage", "View in test", question numbers) means the student wants to stay.
+      const review = e => { if (!box.contains(e.target) && e.target.closest && e.target.closest(".view-in-test, .review-transcript, .ft-review, .qnav-btn, [data-view-question], [data-go]")) stop(); };
+      document.addEventListener("click", review, true);
+      box.querySelector(".stay").addEventListener("click", stop);
+    },
     // Overall band from the sections that have a band; partial = fewer than four.
     overall(test) {
       const r = read()[test] || {};

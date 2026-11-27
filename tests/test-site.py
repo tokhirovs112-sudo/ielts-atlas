@@ -371,6 +371,8 @@ def test_reading_tests_full_marks(browser, pw):
         if slug == "redwoods":
             source = open("js/redwoods.js", encoding="utf-8").read()
             keys = {name: json.loads(re.sub(r"(\w+):", r'"\1":', re.search(r"const %s=(\{[^}]*\});" % name, source).group(1))) for name in ("key", "peopleKey", "textKey")}
+        if page.is_visible("#mockAutoNext"):
+            page.click("#mockAutoNext .stay")  # full mock test: stay on the page instead of moving to Writing
         page.click("#resetTest")
         page.wait_for_timeout(400)
         choose_practice_mode(page)
@@ -394,6 +396,8 @@ def test_reading_tests_full_marks(browser, pw):
         got, total = score_of(page)
         check(got == total, f"entering the correct answers scores only {got}/{total}")
         # "Try again" clears everything.
+        if page.is_visible("#mockAutoNext"):
+            page.click("#mockAutoNext .stay")
         page.click("#resetTest")
         page.wait_for_timeout(400)
         left = page.evaluate("[...document.querySelectorAll('input[type=text]')].filter(i => i.value).length + [...document.querySelectorAll('input[type=radio]:checked,input[type=checkbox]:checked')].length")
@@ -444,6 +448,8 @@ def test_show_in_passage(browser, pw):
         if page.query_selector("#submitAnyway") and page.is_visible("#submitAnyway"):
             page.click("#submitAnyway")
             page.wait_for_timeout(300)
+        if page.is_visible("#mockAutoNext"):
+            page.click("#mockAutoNext .stay")
         count = page.evaluate("document.querySelectorAll('.view-in-test').length")
         if slug != "redwoods":
             check(count >= 10, f"only {count} 'Show in passage' buttons after submitting")
@@ -1318,6 +1324,39 @@ def test_full_mock_test(browser, pw):
     page.reload()
     page.wait_for_timeout(400)
     check(page.inner_text("#mkBig").strip() == "6.5" and "FULL TEST" in page.inner_text("#mkConf"), f"overall band for 7/6.5/6/6 should be 6.5, got {page.inner_text('#mkBig')}")
+    # Exam-day flow: each section leads into the next by itself; a 10-minute break before Speaking.
+    page.goto(BASE + "pages/mock-01-listening.html")
+    page.wait_for_timeout(300)
+    page.click("#exam")
+    page.evaluate("document.getElementById('audio').dispatchEvent(new Event('ended'))")
+    page.wait_for_timeout(1200)
+    check("to check your answers" in page.inner_text("#status"), "after the recording ends there is no 2-minute checking time")
+    page.evaluate("document.getElementById('submit').click()")
+    page.wait_for_timeout(300)
+    check(page.is_visible("#mockAutoNext") and "Reading starts in" in page.inner_text("#mockAutoNext"), "no countdown to Reading after Listening")
+    page.click("#mockAutoNext .go")
+    page.wait_for_timeout(700)
+    check("mock-01-reading.html?start=exam" in page.url and page.is_hidden("#modeGate") and page.evaluate("document.body.classList.contains('exam-mode')"), "Reading does not start in exam mode after Listening")
+    page.click("#checkAnswers")
+    page.wait_for_timeout(300)
+    if page.is_visible("#submitAnyway"):
+        page.click("#submitAnyway")
+        page.wait_for_timeout(300)
+    check("Writing starts in" in page.inner_text("#mockAutoNext"), "no countdown to Writing after Reading")
+    page.click("#mockAutoNext .stay")
+    check(page.query_selector("#mockAutoNext") is None and page.is_visible(".ft-next-section"), "'Stay and review' does not stop the countdown")
+    page.goto(BASE + "pages/mock-01-writing.html")
+    page.wait_for_timeout(300)
+    page.evaluate("const k='englisity-mock-01-writing'; const s=JSON.parse(localStorage.getItem(k)); s.started=Date.now()-3601000; s.finished=false; localStorage.setItem(k, JSON.stringify(s))")
+    page.reload()
+    page.wait_for_timeout(1500)
+    check(page.is_visible("#mwSummary") and "break starts in" in page.inner_text("#mockAutoNext"), "Writing does not finish by itself when time is up")
+    page.click("#mockAutoNext .go")
+    page.wait_for_timeout(1300)
+    check(page.is_visible("#mkBreak") and page.is_hidden("#mockSection") and page.inner_text("#mkBreakTime").startswith("09:"), "no 10-minute break before Speaking")
+    page.click("#mkBreakSkip")
+    page.wait_for_timeout(300)
+    check(page.is_visible("#mockBegin"), "skipping the break does not show the Speaking test")
     no_problems(problems, "full mock test")
     ctx.close()
     phone = {k: v for k, v in pw.devices["iPhone 13"].items() if k != "default_browser_type"}

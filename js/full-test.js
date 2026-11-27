@@ -201,6 +201,7 @@ function submit(auto) {
   if (T.mock && window.EnglisityMock) {
     window.EnglisityMock.save(T.mock, "reading", { score, total: TOTAL, band: window.EnglisityMock.readingBand(score) });
     result.insertAdjacentHTML("beforeend", '<a class="ft-next-section" href="' + esc(T.next) + '">Next section: ' + esc(T.nextLabel) + ' →</a>');
+    window.EnglisityMock.autoNext(T.next, T.nextLabel);
   }
   if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
   document.body.classList.add("ft-submitted");
@@ -218,6 +219,7 @@ document.getElementById("keepWorking").addEventListener("click", () => {
 root.addEventListener("click", e => { const r = e.target.closest(".ft-review"); if (r) { const n = +r.dataset.n; showPart(partOf(n), n); } });
 
 document.getElementById("resetTest").addEventListener("click", () => {
+  document.getElementById("mockAutoNext")?.querySelector(".stay")?.click();  // trying again stops the countdown to the next section
   submitted = false; submitConfirmed = false;
   root.querySelectorAll("input,select").forEach(x => { x.disabled = false; if (x.type === "radio" || x.type === "checkbox") x.checked = false; else x.value = ""; });
   root.querySelectorAll(".question-feedback").forEach(x => { x.hidden = true; x.innerHTML = ""; });
@@ -260,6 +262,8 @@ function start(isExam) {
   runTimer();
 }
 document.getElementById("practiceModeButton").addEventListener("click", () => start(false));
+// Full mock test flow: arriving from the previous section starts exam mode straight away.
+if (T.mock && /[?&]start=exam\b/.test(location.search)) setTimeout(() => start(true), 0);
 document.getElementById("examModeButton").addEventListener("click", async () => { start(true); try { if (document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen(); } catch (_) {} });
 
 // ---------- Resizable split ----------

@@ -1,13 +1,13 @@
 "use strict";
 
-const CACHE_NAME = "englisity-pwa-v67";
+const CACHE_NAME = "englisity-pwa-v68";
 const APP_ROOT = new URL(self.registration.scope);
 
 const CORE_FILES = [
   "./",
   "index.html",
   "css/style.css",
-  "css/design.css?v=20261127-mock",
+  "css/design.css?v=20261127-flow",
   "css/mobile.css?v=20261103-responsive-pwa-2",
   "js/app.js?v=20261111-search-1",
   "js/features.js?v=20261127-sidebar",
@@ -39,7 +39,7 @@ const CORE_FILES = [
   "js/full-test-01-data.js?v=20261121-1",
   "pages/full-test-02.html",
   "js/full-test-02-data.js?v=20261123-1",
-  "js/full-test.js?v=20261127-mock",
+  "js/full-test.js?v=20261127-flow",
   "pages/about.html",
   "pages/share.html",
   "js/share.js?v=20261111-visible-1",

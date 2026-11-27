@@ -2669,3 +2669,18 @@ html body .sb{display:none}
 }
 html body #mockSection a.back-button{display:inline-flex;align-items:center;min-height:40px;text-decoration:none}
 html[data-theme="dark"] body .mk .mk-btn.pri,html[data-theme="dark"] body .mk .mk-chip.on{color:#fff!important}
+
+/* Full mock tests: "Next part starts in 15 s" bar. */
+html body .mock-autonext{position:fixed;left:50%;bottom:18px;z-index:2147483000;transform:translateX(-50%);display:flex;align-items:center;gap:12px;width:min(640px,calc(100% - 24px));padding:14px 16px;border:1px solid #cfe2d5;border-radius:18px;background:#fff;box-shadow:0 18px 50px rgba(20,45,35,.18)}
+html body .mock-autonext div{flex:1;min-width:0}
+html body .mock-autonext b{display:block;color:#1d3a31;font-size:1rem}
+html body .mock-autonext small{color:var(--ink-718078,#718078);font-size:.82rem}
+html body .mock-autonext .stay{min-height:42px;padding:0 14px;border:1px solid #d7e3da;border-radius:999px;background:#fff;color:#2c4239;font-weight:700;cursor:pointer}
+html body .mock-autonext .go{display:inline-flex;align-items:center;min-height:42px;padding:0 16px;border-radius:999px;background:#276c5c;color:#fff;font-weight:800;text-decoration:none;white-space:nowrap}
+@media(max-width:560px){html body .mock-autonext{flex-wrap:wrap}html body .mock-autonext div{flex-basis:100%}html body .mock-autonext .stay,html body .mock-autonext .go{flex:1;justify-content:center}}
+html[data-theme="dark"] body .mock-autonext{background:#172722!important;border-color:#2c4239!important}
+html[data-theme="dark"] body .mock-autonext b{color:#edf5ef!important}
+html[data-theme="dark"] body .mock-autonext small{color:#a9bcb1!important}
+html[data-theme="dark"] body .mock-autonext .stay{background:#1c2f28!important;border-color:#2c4239!important;color:#edf5ef!important}
+html[data-theme="dark"] body .mock-autonext .go{background:#2f7550!important}
+@media(min-width:1024px){html body.has-sb > .eng-progress{width:min(1160px,91%)!important;margin-left:auto!important;margin-right:auto!important;box-sizing:border-box}}

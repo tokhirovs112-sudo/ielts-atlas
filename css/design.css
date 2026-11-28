@@ -2687,3 +2687,6 @@ html[data-theme="dark"] body .mock-autonext .go{background:#2f7550!important}
 /* mock start: exam mode first */
 .mode-rec{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:99px;background:#e3f3ea;color:#14532d;font-size:.72rem;font-style:normal;font-weight:700;vertical-align:middle}
 [data-theme="dark"] .mode-rec{background:#1d3a2b;color:#bdf0d0}
+/* Listening tests: use the width of big screens instead of leaving empty sides */
+@media (min-width:1400px){body main.wrap{max-width:min(1420px,92vw)!important}}
+@media (min-width:1700px){body main.wrap{zoom:1.12;max-width:min(1420px,82vw)!important}}

@@ -1337,7 +1337,7 @@ def test_full_mock_test(browser, pw):
     page.goto(BASE + "pages/mock-02-speaking.html")
     page.wait_for_timeout(400)
     t = page.inner_text("#mockSection")
-    check(page.is_visible(".mock-start") and "MOCK 2" in t and "street markets" in t and not page.is_visible(".card-link"), "Full Mock Test 2 Speaking does not open its own test")
+    check(page.is_visible(".mock-start") and "MOCK 2" in t and "work or studies and street markets" in t and not page.is_visible(".card-link"), "Full Mock Test 2 Speaking does not open its own test")
     page.goto(BASE + "pages/mock-02-writing.html")
     page.wait_for_timeout(300)
     check("mobile phones" in page.inner_text("#mwTask1") and page.evaluate("document.querySelector('.mw-chart').naturalWidth") > 0, "Full Mock Test 2 Writing Task 1 or its chart is missing")

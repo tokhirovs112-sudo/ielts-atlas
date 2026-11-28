@@ -180,7 +180,7 @@ function renderStart(n) {
   const count1 = mock.part1.reduce((a, t) => a + t.questions.length, 0);
   root.innerHTML = '<a class="back-button" href="' + listHref() + '">' + (CUSTOM ? "← " + esc(CUSTOM.backLabel) : "← All mock tests") + '</a>' +
     '<div class="mock-start"><div class="mock-head"><div class="mock-kicker">IELTS SPEAKING · MOCK ' + mock.n + '</div><h2>Full speaking test</h2><p>About 11–14 minutes. Answer out loud, as you would to a real examiner.</p></div>' +
-    '<ol class="mock-outline"><li><b>Part 1 · 4–5 min</b><span>' + count1 + ' questions on ' + mock.part1.map(t => esc(t.topic.toLowerCase())).join(", ") + '.</span></li>' +
+    '<ol class="mock-outline"><li><b>Part 1 · 4–5 min</b><span>' + count1 + ' questions on ' + (l => l.length > 1 ? l.slice(0, -1).join(", ") + " and " + l[l.length - 1] : l.join(""))(mock.part1.map(t => esc(t.topic.toLowerCase()))) + '.</span></li>' +
     '<li><b>Part 2 · 3–4 min</b><span>One cue card. 1 minute to prepare and make notes, then speak for up to 2 minutes.</span></li>' +
     '<li><b>Part 3 · 4–5 min</b><span>' + mock.part3.length + ' discussion questions linked to the cue card.</span></li></ol>' +
     '<div class="mock-options">' +

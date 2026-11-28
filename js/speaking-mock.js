@@ -51,7 +51,7 @@ const CUSTOM = window.ENGLISITY_CUSTOM_MOCK || null;
 const listHref = () => CUSTOM ? CUSTOM.back : "#mock";
 
 function build() {
-  if (CUSTOM) { bank = {}; mocks = [{ n: 1, part1: CUSTOM.part1, cue: CUSTOM.cue, prompts: CUSTOM.prompts || [], part3: CUSTOM.part3 }]; return; }
+  if (CUSTOM) { bank = {}; mocks = [{ n: CUSTOM.n || 1, part1: CUSTOM.part1, cue: CUSTOM.cue, prompts: CUSTOM.prompts || [], part3: CUSTOM.part3 }]; return; }
   bank = window.EnglisitySpeakingBank;
   const find = (part, name) => bank.sets[part].filter(t => t.topic === name).flatMap(t => t.questions);
   const all3 = new Set(bank.sets[3].flatMap(t => t.questions));

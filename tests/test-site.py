@@ -28,8 +28,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 
 PAGES = ["index.html"] + sorted(glob.glob("pages/*.html")) + sorted(glob.glob("articles/*.html"))
-READING_TESTS = ["full-test-01", "full-test-02", "mock-01-reading", "beatrix-potter", "dolls", "foot-pedal-irrigation", "seeing-in-the-sea", "halley-vi", "herding", "keeping-healthy-at-work", "life-on-mars", "power-from-the-sea", "redwoods"]
-LISTENING_TESTS = ["listening-test-01", "listening-test-02", "listening-test-03", "listening-test-04", "mock-01-listening"]
+READING_TESTS = ["full-test-01", "full-test-02", "mock-01-reading", "mock-02-reading", "beatrix-potter", "dolls", "foot-pedal-irrigation", "seeing-in-the-sea", "halley-vi", "herding", "keeping-healthy-at-work", "life-on-mars", "power-from-the-sea", "redwoods"]
+LISTENING_TESTS = ["listening-test-01", "listening-test-02", "listening-test-03", "listening-test-04", "mock-01-listening", "mock-02-listening"]
 DESKTOP = {"viewport": {"width": 1366, "height": 900}}
 IGNORED_CONSOLE = ("fonts.googleapis", "fonts.gstatic", "ERR_INTERNET_DISCONNECTED", "ERR_NAME_NOT_RESOLVED", "ERR_CONNECTION", "ERR_TUNNEL", "ERR_PROXY", "net::ERR_FAILED", "api.dictionaryapi.dev", "cloudflareinsights")
 
@@ -522,7 +522,7 @@ def test_listening_tests_full_marks(browser, pw):
         R.current = "listening " + slug
         page, problems = open_page(ctx, f"pages/{slug}.html", 800)
         src = page.evaluate("(document.querySelector('audio source,audio')||{}).src || (document.querySelector('audio')||{}).currentSrc || ''")
-        audio_files = [f for f in glob.glob("assets/audio/*.mp3") if slug.replace("listening-test-", "listening-mock-") in f]
+        audio_files = [f for f in glob.glob("assets/audio/*.mp3") if src and os.path.basename(f) == src.rsplit("/", 1)[-1].split("?")[0]]
         check(bool(audio_files) and os.path.getsize(audio_files[0]) > 1_000_000, f"audio file missing for {slug}")
         check(src.endswith(".mp3"), f"audio player has no mp3 source ({src!r})")
         choose_practice_mode(page)
@@ -1325,7 +1325,21 @@ def test_full_mock_test(browser, pw):
     check(page.locator(".sb-nav a.on").inner_text().strip() == "Full mock tests", "sidebar does not highlight the current page")
     page.click(".mk-card .mk-btn.pri")
     page.wait_for_timeout(400)
-    check(page.url.endswith("mock-01-listening.html"), f"Start test opens {page.url}")
+    check(page.url.endswith("mock-02-listening.html"), f"Start test on the newest mock opens {page.url}")
+    page.go_back()
+    page.wait_for_timeout(300)
+    titles = page.evaluate("[...document.querySelectorAll('.mk-card h3')].map(h => h.textContent)")
+    check(titles == ["Full Mock Test 2", "Full Mock Test 1"] and "Coming soon" not in page.inner_text("main"), f"hub cards: {titles}")
+    page.click(".mk-card:nth-child(2) .mk-btn.pri")
+    page.wait_for_timeout(400)
+    check(page.url.endswith("mock-01-listening.html"), f"Start Full Mock Test 1 opens {page.url}")
+    page.goto(BASE + "pages/mock-02-speaking.html")
+    page.wait_for_timeout(400)
+    t = page.inner_text("#mockSection")
+    check(page.is_visible(".mock-start") and "MOCK 2" in t and "street markets" in t and not page.is_visible(".card-link"), "Full Mock Test 2 Speaking does not open its own test")
+    page.goto(BASE + "pages/mock-02-writing.html")
+    page.wait_for_timeout(300)
+    check("mobile phones" in page.inner_text("#mwTask1") and page.evaluate("document.querySelector('.mw-chart').naturalWidth") > 0, "Full Mock Test 2 Writing Task 1 or its chart is missing")
     check(not page.is_visible(".sb"), "the sidebar covers an exam screen")
     # Writing: answers are kept, finishing saves the section.
     page.goto(BASE + "pages/mock-01-writing.html")

@@ -71,3 +71,8 @@ When editing existing article pages or the shared learning script, preserve this
 - Every `EnglisityTrack.finish(score, total, name)` call (test results, AI checks, vocabulary quizzes) is also saved on the device in `englisity-history-v1` (last 300). Full mock sections come from `englisity-mock-results-v1`.
 - Bands: 40-question Listening/Reading via `EnglisityMock.listeningBand/readingBand`; AI checks send score = band × 2 out of 18. Each skill shows the average of its last 3 bands; overall only when all four skills have a band.
 - The old home "dashboard" (page visits) is gone; `index.html#myDashboard` redirects here.
+
+## Full Mock Test 2 and the mock generators
+- Writing, Speaking and the hub for every mock come from `/home/claude/gen/mock_pages.py` (content per mock in `MOCKS`; shared code in `mock_body.py`, `mock_pages_pre.py`, `mock_pages_hub.py`). Reading: `mock02_reading.py`; Listening: `mock02_listening.py` (built from listening-test-03, the owner asked to reuse a site listening test, audio `listening-mock-03.mp3`).
+- The hub lists the newest mock first. `ENGLISITY_CUSTOM_MOCK.n` sets the mock number shown on the Speaking page.
+- Source texts are in `content-staging/mock-02/` (not deployed).

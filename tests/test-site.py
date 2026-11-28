@@ -1268,6 +1268,55 @@ def test_ai_speaking_check(browser, pw):
     fake.close()
 
 
+def test_home_first_screen(browser, pw):
+    """Home page: on a phone the headline and the main button are on the first screen, the skill tiles
+    lead to every skill, and every number on the page matches the real content (so it never goes stale)."""
+    phone = {k: v for k, v in pw.devices["iPhone 13"].items() if k != "default_browser_type"}
+    ctx = browser.new_context(**phone, service_workers="block")
+    page, problems = open_page(ctx, "index.html", 500)
+    vh = page.evaluate("innerHeight")
+    box = page.locator(".hm-btn-pri").first.bounding_box()
+    check(box and box["y"] + box["height"] <= vh, f"phone: the main button is below the first screen ({box}, screen {vh})")
+    check("IELTS" in page.inner_text("h1") and "band" in page.inner_text("h1"), "the home headline does not say what the site gives")
+    links = page.evaluate("[...document.querySelectorAll('.hm-skills a')].map(a => a.getAttribute('href'))")
+    for want in ("pages/mock-tests.html", "pages/listening.html", "pages/reading.html", "pages/writing.html", "pages/speaking.html"):
+        check(want in links, f"home skill tiles miss {want}")
+    shown = page.evaluate("Object.fromEntries([...document.querySelectorAll('[data-count]')].map(b => [b.dataset.count, +b.textContent]))")
+    # The real numbers
+    real = {}
+    real["mock-tests"] = len(re.findall(r'\{id:"mock-\d+"', open("pages/mock-tests.html", encoding="utf-8").read()))
+    real["listening-tests"] = len(glob.glob("pages/listening-test-*.html"))
+    real["reading-full"] = len(glob.glob("pages/full-test-*.html"))
+    passages = set()
+    for f in ("pages/passage-1.html", "pages/passage-2.html", "pages/passage-3.html"):
+        passages |= {h for h in re.findall(r'href="([\w-]+\.html)"', open(f, encoding="utf-8").read())
+                     if os.path.exists("pages/" + h) and h.replace(".html", "") in READING_TESTS and not h.startswith(("full-test", "mock-"))}
+    real["reading-passages"] = len(passages)
+    w = open("pages/writing.html", encoding="utf-8").read()
+    real["writing-tasks"] = len(re.findall(r'data-open-task-detail="', w)) + len(re.findall(r'data-open-task2-detail="', w))
+    real["speaking-mocks"] = open("js/speaking-mock.js", encoding="utf-8").read().count("{ p1:")
+    real["articles"] = len(glob.glob("articles/*.html"))
+    page.goto(BASE + "pages/speaking.html"); page.wait_for_timeout(500)
+    real["speaking-cue"] = page.evaluate("window.EnglisitySpeakingBank.sets[2].reduce((a, c) => a + c.questions.length, 0)")
+    page.goto(BASE + "pages/vocabulary.html"); page.wait_for_timeout(500)
+    m = re.search(r"(\d+) words in (\d+) topics", page.inner_text("body"))
+    real["vocab-words"], real["vocab-topics"] = (int(m.group(1)), int(m.group(2))) if m else (None, None)
+    page.goto(BASE + "pages/podcasts.html"); page.wait_for_timeout(600)
+    real["podcasts"] = page.evaluate("document.querySelectorAll('.resource-card, .library-card, article').length")
+    for k, v in real.items():
+        check(shown.get(k) == v, f"home page says {k} = {shown.get(k)}, but the site has {v}: update the number in index.html")
+    no_problems(problems, "home first screen")
+    ctx.close()
+    # Returning student with an unfinished mock test sees a Continue card that opens the next section.
+    ctx = browser.new_context(**DESKTOP, service_workers="block")
+    ctx.add_init_script("try { localStorage.setItem('englisity-mock-results-v1', JSON.stringify({'mock-02': {listening: {at: Date.now(), score: 30, total: 40, band: 7}}})); } catch (e) {}")
+    page, problems = open_page(ctx, "index.html", 500)
+    check(page.is_visible("#hmResume") and "Reading is next" in page.inner_text("#hmResume"), "returning student: no 'Continue Full Mock Test' card on the home page")
+    check(page.get_attribute("#hmResume a", "href") == "pages/mock-02-reading.html", "the Continue button does not open the next section")
+    no_problems(problems, "home resume")
+    ctx.close()
+
+
 def test_my_progress(browser, pw):
     """My progress shows real results: finished tests and AI checks are kept on the device and turned into
     an estimated band per skill, an overall band when all four skills have one, and a list of recent results."""

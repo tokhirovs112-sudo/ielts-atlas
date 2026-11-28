@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="only light">
   <meta name="theme-color" content="#f5f7f4">
-  <script>try{if(localStorage.getItem("englisity-theme")==="dark"){document.documentElement.dataset.theme="dark";var m=document.querySelector('meta[name="theme-color"]');if(m)m.content="#111b1a"}}catch(e){}</script>
+  <script>try{if(localStorage.getItem("englisity-theme")==="dark"){document.documentElement.dataset.theme="dark";var m=document.querySelector('meta[name="theme-color"]');if(m)m.content="#000000"}}catch(e){}</script>
   <meta name="description" content="Practise IELTS Writing Task 1 and Task 2 with real-style prompts, timers and drafts saved in your browser.">
   <meta property="og:site_name" content="Englisity">
   <meta property="og:type" content="website">
@@ -21,7 +21,7 @@
   <title>Writing Practice — Englisity</title>
   <link rel="stylesheet" href="../css/style.css">
   <script src="../js/resources.js?v=20261111-review-fixes-1" defer></script>
-  <script src="../js/app.js?v=20261128-black" defer></script>
+  <script src="../js/app.js?v=20261128-refresh" defer></script>
 
   <style>
     .page-hero {
@@ -259,7 +259,7 @@ html[data-theme="dark"] .task-also-reported{color:#bfbfbf;border-color:#3c3c3c}
   <link rel="icon" type="image/svg+xml" href="../assets/englisity-mark.svg?v=20261117-logo">
   <link rel="manifest" href="../manifest.webmanifest">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/englisity-app-icon.png?v=20261117-logo">
-  <link rel="stylesheet" href="../css/design.css?v=20261128-black">
+  <link rel="stylesheet" href="../css/design.css?v=20261128-refresh">
 </head>
 
 <body>
@@ -292,12 +292,9 @@ html[data-theme="dark"] .task-also-reported{color:#bfbfbf;border-color:#3c3c3c}
 
       <div class="eyebrow">IELTS WRITING</div>
 
-      <h1>Write clearly. Express your ideas.</h1>
+      <h1>IELTS Writing practice</h1>
 
-      <p>
-        Practise organising your ideas, building clear paragraphs,
-        and writing stronger responses to different IELTS tasks.
-      </p>
+      <p>Recent Task 1 and Task 2 questions. Write your answer, then get an estimated band and corrections from AI.</p>
     </section>
 
     <!-- LATEST REPORTED: filled automatically with the four newest task cards (data-sort-date). -->
@@ -332,7 +329,7 @@ html[data-theme="dark"] .task-also-reported{color:#bfbfbf;border-color:#3c3c3c}
     <section class="panel task-workspace" id="task2Library" hidden>
       <button class="small-button task-back" type="button" data-back-to-tasks>← All writing tasks</button>
       <h2>Task 2 essay questions</h2>
-      <div class="share-prompt"><p><strong>Took IELTS recently?</strong> Share your Task 2 question so other students can practise it.</p><a href="share.html?type=questions&amp;section=Writing%20Task%202">Share your question →</a></div>
+      
       <p class="task-instructions">Choose a question type to practise, then open a question. Each essay has its own saved draft.</p>
       <div class="task-category-filter">
         <label for="task2CategoryFilter">Question type</label>
@@ -629,12 +626,13 @@ html[data-theme="dark"] .task-also-reported{color:#bfbfbf;border-color:#3c3c3c}
           </span>
         </button>
       </div>
+      <div class="share-prompt share-prompt-after"><p><strong>Took IELTS recently?</strong> Share your Task 2 question so other students can practise it.</p><a href="share.html?type=questions&amp;section=Writing%20Task%202">Share your question →</a></div>
     </section>
 
     <section class="panel task-workspace" id="task1Library" hidden>
       <button class="small-button task-back" type="button" data-back-to-tasks>← All writing tasks</button>
       <h2>Task 1 practice questions</h2>
-      <div class="share-prompt"><p><strong>Took IELTS recently?</strong> Describe the Task 1 chart or diagram you got so others can practise it.</p><a href="share.html?type=questions&amp;section=Writing%20Task%201">Share your task →</a></div>
+      
       <p class="task-instructions">Choose a chart or diagram type to find a matching practice task.</p>
       <div class="task-category-filter">
         <label for="task1CategoryFilter">Task type</label>
@@ -659,7 +657,7 @@ html[data-theme="dark"] .task-also-reported{color:#bfbfbf;border-color:#3c3c3c}
 
       <div class="task-library-grid" id="task1TaskGrid">
         <button class="task-library-card" type="button" data-task1-category="pie-chart" data-open-task-detail="uk-university-reasons" data-sort-date="2026-11-23">
-          <img src="../images/task1/uk-university-reasons.png" alt="Two pie charts showing the main reasons students chose a particular UK university in 1987 and 2007">
+          <img src="../images/task1/uk-university-reasons.png" alt="Two pie charts showing the main reasons students chose a particular UK university in 1987 and 2007" loading="lazy" decoding="async">
           <span class="task-library-card-content">
             <strong>Why students chose a UK university (1987 and 2007)</strong>
             <span class="task-category-tag">Pie chart</span>
@@ -668,7 +666,7 @@ html[data-theme="dark"] .task-also-reported{color:#bfbfbf;border-color:#3c3c3c}
           </span>
         </button>
         <button class="task-library-card" type="button" data-task1-category="process" data-open-task-detail="solar-heater" data-sort-date="2026-11-23">
-          <img src="../images/task1/solar-heater.png" alt="Diagrams showing a box with a transparent top and how it is used as a solar panel to heat air and to heat water">
+          <img src="../images/task1/solar-heater.png" alt="Diagrams showing a box with a transparent top and how it is used as a solar panel to heat air and to heat water" loading="lazy" decoding="async">
           <span class="task-library-card-content">
             <strong>Structure and uses of a solar heater</strong>
             <span class="task-category-tag">Process diagram</span>
@@ -677,7 +675,7 @@ html[data-theme="dark"] .task-also-reported{color:#bfbfbf;border-color:#3c3c3c}
           </span>
         </button>
         <button class="task-library-card" type="button" data-task1-category="map" data-open-task-detail="shalton-village" data-sort-date="2026-11-08">
-          <img src="../images/task1/image_2026-11-09_15-50-02.png" alt="Maps showing Shalton village in 1910 and 2010">
+          <img src="../images/task1/image_2026-11-09_15-50-02.png" alt="Maps showing Shalton village in 1910 and 2010" loading="lazy" decoding="async">
           <span class="task-library-card-content">
             <strong>Changes in Shalton village (1910–2010)</strong>
             <span class="task-category-tag">Map</span>
@@ -686,7 +684,7 @@ html[data-theme="dark"] .task-also-reported{color:#bfbfbf;border-color:#3c3c3c}
           </span>
         </button>
         <button class="task-library-card" type="button" data-task1-category="bar-chart" data-open-task-detail="journeys-to-school" data-sort-date="2026-11-08">
-          <img src="../images/task1/image_2026-11-09_15-50-03.png" alt="Bar chart showing journeys to school by walking, bicycle, car and bus across four distance ranges">
+          <img src="../images/task1/image_2026-11-09_15-50-03.png" alt="Bar chart showing journeys to school by walking, bicycle, car and bus across four distance ranges" loading="lazy" decoding="async">
           <span class="task-library-card-content">
             <strong>Journeys to school by distance</strong>
             <span class="task-category-tag">Bar chart</span>
@@ -695,7 +693,7 @@ html[data-theme="dark"] .task-also-reported{color:#bfbfbf;border-color:#3c3c3c}
           </span>
         </button>
         <button class="task-library-card" type="button" data-task1-category="map" data-open-task-detail="harbour-changes" data-sort-date="2026-11-08">
-          <img src="../images/task1/photo_2026-11-09_15-50-18.jpg" alt="Maps showing changes to a harbour between 1960 and now">
+          <img src="../images/task1/photo_2026-11-09_15-50-18.jpg" alt="Maps showing changes to a harbour between 1960 and now" loading="lazy" decoding="async">
           <span class="task-library-card-content">
             <strong>Changes to a harbour (1960–now)</strong>
             <span class="task-category-tag">Map</span>
@@ -740,7 +738,7 @@ html[data-theme="dark"] .task-also-reported{color:#bfbfbf;border-color:#3c3c3c}
           </span>
         </button>
         <button class="task-library-card" type="button" data-task1-category="bar-chart" data-open-task-detail="films-five-countries" data-sort-date="2026-11-10">
-          <img src="../images/task1/films-five-countries.png" alt="Bar chart showing the number of films produced by five countries, A to E, in 2007, 2008 and 2009">
+          <img src="../images/task1/films-five-countries.png" alt="Bar chart showing the number of films produced by five countries, A to E, in 2007, 2008 and 2009" loading="lazy" decoding="async">
           <span class="task-library-card-content">
             <strong>Films produced by five countries (2007–2009)</strong>
             <span class="task-category-tag">Bar chart</span>
@@ -749,7 +747,7 @@ html[data-theme="dark"] .task-also-reported{color:#bfbfbf;border-color:#3c3c3c}
           </span>
         </button>
         <button class="task-library-card" type="button" data-task1-category="line-graph" data-open-task-detail="household-technology-uk" data-sort-date="2026-11-11">
-          <img src="../images/task1/household-technology-uk.png" alt="Line graph showing the percentage of UK households with a CD player, telephone, computer, internet and DVD player from 1997 to 2001">
+          <img src="../images/task1/household-technology-uk.png" alt="Line graph showing the percentage of UK households with a CD player, telephone, computer, internet and DVD player from 1997 to 2001" loading="lazy" decoding="async">
           <span class="task-library-card-content">
             <strong>Household technology in the UK (1997–2001)</strong>
             <span class="task-category-tag">Line graph</span>
@@ -758,7 +756,7 @@ html[data-theme="dark"] .task-also-reported{color:#bfbfbf;border-color:#3c3c3c}
           </span>
         </button>
         <button class="task-library-card" type="button" data-task1-category="table" data-open-task-detail="global-warming-suggestions" data-sort-date="2026-11-11">
-          <img src="../images/task1/global-warming-suggestions.png" alt="Table ranking the top five suggestions for reducing global warming given by consumers and by researchers">
+          <img src="../images/task1/global-warming-suggestions.png" alt="Table ranking the top five suggestions for reducing global warming given by consumers and by researchers" loading="lazy" decoding="async">
           <span class="task-library-card-content">
             <strong>Ways to reduce global warming: consumers vs researchers</strong>
             <span class="task-category-tag">Table</span>
@@ -767,7 +765,7 @@ html[data-theme="dark"] .task-also-reported{color:#bfbfbf;border-color:#3c3c3c}
           </span>
         </button>
         <button class="task-library-card" type="button" data-task1-category="bar-chart" data-open-task-detail="cars-per-1000" data-sort-date="2026-11-03">
-          <img src="../images/task1/cars-per-1000.svg" alt="Bar chart showing cars per 1,000 people in five European countries and the average in 2005, 2009 and 2015">
+          <img src="../images/task1/cars-per-1000.svg" alt="Bar chart showing cars per 1,000 people in five European countries and the average in 2005, 2009 and 2015" loading="lazy" decoding="async">
           <span class="task-library-card-content">
             <strong>Cars per 1,000 people in five European countries</strong>
             <span class="task-category-tag">Bar chart</span>
@@ -777,7 +775,7 @@ html[data-theme="dark"] .task-also-reported{color:#bfbfbf;border-color:#3c3c3c}
         </button>
         <button class="task-library-card" type="button" data-task1-category="table" data-open-task-detail="waste-production" data-sort-date="2026-10-31">
           <img src="../images/task1/image_2026-10-31_16-47-51.png"
-            alt="Preview of the table showing waste production in six countries">
+            alt="Preview of the table showing waste production in six countries" loading="lazy" decoding="async">
           <span class="task-library-card-content">
             <strong>Waste production in six countries</strong>
             <span class="task-category-tag">Table</span>
@@ -786,6 +784,7 @@ html[data-theme="dark"] .task-also-reported{color:#bfbfbf;border-color:#3c3c3c}
           </span>
         </button>
       </div>
+      <div class="share-prompt share-prompt-after"><p><strong>Took IELTS recently?</strong> Describe the Task 1 chart or diagram you got so others can practise it.</p><a href="share.html?type=questions&amp;section=Writing%20Task%201">Share your task →</a></div>
     </section>
 
     <!-- SELECTED TASK 1 -->
@@ -802,7 +801,7 @@ html[data-theme="dark"] .task-also-reported{color:#bfbfbf;border-color:#3c3c3c}
         <strong>Write at least 150 words.</strong>
         <span>Your response should be long enough to cover the main features clearly.</span>
       </div>
-      <img class="task-image" id="task1TaskImage" alt="">
+      <img class="task-image" id="task1TaskImage" alt="" loading="lazy" decoding="async">
       <div class="writing-editor">
         <label for="task1Draft"><strong>Your Task 1 response</strong></label>
         <textarea id="task1Draft" placeholder="Write your introduction, overview and details here..."></textarea>
@@ -1485,7 +1484,7 @@ html[data-theme="dark"] .task-also-reported{color:#bfbfbf;border-color:#3c3c3c}
     })();
   </script>
 
-<script src="../js/features.js?v=20261127-progress"></script>
+<script src="../js/features.js?v=20261128-refresh"></script>
 <script src="../js/writing-exit.js?v=20261105-exit-warning-1"></script>
 <script src="../js/writing-ai.js?v=20261127-mock"></script>
 <!-- Cloudflare Web Analytics: counts visits, no cookies --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "ac91466da98a415b93a1320d7a491246"}'></script>

@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="only light">
   <meta name="theme-color" content="#f5f7f4">
-  <script>try{if(localStorage.getItem("englisity-theme")==="dark"){document.documentElement.dataset.theme="dark";var m=document.querySelector('meta[name="theme-color"]');if(m)m.content="#111b1a"}}catch(e){}</script>
+  <script>try{if(localStorage.getItem("englisity-theme")==="dark"){document.documentElement.dataset.theme="dark";var m=document.querySelector('meta[name="theme-color"]');if(m)m.content="#000000"}}catch(e){}</script>
   <meta name="description" content="Private Englisity usage statistics for the site owner.">
   <meta name="robots" content="noindex, nofollow">
   <title>Statistics | Englisity</title>
   <link rel="stylesheet" href="../css/style.css">
-  <script src="../js/app.js?v=20261128-black" defer></script>
+  <script src="../js/app.js?v=20261128-refresh" defer></script>
   <link rel="icon" type="image/svg+xml" href="../assets/englisity-mark.svg?v=20261117-logo">
   <link rel="manifest" href="../manifest.webmanifest">
   <link rel="apple-touch-icon" sizes="180x180" href="../assets/englisity-app-icon.png?v=20261117-logo">
-  <link rel="stylesheet" href="../css/design.css?v=20261128-black">
+  <link rel="stylesheet" href="../css/design.css?v=20261128-refresh">
   <style>
     .st-wrap{max-width:1100px;margin:0 auto;padding:26px 0 40px}
     .st-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
@@ -154,7 +154,7 @@ $("logout").addEventListener("click",()=>{try{sessionStorage.removeItem("englisi
 if(pw)load();else if(location.protocol==="https:"||/^localhost$/.test(location.hostname))fetch("/api/stats",{cache:"no-store"}).then(r=>r.json()).then(d=>{$("setupState").textContent=d.configured===false?"⚠ The password is not set up yet. Add the secret STATS_PASSWORD in Cloudflare (Worker → Settings → Variables and Secrets), then reload this page.":d.configured?"✓ Password is set up. Enter it to see your statistics.":"";$("setupState").className="st-setup "+(d.configured===false?"bad":"good");}).catch(()=>{});
 })();
 </script>
-<script src="../js/features.js?v=20261127-progress"></script>
+<script src="../js/features.js?v=20261128-refresh"></script>
 <!-- Cloudflare Web Analytics: counts visits, no cookies --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "ac91466da98a415b93a1320d7a491246"}'></script>
 </body>
 </html>

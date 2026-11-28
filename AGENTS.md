@@ -80,3 +80,11 @@ When editing existing article pages or the shared learning script, preserve this
 ## Black mode (dark theme)
 - Since 28 Nov the dark theme is black, not green: page `#000`, cards near-black grey, off-white text, mint/green kept for links, labels and buttons, and the dark logo `assets/englisity-mark-dark.svg` (swapped in by CSS `content:url()` on the logo images).
 - Converted with `/home/claude/gen/blackify.py` (only rules for `html[data-theme="dark"]`). New dark styles: use neutral greys (#0b0b0b–#2a2a2a surfaces, #333–#444 borders), not dark greens.
+
+## Design rules (refresh of 28 Nov, based on visitor data: phone visitors left within 20 s)
+- Home (`index.html`): one clear headline, ONE main button (full mock test), the skill tiles (`.hm-skills`) right after, then Latest, then "More ways to learn". No decorative pictures; the laptop-only "Example result" card is labelled as an example. Returning students get `#hmResume` (continue an unfinished mock or see the last result).
+- Every number on the home page has `data-count="…"`; `test_home_first_screen` compares each with the real content and fails if it is out of date, so update the number when content is added.
+- Section pages: `.page-hero` is now a compact header (breadcrumb, a plain title that says what the page is, one sentence). No slogans, no eyebrow (hidden), no decorative art. Keep new page titles plain, e.g. "IELTS Writing practice".
+- Phone header: theme button is icon-only (`.tt-i`/`.tt-l` spans from `js/app.js`); tagline hidden under 520px. Phone footer hides the Practice/Learn lists (the menu has them).
+- Shared tokens at the start of the refresh block in `css/design.css` (`--r-ink`, `--r-muted`, `--r-line`, `--r-card`, `--r-soft`, `--r-accent`…), with black-mode values. Use them for new components.
+- The mock-tests hub styles live in `/home/claude/gen/mock_hub.css` (read by `mock_pages_hub.py`).

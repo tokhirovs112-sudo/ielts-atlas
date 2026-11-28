@@ -4,20 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="only light">
-  <meta name="description" content="A focused space to build English skills, practise IELTS, grow vocabulary and explore ideas through articles and podcasts.">
+  <meta name="description" content="Free IELTS practice tests with instant band scores: full mock tests, Reading and Listening marked as soon as you finish, and AI feedback on Writing and Speaking. No sign-up.">
   <meta name="theme-color" content="#f5f7f4">
-  <script>try{if(localStorage.getItem("englisity-theme")==="dark"){document.documentElement.dataset.theme="dark";var m=document.querySelector('meta[name="theme-color"]');if(m)m.content="#111b1a"}}catch(e){}</script>
+  <script>try{if(localStorage.getItem("englisity-theme")==="dark"){document.documentElement.dataset.theme="dark";var m=document.querySelector('meta[name="theme-color"]');if(m)m.content="#000000"}}catch(e){}</script>
   <meta property="og:site_name" content="Englisity">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Englisity — Free IELTS &amp; English Practice">
+  <meta property="og:title" content="Englisity — Free IELTS practice tests with instant band scores">
   <meta property="og:url" content="https://englisity.tokhirovs112.workers.dev/">
   <meta property="og:image" content="https://englisity.tokhirovs112.workers.dev/images/englisity-share.jpg?v=2">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="627">
   <meta property="og:image:alt" content="Englisity: free IELTS practice with recently reported questions">
-  <meta property="og:description" content="A focused space to build English skills, practise IELTS, grow vocabulary and explore ideas through articles and podcasts.">
+  <meta property="og:description" content="Free IELTS practice tests with instant band scores: full mock tests, Reading and Listening marked as soon as you finish, and AI feedback on Writing and Speaking. No sign-up.">
   <meta name="twitter:card" content="summary_large_image">
-  <title>Englisity — Free IELTS &amp; English Practice</title>
+  <title>Englisity — Free IELTS practice tests with instant band scores</title>
   <link rel="icon" type="image/svg+xml" href="assets/englisity-mark.svg?v=20261117-logo">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/englisity-app-icon.png?v=20261117-logo">
@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/design.css?v=20261128-black">
+  <link rel="stylesheet" href="css/design.css?v=20261128-refresh">
 </head>
 <body class="home-page">
   <header class="topbar">
@@ -48,39 +48,51 @@
     </div>
   </header>
 
-  <main class="home-main">
-    <section class="home-hero home-hero-new" aria-labelledby="home-title">
-      <div class="home-hero-copy">
-        <span class="hero-eyebrow"><span class="eyebrow-dot"></span> FREE IELTS &amp; ENGLISH PRACTICE</span>
-        <h1 id="home-title">Make every practice session <em>count.</em></h1>
-        <p>Free practice for IELTS Reading, Listening, Writing and Speaking, plus vocabulary, articles and podcasts for every level.</p>
-        <div class="hero-actions">
-          <a class="home-button" href="pages/reading.html">Start practising <span aria-hidden="true">↗</span></a>
-          <a class="home-button secondary" href="#learning-path">Explore the platform</a>
+  <main class="home-main hm">
+    <section class="hm-hero" aria-labelledby="home-title">
+      <div class="hm-hero-copy">
+        <p class="hm-kicker"><span class="hm-dot" aria-hidden="true"></span>For IELTS Academic · No sign-up</p>
+        <h1 id="home-title">Free IELTS practice tests with instant band scores</h1>
+        <p class="hm-lead">Take a full mock test or practise one skill. Marked as soon as you finish, with AI feedback on your Writing and Speaking.</p>
+        <div class="hm-actions">
+          <a class="hm-btn hm-btn-pri" href="pages/mock-tests.html">Take a free mock test <span aria-hidden="true">→</span></a>
+          <a class="hm-link" href="#skills">or practise one skill <span aria-hidden="true">↓</span></a>
         </div>
-        <div class="hero-note"><span class="hero-note-mark">✓</span> Free, no sign-up. Your progress is saved in this browser.</div>
+        <ul class="hm-trust">
+          <li>Questions from recent exams</li>
+          <li>Instant marking</li>
+          <li>Progress saved on your device</li>
+        </ul>
       </div>
-      <div class="hero-art" aria-hidden="true">
-        <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
-        <div class="art-card art-card-main">
-          <div class="art-card-top"><span class="art-mini-label">TODAY'S FOCUS</span><span class="art-spark">✳</span></div>
-          <div class="art-book"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-          <div class="art-card-bottom"><span class="art-check">✓</span><span><b>Small steps add up.</b><small>One session at a time</small></span></div>
-        </div>
-        <div class="art-float art-float-word"><span>Aa</span><small>VOCABULARY</small></div>
-        <div class="art-float art-float-sound"><span>♫</span><small>LISTEN</small></div>
-        <div class="art-leaf leaf-one"></div><div class="art-leaf leaf-two"></div>
+      <figure class="hm-sample" aria-label="Example of a full mock test result">
+        <figcaption>Example result</figcaption>
+        <div class="hm-sample-head"><div><span>Full mock test</span><small>Estimated band</small></div><b>6.5</b></div>
+        <ul class="hm-sample-bands">
+          <li><span>Listening</span><i style="--w:78%"></i><b>7.0</b></li>
+          <li><span>Reading</span><i style="--w:72%"></i><b>6.5</b></li>
+          <li><span>Writing</span><i style="--w:67%"></i><b>6.0</b></li>
+          <li><span>Speaking</span><i style="--w:72%"></i><b>6.5</b></li>
+        </ul>
+        <p class="hm-sample-note"><b>AI feedback · Writing Task 2</b>A clear position throughout. Try “essential” or “vital” instead of repeating “important”.</p>
+      </figure>
+    </section>
+
+    <section class="hm-resume" id="hmResume" aria-live="polite" hidden></section>
+
+    <section class="hm-section" id="skills" aria-labelledby="skills-title">
+      <div class="hm-head"><h2 id="skills-title">Practise one skill</h2><p>Every test is marked as soon as you finish.</p></div>
+      <div class="hm-skills">
+        <a class="hm-skill hm-skill-mock" href="pages/mock-tests.html"><span class="hm-ico"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span class="hm-skill-text"><strong>Full mock test</strong><span>All four sections like exam day, with an estimated overall band</span><small><b data-count="mock-tests">2</b> tests · about 2 h 45 min</small></span><span class="hm-go" aria-hidden="true">→</span></a>
+        <a class="hm-skill" href="pages/listening.html"><span class="hm-ico"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="7" rx="1.5"/><rect x="17" y="14" width="4" height="7" rx="1.5"/></svg></span><span class="hm-skill-text"><strong>Listening</strong><span><b data-count="listening-tests">4</b> full tests with audio</span><small>Marked out of 40, with the transcript</small></span></a>
+        <a class="hm-skill" href="pages/reading.html"><span class="hm-ico"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5a2 2 0 0 1 2-2h5v17H5a2 2 0 0 0-2 2zM21 5a2 2 0 0 0-2-2h-5v17h5a2 2 0 0 1 2 2z"/></svg></span><span class="hm-skill-text"><strong>Reading</strong><span><b data-count="reading-passages">10</b> passages, <b data-count="reading-full">2</b> full tests</span><small>Every answer shown in the text</small></span></a>
+        <a class="hm-skill" href="pages/writing.html"><span class="hm-ico"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/></svg></span><span class="hm-skill-text"><strong>Writing</strong><span><b data-count="writing-tasks">48</b> recent questions</span><small>Estimated band from AI</small></span></a>
+        <a class="hm-skill" href="pages/speaking.html"><span class="hm-ico"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span><span class="hm-skill-text"><strong>Speaking</strong><span><b data-count="speaking-cue">62</b> cue cards, <b data-count="speaking-mocks">16</b> mock tests</span><small>Record yourself, get AI feedback</small></span></a>
       </div>
     </section>
 
     <!-- LATEST: newest first, five items. Add a line at the top whenever new questions or tests go live (see AGENTS.md). -->
-    <section class="home-section home-latest" id="latest" aria-labelledby="latest-title">
-      <div class="home-section-heading latest-heading">
-        <span>NEW ON ENGLISITY</span>
-        <h2 id="latest-title">Latest questions and tests</h2>
-        <p>Questions from recent IELTS exams and new practice, newest first.</p>
-        <a class="latest-share" href="pages/share.html">Took IELTS recently? Share your questions <span aria-hidden="true">→</span></a>
-      </div>
+    <section class="hm-section home-latest" id="latest" aria-labelledby="latest-title">
+      <div class="hm-head hm-head-row"><div><h2 id="latest-title">Latest questions and tests</h2><p>From recent IELTS exams and new practice, newest first.</p></div><a class="hm-more-link latest-share" href="pages/share.html">Took IELTS recently? Share your questions <span aria-hidden="true">→</span></a></div>
       <ol class="latest-list">
         <li><a href="pages/mock-tests.html"><time datetime="2026-11-28"><small>Nov</small>28</time><span class="latest-text"><span class="latest-skill">Full mock test</span><strong>Full Mock Test 2: all four sections</strong><span class="latest-desc">Reading on smell, the women scientists of Bologna and mite harvestmen, plus Writing and Speaking with AI marking.</span></span><span class="latest-go" aria-hidden="true">→</span></a></li>
         <li><a href="pages/mock-tests.html"><time datetime="2026-11-27"><small>Nov</small>27</time><span class="latest-text"><span class="latest-skill">Full mock test</span><strong>Full Mock Test 1: all four sections</strong><span class="latest-desc">Listening, Reading, Writing and Speaking with an estimated band and AI marking.</span></span><span class="latest-go" aria-hidden="true">→</span></a></li>
@@ -90,53 +102,44 @@
       </ol>
     </section>
 
-    <section class="home-section home-path" id="learning-path">
-      <div class="home-section-heading">
-        <span>YOUR LEARNING SPACE</span>
-        <h2>Choose what you want to work on</h2>
-        <p>Move between focused practice and discovery. Start wherever you need most.</p>
+    <section class="hm-section" aria-labelledby="more-title">
+      <div class="hm-head"><h2 id="more-title">More ways to learn</h2></div>
+      <div class="hm-more">
+        <a href="pages/vocabulary.html"><span class="hm-ico"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="13" height="15" rx="2"/><path d="M8 3h11a2 2 0 0 1 2 2v13"/></svg></span><span class="hm-skill-text"><strong>Vocabulary</strong><span><b data-count="vocab-words">209</b> IELTS words in <b data-count="vocab-topics">13</b> topics, with flashcards and a daily quiz</span></span><span class="hm-go" aria-hidden="true">→</span></a>
+        <a href="pages/articles.html"><span class="hm-ico"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h4"/></svg></span><span class="hm-skill-text"><strong>Articles</strong><span><b data-count="articles">9</b> articles at three levels, each with a quiz</span></span><span class="hm-go" aria-hidden="true">→</span></a>
+        <a href="pages/podcasts.html"><span class="hm-ico"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="11" r="3"/><path d="M6.5 16a8 8 0 1 1 11 0M12 14v7"/></svg></span><span class="hm-skill-text"><strong>Podcasts</strong><span><b data-count="podcasts">14</b> podcasts and videos for listening practice</span></span><span class="hm-go" aria-hidden="true">→</span></a>
       </div>
-      <div class="skill-grid skill-grid-new">
-        <a class="skill-card skill-card-featured" href="pages/reading.html"><span class="skill-icon">01</span><span class="skill-arrow">↗</span><h3>Reading</h3><p>Timed passages and full tests, marked instantly with each answer shown in the text.</p><span class="skill-link">Explore reading <b>→</b></span></a>
-        <a class="skill-card" href="pages/listening.html"><span class="skill-icon">02</span><span class="skill-arrow">↗</span><h3>Listening</h3><p>Full listening mock tests with audio, marked out of 40 like the real exam.</p><span class="skill-link">Explore listening <b>→</b></span></a>
-        <a class="skill-card" href="pages/writing.html"><span class="skill-icon">03</span><span class="skill-arrow">↗</span><h3>Writing</h3><p>Task 1 and Task 2 questions from recent exams, with a timer and saved drafts.</p><span class="skill-link">Explore writing <b>→</b></span></a>
-        <a class="skill-card" href="pages/speaking.html"><span class="skill-icon">04</span><span class="skill-arrow">↗</span><h3>Speaking</h3><p>Questions from recent exams, full mock tests and recordings of your answers.</p><span class="skill-link">Explore speaking <b>→</b></span></a>
-        <a class="skill-card" href="pages/vocabulary.html"><span class="skill-icon">05</span><span class="skill-arrow">↗</span><h3>Vocabulary</h3><p>Words by topic, a word of the day, flashcards and a daily ten-question quiz.</p><span class="skill-link">Build vocabulary <b>→</b></span></a>
-        <a class="skill-card" href="pages/articles.html"><span class="skill-icon">06</span><span class="skill-arrow">↗</span><h3>Articles</h3><p>Read about science, technology, society and everyday questions.</p><span class="skill-link">Browse articles <b>→</b></span></a>
-        <a class="skill-card" href="pages/podcasts.html"><span class="skill-icon">07</span><span class="skill-arrow">↗</span><h3>Podcasts</h3><p>Explore audio and video resources for different English levels.</p><span class="skill-link">Explore podcasts <b>→</b></span></a>
-      </div>
-    </section>
-
-    <section class="home-section home-share" aria-label="Help other students">
-      <div class="share-prompt share-prompt-home"><p><strong>Took IELTS recently?</strong> Help other students: share the questions you got, or tell us if you spot a mistake.</p><span class="share-prompt-actions"><a href="pages/share.html">Share your questions →</a><a class="secondary" href="pages/share.html?type=report&amp;page=Home%20page">Report a problem</a></span></div>
-    </section>
-
-    <section class="home-section home-resources">
-      <div class="level-section level-section-new">
-        <div class="home-section-heading">
-          <span>MADE FOR YOUR LEVEL</span>
-          <h2>Find your next resource</h2>
-          <p>Choose a level to see recently added material that matches your learning stage.</p>
-        </div>
-        <div class="level-picker" role="group" aria-label="Filter resources by English level">
-          <button class="level-button active" data-level="All levels" type="button" aria-pressed="true">All levels</button>
-          <button class="level-button" data-level="A1–A2" type="button" aria-pressed="false">A1–A2</button>
-          <button class="level-button" data-level="B1–B2" type="button" aria-pressed="false">B1–B2</button>
-          <button class="level-button" data-level="C1–C2" type="button" aria-pressed="false">C1–C2</button>
-        </div>
-        <div class="recent-heading"><h2>Recently added</h2><a href="pages/articles.html">View all articles <span aria-hidden="true">→</span></a></div>
-        <div id="recentResources" class="resource-grid"><p class="empty">Loading resources… If nothing appears, <a href="pages/articles.html">browse all articles</a>.</p></div>
-      </div>
-    </section>
-    <section class="home-bottom-cta">
-      <div><span>KEEP MOVING FORWARD</span><h2>A little practice goes a long way.</h2><p>Learn a few new words today: flashcards first, then a ten-question quiz.</p></div>
-      <a href="pages/vocabulary.html">Practise vocabulary <span aria-hidden="true">↗</span></a>
     </section>
   </main>
+  <script>
+  // Returning students: continue an unfinished mock test, or see the last result.
+  (function(){
+    var box=document.getElementById("hmResume");if(!box)return;
+    function read(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}}
+    function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+    var order=["listening","reading","writing","speaking"],label={listening:"Listening",reading:"Reading",writing:"Writing",speaking:"Speaking"};
+    var mocks=read("englisity-mock-results-v1")||{},best=null;
+    Object.keys(mocks).forEach(function(t){var r=mocks[t]||{};var done=order.filter(function(x){return r[x]&&r[x].at});if(!done.length)return;var last=Math.max.apply(null,done.map(function(x){return r[x].at}));if(!best||last>best.last)best={t:t,r:r,done:done,last:last}});
+    var html="";
+    if(best&&best.done.length<4&&/^mock-\d+$/.test(best.t)){
+      var next=order.filter(function(x){return !(best.r[x]&&best.r[x].at)})[0];
+      html='<div class="hm-resume-text"><b>Continue Full Mock Test '+parseInt(best.t.slice(5),10)+'</b><span>'+best.done.length+' of 4 sections done · '+label[next]+' is next</span></div><a class="hm-btn hm-btn-pri" href="pages/'+best.t+'-'+next+'.html">Continue <span aria-hidden="true">→</span></a>';
+    }else{
+      var h=read("englisity-history-v1");
+      if(Array.isArray(h)&&h.length){
+        var l=h[h.length-1],ai=/^AI /i.test(l.item||"")&&l.total===18;
+        html='<div class="hm-resume-text"><b>Welcome back</b><span>Last time: '+esc(String(l.item||"a test").replace(/^AI (writing|speaking) check: /i,"AI-marked $1: ").slice(0,80))+(ai?" · band "+(l.score/2).toFixed(1):(l.total?" · "+l.score+"/"+l.total:""))+'</span></div><a class="hm-btn hm-btn-sec" href="pages/progress.html">See my progress <span aria-hidden="true">→</span></a>';
+      }else if(best){
+        html='<div class="hm-resume-text"><b>Welcome back</b><span>You finished Full Mock Test '+parseInt(best.t.slice(5),10)+'</span></div><a class="hm-btn hm-btn-sec" href="pages/progress.html">See my progress <span aria-hidden="true">→</span></a>';
+      }
+    }
+    if(html){box.innerHTML=html;box.hidden=false;}
+  })();
+  </script>
   <footer class="home-footer"><p><strong>Englisity</strong> <span>·</span> Learn English with purpose, at your own pace.</p></footer>
   <script src="js/resources.js?v=20261111-review-fixes-1"></script>
-  <script src="js/app.js?v=20261128-black"></script>
-  <script src="js/features.js?v=20261127-progress"></script>
+  <script src="js/app.js?v=20261128-refresh"></script>
+  <script src="js/features.js?v=20261128-refresh"></script>
 <!-- Cloudflare Web Analytics: counts visits, no cookies --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "ac91466da98a415b93a1320d7a491246"}'></script>
 </body>
 </html>

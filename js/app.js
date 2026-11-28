@@ -244,7 +244,8 @@
     const applyTheme = theme => {
       const dark = theme === "dark";
       document.documentElement.dataset.theme = dark ? "dark" : "light";
-      button.textContent = dark ? "☀ Light" : "☾ Dark";
+      // Icon + label: phones show only the icon (CSS hides .tt-l); laptops and the sidebar show both.
+      button.innerHTML = '<span class="tt-i" aria-hidden="true">' + (dark ? "☀" : "☾") + '</span><span class="tt-l"> ' + (dark ? "Light" : "Dark") + "</span>";
       button.setAttribute("aria-pressed", String(dark));
       button.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
       const meta = document.querySelector('meta[name="theme-color"]');

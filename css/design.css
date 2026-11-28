@@ -2698,3 +2698,185 @@ html[data-theme="dark"] .hero-art::before,html[data-theme="dark"] .hero-art::aft
 :root[data-theme="dark"] .home-hero:not(#_){background:#0b0b0b!important;background-image:none!important}
 html[data-theme="dark"] .art-book{background:#161616!important;border:1px solid rgba(255,255,255,.12)!important}
 html[data-theme="dark"] .art-book *{background-color:rgba(167,243,208,.35)!important}
+
+/* =====================================================================
+   DESIGN REFRESH (Nov 28): clearer first screen, compact page headers,
+   calmer phone header, shorter phone footer. Overrides the older layers
+   above, so selectors start with `body` and use !important where the
+   old rules did.
+   ===================================================================== */
+:root{--r-ink:#14231d;--r-muted:#4c5f56;--r-line:#dde6df;--r-card:#fff;--r-soft:#eef5f0;--r-accent:#1f6b55;--r-accent-ink:#fff;--r-accent-soft:#e3f1e8;--r-bar:#cfe3d6}
+html[data-theme="dark"]{--r-ink:#ececec;--r-muted:#b4b4b4;--r-line:#2a2a2a;--r-card:#101010;--r-soft:#171717;--r-accent:#6ee7b7;--r-accent-ink:#03140d;--r-accent-soft:#12261d;--r-bar:#2b2b2b}
+
+/* ---------- Home ---------- */
+body .hm{max-width:1120px!important;margin:0 auto!important;padding:0 20px 40px!important}
+.hm-hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:40px;align-items:center;margin:26px 0 8px;padding:44px 44px;border:1px solid var(--r-line);border-radius:24px;background:var(--r-card)}
+.hm-kicker{display:inline-flex;align-items:center;gap:8px;margin:0 0 14px;padding:6px 12px;border-radius:999px;background:var(--r-accent-soft);color:var(--r-accent);font:700 .8rem/1.2 "DM Sans",sans-serif;letter-spacing:.01em}
+html[data-theme="dark"] .hm-kicker{color:#a7f3d0}
+.hm-dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+body .hm-hero h1{margin:0;color:var(--r-ink)!important;font:800 clamp(2.1rem,3.7vw,3.25rem)/1.08 "Manrope","DM Sans",sans-serif!important;letter-spacing:-.035em!important;max-width:18ch}
+.hm-lead{margin:16px 0 0;color:var(--r-muted);font-size:1.08rem;line-height:1.6;max-width:36em}
+.hm-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;margin-top:26px}
+.hm-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 26px;border-radius:14px;font:700 1.02rem/1 "DM Sans",sans-serif;text-decoration:none;border:1px solid transparent;transition:transform .15s,box-shadow .15s,background .15s}
+.hm-btn-pri{background:var(--r-accent);color:var(--r-accent-ink)!important;box-shadow:0 8px 22px rgba(31,107,85,.22)}
+.hm-btn-pri:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(31,107,85,.28)}
+html[data-theme="dark"] .hm-btn-pri{box-shadow:0 8px 24px rgba(110,231,183,.18)}
+.hm-btn-sec{background:transparent;color:var(--r-accent)!important;border-color:var(--r-line)}
+html[data-theme="dark"] .hm-btn-sec{color:#a7f3d0!important;border-color:#333}
+.hm-btn-sec:hover{border-color:var(--r-accent)}
+.hm-link{color:var(--r-accent);font-weight:700;text-decoration:none;padding:8px 2px}
+html[data-theme="dark"] .hm-link{color:#a7f3d0}
+.hm-link:hover{text-decoration:underline}
+.hm-trust{display:flex;flex-wrap:wrap;gap:8px 18px;margin:22px 0 0;padding:0;list-style:none;color:var(--r-muted);font-size:.92rem}
+.hm-trust li{display:flex;align-items:center;gap:7px}
+.hm-trust li:before{content:"✓";display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--r-accent-soft);color:var(--r-accent);font-size:.7rem;font-weight:800}
+html[data-theme="dark"] .hm-trust li:before{color:#a7f3d0}
+/* Example result (what a student gets) */
+.hm-sample{margin:0;padding:22px;border:1px solid var(--r-line);border-radius:20px;background:var(--r-soft);box-shadow:0 18px 40px rgba(20,35,29,.07)}
+html[data-theme="dark"] .hm-sample{box-shadow:none}
+.hm-sample figcaption{display:inline-block;margin-bottom:14px;padding:4px 10px;border-radius:999px;background:var(--r-card);color:var(--r-muted);font-size:.74rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--r-line)}
+.hm-sample-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-radius:14px;background:var(--r-card);border:1px solid var(--r-line)}
+.hm-sample-head span{display:block;font-weight:800;color:var(--r-ink)}
+.hm-sample-head small{display:block;margin-top:3px;color:var(--r-muted);font-size:.85rem}
+.hm-sample-head b{font:800 2.6rem/1 "Manrope",sans-serif;color:var(--r-accent);letter-spacing:-.03em}
+html[data-theme="dark"] .hm-sample-head b{color:#6ee7b7}
+.hm-sample-bands{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:10px}
+.hm-sample-bands li{display:grid;grid-template-columns:82px 1fr 34px;align-items:center;gap:10px;font-size:.9rem;color:var(--r-ink)}
+.hm-sample-bands i{position:relative;height:8px;border-radius:9px;background:var(--r-bar);overflow:hidden}
+.hm-sample-bands i:after{content:"";position:absolute;inset:0 auto 0 0;width:var(--w);border-radius:9px;background:var(--r-accent)}
+.hm-sample-bands b{text-align:right;font-weight:800}
+.hm-sample-note{margin:16px 0 0;padding:12px 14px;border-radius:12px;background:var(--r-card);border:1px solid var(--r-line);color:var(--r-muted);font-size:.88rem;line-height:1.5}
+.hm-sample-note b{display:block;margin-bottom:3px;color:var(--r-ink);font-size:.8rem}
+/* Returning students */
+.hm-resume{display:flex;align-items:center;justify-content:space-between;gap:14px 20px;flex-wrap:wrap;margin:16px 0 0;padding:16px 18px;border-radius:18px;border:1px solid var(--r-line);background:var(--r-accent-soft)}
+.hm-resume[hidden]{display:none}
+.hm-resume-text b{display:block;color:var(--r-ink);font-size:1.02rem}
+.hm-resume-text span{display:block;margin-top:2px;color:var(--r-muted);font-size:.92rem}
+.hm-resume .hm-btn{min-height:46px;padding:0 20px}
+/* Sections */
+.hm-section{margin-top:44px}
+.hm-head{margin-bottom:16px}
+.hm-head-row{display:flex;align-items:flex-end;justify-content:space-between;gap:10px 24px;flex-wrap:wrap}
+body .hm-head h2{margin:0;color:var(--r-ink)!important;font:800 clamp(1.4rem,2.2vw,1.75rem)/1.2 "Manrope",sans-serif!important;letter-spacing:-.02em!important}
+.hm-head p{margin:6px 0 0;color:var(--r-muted)}
+.hm-more-link{color:var(--r-accent);font-weight:700;text-decoration:none}
+html[data-theme="dark"] .hm-more-link{color:#a7f3d0}
+.hm-more-link:hover{text-decoration:underline}
+.hm-skills{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.hm-skill,.hm-more a{position:relative;display:flex;gap:14px;align-items:flex-start;padding:18px;border:1px solid var(--r-line);border-radius:18px;background:var(--r-card);color:var(--r-ink);text-decoration:none;transition:border-color .15s,transform .15s,box-shadow .15s}
+.hm-skill{flex-direction:column}
+.hm-skill:hover,.hm-more a:hover{border-color:var(--r-accent);transform:translateY(-2px);box-shadow:0 10px 24px rgba(20,35,29,.07)}
+html[data-theme="dark"] .hm-skill:hover,html[data-theme="dark"] .hm-more a:hover{box-shadow:none}
+.hm-ico{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:12px;background:var(--r-accent-soft);color:var(--r-accent)}
+html[data-theme="dark"] .hm-ico{color:#6ee7b7}
+.hm-ico svg{width:22px;height:22px}
+.hm-skill-text{display:flex;flex-direction:column;gap:3px;min-width:0}
+.hm-skill-text strong{font:800 1.08rem/1.25 "Manrope",sans-serif;color:var(--r-ink)}
+.hm-skill-text>span{color:var(--r-ink);font-size:.95rem;line-height:1.4}
+.hm-skill-text small{color:var(--r-muted);font-size:.86rem;line-height:1.4}
+.hm-skill-text b{font-weight:800}
+.hm-skill-mock{grid-column:1/-1;flex-direction:row;align-items:center;padding:20px 22px;background:var(--r-accent);border-color:var(--r-accent)}
+.hm-skill-mock .hm-ico{background:rgba(255,255,255,.16);color:#fff}
+.hm-skill-mock .hm-skill-text strong,.hm-skill-mock .hm-skill-text>span,.hm-skill-mock .hm-skill-text small{color:#fff}
+.hm-skill-mock .hm-skill-text small{opacity:.85}
+.hm-skill-mock .hm-go{margin-left:auto;color:#fff;font-size:1.4rem}
+html[data-theme="dark"] .hm-skill-mock{background:#0f2a1f;border-color:#1f5c43}
+html[data-theme="dark"] .hm-skill-mock .hm-ico{background:#1a3d2e;color:#6ee7b7}
+html[data-theme="dark"] .hm-skill-mock .hm-go{color:#6ee7b7}
+.hm-more{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.hm-more a{align-items:center}
+.hm-more .hm-go,.hm-skill .hm-go{color:var(--r-muted);font-size:1.15rem}
+.hm-skill.hm-skill-mock .hm-go{color:#fff;font-size:1.4rem}
+html[data-theme="dark"] .hm-skill.hm-skill-mock .hm-go{color:#6ee7b7}
+.hm-more .hm-go{margin-left:auto}
+/* Latest list keeps its own styles; tighten the heading link */
+body .home-latest .latest-list{margin-top:0}
+@media (max-width:980px){
+  .hm-hero{grid-template-columns:1fr;padding:34px 30px}
+  .hm-sample{max-width:520px}
+  .hm-skills{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hm-more{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  body .hm{padding:0 16px 28px!important}
+  .hm-hero{margin:14px 0 0;padding:6px 2px 4px;border:0;background:transparent;gap:18px}
+  .hm-sample{display:none}
+  .hm-kicker{margin-bottom:12px;font-size:.76rem}
+  body .hm-hero h1{font-size:clamp(1.85rem,8.4vw,2.2rem)!important;max-width:none}
+  .hm-lead{margin-top:12px;font-size:1rem;line-height:1.55}
+  .hm-actions{flex-direction:column;align-items:stretch;gap:6px;margin-top:20px}
+  .hm-btn{min-height:54px;width:100%}
+  .hm-link{text-align:center}
+  .hm-trust{gap:6px 14px;margin-top:12px;font-size:.85rem}
+  .hm-section{margin-top:32px}
+  .hm-skills{gap:10px}
+  .hm-skill{padding:14px;gap:10px;border-radius:16px}
+  .hm-skill .hm-ico{width:38px;height:38px;border-radius:11px}
+  .hm-skill .hm-ico svg{width:20px;height:20px}
+  .hm-skill-text strong{font-size:1rem}
+  .hm-skill-text>span{font-size:.88rem}
+  .hm-skill-text small{font-size:.8rem}
+  .hm-skill-mock{padding:16px}
+  .hm-more{gap:10px}
+  .hm-more a{padding:14px}
+  .hm-head-row{align-items:flex-start}
+}
+
+/* ---------- Section pages: compact header so content starts sooner ---------- */
+body .page-hero:not(#_),body .page-hero:not(#_).listening-hero,body .page-hero:not(#_).about-hero,body .page-hero:not(#_).share-hero{margin:22px 0 18px!important;padding:6px 0 0!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;min-height:0!important;overflow:visible!important}
+html[data-theme="dark"] body .page-hero:not(#_){background:none!important;border:0!important;box-shadow:none!important}
+body .page-hero:not(#_):before,body .page-hero:not(#_):after{display:none!important}
+body .page-hero:not(#_) .eyebrow{display:none!important}
+body .page-hero:not(#_) .breadcrumb{margin:0 0 8px!important;font-size:.82rem!important}
+body .page-hero:not(#_) h1{margin:0!important;font:800 clamp(1.75rem,3vw,2.45rem)/1.15 "Manrope","DM Sans",sans-serif!important;letter-spacing:-.03em!important;color:var(--r-ink)!important}
+body .page-hero:not(#_) h1 em{font-style:normal;color:inherit!important}
+body .page-hero:not(#_) h1 br{display:none}
+body .page-hero:not(#_) p{margin:8px 0 0!important;max-width:680px!important;font-size:1rem!important;line-height:1.6!important;color:var(--r-muted)!important}
+body .listening-hero{display:block!important}
+body .listening-hero-art{display:none!important}
+body .listening-hero-meta{margin-top:12px!important}
+body .page-hero:not(#_).vocab-head{display:flex!important;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+@media (max-width:640px){
+  body .page-hero:not(#_),body .page-hero:not(#_).listening-hero,body .page-hero:not(#_).about-hero,body .page-hero:not(#_).share-hero{margin:14px 0 14px!important;padding:0 2px!important}
+  body .page-hero:not(#_) h1{font-size:1.7rem!important}
+  body .page-hero:not(#_) p{font-size:.96rem!important}
+}
+
+/* ---------- Header: quieter theme button, shorter on phones ---------- */
+body .topbar .theme-toggle{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;min-width:40px;padding:0 12px;border-radius:12px;background:transparent!important;color:var(--r-ink)!important;border:1px solid var(--r-line)!important;box-shadow:none!important;font-weight:700}
+body .topbar .theme-toggle:hover{border-color:var(--r-accent)!important}
+.theme-toggle .tt-i{font-size:1.05rem;line-height:1}
+@media (max-width:760px){
+  body .topbar .theme-toggle{width:42px;height:42px;padding:0!important}
+  body .topbar .theme-toggle .tt-l{display:none}
+}
+@media (max-width:520px){
+  body .topbar .brand small{display:none!important}
+}
+
+/* ---------- Footer: phones skip the link lists the menu already has ---------- */
+@media (max-width:620px){
+  body .site-footer .sf-grid .sf-col:nth-child(-n+2){display:none}
+  body .site-footer .sf-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  body .site-footer{margin-top:32px!important}
+}
+html[data-theme="dark"] body .site-footer{background:#0a0a0a!important;border-color:#1f1f1f!important}
+html[data-theme="dark"] body .site-footer .sf-bottom{border-color:#1f1f1f!important}
+
+/* ---------- Black mode: leftovers ---------- */
+html[data-theme="dark"] body .mode-gate{background:rgba(0,0,0,.8)!important}
+html[data-theme="dark"] body .mw-finish{background:#6ee7b7!important;color:#03140d!important;border-color:#6ee7b7!important}
+
+/* Vocabulary tabs: one line on phones, swipe for the rest */
+@media (max-width:640px){
+  body .vocab-tabs{overflow-x:auto!important;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  body .vocab-tabs::-webkit-scrollbar{display:none}
+  body .vocab-tabs a{flex:0 0 auto!important;min-width:max-content!important;white-space:nowrap!important;padding:10px 12px!important}
+}
+/* Listening hub: the list heading no longer repeats the page title */
+body .listening-library-heading{align-items:center!important;margin-top:8px!important}
+body .listening-library-heading h2{margin:0!important}
+body .listening-library-heading{display:flex!important;flex-direction:row!important;justify-content:space-between!important;text-align:left!important;gap:12px!important}
+body .listening-library-heading>div{text-align:left!important}
+
+body .share-prompt-after{margin-top:18px!important}

@@ -68,10 +68,10 @@
       .eng-exit-actions .stay{display:none}
       .eng-exit-actions .save-leave{background:#286b49;border-color:#286b49;color:#fff}
       .eng-exit-actions .discard-leave{background:#fff;border-color:#d8a5a5;color:#9d3030}
-      html[data-theme="dark"] .eng-exit-dialog{background:#1a1a1a;border-color:#404040;color:#f1f1f1}
-      html[data-theme="dark"] .eng-exit-actions button{background:#232323;border-color:#494949;color:#ebebeb}
+      html[data-theme="dark"] .eng-exit-dialog{background:#161616;border-color:#363636;color:#f1f1f1}
+      html[data-theme="dark"] .eng-exit-actions button{background:#1e1e1e;border-color:#3e3e3e;color:#ebebeb}
       html[data-theme="dark"] .eng-exit-actions .save-leave{background:#347b52;border-color:#347b52;color:#ffffff}
-      html[data-theme="dark"] .eng-exit-actions .discard-leave{background:#282828;border-color:#8c555a;color:#ffdfe1}
+      html[data-theme="dark"] .eng-exit-actions .discard-leave{background:#222222;border-color:#8c555a;color:#ffdfe1}
     `;
     document.head.appendChild(style);
     const overlay = document.createElement("div");
@@ -168,7 +168,7 @@
     document.getElementById("questionList");
   if (!questions) return;
   const style = document.createElement("style");
-  style.textContent = ".reading-jump{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:60;display:none;align-items:center;gap:6px;min-height:44px;padding:10px 16px;border:0;border-radius:999px;background:#1f6b55;color:#fff;font:inherit;font-size:.9rem;font-weight:700;box-shadow:0 6px 18px rgba(20,50,40,.25);cursor:pointer}.reading-jump.show{display:inline-flex}html[data-theme=\"dark\"] .reading-jump{background:#a7d9b7;color:#12261e}@media print{.reading-jump{display:none!important}}";
+  style.textContent = ".reading-jump{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:60;display:none;align-items:center;gap:6px;min-height:44px;padding:10px 16px;border:0;border-radius:999px;background:#1f6b55;color:#fff;font:inherit;font-size:.9rem;font-weight:700;box-shadow:0 6px 18px rgba(20,50,40,.25);cursor:pointer}.reading-jump.show{display:inline-flex}html[data-theme=\"dark\"] .reading-jump{background:#a7d9b7;color:#181818}@media print{.reading-jump{display:none!important}}";
   document.head.append(style);
   const button = document.createElement("button");
   button.type = "button";
@@ -215,9 +215,9 @@
     .evidence-chip button{border:0;border-radius:999px;background:transparent;color:#fff;font:inherit;font-weight:800;padding:9px 14px;cursor:pointer;white-space:nowrap}
     .evidence-chip .back{background:#fff;color:#17352b}
     .evidence-chip .note{color:#cfe3d8;padding:0 8px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    html[data-theme="dark"] .view-in-test{background:#202020;border-color:#484848;color:#a7d9b7!important}
+    html[data-theme="dark"] .view-in-test{background:#1b1b1b;border-color:#3d3d3d;color:#a7d9b7!important}
     html[data-theme="dark"] #passageText mark.evidence-mark{background:#6b5a12;color:#fff8dc;animation:none}
-    html[data-theme="dark"] #passageText p.evidence-para{background:#1d1d1d;outline-color:#353535}
+    html[data-theme="dark"] #passageText p.evidence-para{background:#191919;outline-color:#2d2d2d}
     @media(max-width:600px){.evidence-chip .note{display:none}}
   `;
   document.head.append(style);

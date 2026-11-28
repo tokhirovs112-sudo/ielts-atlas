@@ -356,6 +356,38 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
         </select>
       </div>
       <div class="task-library-grid" id="task2TaskGrid">
+        <button class="task-library-card" type="button" data-task2-category="agree-disagree" data-open-task2-detail="responsible-tourists" data-sort-date="2026-11-23">
+          <span class="task-library-card-content">
+            <strong>Can anyone be a ‘responsible tourist’?</strong>
+            <span class="task-category-tag">Agree / disagree</span>
+            <span class="task-reported-date">Last reported: November 23</span>
+            <span class="task-card-link">Open essay question →</span>
+          </span>
+        </button>
+        <button class="task-library-card" type="button" data-task2-category="two-part" data-open-task2-detail="university-demand" data-sort-date="2026-11-23">
+          <span class="task-library-card-content">
+            <strong>More people want to go to university</strong>
+            <span class="task-category-tag">Two-part question</span>
+            <span class="task-reported-date">Last reported: November 23</span>
+            <span class="task-card-link">Open essay question →</span>
+          </span>
+        </button>
+        <button class="task-library-card" type="button" data-task2-category="agree-disagree" data-open-task2-detail="money-and-hard-work" data-sort-date="2026-11-23">
+          <span class="task-library-card-content">
+            <strong>Is money the main reason people work hard?</strong>
+            <span class="task-category-tag">Agree / disagree</span>
+            <span class="task-reported-date">Last reported: November 23</span>
+            <span class="task-card-link">Open essay question →</span>
+          </span>
+        </button>
+        <button class="task-library-card" type="button" data-task2-category="discuss-both-views" data-open-task2-detail="child-crime-parents" data-sort-date="2026-11-23">
+          <span class="task-library-card-content">
+            <strong>Punish child offenders or their parents?</strong>
+            <span class="task-category-tag">Discuss both views</span>
+            <span class="task-reported-date">Last reported: November 23</span>
+            <span class="task-card-link">Open essay question →</span>
+          </span>
+        </button>
         <button class="task-library-card" type="button" data-task2-category="causes-solutions" data-open-task2-detail="museum" data-sort-date="2026-10-31">
           <span class="task-library-card-content">
             <strong>Museums and historical sites</strong>
@@ -626,6 +658,24 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
       </div>
 
       <div class="task-library-grid" id="task1TaskGrid">
+        <button class="task-library-card" type="button" data-task1-category="pie-chart" data-open-task-detail="uk-university-reasons" data-sort-date="2026-11-23">
+          <img src="../images/task1/uk-university-reasons.png" alt="Two pie charts showing the main reasons students chose a particular UK university in 1987 and 2007">
+          <span class="task-library-card-content">
+            <strong>Why students chose a UK university (1987 and 2007)</strong>
+            <span class="task-category-tag">Pie chart</span>
+            <span>1987 and 2007 · Last reported: November 23</span>
+            <span class="task-card-link">Open writing task →</span>
+          </span>
+        </button>
+        <button class="task-library-card" type="button" data-task1-category="process" data-open-task-detail="solar-heater" data-sort-date="2026-11-23">
+          <img src="../images/task1/solar-heater.png" alt="Diagrams showing a box with a transparent top and how it is used as a solar panel to heat air and to heat water">
+          <span class="task-library-card-content">
+            <strong>Structure and uses of a solar heater</strong>
+            <span class="task-category-tag">Process diagram</span>
+            <span>Diagram · Last reported: November 23</span>
+            <span class="task-card-link">Open writing task →</span>
+          </span>
+        </button>
         <button class="task-library-card" type="button" data-task1-category="map" data-open-task-detail="shalton-village" data-sort-date="2026-11-08">
           <img src="../images/task1/image_2026-11-09_15-50-02.png" alt="Maps showing Shalton village in 1910 and 2010">
           <span class="task-library-card-content">
@@ -967,6 +1017,22 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
     }
 
     const task1Tasks = {
+      "uk-university-reasons": {
+        data: "Two pie charts, main reasons students chose a particular UK university (percentages as given). 1987: quality of resources 21%, suitable degree courses 35%, close to parents' home 10%, quality of teaching 15%, good sports and social activities 19%. 2007: quality of resources 17%, suitable degree courses 37%, close to parents' home 22%, quality of teaching 8%, good sports and social activities 6% (the 2007 figures shown add up to 90%).",
+        title: "Why students chose a UK university (1987 and 2007)",
+        instruction: "The pie charts below show the main reasons why students chose to study at a particular UK university in 1987 and 2007.",
+        image: "../images/task1/uk-university-reasons.png",
+        alt: "Two pie charts showing the main reasons students chose a particular UK university in 1987 and 2007",
+        reported: "November 23"
+      },
+      "solar-heater": {
+        data: "Three diagrams. 1) Box with a transparent top: a box with an inlet pipe on one side and an outlet pipe on the other, covered by a transparent top. 2) Solar panel to heat air: the sun's rays (heat energy) pass through the transparent top into the box; cool air goes in through the inlet and warm air comes out through the outlet. 3) Solar panel to heat water: the same box with a water pipe that winds back and forth inside it under the transparent top; the sun's rays heat it; cool water goes in through the inlet and warm water comes out through the outlet.",
+        title: "Structure and uses of a solar heater",
+        instruction: "The diagrams below illustrate the structure and application of a solar heater.",
+        image: "../images/task1/solar-heater.png",
+        alt: "Diagrams showing a box with a transparent top and how it is used as a solar panel to heat air and to heat water",
+        reported: "November 23"
+      },
       "waste-production": {
         data: "Table, waste production in millions of tonnes. 1980 / 1990 / 2000: Ireland 0.6 / no data / 5; Japan 28 / 32 / 53; Korea no data / 31 / 19; Poland 4 / 5 / 6.6; Portugal 2 / 3 / 5; US 131 / 151 / 192.",
         title: "Waste production in six countries",
@@ -1136,6 +1202,26 @@ html[data-theme="dark"] .task-also-reported{color:#b5c9bc;border-color:#3a5247}
     document.querySelectorAll("[data-open-task-detail]").forEach(button => button.addEventListener("click", () => showTaskDetail(button.dataset.openTaskDetail)));
 
     const task2Tasks = {
+      "responsible-tourists": {
+        title: "Can anyone be a ‘responsible tourist’?",
+        question: "In recent years, ‘responsible tourists’ have tried to pay more attention to preserving both the culture and the environment of the places they visit. However, some people believe that it is impossible to be a ‘responsible tourist’. To what extent do you agree or disagree?",
+        reported: "November 23"
+      },
+      "university-demand": {
+        title: "More people want to go to university",
+        question: "Nowadays, more and more people want to study at university, and the number of university places has increased to meet this demand. Why is this happening? Is competition for university places a positive or negative development?",
+        reported: "November 23"
+      },
+      "money-and-hard-work": {
+        title: "Is money the main reason people work hard?",
+        question: "Earning money is the main reason why people work hard. To what extent do you agree or disagree?",
+        reported: "November 23"
+      },
+      "child-crime-parents": {
+        title: "Punish child offenders or their parents?",
+        question: "Some people believe that children who commit crimes should be punished. Others think that their parents should be punished instead. Discuss both views and give your own opinion.",
+        reported: "November 23"
+      },
       museum: {
         title: "Museums and historical sites",
         question: "Many museums and historical sites are mainly visited by tourists but not local people. Why is this the case and what can be done to attract more local people to visit these places?",

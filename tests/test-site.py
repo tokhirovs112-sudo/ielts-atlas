@@ -1333,6 +1333,7 @@ def test_full_mock_test(browser, pw):
     page.click(".mk-card:nth-child(2) .mk-btn.pri")
     page.wait_for_timeout(400)
     check(page.url.endswith("mock-01-listening.html"), f"Start Full Mock Test 1 opens {page.url}")
+    check(not page.is_visible(".sb"), "the sidebar covers an exam screen")
     page.goto(BASE + "pages/mock-02-speaking.html")
     page.wait_for_timeout(400)
     t = page.inner_text("#mockSection")
@@ -1340,7 +1341,6 @@ def test_full_mock_test(browser, pw):
     page.goto(BASE + "pages/mock-02-writing.html")
     page.wait_for_timeout(300)
     check("mobile phones" in page.inner_text("#mwTask1") and page.evaluate("document.querySelector('.mw-chart').naturalWidth") > 0, "Full Mock Test 2 Writing Task 1 or its chart is missing")
-    check(not page.is_visible(".sb"), "the sidebar covers an exam screen")
     # Writing: answers are kept, finishing saves the section.
     page.goto(BASE + "pages/mock-01-writing.html")
     page.wait_for_timeout(400)

@@ -68,10 +68,10 @@
       .eng-exit-actions .stay{display:none}
       .eng-exit-actions .save-leave{background:#286b49;border-color:#286b49;color:#fff}
       .eng-exit-actions .discard-leave{background:#fff;border-color:#d8a5a5;color:#9d3030}
-      html[data-theme="dark"] .eng-exit-dialog{background:#172722;border-color:#40564b;color:#edf5ef}
-      html[data-theme="dark"] .eng-exit-actions button{background:#20332d;border-color:#496355;color:#e7eee9}
-      html[data-theme="dark"] .eng-exit-actions .save-leave{background:#347b52;border-color:#347b52;color:#fff}
-      html[data-theme="dark"] .eng-exit-actions .discard-leave{background:#382629;border-color:#8c555a;color:#ffdfe1}
+      html[data-theme="dark"] .eng-exit-dialog{background:#1a1a1a;border-color:#404040;color:#f1f1f1}
+      html[data-theme="dark"] .eng-exit-actions button{background:#232323;border-color:#494949;color:#ebebeb}
+      html[data-theme="dark"] .eng-exit-actions .save-leave{background:#347b52;border-color:#347b52;color:#ffffff}
+      html[data-theme="dark"] .eng-exit-actions .discard-leave{background:#282828;border-color:#8c555a;color:#ffdfe1}
     `;
     document.head.appendChild(style);
     const overlay = document.createElement("div");
@@ -215,9 +215,9 @@
     .evidence-chip button{border:0;border-radius:999px;background:transparent;color:#fff;font:inherit;font-weight:800;padding:9px 14px;cursor:pointer;white-space:nowrap}
     .evidence-chip .back{background:#fff;color:#17352b}
     .evidence-chip .note{color:#cfe3d8;padding:0 8px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    html[data-theme="dark"] .view-in-test{background:#1c2f28;border-color:#3f6a57;color:#a7d9b7!important}
+    html[data-theme="dark"] .view-in-test{background:#202020;border-color:#484848;color:#a7d9b7!important}
     html[data-theme="dark"] #passageText mark.evidence-mark{background:#6b5a12;color:#fff8dc;animation:none}
-    html[data-theme="dark"] #passageText p.evidence-para{background:#2a2a1a;outline-color:#6b5a12}
+    html[data-theme="dark"] #passageText p.evidence-para{background:#1d1d1d;outline-color:#353535}
     @media(max-width:600px){.evidence-chip .note{display:none}}
   `;
   document.head.append(style);

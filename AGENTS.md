@@ -76,3 +76,7 @@ When editing existing article pages or the shared learning script, preserve this
 - Writing, Speaking and the hub for every mock come from `/home/claude/gen/mock_pages.py` (content per mock in `MOCKS`; shared code in `mock_body.py`, `mock_pages_pre.py`, `mock_pages_hub.py`). Reading: `mock02_reading.py`; Listening: `mock02_listening.py` (built from listening-test-03, the owner asked to reuse a site listening test, audio `listening-mock-03.mp3`).
 - The hub lists the newest mock first. `ENGLISITY_CUSTOM_MOCK.n` sets the mock number shown on the Speaking page.
 - Source texts are in `content-staging/mock-02/` (not deployed).
+
+## Black mode (dark theme)
+- Since 28 Nov the dark theme is black, not green: page `#000`, cards near-black grey, off-white text, mint/green kept for links, labels and buttons, and the dark logo `assets/englisity-mark-dark.svg` (swapped in by CSS `content:url()` on the logo images).
+- Converted with `/home/claude/gen/blackify.py` (only rules for `html[data-theme="dark"]`). New dark styles: use neutral greys (#0b0b0b–#2a2a2a surfaces, #333–#444 borders), not dark greens.

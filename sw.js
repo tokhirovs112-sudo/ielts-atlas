@@ -1,19 +1,19 @@
 "use strict";
 
-const CACHE_NAME = "englisity-pwa-v76";
+const CACHE_NAME = "englisity-pwa-v77";
 const APP_ROOT = new URL(self.registration.scope);
 
 const CORE_FILES = [
   "./",
   "index.html",
   "css/style.css",
-  "css/design.css?v=20261127-flow",
+  "css/design.css?v=20261128-black",
   "css/mobile.css?v=20261103-responsive-pwa-2",
-  "js/app.js?v=20261111-search-1",
-  "js/features.js?v=20261127-sidebar",
+  "js/app.js?v=20261128-black",
+  "js/features.js?v=20261127-progress",
   "js/resources.js?v=20261111-review-fixes-1",
   "js/vocabulary.js?v=20261125-tabs-3",
-  "js/article-learning.js?v=20261125-contrast",
+  "js/article-learning.js?v=20261128-black",
   "pages/vocabulary.html",
   "articles/hobbies-mentally-sharp.html",
   "js/life-on-mars.js",
@@ -21,6 +21,7 @@ const CORE_FILES = [
   "js/halley-vi.js",
   "manifest.webmanifest",
   "assets/englisity-mark.svg?v=20261117-logo",
+  "assets/englisity-mark-dark.svg?v=20261128",
   "assets/englisity-app-icon.png?v=20261117-logo",
   "pages/reading.html",
   "pages/listening.html",
@@ -34,7 +35,7 @@ const CORE_FILES = [
   "pages/listening-test-03.html",
   "pages/listening-test-04.html",
   "pages/full-tests.html",
-  "js/speaking-mock.js?v=20261127-mock",
+  "js/speaking-mock.js?v=20261128-p1",
   "pages/full-test-01.html",
   "js/full-test-01-data.js?v=20261121-1",
   "pages/full-test-02.html",

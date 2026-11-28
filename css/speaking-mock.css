@@ -2,7 +2,7 @@
 .back-button{border:0;background:#edf3fb;color:#3c8369;padding:10px 15px;border-radius:9px;cursor:pointer;font-weight:700;margin-bottom:20px}
 .back-button:hover{background:#e3f8f0}
 html[data-theme="dark"] body .back-button{
-      background:#35574b!important;color:#e0f7ef!important;
+      background:#3c3c3c!important;color:#e0f7ef!important;
     }
 html[data-theme="dark"] body .back-button:hover{background:#447362!important}
 .mock-head{display:block;margin:14px 0 16px}
@@ -11,12 +11,12 @@ html body #mockSection .mock-secondary{background:#fff;color:#276c5c;border-colo
 html body #mockSection .mock-steps .mock-rec{background:transparent!important}
 .mock-head h2{margin:10px 0 8px;color:#17352b}
 .mock-head p{margin:0;color:#5d706b;line-height:1.65;max-width:760px}
-html[data-theme="dark"] .mock-head h2{color:#eef6f0}
-html[data-theme="dark"] .mock-head p{color:#b5c9bc}
+html[data-theme="dark"] .mock-head h2{color:#f2f2f2}
+html[data-theme="dark"] .mock-head p{color:#bfbfbf}
 #mockSection p.mock-q{color:#17352b!important}
 #mockSection .mock-cue .cue li{color:#334}
-html[data-theme="dark"] #mockSection p.mock-q{color:#eef6f0!important}
-html[data-theme="dark"] #mockSection .mock-cue .cue li{color:#cfe0d6}
+html[data-theme="dark"] #mockSection p.mock-q{color:#f2f2f2!important}
+html[data-theme="dark"] #mockSection .mock-cue .cue li{color:#d8d8d8}
 .mock-banner{display:flex;align-items:center;gap:16px;margin-top:16px;padding:18px 20px;border:1px solid #bcd9c7;border-radius:16px;background:linear-gradient(120deg,#eaf5ee,#f6fbf7);color:inherit;text-decoration:none;transition:border-color .15s,transform .15s}
 .mock-banner:hover{border-color:#5fa883;transform:translateY(-1px)}
 .mock-banner-icon{display:grid;place-items:center;flex:0 0 48px;height:48px;border-radius:14px;background:#276c5c;font-size:24px}
@@ -85,18 +85,18 @@ html[data-theme="dark"] #mockSection .mock-cue .cue li{color:#cfe0d6}
 .mock-review summary{cursor:pointer;font-weight:800;color:#276c5c}
 .mock-review h4{margin:12px 0 4px;color:#17352b}
 .mock-review ol{margin:0;padding-left:20px;line-height:1.6;color:#425b4b}
-html[data-theme="dark"] .mock-banner{background:linear-gradient(120deg,#1a3029,#172722);border-color:#33493f}
-html[data-theme="dark"] .mock-banner strong,html[data-theme="dark"] .mock-card strong,html[data-theme="dark"] .mock-q,html[data-theme="dark"] .mock-outline b,html[data-theme="dark"] .mock-end h2,html[data-theme="dark"] .mock-times b,html[data-theme="dark"] .mock-review h4,html[data-theme="dark"] .mock-cue .cue strong{color:#eef6f0}
-html[data-theme="dark"] .mock-banner>span:nth-child(2)>span,html[data-theme="dark"] .mock-card>span,html[data-theme="dark"] .mock-outline span,html[data-theme="dark"] .mock-hint,html[data-theme="dark"] .mock-lead,html[data-theme="dark"] .mock-toggle,html[data-theme="dark"] .mock-check ul,html[data-theme="dark"] .mock-review ol,html[data-theme="dark"] .mock-cue .cue ul,html[data-theme="dark"] .mock-cue .cue span{color:#b5c9bc}
-html[data-theme="dark"] .mock-card,html[data-theme="dark"] .mock-stage,html[data-theme="dark"] .mock-outline li,html[data-theme="dark"] .mock-toggle,html[data-theme="dark"] .mock-recording,html[data-theme="dark"] .mock-check{background:#1c2f28;border-color:#33493f}
-html[data-theme="dark"] .mock-cue .cue{background:#172722;border-color:#9fd8b6}
-html[data-theme="dark"] .mock-cue textarea{background:#172722;border-color:#3a5247;color:#e6f2ea}
-html[data-theme="dark"] .mock-notes-view,html[data-theme="dark"] .mock-times div{background:#24413a;color:#d4e4da}
-html[data-theme="dark"] .mock-steps span{background:#24413a;color:#9fb5a8}
-html[data-theme="dark"] .mock-steps span.on{background:#347b52;color:#fff}
-html[data-theme="dark"] .mock-steps span.done{background:#2b4c3c;color:#cfeedd}
-html[data-theme="dark"] body #mockSection .mock-secondary{background:#1c2f28!important;color:#a7d9b7!important;border-color:#5fb383!important}
-html[data-theme="dark"] body #mockSection .mock-primary{background:#347b52!important;color:#fff!important;border-color:#347b52!important}
+html[data-theme="dark"] .mock-banner{background:linear-gradient(120deg,#1f1f1f,#1a1a1a);border-color:#353535}
+html[data-theme="dark"] .mock-banner strong,html[data-theme="dark"] .mock-card strong,html[data-theme="dark"] .mock-q,html[data-theme="dark"] .mock-outline b,html[data-theme="dark"] .mock-end h2,html[data-theme="dark"] .mock-times b,html[data-theme="dark"] .mock-review h4,html[data-theme="dark"] .mock-cue .cue strong{color:#f2f2f2}
+html[data-theme="dark"] .mock-banner>span:nth-child(2)>span,html[data-theme="dark"] .mock-card>span,html[data-theme="dark"] .mock-outline span,html[data-theme="dark"] .mock-hint,html[data-theme="dark"] .mock-lead,html[data-theme="dark"] .mock-toggle,html[data-theme="dark"] .mock-check ul,html[data-theme="dark"] .mock-review ol,html[data-theme="dark"] .mock-cue .cue ul,html[data-theme="dark"] .mock-cue .cue span{color:#bfbfbf}
+html[data-theme="dark"] .mock-card,html[data-theme="dark"] .mock-stage,html[data-theme="dark"] .mock-outline li,html[data-theme="dark"] .mock-toggle,html[data-theme="dark"] .mock-recording,html[data-theme="dark"] .mock-check{background:#202020;border-color:#353535}
+html[data-theme="dark"] .mock-cue .cue{background:#1a1a1a;border-color:#9fd8b6}
+html[data-theme="dark"] .mock-cue textarea{background:#1a1a1a;border-color:#3c3c3c;color:#ececec}
+html[data-theme="dark"] .mock-notes-view,html[data-theme="dark"] .mock-times div{background:#2b2b2b;color:#dcdcdc}
+html[data-theme="dark"] .mock-steps span{background:#2b2b2b;color:#aaaaaa}
+html[data-theme="dark"] .mock-steps span.on{background:#347b52;color:#ffffff}
+html[data-theme="dark"] .mock-steps span.done{background:#333333;color:#cfeedd}
+html[data-theme="dark"] body #mockSection .mock-secondary{background:#202020!important;color:#a7d9b7!important;border-color:#5fb383!important}
+html[data-theme="dark"] body #mockSection .mock-primary{background:#347b52!important;color:#ffffff!important;border-color:#347b52!important}
 html[data-theme="dark"] .mock-kicker,html[data-theme="dark"] .mock-label,html[data-theme="dark"] .mock-num,html[data-theme="dark"] .mock-clock{color:#9fd8b6}
 @media(max-width:600px){.mock-banner{flex-wrap:wrap}}
 @media(max-width:600px){.mock-times{grid-template-columns:repeat(2,1fr)}}

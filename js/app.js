@@ -248,7 +248,7 @@
       button.setAttribute("aria-pressed", String(dark));
       button.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
       const meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute("content", dark ? "#111b1a" : "#f5f7f4");
+      if (meta) meta.setAttribute("content", dark ? "#000000" : "#f5f7f4");
     };
 
     const saved = localStorage.getItem("englisity-theme");
